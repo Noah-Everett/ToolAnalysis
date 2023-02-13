@@ -1,0 +1,110 @@
+// THistReader.h
+///////////////////////////////////////////
+// Generalized ROOT histogram reading 
+// method.
+//
+// Notation: t_ = function variable
+//           m_ = member variable
+//           naming: mainVariable_subCategory (use '_' like LaTeX)
+
+#ifndef THISTREADER_H
+#define THISTREADER_H
+
+#include <map>
+#include <string>
+#include <vector>
+#include <ostream>
+
+#include "TFile.h"
+
+using std::map;
+using std::string;
+using std::vector;
+using std::cout;
+using std::endl;
+
+template< typename type_ID, typename type_hist >
+class THistReader
+{
+public:
+  /**////////////////////////
+  /**/// (Con/De)structor ///
+  /**////////////////////////
+  /**/
+  /**/ THistReader( const vector< string  >& t_hists_paths, 
+  /**/              const vector< type_ID >& t_hists_IDs  ,
+  /**/              const vector< string  >& t_hists_names );
+  /**/ THistReader( THistReader* t_THistReader ): m_hists{ t_THistReader->get_histsMap_cp() } {}
+  /**/~THistReader() { delete m_hists; }
+  /**/
+  /**////////////////////////
+
+
+
+  /**////////////////////////
+  /**/// Access Functions ///
+  /**////////////////////////
+  /**/
+  /**/ type_hist                 * get_hist       ( const type_ID& t_ID ) const { return m_hists->at( t_ID ); }
+  /**/ map< type_ID, type_hist* >* get_histsMap   (                     )       { return m_hists;             }
+  /**/ map< type_ID, type_hist* >* get_histsMap_cp(                     ) const;
+  /**/
+  /**////////////////////////
+
+
+
+  /**/////////////////////////
+  /**/// Setting Functions ///
+  /**/////////////////////////
+  /**/
+  /**/ void operator=( const THistReader& t_THistReader ) { m_hists = t_THistReader.get_histsMap(); }
+  /**/
+  /**/////////////////////////
+
+
+
+private:
+  /**////////////////////////
+  /**/// Member Variables ///
+  /**////////////////////////
+  /**/
+  /**/ map< type_ID, type_hist* >* m_hists{ new map< type_ID, type_hist* > };
+  /**/
+  /**////////////////////////
+};
+  
+/**////////////////////////////
+/**/// Function Definitions ///
+/**////////////////////////////
+/**/
+/**/ template< typename type_ID, typename type_hist >
+/**/ THistReader< type_ID, type_hist >::THistReader( const vector< string > & t_hists_paths,
+/**/                                                 const vector< type_ID >& t_hists_IDs  ,
+/**/                                                 const vector< string  >& t_hists_names ) {
+/**/     if( t_hists_paths.size() != t_hists_IDs.size() != t_hists_names.size() ) {
+/**/         cout << "Error: hists_paths, hists_IDs, and hists_names "
+/**/              << "vectors should all be the same length" << endl;
+/**/         return;
+/**/     }
+/**/
+/**/     TFile* file{ nullptr };
+/**/     pair< type_ID, type_hist* > entry;
+/**/     for( int i{ 0 }; i < t_hists_paths.size(); i++ ) {
+/**/         if( file ) delete file;
+/**/         file = new TFile( t_hists_paths[ i ].c_str() );
+/**/ 	     entry.first = t_hists_IDs[ i ];
+/**/         entry.second = ( type_hist* )file->Get( t_hists_names[ i ].c_str() );
+/**/         m_hists->insert( entry );
+/**/     }
+/**/ }
+/**/
+/**/ template< typename type_ID, typename type_hist >
+/**/ map< type_ID, type_hist* >* THistReader< type_ID, type_hist >::get_histsMap_cp() const {
+/**/     map< type_ID, type_hist* >* temp{ new map< type_ID, type_hist* > };
+/**/     temp = m_hists;
+/**/     return temp;
+/**/ }
+/**/
+/**////////////////////////////
+
+#endif
