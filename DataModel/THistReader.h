@@ -90,11 +90,11 @@ private:
 /**/     TFile* file{ nullptr };
 /**/     pair< type_ID, type_hist* > entry;
 /**/     for( int i{ 0 }; i < t_hists_paths.size(); i++ ) {
-/**/         if( file ) delete file;
 /**/         file = new TFile( t_hists_paths[ i ].c_str() );
 /**/ 	     entry.first = t_hists_IDs[ i ];
 /**/         entry.second = ( type_hist* )file->Get( t_hists_names[ i ].c_str() );
 /**/         m_hists->insert( entry );
+/**/         if( file ) delete file;
 /**/     }
 /**/ }
 /**/

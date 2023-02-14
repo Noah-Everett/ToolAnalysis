@@ -20,8 +20,7 @@
 #include "VertexGeometry.h"
 #include "THistReader.h"
 #include "Particle.h"
-
-#define cout_debug cout<<__FILE__<<"::"<<__FUNCTION__<<" ("<<__LINE__<<"): "
+#include "Logging.h"
 
 using std::vector;
 using std::string;
@@ -29,103 +28,124 @@ using std::string;
 class DetectorResponsePredictor
 {
 public:
-  /**////////////////////////
-  /**/// (Con/De)structor ///
-  /**////////////////////////
-  /**/
-  /**/ DetectorResponsePredictor() {};
-  /**/~DetectorResponsePredictor() {};
-  /**/
-  /**////////////////////////
+    /**////////////////////////
+    /**/// (Con/De)structor ///
+    /**////////////////////////
+    /**/
+    /**/ DetectorResponsePredictor() {}
+    /**/~DetectorResponsePredictor() { reset_members(); }
+    /**/
+    /**////////////////////////
   
   
   
-  /**/////////////
-  /**/// Clear ///
-  /**/////////////
-  /**/
-  /**/ void reset_members();
-  /**/
-  /**/////////////
+    /**/////////////
+    /**/// Clear ///
+    /**/////////////
+    /**/
+    /**/ void reset_members();
+    /**/
+    /**/////////////
 
 
 
-  /**/////////////////
-  /**/// Verbosity ///
-  /**/////////////////
-  /**/
-  /**/ void set_verbosity( int t_verbosity ) { m_verbosity = t_verbosity; }
-  /**/ int  get_verbosity() { return m_verbosity; }
-  /**/
-  /**/////////////////
+    /**/////////////////
+    /**/// Verbosity ///
+    /**/////////////////
+    /**/
+    /**/ void set_verbosity( int t_verbosity ) { m_verbosity = t_verbosity; }
+    /**/ int  get_verbosity() const { return m_verbosity; }
+    /**/
+    /**/////////////////
 
   
   
-  /**///////////////////
-  /**/// Data Models ///
-  /**///////////////////
-  /**/
-  /**/// Vertex Geometry
-  /**/ inline void            set_vtxGeo( VertexGeometry* t_vtxGeo ) { m_vtxGeo = t_vtxGeo; }
-  /**/ inline VertexGeometry* get_vtxGeo() { return m_vtxGeo; }
-  /**/
-  /**///////////////////
+    /**///////////////////
+    /**/// Data Models ///
+    /**///////////////////
+    /**/
+    /**/// Vertex Geometry
+    /**/ static void            set_vtxGeo( VertexGeometry* t_vtxGeo ) { m_vtxGeo = t_vtxGeo; }
+    /**/ static VertexGeometry* get_vtxGeo() { return m_vtxGeo; }
+    /**/
+    /**///////////////////
 
 
 
-  /**/////////////////////////////////
-  /**/// Load Physical Information ///
-  /**/////////////////////////////////
-  /**/
-  /**/// Photon Emission
-  /**/ void load_hists_emission_mu_water( const vector< string >& t_hists_paths, 
-  /**/                                    const vector< int    >& t_hists_IDs  ,
-  /**/                                    const vector< string >& t_hists_names );
-  /**/ void load_hists_emission_e_water ( const vector< string >& t_hists_paths, 
-  /**/                                    const vector< int    >& t_hists_IDs  ,
-  /**/                                    const vector< string >& t_hists_names );
-  /**/
-  /**/// Photon transmission
-  /**/ double load_transmission_water( const string& t_hist_path );
-  /**/
-  /**/// Energy loss
-  /**/ void load_hist_dEdX_mu_water( const string& t_hist_path );
-  /**/ void load_hist_dEdX_e_water ( const string& t_hist_path );
-  /**/
-  /**/////////////////////////////////
+    /**/////////////////////////////////
+    /**/// Load Physical Information ///
+    /**/////////////////////////////////
+    /**/
+    /**/
+    /**/////////////////////////////////
   
   
   
-  /**/////////////////////////////////
-  /**/// Load Physical Information ///
-  /**/////////////////////////////////
-  /**/
-  /**/// Photon Emission
-  /**/ double get_emission_mu_water( const double& t_trackLength, 
-  /**/                               const double& t_photonAngle );
-  /**/ double get_emission_e_water ( const double& t_trackLength, 
-  /**/                               const double& t_photonAngle );
-  /**/
-  /**/// Photon transmission
-  /**/ double get_transmission_water( const double& t_energy );
-  /**/
-  /**/// Energy loss
-  /**/ double get_dEdX_mu_water( const double& t_energy );
-  /**/ double get_dEdX_e_water ( const double& t_energy );
-  /**/
-  /**/////////////////////////////////
-  
+    /**////////////////////////////
+    /**/// Physical Information ///
+    /**////////////////////////////
+    /**/
+    /**/// Load Histograms
+    /**/        bool load_hists_emission          ( const map   < double, TH2D* >*& t_hists_emission,
+    /**/                                            const vector< string        > & t_hists_paths   , 
+    /**/                                            const vector< double        > & t_hists_IDs     ,
+    /**/                                            const vector< string        > & t_hists_names   );
+    /**/ inline bool load_hists_emission_tankWater( const vector< string        > & t_hists_paths   , 
+    /**/                                            const vector< double        > & t_hists_IDs     ,
+    /**/                                            const vector< string        > & t_hists_names   );
+    /**/ inline bool load_hists_emission_MRDsci   ( const vector< string        > & t_hists_paths   , 
+    /**/                                            const vector< double        > & t_hists_IDs     ,
+    /**/                                            const vector< string        > & t_hists_names   );
+    /**/
+    /**/        bool load_hist                       ( const TH1D  *& m_hist     ,
+    /**/                                               const string & t_hist_path,
+    /**/                                               const string & t_hist_name );
+    /**/ inline bool load_hist_transmission_tankWater( const string & t_hist_path,
+    /**/                                               const string & t_hist_name );
+    /**/ inline bool load_hist_transmission_MRDsci   ( const string & t_hist_path,
+    /**/                                               const string & t_hist_name );
+    /**/ inline bool load_hist_dEdX_tankWater        ( const string & t_hist_path,
+    /**/                                               const string & t_hist_name );
+    /**/ inline bool load_hist_dEdX_tankSteel        ( const string & t_hist_path,
+    /**/                                               const string & t_hist_name );
+    /**/ inline bool load_hist_dEdX_MRDsci           ( const string & t_hist_path,
+    /**/                                               const string & t_hist_name );
+    /**/ inline bool load_hist_dEdX_MRDiron          ( const string & t_hist_path,
+    /**/                                               const string & t_hist_name );
+    /**/
+    /**/// Evaluate Histograms
+    /**/        double eval_hists_emission          ( const map< double, TH2D* >*& t_hists_emission,
+    /**/                                              const double               & t_initialEnergy ,
+    /**/                                              const double               & t_trackLength   , 
+    /**/                                              const double               & t_photonAngle   ) const;
+    /**/ inline double eval_hists_emission_tankWater( const double               & t_initialEnergy ,
+    /**/                                              const double               & t_trackLength   , 
+    /**/                                              const double               & t_photonAngle   ) const;
+    /**/ inline double eval_hists_emission_MRDsci   ( const double               & t_initialEnergy ,
+    /**/                                              const double               & t_trackLength   , 
+    /**/                                              const double               & t_photonAngle   ) const;
+    /**/
+    /**/        double eval_hist                       ( const TH1D  *& t_hist,
+    /**/                                                 const double & t_x   ) const;
+    /**/ inline double eval_hist_transmission_tankWater( const double & t_x   ) const;
+    /**/ inline double eval_hist_transmission_MRDsci   ( const double & t_x   ) const;
+    /**/ inline double eval_hist_dEdX_tankWater        ( const double & t_x   ) const;
+    /**/ inline double eval_hist_dEdX_tankSteel        ( const double & t_x   ) const;
+    /**/ inline double eval_hist_dEdX_MRDsci           ( const double & t_x   ) const;
+    /**/ inline double eval_hist_dEdX_MRDiron          ( const double & t_x   ) const;
+    /**/
+    /**////////////////////////////
   
 
 
-  /**////////////////////////////////////
-  /**/// Detector Response Prediction ///
-  /**////////////////////////////////////
-  /**/
-  /**/ double get_expected_height( Particle* t_particle, RecoDigit* t_digit );
-  /**/ double get_expected_time  ( Particle* t_particle, RecoDigit* t_digit );
-  /**/
-  /**////////////////////////////////////
+    /**////////////////////////////////////
+    /**/// Detector Response Prediction ///
+    /**////////////////////////////////////
+    /**/
+    /**/ double get_expected_height( Particle* t_particle, RecoDigit* t_digit ) = 0;
+    /**/ double get_expected_time  ( Particle* t_particle, RecoDigit* t_digit ) = 0;
+    /**/
+    /**////////////////////////////////////
 
 
 
@@ -134,21 +154,28 @@ private:
     /**/// Settings ///
     /**////////////////
     /**/
-    /**/ int m_verbosity{ 1 }; // 0 = none, 5 = debug
+    /**/ const enum m_verbosity_enum {
+    /**/     m_verbosity_error   = 0,
+    /**/     m_verbosity_warning = 1,
+    /**/     m_verbosity_message = 2,
+    /**/     m_verbosity_debug   = 3
+    /**/ }
+    /**/ int m_verbosity{ m_verbosity_warning };
     /**/
     /**////////////////
 
 
 
-    /**///////////////////
-    /**/// Data Models ///
-    /**///////////////////
+    /**///////////////////////
+    /**/// Other Variables ///
+    /**///////////////////////
     /**/
-    /**/ VertexGeometry          * m_vtxGeo         { nullptr };
-    /**/ THistReader< int, TH2D >* m_histReader_TH2D{ nullptr };
-    /**/ THistReader< int, TH1D >* m_histReader_TH1D{ nullptr };
+    /**/ static VertexGeometry             * m_vtxGeo         { nullptr };
+    /**/ static THistReader< double, TH2D >* m_histReader_TH2D{ nullptr };
+    /**/ static THistReader< double, TH1D >* m_histReader_TH1D{ nullptr };
+    /**/ static string m_temp_string;
     /**/
-    /**///////////////////
+    /**///////////////////////
 
 
 
@@ -156,21 +183,23 @@ private:
     /**/// Physical Information ///
     /**////////////////////////////
     /**/
-    /**/ map< int, TH2D* >* m_hists_emission_mu{ nullptr };
-    /**/ map< int, TH2D* >* m_hists_emission_e { nullptr };
-    /**/ map< int, TH2D* >* m_hists_emission_mu_sci  { nullptr };
-    /**/ map< int, TH2D* >* m_hists_emission_e_sci   { nullptr };
-    /**/ map< int, TH1D* >* m_hists_detRespPDF_PMT   { nullptr };
-    /**/ map< int, TH1D* >* m_hists_detRespPDF_LAPPD { nullptr };
-    /**/ map< int, TH1D* >* m_hists_detRespPDF_MRD   { nullptr };
-    /**/ TH1D             * m_hist_dEdX_mu_tankWall  { nullptr };
-    /**/ TH1D             * m_hist_dEdX_e_tankWall   { nullptr };
-    /**/ TH1D             * m_hist_dEdX_mu_MRDIron   { nullptr };
-    /**/ TH1D             * m_hist_dEdX_e_MRDIron    { nullptr };
-    /**/ TH1D             * m_hist_trans_tankWater   { nullptr };
-    /**/ TH1D             * m_hist_trans_MRDSci      { nullptr };
+    /**/ const  vector< double        >  m_hists_emission_initialEnergies           ;
+    /**/        map   < double, TH2D* >* m_hists_emission_tankWater      { nullptr };
+    /**/        map   < double, TH2D* >* m_hists_emission_MRDsci         { nullptr };
+    /**/ static TH1D                * m_hist_transmission_tankWater      { nullptr };
+    /**/ static TH1D                * m_hist_transmission_MRDsci         { nullptr };
+    /**/        TH1D                * m_hist_dEdX_tankWater              { nullptr };
+    /**/        TH1D                * m_hist_dEdX_tankSteel              { nullptr };
+    /**/        TH1D                * m_hist_dEdX_MRDsci                 { nullptr };
+    /**/        TH1D                * m_hist_dEdX_MRDiron                { nullptr };
     /**/
     /**////////////////////////////
+
+protected:
+    void Log_debug( string& t_message, int& t_verbosity );
+    m_temp_string = __FILE__; \
+    Log( m_temp_string + "::" + __FUNCTION__ + " (" + __LINE__ + "): " + t_message, t_verbosity, m_verbosity )
+
 };
 
 #endif
