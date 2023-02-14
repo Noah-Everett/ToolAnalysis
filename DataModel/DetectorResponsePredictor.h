@@ -72,15 +72,6 @@ public:
 
 
 
-    /**/////////////////////////////////
-    /**/// Load Physical Information ///
-    /**/////////////////////////////////
-    /**/
-    /**/
-    /**/////////////////////////////////
-  
-  
-  
     /**////////////////////////////
     /**/// Physical Information ///
     /**////////////////////////////
@@ -126,13 +117,13 @@ public:
     /**/                                              const double               & t_photonAngle   ) const;
     /**/
     /**/        double eval_hist                       ( const TH1D  *& t_hist,
-    /**/                                                 const double & t_x   ) const;
-    /**/ inline double eval_hist_transmission_tankWater( const double & t_x   ) const;
-    /**/ inline double eval_hist_transmission_MRDsci   ( const double & t_x   ) const;
-    /**/ inline double eval_hist_dEdX_tankWater        ( const double & t_x   ) const;
-    /**/ inline double eval_hist_dEdX_tankSteel        ( const double & t_x   ) const;
-    /**/ inline double eval_hist_dEdX_MRDsci           ( const double & t_x   ) const;
-    /**/ inline double eval_hist_dEdX_MRDiron          ( const double & t_x   ) const;
+    /**/                                                 const double & t_x             ) const;
+    /**/ inline double eval_hist_transmission_tankWater( const double & t_photonEnergy  ) const;
+    /**/ inline double eval_hist_transmission_MRDsci   ( const double & t_photonEnergy  ) const;
+    /**/ inline double eval_hist_dEdX_tankWater        ( const double & t_primaryEnergy ) const;
+    /**/ inline double eval_hist_dEdX_tankSteel        ( const double & t_primaryEnergy ) const;
+    /**/ inline double eval_hist_dEdX_MRDsci           ( const double & t_primaryEnergy ) const;
+    /**/ inline double eval_hist_dEdX_MRDiron          ( const double & t_primaryEnergy ) const;
     /**/
     /**////////////////////////////
   
@@ -154,12 +145,10 @@ private:
     /**/// Settings ///
     /**////////////////
     /**/
-    /**/ const enum m_verbosity_enum {
-    /**/     m_verbosity_error   = 0,
-    /**/     m_verbosity_warning = 1,
-    /**/     m_verbosity_message = 2,
-    /**/     m_verbosity_debug   = 3
-    /**/ }
+    /**/ const enum m_verbosity_enum{ m_verbosity_error   = 0,
+    /**/                              m_verbosity_warning = 1,
+    /**/                              m_verbosity_message = 2,
+    /**/                              m_verbosity_debug   = 3 };
     /**/ int m_verbosity{ m_verbosity_warning };
     /**/
     /**////////////////
@@ -183,7 +172,7 @@ private:
     /**/// Physical Information ///
     /**////////////////////////////
     /**/
-    /**/ const  vector< double        >  m_hists_emission_initialEnergies           ;
+    /**/        vector< double        >  m_hists_emission_initialEnergies           ;
     /**/        map   < double, TH2D* >* m_hists_emission_tankWater      { nullptr };
     /**/        map   < double, TH2D* >* m_hists_emission_MRDsci         { nullptr };
     /**/ static TH1D                * m_hist_transmission_tankWater      { nullptr };
@@ -195,10 +184,16 @@ private:
     /**/
     /**////////////////////////////
 
+
+
 protected:
-    void Log_debug( string& t_message, int& t_verbosity );
-    m_temp_string = __FILE__; \
-    Log( m_temp_string + "::" + __FUNCTION__ + " (" + __LINE__ + "): " + t_message, t_verbosity, m_verbosity )
+    /**////////////////////////
+    /**/// Debugging Output ///
+    /**////////////////////////
+    /**/
+    /**/ inline void Log_debug( string& t_message, int& t_verbosity );
+    /**/
+    /**////////////////////////
 
 };
 

@@ -30,8 +30,8 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < double, TH2D*
             }
         m_hists_emission_initialEnergies = t_hists_IDs;
     } else if( m_hists_emission_initialEnergies != t_hists_IDs ) {
-        Log_debug( "Argument `t_hists_IDs` for `load_hists_emission_tankWater()` 
-                    and `load_hists_emission_MRDsci()` should match.", m_verbosity_error );
+        Log_debug( "Argument `t_hists_IDs` for `load_hists_emission_tankWater()`" 
+                   " and `load_hists_emission_MRDsci()` should match.", m_verbosity_error );
         return false;
     }
     m_histReader_TH2D = new THistReader< int, TH2D >( t_hists_paths, t_hists_IDs, t_hists_names );
@@ -74,11 +74,15 @@ double DetectorResponsePredictor::eval_hists_emission(       map< double, TH2D* 
                                                        const double              & t_initialEnergy ,
                                                        const double              & t_trackLength   , 
                                                        const double              & t_photonAngle   ) {
+    Log_debug( "Evaluating emission histograms.", m_verbosity_debug );
     // Bisect histogram energies to find the histograms 
     // which have energies just lower and just higher 
     // than t_initialEnergy.
     int index_lower{ 0 }, index_upper{ m_hists_emission_initialEnergies.size() - 1 };
+    Log_debug( "    Finding histograms with initial primary energies just below and above `t_initialEnergy` with bisection.", m_verbosity_debug );
     while( index_upper - index_lower != 1 ) {
+        Log_debug( "        Lower: index=" + to_string( index_lower ) + " && initEnergy=" + to_string( m_hists_emission_initialEnergies[ index_lower ] + "\n"
+                   "        Upper: index=" + to_string( index_upper ) + " && initEnergy=" + to_string( m_hists_emission_initialEnergies[ index_upper ] ), m_verbosity_debug );
         if( m_hists_emission_initialEnergies[ ( index_lower + index_upper ) / 2 ] < t_initialEnergy )
             index_lower = ( index_lower + index_upper ) / 2;
         else if( m_hists_emission_initialEnergies[ ( index_lower + index_upper ) / 2 ] > t_initialEnergy )
@@ -87,12 +91,13 @@ double DetectorResponsePredictor::eval_hists_emission(       map< double, TH2D* 
 
     // Use linear inerpolation between upper and lower histograms
     // to find expected emission value.
-    double initialEnergy_lower{ m_hists_emission_initialEnergies[ index_lower ] }, 
-           initialEnergy_upper{ m_hists_emission_initialEnergies[ index_upper ] };
-    double emission_lower{ m_hists_emission[ initialEnergy_lower ]->Interpolate( t_trackLength, t_initialEnergy ) },
-           emission_upper{ m_hists_emission[ initialEnergy_upper ]->Interpolate( t_trackLength, t_initialEnergy ) };
+    double initialEnergy_lower{ m_hists_emission_initialEnergies[ index_lower ] };
+    double initialEnergy_upper{ m_hists_emission_initialEnergies[ index_upper ] };
+    double emission_lower{ m_hists_emission[ initialEnergy_lower ]->Interpolate( t_trackLength, t_initialEnergy ) };
+    double emission_upper{ m_hists_emission[ initialEnergy_upper ]->Interpolate( t_trackLength, t_initialEnergy ) };
     double slope{ ( emission_upper - emission_upper ) / ( initialEnergy_lower - initialEnergy_upper ) };
     double value{ slope * ( t_initialEnergy - initialEnergy_lower ) + emission_lower }; // point slope
+    Log_debug( "    Interpolated value=" + to_string( value ) + ".", m_verbosity_debug );
     return value;
 }
 
@@ -102,7 +107,7 @@ double DetectorResponsePredictor::eval_hist(       TH1D  * t_hist,
     return t_hist->Interpolate( t_x );
 }
     
-void DetectorResponsePredictor::Log_debug( string& t_message, int& t_verbosity ) {
-    m_temp_string = "DetectorResponsePredictor";
-    Log( m_temp_string + __FILE__ + "::" + __FUNCTION__ + " (" + __LINE__ + "): " + t_message, t_verbosity, m_verbosity )
-saf
+inline void DetectorResponsePredictor::Log_debug( string& t_message, int& t_verbosity ) {
+    m_temp_string = "DetectorResponsePredictor || ";
+    Log( m_temp_string + __FILE__ + "::" + __FUNCTION__ + " (" + __LINE__ + "): " + t_message, t_verbosity, m_verbosity );
+}
