@@ -1,3 +1,21 @@
+////////////////////////////////////
+// DetectorResponsePrediction.cpp //
+////////////////////////////////////
+//
+// Noah Everett (noah.everett@mines.sdsmt.edu)
+// Created Febuary 13, 2023
+//
+// Abstract class for generalized detector 
+// response prediction.  All information 
+// (PDFs, simulations, etc.) needs to be 
+// set by the user.
+//
+// Notation: t_ = function variable
+//           m_ = member variable
+//           naming: mainVariable_subCategory (use '_' like LaTeX)
+//
+////////////////////////////////////
+
 #include "DetectorResponsePredictor.h"
   
 void DetectorResponsePredictor::reset_members()
