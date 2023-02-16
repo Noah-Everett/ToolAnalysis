@@ -85,10 +85,6 @@ public:
     /**////////////////////////////
     /**/
     /**/// Load Histograms
-    /**/        bool load_hists_emission          ( const map   < double, TH2D* >*& t_hists_emission,
-    /**/                                            const vector< string        > & t_hists_paths   , 
-    /**/                                            const vector< double        > & t_hists_IDs     ,
-    /**/                                            const vector< string        > & t_hists_names   );
     /**/ inline bool load_hists_emission_tankWater( const vector< string        > & t_hists_paths   , 
     /**/                                            const vector< double        > & t_hists_IDs     ,
     /**/                                            const vector< string        > & t_hists_names   );
@@ -96,9 +92,6 @@ public:
     /**/                                            const vector< double        > & t_hists_IDs     ,
     /**/                                            const vector< string        > & t_hists_names   );
     /**/
-    /**/        bool load_hist                       ( const TH1D  *& m_hist     ,
-    /**/                                               const string & t_hist_path,
-    /**/                                               const string & t_hist_name );
     /**/ inline bool load_hist_transmission_tankWater( const string & t_hist_path,
     /**/                                               const string & t_hist_name );
     /**/ inline bool load_hist_transmission_MRDsci   ( const string & t_hist_path,
@@ -113,10 +106,6 @@ public:
     /**/                                               const string & t_hist_name );
     /**/
     /**/// Evaluate Histograms
-    /**/        double eval_hists_emission          ( const map< double, TH2D* >*& t_hists_emission,
-    /**/                                              const double               & t_initialEnergy ,
-    /**/                                              const double               & t_trackLength   , 
-    /**/                                              const double               & t_photonAngle   ) const;
     /**/ inline double eval_hists_emission_tankWater( const double               & t_initialEnergy ,
     /**/                                              const double               & t_trackLength   , 
     /**/                                              const double               & t_photonAngle   ) const;
@@ -124,8 +113,6 @@ public:
     /**/                                              const double               & t_trackLength   , 
     /**/                                              const double               & t_photonAngle   ) const;
     /**/
-    /**/        double eval_hist                       ( const TH1D  *& t_hist,
-    /**/                                                 const double & t_x             ) const;
     /**/ inline double eval_hist_transmission_tankWater( const double & t_photonEnergy  ) const;
     /**/ inline double eval_hist_transmission_MRDsci   ( const double & t_photonEnergy  ) const;
     /**/ inline double eval_hist_dEdX_tankWater        ( const double & t_primaryEnergy ) const;
@@ -148,7 +135,7 @@ public:
 
 
 
-private:
+protected:
     /**////////////////
     /**/// Settings ///
     /**////////////////
@@ -170,7 +157,7 @@ private:
     /**/ static VertexGeometry             * m_vtxGeo         { nullptr };
     /**/ static THistReader< double, TH2D >* m_histReader_TH2D{ nullptr };
     /**/ static THistReader< double, TH1D >* m_histReader_TH1D{ nullptr };
-    /**/ static string m_temp_string;
+    /**/ static string                       m_temp_string;
     /**/
     /**///////////////////////
 
@@ -194,15 +181,35 @@ private:
 
 
 
-protected:
-    /**////////////////////////
-    /**/// Debugging Output ///
-    /**////////////////////////
+    /**////////////////////////////
+    /**/// Load/Eval Histograms ///
+    /**////////////////////////////
+    /**/
+    /**/ bool load_hists_emission  ( const map   < double, TH2D* >*& t_hists_emission,
+    /**/                             const vector< string        > & t_hists_paths   , 
+    /**/                             const vector< double        > & t_hists_IDs     ,
+    /**/                             const vector< string        > & t_hists_names   );
+    /**/ bool load_hist            ( const TH1D                   *& t_hist          ,
+    /**/                             const string                  & t_hist_path     ,
+    /**/                             const string                  & t_hist_name     );
+    /**/ double eval_hists_emission( const map   < double, TH2D* >*& t_hists_emission,
+    /**/                             const double                  & t_initialEnergy ,
+    /**/                             const double                  & t_trackLength   , 
+    /**/                             const double                  & t_photonAngle   ) const;
+    /**/ double eval_hist          ( const TH1D                   *& t_hist,
+    /**/                             const double                  & t_x             ) const;
+    /**/
+    /**////////////////////////////
+
+
+
+    /**//////////////
+    /**/// Output ///
+    /**//////////////
     /**/
     /**/ inline void Log_debug( string& t_message, int& t_verbosity );
     /**/
-    /**////////////////////////
-
+    /**//////////////
 };
 
 #endif
