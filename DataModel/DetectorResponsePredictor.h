@@ -25,6 +25,12 @@
 //*//   ptcl = particle                                                                       //*//
 //*//   vtx  = vertex                                                                         //*//
 //*//                                                                                         //*//
+//*// Units:                                                                                  //*//
+//*//   Energy   [MeV]                                                                        //*//
+//*//   Distance [m]                                                                          //*//
+//*//   Angle    [rad]                                                                        //*//
+//*//   Time     [s]                                                                          //*//
+//*//                                                                                         //*//
 //*/////////////////////////////////////////////////////////////////////////////////////////////*//
 //*/////////////////////////////////////////////////////////////////////////////////////////////*//
 
@@ -65,7 +71,13 @@ public:
     /**/////////////////////////
     /**/
     /**/ void set_verbosity( int t_verbosity ) { m_verbosity = t_verbosity; }
-    /**/ int  get_verbosity() const { return m_verbosity; }
+    /**/ int  get_verbosity() const            { return m_verbosity;        }
+    /**/
+    /**/ void set_nPoints( int t_nPoints ) { m_nPoints = t_nPoints; }
+    /**/ int  get_nPoints() const          { return m_nPoints;      }
+    /**/
+    /**/ void set_nIterations( int t_nIterations ) { m_nIterations = t_nIterations; }
+    /**/ int  get_nIterations() const              { return m_nIterations;          }
     /**/
     /**/ void            set_vtxGeo( VertexGeometry* t_vtxGeo ) { m_vtxGeo = t_vtxGeo; }
     /**/ VertexGeometry* get_vtxGeo(                          ) { return m_vtxGeo;     }
@@ -146,7 +158,6 @@ protected:
     /**/                        m_verbosity_warning = 1,
     /**/                        m_verbosity_message = 2,
     /**/                        m_verbosity_debug   = 3 };
-    /**/ int m_verbosity{ m_verbosity_warning };
     /**/
     /**/ inline void Log_debug( const string&  t_message, const int  t_verbosity ) const;
     /**/ inline void Log_debug( const string&& t_message, const int  t_verbosity ) const;
@@ -154,22 +165,47 @@ protected:
     /**//////////////
 
 
-
-    /**///////////////////////
-    /**/// Other Variables ///
-    /**///////////////////////
+    
+    /**////////////////
+    /**/// Settings ///
+    /**////////////////
     /**/
-    /**/// DataModels
+    /**/ int    m_verbosity      { m_verbosity_warning };
+    /**/ int    m_nPoints        { 4                   };
+    /**/ int    m_nIterations    { 10                  };
+    /**/ double m_PMTdiameter    { 8 * 0.0254          };
+    /**/ double m_LAPPDsideLength{ 20 * 0.01           };
+    /**/
+    /**////////////////
+
+
+
+    /**//////////////////
+    /**/// DataModels ///
+    /**//////////////////
+    /**/
     /**/ VertexGeometry           * m_vtxGeo         { VertexGeometry::Instance() };
     /**/ THistReader< int , TH2D >* m_histReader_TH2D{ nullptr };
     /**/ THistReader< bool, TH1D >* m_histReader_TH1D{ nullptr };
+    /**/
+    /**//////////////////
+
+
+
+    /**/////////////////////////////////
+    /**/// Miscilanious Helpful Bits ///
+    /**/////////////////////////////////
     /**/
     /**/// Temporary Variables
     /**/ mutable string   m_temp_string;
     /**/ mutable TVector3 m_temp_TVector3;
     /**/ mutable TVector2 m_temp_TVector2;
     /**/
-    /**///////////////////////
+    /**/// Copy Functions (as to not copy by reference)
+    /**/ inline TVector3 copy( const TVector3& t_TVector3 ) const;
+    /**/ inline TVector2 copy( const TVector2& t_TVector2 ) const;
+    /**/
+    /**/////////////////////////////////
 
 
 
@@ -205,33 +241,28 @@ protected:
     /**/                           const string              & t_hist_name     );
     /**/
     /**/// Evaluate Histograms
-    /**/ double eval_hists_emission( const map   < int, TH2D* >* t_hists_emission,
-    /**/                             const double                t_initialEnergy ,
-    /**/                             const double                t_trackLength   , 
-    /**/                             const double                t_photonAngle   ) const;
-    /**/ double eval_hist          ( const TH1D                * t_hist          ,
-    /**/                             const double                t_x             ) const;
+    /**/ double eval_hists_emission( const map< int, TH2D* >* t_hists_emission,
+    /**/                             const double             t_initialEnergy ,
+    /**/                             const double             t_trackLength   , 
+    /**/                             const double             t_photonAngle   ) const;
+    /**/ double eval_hist          ( const TH1D             * t_hist          ,
+    /**/                             const double             t_x             ) const;
     /**/
     /**////////////////////////////
     
     
     
-    /**//////////////////////
-    /**/// Misc Functions ///
-    /**//////////////////////
+    /**/////////////////////////////
+    /**/// Calculation Functions ///
+    /**/////////////////////////////
     /**/
-    /**/// Calculation Functions
     /**/ inline double                  get_angle             ( const TVector3& t_vector_1      , const TVector3& t_vector_2         ) const;
     /**/ inline double                  get_distance          ( const TVector3& t_point_1       , const TVector3& t_point_2          ) const;
     /**/        pair< double, double >* get_emissionHistPoints( const TVector3& t_point         , const TVector3& t_ptcl_init        , 
     /**/                                                        const TVector3& t_ptcl_direction, const double    t_ptcl_distance_max,
     /**/                                                        const int       t_nIterations                                        ) const;
     /**/
-    /**/// Copy Functions
-    /**/ inline TVector3 copy( const TVector3& t_TVector3 ) const;
-    /**/ inline TVector2 copy( const TVector2& t_TVector2 ) const;
-    /**/
-    /**//////////////////////
+    /**/////////////////////////////
 };
 
 
@@ -239,8 +270,8 @@ protected:
 class DetectorResponsePredictor_TankPMT : public DetectorResponsePredictor
 {
 public:
-    double get_expected_height( Particle* t_particle, int t_nDigit );
-    double get_expected_time  ( Particle* t_particle, int t_nDigit );
+    double get_expected_height( const Particle* t_particle, const int t_nDigit );
+    double get_expected_time  ( const Particle* t_particle, const int t_nDigit );
 };
 
 

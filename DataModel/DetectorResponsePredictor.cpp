@@ -25,6 +25,12 @@
 //*//   ptcl = particle                                                                       //*//
 //*//   vtx  = vertex                                                                         //*//
 //*//                                                                                         //*//
+//*// Units:                                                                                  //*//
+//*//   Energy   [MeV]                                                                        //*//
+//*//   Distance [m]                                                                          //*//
+//*//   Angle    [rad]                                                                        //*//
+//*//   Time     [s]                                                                          //*//
+//*//                                                                                         //*//
 //*/////////////////////////////////////////////////////////////////////////////////////////////*//
 //*/////////////////////////////////////////////////////////////////////////////////////////////*//
 
@@ -266,7 +272,7 @@ inline TVector2 DetectorResponsePredictor::copy( const TVector2& t_TVector2 ) co
     return TVector2( t_TVector2.X(), t_TVector2.Y() );
 }
 
-double DetectorResponsePredictor_TankPMT::get_expected_height( Particle* t_ptcl, int t_nDigit )
+double DetectorResponsePredictor_TankPMT::get_expected_height( const Particle* t_ptcl, const int t_nDigit )
 {
     // Unchanging variables
     const TVector3 PMT_position      ( m_vtxGeo->GetDigitX( t_nDigit )       , 
@@ -275,23 +281,23 @@ double DetectorResponsePredictor_TankPMT::get_expected_height( Particle* t_ptcl,
     const TVector3 ptcl_position_init( t_ptcl->GetStartVertex().X()          ,
                                        t_ptcl->GetStartVertex().Y()          ,
                                        t_ptcl->GetStartVertex().Z()          );
-    const TVector2 ptcl_direction_2  ( t_ptcl->GetStartDirection().GetTheta(),
-                                       t_ptcl->GetStartDirection().GetPhi()  );
-    // theta --> clockwise looking down, 0 pointing downstream along beam
-    // phi   --> pitch angle, relative to the xz-plane (beamline) 
+    const TVector2 ptcl_direction_2  ( t_ptcl->GetStartDirection().GetTheta(),  // theta --> clockwise looking down, 0 pointing downstream along beam
+                                       t_ptcl->GetStartDirection().GetPhi()  ); // phi   --> pitch angle, relative to the xz-plane (beamline) 
     m_temp_TVector3.SetMagThetaPhi( 1, ptcl_direction_2.X(), ptcl_direction_2.Y() );
     TVector3 ptcl_direction_3( copy( m_temp_TVector3 ) ); // Use `copy()` as to not copy temp var by reference
-    const double ptcl_energy_init{ t_ptcl->GetStartEnergy() / 1000 }; // [MeV] 
+    const double ptcl_energy_init{ t_ptcl->GetStartEnergy() / 1000 }; // Convert from GeV to MeV
     
     // Changing function variables
     TVector3 ptcl_position_cur( copy( ptcl_position_init ) ); // Use `copy()` to to not copy var by reference
     double ptcl_s{ 0 };
 
     // Find theta_gamma of PMT center
-    const int nPoints    { 4  };
-    const int nIterations{ 10 };
-    TVector3 PMTpoints[ nPoints ]; ////////////// INITALIZE ////////////////
-    double distance_max[ nPoints ];////////////// INITALIZE ////////////////
+    TVector3 PMTpoints[ m_nPoints ];
+    for( int i{ 0 }; i < m_nPoints; i++ )
+        PMTpoints[ i ] = 
+
+
+    double distance_max[ m_nPoints ];////////////// INITALIZE ////////////////
     pair< double, double >* emissionHistPoints[ nIterations ];
 
     for( int i{ 0 }; i < nPoints; i++ )
@@ -303,7 +309,7 @@ double DetectorResponsePredictor_TankPMT::get_expected_height( Particle* t_ptcl,
     return 0;
 }
     
-double DetectorResponsePredictor_TankPMT::get_expected_time( Particle* t_particle, int t_nDigit )
+double DetectorResponsePredictor_TankPMT::get_expected_time( const Particle* t_particle, const int t_nDigit )
 {
     return 0;
 }
