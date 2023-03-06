@@ -56,44 +56,93 @@ void DetectorResponsePredictor::reset_members()
 bool DetectorResponsePredictor::load_hists_emission( const map   < int, TH2D* >* t_hists_emission,
                                                      const vector< string     >& t_hists_paths   , 
                                                      const vector< int        >& t_hists_IDs     ,
-                                                     const vector< string     >& t_hists_names   ) {
+                                                     const vector< string     >& t_hists_names   ,
+                                                           double              & t_delta_s       ,
+                                                           double              & t_delta_theta   ,
+                                                           double              & t_delta_phi      ) {
     Log_debug( "Loading emission histograms.", m_verbosity_debug );
+    
+    // Check IDs are strictly increasing
     if( m_hists_emission_initialEnergies.empty() ) {
-        for( int i{ 0 }; i + 1 < t_hists_IDs.size(); i++ ) // check IDs are strictly increasing
+        for( int i{ 0 }; i + 1 < t_hists_IDs.size(); i++ ) 
             if( t_hists_IDs[ i ] >= t_hists_IDs[ i + 1 ] ) {
                 Log_debug( "`t_hists_IDs` does not have strictly increasing entries.", m_verbosity_error );
                 return false;
             }
         m_hists_emission_initialEnergies = t_hists_IDs;
-    } else if( m_hists_emission_initialEnergies != t_hists_IDs ) {
+    }
+    // Check IDs match existing IDs
+    else if( m_hists_emission_initialEnergies != t_hists_IDs ) {
         Log_debug( "Argument `t_hists_IDs` for `load_hists_emission_tankWater()`" 
                    " and `load_hists_emission_MRDsci()` should match.", m_verbosity_error );
         return false;
     }
+
+    // Load histogram map
     m_histReader_TH2D = new THistReader< int, TH2D >( t_hists_paths, t_hists_IDs, t_hists_names );
-    t_hists_emission = m_histReader_TH2D->get_histsMap_cp();
-    if( m_histReader_TH2D ) {
-        delete m_histReader_TH2D;
-        return true;
-    } else
+    if( t_hists_emission ) delete t_hists_emission;
+    *t_hists_emission = *( m_histReader_TH2D->get_histsMap_cp() );
+    delete m_histReader_TH2D;
+    
+    // If map wasnt returned
+    if( !t_hists_emission ) {
+        Log_debug( "`t_hists_emission` wasnt set.", m_verbosity_error );
         return false;
+    }
+
+    // Check that a hist with 0 energy exists
+    if( t_hists_emission->find( 0 ) == t_hists_emission->end() ) {
+        Log_debug( "`t_hists_emission` doesnt contain a hist with zero energy.", m_verbosity_error );
+        return false;
+    }
+    
+    // Check all TH2D axis are the same
+    double min_x  { t_hists_emission->at( 0 )->GetXaxis()->GetXmin()  };
+    double max_x  { t_hists_emission->at( 0 )->GetXaxis()->GetXmax()  };
+    int    nBins_x{ t_hists_emission->at( 0 )->GetXaxis()->GetNbins() };
+    double min_y  { t_hists_emission->at( 0 )->GetYaxis()->GetXmin()  };
+    double max_y  { t_hists_emission->at( 0 )->GetYaxis()->GetXmax()  };
+    int    nBins_y{ t_hists_emission->at( 0 )->GetYaxis()->GetNbins() };
+    for( auto const& [ i, h ] : t_hists_emission )
+        if( h->GetXaxis()->GetXmin()  != min_x   ||
+            h->GetXaxis()->GetXmax()  != max_x   ||
+            h->GetXaxis()->GetNbins() != nBins_x ||
+            h->GetYaxis()->GetXmin()  != min_y   ||
+            h->GetYaxis()->GetXmax()  != max_y   ||
+            h->GetYaxis()->GetNbins() != nBins_y   ) {
+            Log_debug( "All histograms in `t_hists_emission` do not have the same axes (same min, max, and bin counts).", m_verbosity_error );
+            return false;
+        }
+    
+    // Set bin widths
+    t_delta_s     = t_hists_emission->at( 0 )->GetXaxis()->GetBinWidth( 0 );
+    t_delta_theta = t_hists_emission->at( 0 )->GetYaxis()->GetBinWidth( 0 );
+    t_delta_phi   = t_hists_emission->at( 0 )->GetYaxis()->GetBinWidth( 0 );
+
+    return true;
 }
 
 inline bool DetectorResponsePredictor::load_hists_emission_tankWater( const vector< string >& t_hists_paths, 
                                                                       const vector< int    >& t_hists_IDs  ,
                                                                       const vector< string >& t_hists_names ) {
     Log_debug( "Loading tank water emission histograms.", m_verbosity_debug );
-    return load_hists_emission( m_hists_emission_tankWater, t_hists_paths, t_hists_IDs, t_hists_names );
+    return load_hists_emission( m_hists_emission_tankWater   , t_hists_paths             , 
+                                t_hists_IDs                  , t_hists_names             , 
+                                m_binWidth_s_tankWater       , m_binWidth_theta_tankWater, 
+                                m_binWidth_phi_tankWater                                  );
 }
 
 inline bool DetectorResponsePredictor::load_hists_emission_MRDsci( const vector< string >& t_hists_paths, 
                                                                    const vector< int    >& t_hists_IDs  ,
                                                                    const vector< string >& t_hists_names ) {
     Log_debug( "Loading MRD scintilator emission histograms.", m_verbosity_debug );
-    return load_hists_emission( m_hists_emission_MRDsci, t_hists_paths, t_hists_IDs, t_hists_names );
+    return load_hists_emission( m_hists_emission_MRDsci, t_hists_paths          , 
+                                t_hists_IDs            , t_hists_names          ,
+                                m_binWidth_s_MRDsci    , m_binWidth_theta_MRDsci,
+                                m_binWidth_phi_MRDsci                            );
 }
 
-bool DetectorResponsePredictor::load_hist( const TH1D  *  m_hist     ,
+bool DetectorResponsePredictor::load_hist( const TH1D  *  m_hist    ,
                                            const string& t_hist_path,
                                            const string& t_hist_name ) {
     Log_debug( "    Loading histogram.", m_verbosity_debug );
@@ -143,12 +192,9 @@ inline bool DetectorResponsePredictor::load_hist_dEdX_MRDiron( const string& t_h
     Log_debug( "Loading MRD iron dEdX histogram.", m_verbosity_debug );
     return load_hist( m_hist_dEdX_MRDiron, t_hist_path, t_hist_name );
 }
-
-double DetectorResponsePredictor::eval_hists_emission( const map< int, TH2D* >* t_hists_emission,
-                                                       const double             t_initialEnergy ,
-                                                       const double             t_trackLength   , 
-                                                       const double             t_photonAngle   ) const {
-    Log_debug( "    Evaluating emission histograms.", m_verbosity_debug );
+    
+pair< int, int > DetectorResponsePredictor::get_closesEmissionHists( const map< int, TH2D* >* t_hists_emission,
+                                                                     const double             t_initialEnergy  ) const {
     // Bisect histogram energies to find the histograms 
     // which have energies just lower and just higher 
     // than t_initialEnergy.
@@ -165,10 +211,20 @@ double DetectorResponsePredictor::eval_hists_emission( const map< int, TH2D* >* 
             index_upper = ( index_lower + index_upper ) / 2;
     }
 
+    return { index_lower, index_upper };
+}
+
+double DetectorResponsePredictor::eval_hists_emission_values( const map< int, TH2D* >* t_hists_emission   ,
+                                                              const double             t_initialEnergy    ,
+                                                              const double             t_trackLength_value,
+                                                              const double             t_photonAngle_value ) const {
+    Log_debug( "    Evaluating emission histograms.", m_verbosity_debug );
+    pair< int, int > closesHists{ get_closestEmissionHists( t_hists_emission, t_initialEnergy ) };
+
     // Use linear inerpolation between upper and lower histograms
     // to find expected emission value.
-    double initialEnergy_lower{ m_hists_emission_initialEnergies[ index_lower ] };
-    double initialEnergy_upper{ m_hists_emission_initialEnergies[ index_upper ] };
+    int initialEnergy_lower{ m_hists_emission_initialEnergies[ closestHists.first ] };
+    int initialEnergy_upper{ m_hists_emission_initialEnergies[ closestHists.second ] };
     double emission_lower{ t_hists_emission->at( initialEnergy_lower )->Interpolate( t_trackLength, t_initialEnergy ) };
     double emission_upper{ t_hists_emission->at( initialEnergy_upper )->Interpolate( t_trackLength, t_initialEnergy ) };
     double slope{ ( emission_upper - emission_upper ) / ( initialEnergy_lower - initialEnergy_upper ) };
@@ -176,16 +232,35 @@ double DetectorResponsePredictor::eval_hists_emission( const map< int, TH2D* >* 
     Log_debug( "    Interpolated value=" + to_string( value ) + ".", m_verbosity_debug );
     return value;
 }
+
+double DetectorResponsePredictor::eval_hists_emission_indicies( const map< int, TH2D* >* t_hists_emission   ,
+                                                                const double             t_initialEnergy    ,
+                                                                const unsigned int       t_trackLength_index, 
+                                                                const unsigned int       t_photonAngle_index ) const {
+    Log_debug( "    Evaluating emission histograms.", m_verbosity_debug );
+    pair< int, int > closesHists{ get_closestEmissionHists( t_hists_emission, t_initialEnergy ) };
+
+    // Use linear inerpolation between upper and lower histograms
+    // to find expected emission value.
+    int initialEnergy_lower{ m_hists_emission_initialEnergies[ closestHists.first ] };
+    int initialEnergy_upper{ m_hists_emission_initialEnergies[ closestHists.second ] };
+    double emission_lower{ t_hists_emission->at( initialEnergy_lower )->GetBinContent( t_trackLength, t_initialEnergy ) };
+    double emission_upper{ t_hists_emission->at( initialEnergy_upper )->GetBinContent( t_trackLength, t_initialEnergy ) };
+    double slope{ ( emission_upper - emission_upper ) / ( initialEnergy_lower - initialEnergy_upper ) };
+    double value{ slope * ( t_initialEnergy - initialEnergy_lower ) + emission_lower }; // point slope
+    Log_debug( "    Interpolated value=" + to_string( value ) + ".", m_verbosity_debug );
+    return value;
+}
  
-inline double DetectorResponsePredictor::eval_hists_emission_tankWater( const double t_initialEnergy ,
-                                                                        const double t_trackLength   , 
+inline double DetectorResponsePredictor::eval_hists_emission_tankWater( const double t_initialEnergy,
+                                                                        const double t_trackLength  , 
                                                                         const double t_photonAngle   ) const {
     Log_debug( "Evaluating tank water emission histograms.", m_verbosity_debug );
     return eval_hists_emission( m_hists_emission_tankWater, t_initialEnergy, t_trackLength, t_photonAngle );
 }
 
-inline double DetectorResponsePredictor::eval_hists_emission_MRDsci( const double t_initialEnergy ,
-                                                                     const double t_trackLength   , 
+inline double DetectorResponsePredictor::eval_hists_emission_MRDsci( const double t_initialEnergy,
+                                                                     const double t_trackLength  , 
                                                                      const double t_photonAngle   ) const {
     Log_debug( "Evaluating MRD scintilator emission histograms.", m_verbosity_debug );
     return eval_hists_emission( m_hists_emission_MRDsci, t_initialEnergy, t_trackLength, t_photonAngle );
@@ -245,50 +320,152 @@ inline double DetectorResponsePredictor::get_distance( const TVector3& t_point_1
     return ( t_point_2 - t_point_1 ).Mag();
 }
 
-pair< double, double >* DetectorResponsePredictor::get_emissionHistPoints( const TVector3& t_point             , 
-                                                                           const TVector3& t_ptcl_position_init, 
-                                                                           const TVector3& t_ptcl_direction    , 
-                                                                           const double    t_ptcl_distance_max ,
-                                                                           const int       t_nIterations       ) const {
-    pair< double, double >* emissionHistPoints{ new pair< double, double >[ t_nIterations ] }; // < s, theta >
+int DetectorResponsePredictor::get_binIndex( const double t_value, const double t_min  , 
+                                             const double t_max  , const int    t_nBins ) const {
+    if( t_value < t_min || t_value > t_max )
+        return -1;
+    return int( ( t_value - t_min ) / ( ( t_max - t_min ) / t_nBins ) );
+}
 
-    double stepDistance = t_ptcl_distance_max / ( t_nIterations - 1 );
-    for( int i{ 0 }; i < t_nIterations; i++ ) {
-        emissionHistPoints[ i ].first = stepDistance * i;
+int DetectorResponsePredictor::get_binIndex( const double t_value, const TAxis* t_axis ) const {
+    double min  { t_axis->GetXmin () };
+    double max  { t_axis->GetXmax () };
+    double nBins{ t_axis->GetNbins() };
 
-        m_temp_TVector3 = t_ptcl_position_init + stepDistance * t_ptcl_direction.Unit(); // current ptcl position
-        m_temp_TVector3 = t_point - m_temp_TVector3; // vector pointing from ptcl to PMT
-        emissionHistPoints[ i ].second = get_angle( t_ptcl_direction, m_temp_TVector3 );
-    }
-    
-    return emissionHistPoints;
+    if( t_value < min || t_value > max )
+        return -1;
+    return int( ( t_value - min ) / ( ( max - min ) / nBins ) );
+}
+
+double DetectorResponsePredictor::get_binValue( const unsigned int t_index, const double t_min  , 
+                                                const double       t_max  , const int    t_nBins ) const {
+    if( t_index >= t_nBins )
+        return -1;
+    return ( t_max - t_min ) / t_nBins * ( t_index + 0.5 ) + t_min;
+}
+
+double DetectorResponsePredictor::get_binValue( const unsigned int t_index, const TAxis* t_axis ) const {
+    double min  { t_axis->GetXmin () };
+    double max  { t_axis->GetXmax () };
+    double nBins{ t_axis->GetNbins() };
+
+    if( t_index >= nBins )
+        return -1;
+    return ( max - min ) / nBins * ( t_index + 0.5 ) + min;
+}
+
+index_3 DetectorResponsePredictor::get_emissionBinIndex_detectorCenter( const TVector3& t_ptcl_position_init, const TVector3& t_ptcl_direction  , 
+                                                                        const TVector3& t_detector_position , const TH2D    * t_hist_emission   , 
+                                                                        const double    t_delta_phi         , const double    t_ptcl_trackLength ) const {
+    // x-axis (s)
+    m_temp_TAxis = t_hist_emission->GetXaxis();
+    m_temp_index_3.x = get_binIndex( t_ptcl_trackLength, m_temp_TAxis );
+
+    // y-axis (theta)
+    m_temp_TAxis = t_hist_emission->GetYaxis();
+    m_temp_TVector3 = t_ptcl_position_init + t_ptcl_direction.Unit() * t_ptcl_trackLength; // current particle position
+    TVector3 ptclToDet = t_detector_position - m_temp_TVector3; // vector pointing from current particle position to detector position
+    m_temp_index_3.y = get_binIndex( get_angle( ptclToDet, t_particle_direction ), m_temp_TAxis );
+
+    // z-axis (phi)
+    m_temp_index_3.z = get_binIndex( get_angle( ptclToDet, m_vector_y ), 0, 2 * M_PI, t_delta_phi );
+
+    return m_temp_index_3;
+
 }
     
-inline TVector3 DetectorResponsePredictor::copy( const TVector3& t_TVector3 ) const {
-    return TVector3( t_TVector3.X(), t_TVector3.Y(), t_TVector3.Z() );
-}
-
-inline TVector2 DetectorResponsePredictor::copy( const TVector2& t_TVector2 ) const {
-    return TVector2( t_TVector2.X(), t_TVector2.Y() );
-}
-
-double DetectorResponsePredictor_TankPMT::get_expected_height( const Particle* t_ptcl, const int t_nDigit )
+double DetectorResponsePredictor_TankPMT::get_expected_height( const Particle* t_ptcl, const RecoDigit* t_recoDigit, const Detector* t_det )
 {
+    const TVector3 det_position  ( t_det->GetDetectorPosition.X(),
+                                   t_det->GetDetectorPosition.Y(),
+                                   t_det->GetDetectorPosition.Z() );
+    const TVector3 det_direction ( t_det->GetDetectorDirection.X(),
+                                   t_det->GetDetectorDirection.Y(),
+                                   t_det->GetDetectorDirection.Z() );
+    det_direction = det_direction.Unit();
+    const TVector3 ptcl_position ( t_ptcl->GetStartVertex.X(),
+                                   t_ptcl->GetStartVertex.Y(),
+                                   t_ptcl->GetStartVertex.Z() );
+    const TVector3 ptcl_direction( t_ptcl->GetStartDirection.X(),
+                                   t_ptcl->GetStartDirection.Y(),
+                                   t_ptcl->GetStartDirection.Z() );
+    ptcl_direction = ptcl_direction.Unit();
+    const double ptcl_energy_init{ t_ptcl->GetStartEnergy() * 1000 }; // Convert from GeV to MeV
+
+    bool ( *get_isDetector )( const index_3 );
+    double ( *get_acceptance )( const double, const int );
+    double ( *get_transmittance ( const double );
+    if( t_det.GetDetectorElement() == "PMT" ) {
+        m_temp_hists_emission = m_hists_emission_tankWater;
+        get_isDetector = get_isDetector_tankPMT;
+        m_temp_double = m_delta_phi_tankWater;
+        get_transmittance = get_transmittance_tankWater;
+        get_acceptance = get_acceptance_PMT;
+    } else if( t_det.GetDetectorElement() == "LAPPD" ) {
+        m_temp_hists_emission = m_hists_emission_tankWater;
+        get_isDetector = get_isDetector_LAPPD;
+        m_temp_double = m_delta_phi_tankWater;
+        get_transmittance = get_transmittance_tankWater;
+        get_acceptance = get_acceptance_LAPPD;
+    } else if( t_det.GetDetectorElement() == "MRD" ) {
+        m_temp_hists_emission = m_hists_emission_MRDsci;
+        get_isDetector = get_isDetector_MRD;
+        m_temp_double = m_delta_phi_MRDsci;
+        get_transmittance = get_transmittance_MRDsci;
+        get_acceptance = get_acceptance_MRD;
+    } else {
+        m_temp_string = "Detector::DetectorElement is not \"PMT\", \"LAPPD\", or \"MRD\", it is \"";
+        Log_debug( m_temp_string + t_det->GetDetectorElement() + "\". Returning 0.", m_verbosity_debug );
+        return 0;
+    }
+
+    int nBins[ 3 ]{ t_hist_emission->GetNbinsX(), t_hist_emission->GetNbinsY(), 2 * M_PI / m_temp_double };
+    index_3 index_searching;
+    queue < index_3 > indicies_searching{ t_bin_start };
+    bool checked[ t_bins_max.x + 1 ][ t_bins_max.y + 1 ][ t_bins_max.z + 1 ]; // initialize to false
+    checked[ t_bin_start.x ][ t_bin_start.y ][ t_bin_start.z ] = true;
+    double percentPhiBin = 1 / ( index_max.z + 1 );
+    double height;
+    
+    while( !indicies_searching.empty() ) {
+        index_searching = indicies_searching.front();
+        if( t_get_isDetector( index_searching ) ) {
+            height += eval_hists_emission( m_temp_hists_emission, ptcl_energy_init, index_searching.x, index_searching.y ) 
+                    * get_transmittance( get_distance( ptcl_position + ptcl_direction * get_binValue( index_searching.x, m_temp_hists_emission->at( 0 )->GetXaxis() ), det_position ) ) 
+                    * get_acceptance( get_angle( ), t_det->GetDetectorID() );
+            for( int dx{ -1 }; dx <= 1; dx++ )
+                for( int dy{ -1 }; dy <= 1; dy++ )
+                    for( int dz{ -1 }; dz <= 1; dz++ ) {
+                        m_temp_index_3 = { index_searching.x + dx, index_searching.y + dy, index_searching.z + dz };
+                        if( m_temp_index_3.x >= 0 && m_temp_index_3.x <= t_bin_max &&
+                            m_temp_index_3.y >= 0 && m_temp_index_3.y <= t_bin_max &&
+                            m_temp_index_3.z >= 0 && m_temp_index_3.z <= t_bin_max &&
+                            !checked[ m_temp_index_3.x ][ m_temp_index_3.y ][ m_temp_index_3.z ] )
+                            indicies_searching.push( m_temp_index_3 );
+                    }
+        }
+        indicies_searching.pop();
+    }
+
+    delete detectorBins;
+
+
     // Unchanging variables
     const TVector3 PMT_position      ( m_vtxGeo->GetDigitX( t_nDigit )       , 
                                        m_vtxGeo->GetDigitY( t_nDigit )       , 
                                        m_vtxGeo->GetDigitZ( t_nDigit )       );
+    const TVector3 PMT_direction_3   ( 1                                     , 
+                                       1                                     , 
+                                       1                                     );
     const TVector3 ptcl_position_init( t_ptcl->GetStartVertex().X()          ,
                                        t_ptcl->GetStartVertex().Y()          ,
                                        t_ptcl->GetStartVertex().Z()          );
-    const TVector2 ptcl_direction_2  ( t_ptcl->GetStartDirection().GetTheta(),  // theta --> clockwise looking down, 0 pointing downstream along beam
-                                       t_ptcl->GetStartDirection().GetPhi()  ); // phi   --> pitch angle, relative to the xz-plane (beamline) 
+    const TVector2 ptcl_direction_2  ( t_ptcl->GetStartDirection().GetTheta(),  // theta --> pitch angle, relative to the xz-plane (beamline)
+                                       t_ptcl->GetStartDirection().GetPhi()  ); // phi   --> clockwise looking down, 0 pointing downstream along beam
     m_temp_TVector3.SetMagThetaPhi( 1, ptcl_direction_2.X(), ptcl_direction_2.Y() );
-    TVector3 ptcl_direction_3( copy( m_temp_TVector3 ) ); // Use `copy()` as to not copy temp var by reference
-    const double ptcl_energy_init{ t_ptcl->GetStartEnergy() / 1000 }; // Convert from GeV to MeV
     
     // Changing function variables
-    TVector3 ptcl_position_cur( copy( ptcl_position_init ) ); // Use `copy()` to to not copy var by reference
+    TVector3 ptcl_position_cur( ptcl_position_init );
     double ptcl_s{ 0 };
 
     // Find theta_gamma of PMT center

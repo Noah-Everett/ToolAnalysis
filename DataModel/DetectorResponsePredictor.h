@@ -38,7 +38,9 @@
 #define DETECTORRESPONSEPREDICTOR_H
 
 #include <vector>
+#include <queue>
 #include <string>
+#include <cmath>
 
 #include "TH1.h"
 #include "TH2.h"
@@ -197,13 +199,23 @@ protected:
     /**/////////////////////////////////
     /**/
     /**/// Temporary Variables
-    /**/ mutable string   m_temp_string;
-    /**/ mutable TVector3 m_temp_TVector3;
-    /**/ mutable TVector2 m_temp_TVector2;
+    /**/ mutable bool               m_temp_bool          ;
+    /**/ mutable double             m_temp_double        ;
+    /**/ mutable string             m_temp_string        ;
+    /**/ mutable TVector3           m_temp_TVector3      ;
+    /**/ mutable TVector2           m_temp_TVector2      ;
+    /**/ mutable index_3            m_temp_index_3       ;
+    /**/ mutable TH2D             * m_temp_TH2D          ;
+    /**/ mutable TAxis            * m_temp_TAxis         ;
+    /**/ mutable map< int, TH2D* >* m_temp_hists_emission;
     /**/
-    /**/// Copy Functions (as to not copy by reference)
-    /**/ inline TVector3 copy( const TVector3& t_TVector3 ) const;
-    /**/ inline TVector2 copy( const TVector2& t_TVector2 ) const;
+    /**/// Unit Direction Vectors
+    /**/ const TVector3 m_vector_x( 1, 0, 0 );
+    /**/ const TVector3 m_vector_y( 0, 1, 0 );
+    /**/ const TVector3 m_vector_z( 0, 0, 1 );
+    /**/
+    /**/// Index Structure
+    /**/ struct index_3{ unsigned int x, y, z; };
     /**/
     /**/////////////////////////////////
 
@@ -213,9 +225,18 @@ protected:
     /**/// Physical Information ///
     /**////////////////////////////
     /**/
+    /**/// Emission Histograms
     /**/ vector< int        >  m_hists_emission_initialEnergies           ;
     /**/ map   < int, TH2D* >* m_hists_emission_tankWater      { nullptr };
     /**/ map   < int, TH2D* >* m_hists_emission_MRDsci         { nullptr };
+    /**/ double                m_binWidth_s_tankWater                     ;
+    /**/ double                m_binWidth_s_MRDsci                        ;
+    /**/ double                m_binWidth_theta_tankWater                 ;
+    /**/ double                m_binWidth_theta_MRDsci                    ;
+    /**/ double                m_binWidth_phi_tankWater                   ;
+    /**/ double                m_binWidth_phi_MRDsci                      ;
+    /**/
+    /**/// Other Histograms
     /**/ TH1D                * m_hist_transmission_tankWater   { nullptr };
     /**/ TH1D                * m_hist_transmission_MRDsci      { nullptr };
     /**/ TH1D                * m_hist_dEdX_tankWater           { nullptr };
@@ -235,18 +256,24 @@ protected:
     /**/ bool load_hists_emission( const map   < int, TH2D* >* t_hists_emission,
     /**/                           const vector< string     >& t_hists_paths   , 
     /**/                           const vector< int        >& t_hists_IDs     ,
-    /**/                           const vector< string     >& t_hists_names   );
+    /**/                           const vector< string     >& t_hists_names    );
     /**/ bool load_hist          ( const TH1D                * t_hist          ,
     /**/                           const string              & t_hist_path     ,
-    /**/                           const string              & t_hist_name     );
+    /**/                           const string              & t_hist_name      );
     /**/
     /**/// Evaluate Histograms
-    /**/ double eval_hists_emission( const map< int, TH2D* >* t_hists_emission,
-    /**/                             const double             t_initialEnergy ,
-    /**/                             const double             t_trackLength   , 
-    /**/                             const double             t_photonAngle   ) const;
-    /**/ double eval_hist          ( const TH1D             * t_hist          ,
-    /**/                             const double             t_x             ) const;
+    /**/ pair< int, int > get_closesEmissionHists     ( const map< int, TH2D* >* t_hists_emission   ,
+    /**/                                                const double             t_initialEnergy     ) const;
+    /**/ double           eval_hists_emission_values  ( const map< int, TH2D* >* t_hists_emission   ,
+    /**/                                                const double             t_initialEnergy    ,
+    /**/                                                const double             t_trackLength_value,
+    /**/                                                const double             t_photonAngle_value ) const;
+    /**/ double           eval_hists_emission_indicies( const map< int, TH2D* >* t_hists_emission   ,
+    /**/                                                const double             t_initialEnergy    ,
+    /**/                                                const int                t_trackLength_index,
+    /**/                                                const int                t_photonAngle_index ) const;
+    /**/ double           eval_hist                   ( const TH1D             * t_hist             ,
+    /**/                                                const double             t_x                 ) const;
     /**/
     /**////////////////////////////
     
@@ -256,40 +283,28 @@ protected:
     /**/// Calculation Functions ///
     /**/////////////////////////////
     /**/
-    /**/ inline double                  get_angle             ( const TVector3& t_vector_1      , const TVector3& t_vector_2         ) const;
-    /**/ inline double                  get_distance          ( const TVector3& t_point_1       , const TVector3& t_point_2          ) const;
-    /**/        pair< double, double >* get_emissionHistPoints( const TVector3& t_point         , const TVector3& t_ptcl_init        , 
-    /**/                                                        const TVector3& t_ptcl_direction, const double    t_ptcl_distance_max,
-    /**/                                                        const int       t_nIterations                                        ) const;
+    /**/ inline double            get_angle               ( const TVector3& t_vector_1          , const TVector3& t_vector_2           ) const;
+    /**/ inline double            get_distance            ( const TVector3& t_point_1           , const TVector3& t_point_2            ) const;
+    /**/        double            get_interpolatedBin     ( const map< int, TH2D* >* t_hists_emission, const double t_energy           ) const;
+    /**/ int                      get_binIndex            ( const double t_value, const double t_min, const double t_max, const int t_nBins ) const;
+    /**/ double                   get_binValue            ( const unsigned int t_index, const double t_min, const double t_max, const int t_nBins ) const;
+    /**/ index_3                  get_detectorBin_center  ( const TVector3& t_ptcl_position    , const TVector3& t_ptcl_direction, 
+    /**/                                                    const TVector3& t_detector_position, const TVector3& t_detector_direction,
+    /**/                                                    const TH2D    * t_hist_emission                                           ) const;
+    /**/ const vector< index_3 >* get_detectorBins_total  ( const TH2D    * t_hist_emission     , bool ( *t_get_isDetector )( const index_3 ),
+    /**/                                                    const index_3   t_index_start       , const index_3   t_index_max          ) const;
     /**/
     /**/////////////////////////////
 };
-
-
-
-class DetectorResponsePredictor_TankPMT : public DetectorResponsePredictor
-{
-public:
-    double get_expected_height( const Particle* t_particle, const int t_nDigit );
-    double get_expected_time  ( const Particle* t_particle, const int t_nDigit );
-};
-
-
-
-class DetectorResponsePredictor_MRDPMT : public DetectorResponsePredictor
-{
-public:
-    // double get_expected_height( Particle* t_particle, int t_nDigit );
-    // double get_expected_time  ( Particle* t_particle, int t_nDigit );
-};
-
-
-
-class DetectorResponsePredictor_LAPPD : public DetectorResponsePredictor
-{
-public:
-    // double get_expected_height( Particle* t_particle, int t_nDigit );
-    // double get_expected_time  ( Particle* t_particle, int t_nDigit );
-};
+    
+    /**/ const  bool              get_isDetector_tankPMT( const TVectot3& t_ptcl_position_init, const TVector3& t_ptcl_direction,
+    /**/                                                  const TVector3& t_detector_position , const TVector3& t_detector_direction,
+    /**/                                                  const TH2D    * t_hist_emission     , const index_3   t_binIndex           ) const;
+    /**/ const  bool              get_isDetector_LAPPD  ( const TVectot3& t_ptcl_position_init, const TVector3& t_ptcl_direction,
+    /**/                                                  const TVector3& t_detector_position , const TVector3& t_detector_direction,
+    /**/                                                  const TH2D    * t_hist_emission     , const index_3   t_binIndex           ) const;
+    /**/ const  bool              get_isDetector_MRD    ( const TVectot3& t_ptcl_position_init, const TVector3& t_ptcl_direction,
+    /**/                                                  const TVector3& t_detector_position , const TVector3& t_detector_direction,
+    /**/                                                  const TH2D    * t_hist_emission     , const index_3   t_binIndex           ) const;
 
 #endif
