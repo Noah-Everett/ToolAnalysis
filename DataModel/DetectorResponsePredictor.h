@@ -21,10 +21,6 @@
 //*//   m_ = member variable                                                                  //*//
 //*//   mainVariable_subCategory (use '_' like LaTeX)                                         //*//
 //*//                                                                                         //*//
-//*// Abreviations:                                                                           //*//
-//*//   ptcl = particle                                                                       //*//
-//*//   vtx  = vertex                                                                         //*//
-//*//                                                                                         //*//
 //*// Units:                                                                                  //*//
 //*//   Energy   [MeV]                                                                        //*//
 //*//   Distance [m]                                                                          //*//
@@ -182,32 +178,22 @@ protected:
 
 
 
-    /**//////////////////
-    /**/// DataModels ///
-    /**//////////////////
-    /**/
-    /**/ VertexGeometry           * m_vtxGeo         { VertexGeometry::Instance() };
-    /**/ THistReader< int , TH2D >* m_histReader_TH2D{ nullptr };
-    /**/ THistReader< bool, TH1D >* m_histReader_TH1D{ nullptr };
-    /**/
-    /**//////////////////
-
-
-
     /**/////////////////////////////////
     /**/// Miscilanious Helpful Bits ///
     /**/////////////////////////////////
     /**/
     /**/// Temporary Variables
-    /**/ mutable bool               m_temp_bool          ;
-    /**/ mutable double             m_temp_double        ;
-    /**/ mutable string             m_temp_string        ;
-    /**/ mutable TVector3           m_temp_TVector3      ;
-    /**/ mutable TVector2           m_temp_TVector2      ;
-    /**/ mutable index_3            m_temp_index_3       ;
-    /**/ mutable TH2D             * m_temp_TH2D          ;
-    /**/ mutable TAxis            * m_temp_TAxis         ;
-    /**/ mutable map< int, TH2D* >* m_temp_hists_emission;
+    /**/ mutable bool                       m_temp_bool          ;
+    /**/ mutable double                     m_temp_double        ;
+    /**/ mutable string                     m_temp_string        ;
+    /**/ mutable TVector3                   m_temp_TVector3      ;
+    /**/ mutable TVector2                   m_temp_TVector2      ;
+    /**/ mutable index_3                    m_temp_index_3       ;
+    /**/ mutable TH2D                     * m_temp_TH2D          ;
+    /**/ mutable TAxis                    * m_temp_TAxis         ;
+    /**/ mutable map        < int, TH2D* >* m_temp_hists_emission;
+    /**/ mutable THistReader< int , TH2D >* m_histReader_TH2D    ;
+    /**/ mutable THistReader< bool, TH1D >* m_histReader_TH1D    ;
     /**/
     /**/// Unit Direction Vectors
     /**/ const TVector3 m_vector_x( 1, 0, 0 );
@@ -216,6 +202,7 @@ protected:
     /**/
     /**/// Index Structure
     /**/ struct index_3{ unsigned int x, y, z; };
+    /**/ struct index_2{ unsigned int x, y   ; };
     /**/
     /**/////////////////////////////////
 
@@ -226,23 +213,23 @@ protected:
     /**////////////////////////////
     /**/
     /**/// Emission Histograms
-    /**/ vector< int        >  m_hists_emission_initialEnergies           ;
-    /**/ map   < int, TH2D* >* m_hists_emission_tankWater      { nullptr };
-    /**/ map   < int, TH2D* >* m_hists_emission_MRDsci         { nullptr };
-    /**/ double                m_binWidth_s_tankWater                     ;
-    /**/ double                m_binWidth_s_MRDsci                        ;
-    /**/ double                m_binWidth_theta_tankWater                 ;
-    /**/ double                m_binWidth_theta_MRDsci                    ;
-    /**/ double                m_binWidth_phi_tankWater                   ;
-    /**/ double                m_binWidth_phi_MRDsci                      ;
+    /**/ vector< int        >  m_hists_emission_initialEnergies;
+    /**/ map   < int, TH2D* >* m_hists_emission_tankWater;
+    /**/ map   < int, TH2D* >* m_hists_emission_MRDsci;
+    /**/ double                m_binWidth_s_tankWater;
+    /**/ double                m_binWidth_s_MRDsci;
+    /**/ double                m_binWidth_theta_tankWater;
+    /**/ double                m_binWidth_theta_MRDsci;
+    /**/ double                m_binWidth_phi_tankWater;
+    /**/ double                m_binWidth_phi_MRDsci;
     /**/
     /**/// Other Histograms
-    /**/ TH1D                * m_hist_transmission_tankWater   { nullptr };
-    /**/ TH1D                * m_hist_transmission_MRDsci      { nullptr };
-    /**/ TH1D                * m_hist_dEdX_tankWater           { nullptr };
-    /**/ TH1D                * m_hist_dEdX_tankSteel           { nullptr };
-    /**/ TH1D                * m_hist_dEdX_MRDsci              { nullptr };
-    /**/ TH1D                * m_hist_dEdX_MRDiron             { nullptr };
+    /**/ TH1D* m_hist_transmission_tankWater;
+    /**/ TH1D* m_hist_transmission_MRDsci;
+    /**/ TH1D* m_hist_dEdX_tankWater;
+    /**/ TH1D* m_hist_dEdX_tankSteel;
+    /**/ TH1D* m_hist_dEdX_MRDsci;
+    /**/ TH1D* m_hist_dEdX_MRDiron;
     /**/
     /**////////////////////////////
 
@@ -279,32 +266,56 @@ protected:
     
     
     
+    /**/////////////////////////
+    /**/// Vector Operations ///
+    /**/////////////////////////
+    /**/
+    /**/ inline double get_angle   ( const TVector3& t_vector_1, const TVector3& t_vector_2 ) const;
+    /**/ inline double get_distance( const TVector3& t_point_1 , const TVector3& t_point_2  ) const;
+    /**/
+    /**/ inline void normalize( TVector3& t_vector ) const;
+    /**/
+    /**/////////////////////////
+    
+    
+    
+    /**////////////////////////////////////
+    /**/// Emission Hists Bin Functions ///
+    /**////////////////////////////////////
+    /**/
+    /**/ int get_bin_index( const double t_value, const double t_min  , 
+    /**/                    const double t_max  , const int    t_nBins ) const;
+    /**/ int get_bin_index( const double t_value, const TAxis* t_axis  ) const;
+    /**/
+    /**/ index_3 get_bin_index_detector_center             ( const TVector3& t_particle_position, const TVector3& t_particle_direction, 
+    /**/                                                     const TVector3& t_detector_position, const TVector3& t_detector_direction,
+    /**/                                                     const TH2D    * t_hist_emission                                           ) const;
+    /**/ vector< index_3 >* get_bin_indicies_detector_total( const TH2D    * t_hist_emission    , bool ( *t_get_isDetector )( const index_3 ),
+    /**/                                                     const index_3   t_index_start      , const index_3 t_index_max            ) const;
+    /**/
+    /**/ double get_bin_value( const unsigned int t_index, const double  t_min  , 
+    /**/                       const double       t_max  , const int     t_nBins ) const;
+    /**/ double get_bin_value( const unsigned int t_index, const TAxis*  t_axis  ) const;
+    /**/
+    /**////////////////////////////////////
+
+
+    
     /**/////////////////////////////
-    /**/// Calculation Functions ///
+    /**/// Is Detector Functions ///
     /**/////////////////////////////
     /**/
-    /**/ inline double            get_angle               ( const TVector3& t_vector_1          , const TVector3& t_vector_2           ) const;
-    /**/ inline double            get_distance            ( const TVector3& t_point_1           , const TVector3& t_point_2            ) const;
-    /**/        double            get_interpolatedBin     ( const map< int, TH2D* >* t_hists_emission, const double t_energy           ) const;
-    /**/ int                      get_binIndex            ( const double t_value, const double t_min, const double t_max, const int t_nBins ) const;
-    /**/ double                   get_binValue            ( const unsigned int t_index, const double t_min, const double t_max, const int t_nBins ) const;
-    /**/ index_3                  get_detectorBin_center  ( const TVector3& t_ptcl_position    , const TVector3& t_ptcl_direction, 
-    /**/                                                    const TVector3& t_detector_position, const TVector3& t_detector_direction,
-    /**/                                                    const TH2D    * t_hist_emission                                           ) const;
-    /**/ const vector< index_3 >* get_detectorBins_total  ( const TH2D    * t_hist_emission     , bool ( *t_get_isDetector )( const index_3 ),
-    /**/                                                    const index_3   t_index_start       , const index_3   t_index_max          ) const;
+    /**/ const bool get_isDetector_tankPMT( const TVectot3& t_particle_position_init, const TVector3& t_particle_direction,
+    /**/                                    const TVector3& t_detector_position     , const TVector3& t_detector_direction,
+    /**/                                    const TH2D    * t_hist_emission         , const index_3   t_binIndex           ) const;
+    /**/ const bool get_isDetector_LAPPD  ( const TVectot3& t_particle_position_init, const TVector3& t_particle_direction,
+    /**/                                    const TVector3& t_detector_position     , const TVector3& t_detector_direction,
+    /**/                                    const TH2D    * t_hist_emission         , const index_3   t_binIndex           ) const;
+    /**/ const bool get_isDetector_MRD    ( const TVectot3& t_particle_position_init, const TVector3& t_particle_direction,
+    /**/                                    const TVector3& t_detector_position     , const TVector3& t_detector_direction,
+    /**/                                    const TH2D    * t_hist_emission         , const index_3   t_binIndex           ) const;
     /**/
     /**/////////////////////////////
 };
-    
-    /**/ const  bool              get_isDetector_tankPMT( const TVectot3& t_ptcl_position_init, const TVector3& t_ptcl_direction,
-    /**/                                                  const TVector3& t_detector_position , const TVector3& t_detector_direction,
-    /**/                                                  const TH2D    * t_hist_emission     , const index_3   t_binIndex           ) const;
-    /**/ const  bool              get_isDetector_LAPPD  ( const TVectot3& t_ptcl_position_init, const TVector3& t_ptcl_direction,
-    /**/                                                  const TVector3& t_detector_position , const TVector3& t_detector_direction,
-    /**/                                                  const TH2D    * t_hist_emission     , const index_3   t_binIndex           ) const;
-    /**/ const  bool              get_isDetector_MRD    ( const TVectot3& t_ptcl_position_init, const TVector3& t_ptcl_direction,
-    /**/                                                  const TVector3& t_detector_position , const TVector3& t_detector_direction,
-    /**/                                                  const TH2D    * t_hist_emission     , const index_3   t_binIndex           ) const;
 
 #endif

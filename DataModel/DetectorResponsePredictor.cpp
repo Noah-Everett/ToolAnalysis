@@ -21,10 +21,6 @@
 //*//   m_ = member variable                                                                  //*//
 //*//   mainVariable_subCategory (use '_' like LaTeX)                                         //*//
 //*//                                                                                         //*//
-//*// Abreviations:                                                                           //*//
-//*//   ptcl = particle                                                                       //*//
-//*//   vtx  = vertex                                                                         //*//
-//*//                                                                                         //*//
 //*// Units:                                                                                  //*//
 //*//   Energy   [MeV]                                                                        //*//
 //*//   Distance [m]                                                                          //*//
@@ -126,9 +122,9 @@ inline bool DetectorResponsePredictor::load_hists_emission_tankWater( const vect
                                                                       const vector< int    >& t_hists_IDs  ,
                                                                       const vector< string >& t_hists_names ) {
     Log_debug( "Loading tank water emission histograms.", m_verbosity_debug );
-    return load_hists_emission( m_hists_emission_tankWater   , t_hists_paths             , 
-                                t_hists_IDs                  , t_hists_names             , 
-                                m_binWidth_s_tankWater       , m_binWidth_theta_tankWater, 
+    return load_hists_emission( m_hists_emission_tankWater, t_hists_paths             , 
+                                t_hists_IDs               , t_hists_names             , 
+                                m_binWidth_s_tankWater    , m_binWidth_theta_tankWater, 
                                 m_binWidth_phi_tankWater                                  );
 }
 
@@ -316,8 +312,12 @@ inline double DetectorResponsePredictor::get_angle( const TVector3& t_vector_1, 
     return acos( t_vector_1.Dot( t_vector_2 ) / ( t_vector_1.Mag() * t_vector_1.Mag() ) ); // =[0,pi]
 }
 
-inline double DetectorResponsePredictor::get_distance( const TVector3& t_point_1 , const TVector3& t_point_2  ) const {
+inline double DetectorResponsePredictor::get_distance( const TVector3& t_point_1, const TVector3& t_point_2 ) const {
     return ( t_point_2 - t_point_1 ).Mag();
+}
+
+inline void DetectorResponsePredictor::normalize( TVector3& t_vector ) const {
+    t_vector = t_vector.Unit();
 }
 
 int DetectorResponsePredictor::get_binIndex( const double t_value, const double t_min  , 
@@ -354,60 +354,60 @@ double DetectorResponsePredictor::get_binValue( const unsigned int t_index, cons
     return ( max - min ) / nBins * ( t_index + 0.5 ) + min;
 }
 
-index_3 DetectorResponsePredictor::get_emissionBinIndex_detectorCenter( const TVector3& t_ptcl_position_init, const TVector3& t_ptcl_direction  , 
-                                                                        const TVector3& t_detector_position , const TH2D    * t_hist_emission   , 
-                                                                        const double    t_delta_phi         , const double    t_ptcl_trackLength ) const {
+index_3 DetectorResponsePredictor::get_emissionBinIndex_detectorectorCenter( const TVector3& t_particle_position_init, const TVector3& t_particle_direction  , 
+                                                                             const TVector3& t_detector_position     , const TH2D    * t_hist_emission       , 
+                                                                             const double    t_delta_phi             , const double    t_particle_trackLength ) const {
     // x-axis (s)
     m_temp_TAxis = t_hist_emission->GetXaxis();
-    m_temp_index_3.x = get_binIndex( t_ptcl_trackLength, m_temp_TAxis );
+    m_temp_index_3.x = get_binIndex( t_particle_trackLength, m_temp_TAxis );
 
     // y-axis (theta)
     m_temp_TAxis = t_hist_emission->GetYaxis();
-    m_temp_TVector3 = t_ptcl_position_init + t_ptcl_direction.Unit() * t_ptcl_trackLength; // current particle position
-    TVector3 ptclToDet = t_detector_position - m_temp_TVector3; // vector pointing from current particle position to detector position
-    m_temp_index_3.y = get_binIndex( get_angle( ptclToDet, t_particle_direction ), m_temp_TAxis );
+    m_temp_TVector3 = t_particle_position_init + t_particle_direction.Unit() * t_particle_trackLength; // current particle position
+    TVector3 particleToDetector = t_detector_position - m_temp_TVector3; // vector pointing from current particle position to detector position
+    m_temp_index_3.y = get_binIndex( get_angle( particleToDetector, t_particle_direction ), m_temp_TAxis );
 
     // z-axis (phi)
-    m_temp_index_3.z = get_binIndex( get_angle( ptclToDet, m_vector_y ), 0, 2 * M_PI, t_delta_phi );
+    m_temp_index_3.z = get_binIndex( get_angle( particleToDet, m_vector_y ), 0, 2 * M_PI, t_delta_phi );
 
     return m_temp_index_3;
 
 }
     
-double DetectorResponsePredictor_TankPMT::get_expected_height( const Particle* t_ptcl, const RecoDigit* t_recoDigit, const Detector* t_det )
+double DetectorResponsePredictor_TankPMT::get_expected_height( const Particle* t_particle, const RecoDigit* t_recoDigit, const Detector* t_detector )
 {
-    const TVector3 det_position  ( t_det->GetDetectorPosition.X(),
-                                   t_det->GetDetectorPosition.Y(),
-                                   t_det->GetDetectorPosition.Z() );
-    const TVector3 det_direction ( t_det->GetDetectorDirection.X(),
-                                   t_det->GetDetectorDirection.Y(),
-                                   t_det->GetDetectorDirection.Z() );
-    det_direction = det_direction.Unit();
-    const TVector3 ptcl_position ( t_ptcl->GetStartVertex.X(),
-                                   t_ptcl->GetStartVertex.Y(),
-                                   t_ptcl->GetStartVertex.Z() );
-    const TVector3 ptcl_direction( t_ptcl->GetStartDirection.X(),
-                                   t_ptcl->GetStartDirection.Y(),
-                                   t_ptcl->GetStartDirection.Z() );
-    ptcl_direction = ptcl_direction.Unit();
-    const double ptcl_energy_init{ t_ptcl->GetStartEnergy() * 1000 }; // Convert from GeV to MeV
+    const TVector3 detector_position ( t_detector->GetDetectorPosition.X(),
+                                       t_detector->GetDetectorPosition.Y(),
+                                       t_detector->GetDetectorPosition.Z() );
+    const TVector3 detector_direction( t_detector->GetDetectorDirection.X(),
+                                       t_detector->GetDetectorDirection.Y(),
+                                       t_detector->GetDetectorDirection.Z() );
+    const TVector3 particle_position ( t_particle->GetStartVertex.X(),
+                                       t_particle->GetStartVertex.Y(),
+                                       t_particle->GetStartVertex.Z() );
+    const TVector3 particle_direction( t_particle->GetStartDirection.X(),
+                                       t_particle->GetStartDirection.Y(),
+                                       t_particle->GetStartDirection.Z() );
+    normalize( detector_direction );
+    normalize( particle_direction );
+    const double particle_energy_init{ t_particle->GetStartEnergy() * 1000 }; // Convert from GeV to MeV
 
     bool ( *get_isDetector )( const index_3 );
     double ( *get_acceptance )( const double, const int );
     double ( *get_transmittance ( const double );
-    if( t_det.GetDetectorElement() == "PMT" ) {
+    if( t_detector.GetDetectorElement() == "PMT" ) {
         m_temp_hists_emission = m_hists_emission_tankWater;
         get_isDetector = get_isDetector_tankPMT;
         m_temp_double = m_delta_phi_tankWater;
         get_transmittance = get_transmittance_tankWater;
         get_acceptance = get_acceptance_PMT;
-    } else if( t_det.GetDetectorElement() == "LAPPD" ) {
+    } else if( t_detector.GetDetectorElement() == "LAPPD" ) {
         m_temp_hists_emission = m_hists_emission_tankWater;
         get_isDetector = get_isDetector_LAPPD;
         m_temp_double = m_delta_phi_tankWater;
         get_transmittance = get_transmittance_tankWater;
         get_acceptance = get_acceptance_LAPPD;
-    } else if( t_det.GetDetectorElement() == "MRD" ) {
+    } else if( t_detector.GetDetectorElement() == "MRD" ) {
         m_temp_hists_emission = m_hists_emission_MRDsci;
         get_isDetector = get_isDetector_MRD;
         m_temp_double = m_delta_phi_MRDsci;
@@ -415,7 +415,7 @@ double DetectorResponsePredictor_TankPMT::get_expected_height( const Particle* t
         get_acceptance = get_acceptance_MRD;
     } else {
         m_temp_string = "Detector::DetectorElement is not \"PMT\", \"LAPPD\", or \"MRD\", it is \"";
-        Log_debug( m_temp_string + t_det->GetDetectorElement() + "\". Returning 0.", m_verbosity_debug );
+        Log_debug( m_temp_string + t_detector->GetDetectorElement() + "\". Returning 0.", m_verbosity_debug );
         return 0;
     }
 
@@ -426,13 +426,16 @@ double DetectorResponsePredictor_TankPMT::get_expected_height( const Particle* t
     checked[ t_bin_start.x ][ t_bin_start.y ][ t_bin_start.z ] = true;
     double percentPhiBin = 1 / ( index_max.z + 1 );
     double height;
+    m_temp_TAxis = m_temp_hists_emission->at( 0 )->GetXaxis();
     
     while( !indicies_searching.empty() ) {
         index_searching = indicies_searching.front();
         if( t_get_isDetector( index_searching ) ) {
-            height += eval_hists_emission( m_temp_hists_emission, ptcl_energy_init, index_searching.x, index_searching.y ) 
-                    * get_transmittance( get_distance( ptcl_position + ptcl_direction * get_binValue( index_searching.x, m_temp_hists_emission->at( 0 )->GetXaxis() ), det_position ) ) 
-                    * get_acceptance( get_angle( ), t_det->GetDetectorID() );
+            m_temp_TVector3 = detector_position - particle_position + particle_direction * get_binValue( index_searching.x, m_temp_TAxis );
+            height += eval_hists_emission( m_temp_hists_emission, particle_energy_init, index_searching.x, index_searching.y ) 
+                    * get_transmittance( m_temp_TVecto3.Mag(), detector_position )
+                    * get_acceptance( get_angle( m_temp_TVector3, detector_direction ), t_detector->GetDetectorID() );
+
             for( int dx{ -1 }; dx <= 1; dx++ )
                 for( int dy{ -1 }; dy <= 1; dy++ )
                     for( int dz{ -1 }; dz <= 1; dz++ ) {
@@ -447,43 +450,7 @@ double DetectorResponsePredictor_TankPMT::get_expected_height( const Particle* t
         indicies_searching.pop();
     }
 
-    delete detectorBins;
-
-
-    // Unchanging variables
-    const TVector3 PMT_position      ( m_vtxGeo->GetDigitX( t_nDigit )       , 
-                                       m_vtxGeo->GetDigitY( t_nDigit )       , 
-                                       m_vtxGeo->GetDigitZ( t_nDigit )       );
-    const TVector3 PMT_direction_3   ( 1                                     , 
-                                       1                                     , 
-                                       1                                     );
-    const TVector3 ptcl_position_init( t_ptcl->GetStartVertex().X()          ,
-                                       t_ptcl->GetStartVertex().Y()          ,
-                                       t_ptcl->GetStartVertex().Z()          );
-    const TVector2 ptcl_direction_2  ( t_ptcl->GetStartDirection().GetTheta(),  // theta --> pitch angle, relative to the xz-plane (beamline)
-                                       t_ptcl->GetStartDirection().GetPhi()  ); // phi   --> clockwise looking down, 0 pointing downstream along beam
-    m_temp_TVector3.SetMagThetaPhi( 1, ptcl_direction_2.X(), ptcl_direction_2.Y() );
-    
-    // Changing function variables
-    TVector3 ptcl_position_cur( ptcl_position_init );
-    double ptcl_s{ 0 };
-
-    // Find theta_gamma of PMT center
-    TVector3 PMTpoints[ m_nPoints ];
-    for( int i{ 0 }; i < m_nPoints; i++ )
-        PMTpoints[ i ] = 
-
-
-    double distance_max[ m_nPoints ];////////////// INITALIZE ////////////////
-    pair< double, double >* emissionHistPoints[ nIterations ];
-
-    for( int i{ 0 }; i < nPoints; i++ )
-        emissionHistPoints[ i ] = get_emissionHistPoints( PMTpoints[ i ], ptcl_position_init, ptcl_direction_3, distance_max[ i ], nIterations );
-
-    for( int i{ 0 }; i < nPoints; i++ )
-        delete [] emissionHistPoints[ i ];
-
-    return 0;
+    return height;
 }
     
 double DetectorResponsePredictor_TankPMT::get_expected_time( const Particle* t_particle, const int t_nDigit )
