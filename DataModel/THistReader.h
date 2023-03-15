@@ -1,11 +1,22 @@
-// THistReader.h
-///////////////////////////////////////////
-// Generalized ROOT histogram reading 
-// method.
-//
-// Notation: t_ = function variable
-//           m_ = member variable
-//           naming: mainVariable_subCategory (use '_' like LaTeX)
+//*/////////////////////////////////////////////////////////////////////////////////////////////*//
+//*//                                       THistReader.h                                     //*//
+//*/////////////////////////////////////////////////////////////////////////////////////////////*//
+//*//                                                                                         //*//
+//*// Author:                                                                                 //*//
+//*//   Noah Everett (noah.everett@mines.sdsmt.edu)                                           //*//
+//*//   Created ¯\_(ツ)_/¯                                                                    //*//
+//*//                                                                                         //*//
+//*// About:                                                                                  //*//
+//*//   This file contains a general class for reading ROOT histograms.                       //*//
+//*//                                                                                         //*//
+//*// Notation:                                                                               //*//
+//*//   t_ = function argument                                                                //*//
+//*//   m_ = member variable                                                                  //*//
+//*//   mainVariable_subCategory (use '_' like LaTeX)                                         //*//
+//*//                                                                                         //*//
+//*/////////////////////////////////////////////////////////////////////////////////////////////*//
+//*//                                                                                         //*//
+//*/////////////////////////////////////////////////////////////////////////////////////////////*//
 
 #ifndef THISTREADER_H
 #define THISTREADER_H
@@ -27,51 +38,53 @@ template< typename type_ID, typename type_hist >
 class THistReader
 {
 public:
-  /**////////////////////////
-  /**/// (Con/De)structor ///
-  /**////////////////////////
-  /**/
-  /**/ THistReader( const vector< string  >& t_hists_paths, 
-  /**/              const vector< type_ID >& t_hists_IDs  ,
-  /**/              const vector< string  >& t_hists_names );
-  /**/ THistReader( THistReader* t_THistReader ): m_hists{ t_THistReader->get_histsMap_cp() } {}
-  /**/~THistReader() { delete m_hists; }
-  /**/
-  /**////////////////////////
+    /**////////////////////////
+    /**/// (Con/De)structor ///
+    /**////////////////////////
+    /**/
+    /**/ THistReader( const vector< string  >& t_hists_paths, 
+    /**/              const vector< type_ID >& t_hists_IDs  ,
+    /**/              const vector< string  >& t_hists_names );
+    /**/ THistReader( const THistReader* t_THistReader ): m_hists{ t_THistReader->get_histsMap_cp() } {}
+    /**/~THistReader() { delete m_hists; }
+    /**/
+    /**////////////////////////
 
 
 
-  /**////////////////////////
-  /**/// Access Functions ///
-  /**////////////////////////
-  /**/
-  /**/ type_hist                 * get_hist       ( const type_ID& t_ID ) const { return m_hists->at( t_ID ); }
-  /**/ map< type_ID, type_hist* >* get_histsMap   (                     )       { return m_hists;             }
-  /**/ map< type_ID, type_hist* >* get_histsMap_cp(                     ) const;
-  /**/
-  /**////////////////////////
+    /**////////////////////////
+    /**/// Access Functions ///
+    /**////////////////////////
+    /**/
+    /**/ type_hist                 * get_hist       ( const type_ID& t_ID ) const { return m_hists->at( t_ID ); }
+    /**/ map< type_ID, type_hist* >* get_histsMap   (                     )       { return m_hists;             }
+    /**/ map< type_ID, type_hist* >* get_histsMap_cp(                     ) const;
+    /**/
+    /**////////////////////////
 
 
 
-  /**/////////////////////////
-  /**/// Setting Functions ///
-  /**/////////////////////////
-  /**/
-  /**/ void operator=( const THistReader& t_THistReader ) { m_hists = t_THistReader.get_histsMap(); }
-  /**/
-  /**/////////////////////////
+    /**/////////////////////////
+    /**/// Setting Functions ///
+    /**/////////////////////////
+    /**/
+    /**/ void operator=( const THistReader* t_THistReader );
+    /**/
+    /**/////////////////////////
 
 
 
 private:
-  /**////////////////////////
-  /**/// Member Variables ///
-  /**////////////////////////
-  /**/
-  /**/ map< type_ID, type_hist* >* m_hists{ new map< type_ID, type_hist* > };
-  /**/
-  /**////////////////////////
+    /**////////////////////////
+    /**/// Member Variables ///
+    /**////////////////////////
+    /**/
+    /**/ map< type_ID, type_hist* >* m_hists{ new map< type_ID, type_hist* > };
+    /**/
+    /**////////////////////////
 };
+
+
   
 /**////////////////////////////
 /**/// Function Definitions ///
@@ -81,7 +94,7 @@ private:
 /**/ THistReader< type_ID, type_hist >::THistReader( const vector< string > & t_hists_paths,
 /**/                                                 const vector< type_ID >& t_hists_IDs  ,
 /**/                                                 const vector< string  >& t_hists_names ) {
-/**/     if( t_hists_paths.size() != t_hists_IDs.size() != t_hists_names.size() ) {
+/**/     if( t_hists_paths.size() != t_hists_IDs.size() || t_hists_paths.size() != t_hists_names.size() ) {
 /**/         cout << "Error: hists_paths, hists_IDs, and hists_names "
 /**/              << "vectors should all be the same length" << endl;
 /**/         return;
@@ -101,8 +114,15 @@ private:
 /**/ template< typename type_ID, typename type_hist >
 /**/ map< type_ID, type_hist* >* THistReader< type_ID, type_hist >::get_histsMap_cp() const {
 /**/     map< type_ID, type_hist* >* temp{ new map< type_ID, type_hist* > };
-/**/     temp = m_hists;
+/**/     *temp = *m_hists;
 /**/     return temp;
+/**/ }
+/**/
+/**/
+/**/ template< typename type_ID, typename type_hist >
+/**/ void THistReader< type_ID, type_hist >::operator=( const THistReader* t_THistReader ) {
+/**/     if( m_hists ) delete m_hists;
+/**/     m_hists = new map< type_ID, type_hist* >{ *( t_THistReader->m_hists ) };
 /**/ }
 /**/
 /**////////////////////////////
