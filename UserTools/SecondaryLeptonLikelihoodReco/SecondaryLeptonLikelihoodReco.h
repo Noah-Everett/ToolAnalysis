@@ -38,28 +38,79 @@ public:
     double find_eventParams( Particle t_particle );
 
 private:
-    // User variables
-    int m_verbosity{ 1 };
-    enum m_verbosity_enum { m_verbosity_error   = 0,
-                            m_verbosity_warning = 1,
-                            m_verbosity_message = 2,
-                            m_verbosity_debug   = 3 };
+    /**//////////////////////
+    /**/// User Variables ///
+    /**//////////////////////
+    /**/
+    /**/enum m_verbosity_enum { m_verbosity_error   = 0,
+    /**/                        m_verbosity_warning = 1,
+    /**/                        m_verbosity_message = 2,
+    /**/                        m_verbosity_debug   = 3 };
+    /**/
+    /**//////////////////////
 
-  string m_hists_emission_mu_water_dir;
-  string m_hists_emission_e_water_dir;
-  string m_hists_emission_mu_sci_dir;
-  string m_hists_emission_e_sci_dir;
 
-  VertexGeometry     * m_vtxGeo{ VertexGeometry::Instance() };
-  vector< RecoDigit >* m_digits{ nullptr };
 
-  DetectorResponsePredictor* m_detectorReponsePredictor
-  double m_likelyhood;
+    /**///////////////////////////////
+    /**/// Configuration Variables ///
+    /**///////////////////////////////
+    /**/
+    /**/ unsigned int    m_verbosity_SecondaryLeptonLikelihoodReco;
+    /**/ unsigned int    m_verbosity_DetectorResponsePRedictor    ;
+    /**/
+    /**/ string          m_hists_emission_mu_water_path           ;
+    /**/ string          m_hists_emission_e_water_path            ;
+    /**/ string          m_hists_emission_mu_sci_path             ;
+    /**/ string          m_hists_emission_e_sci_path              ;
+    /**/
+    /**/ unsigned int    m_hists_emission_mu_water_energy_min     ;   
+    /**/ unsigned int    m_hists_emission_e_water_energy_min      ;   
+    /**/ unsigned int    m_hists_emission_mu_sci_energy_min       ;   
+    /**/ unsigned int    m_hists_emission_e_sci_energy_min        ;   
+    /**/
+    /**/ unsigned double m_hists_emission_mu_water_energy_delta   ;
+    /**/ unsigned double m_hists_emission_e_water_energy_delta    ;
+    /**/ unsigned double m_hists_emission_mu_sci_energy_delta     ;
+    /**/ unsigned double m_hists_emission_e_sci_energy_delta      ;
+    /**/
+    /**/ unsigned int    m_hists_emission_mu_water_num            ;
+    /**/ unsigned int    m_hists_emission_e_water_num             ;
+    /**/ unsigned int    m_hists_emission_mu_sci_num              ;
+    /**/ unsigned int    m_hists_emission_e_sci_num               ;
+    /**/
+    /**/ string          m_hists_emission_mu_water_name           ;
+    /**/ string          m_hists_emission_e_water_name            ;
+    /**/ string          m_hists_emission_mu_sci_name             ;
+    /**/ string          m_hists_emission_e_sci_name              ;
+    /**/
+    /**/ string          m_hists_dEdX_mu_water_path               ;
+    /**/ string          m_hists_dEdX_e_water_path                ;
+    /**/ string          m_hists_dEdX_mu_sci_path                 ;
+    /**/ string          m_hists_dEdX_e_sci_path                  ;
+    /**/
+    /**/ string          m_hists_dEdX_mu_water_path               ;
+    /**/ string          m_hists_dEdX_e_water_path                ;
+    /**/ string          m_hists_dEdX_mu_sci_path                 ;
+    /**/ string          m_hists_dEdX_e_sci_path                  ;
+    /**/
+    /**/ string          m_hists_dEdX_mu_water_name               ;
+    /**/ string          m_hists_dEdX_e_water_name                ;
+    /**/ string          m_hists_dEdX_mu_sci_name                 ;
+    /**/ string          m_hists_dEdX_e_sci_name                  ;
+    /**/
+    /**///////////////////////////////
 
-  Particle* m_particle_cur { nullptr };
-  Particle* m_particle_best{ nullptr };
 
-  TMinuit* m_minuit{ nullptr };
+    VertexGeometry     * m_vtxGeo{ VertexGeometry::Instance() };
+    vector< RecoDigit >* m_digits{ nullptr };
+
+    DetectorResponsePredictor* m_detectorReponsePredictor
+    double m_likelyhood;
+
+    Particle* m_particle_cur { nullptr };
+    Particle* m_particle_best{ nullptr };
+
+    TMinuit* m_minuit{ nullptr };
 };
 
 

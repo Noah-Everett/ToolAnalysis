@@ -440,11 +440,22 @@ double DetectorResponsePredictor::get_expected_height( Particle* t_particle, Det
         Log_debug( "Detector::DetectorElement is not \"PMT\", \"LAPPD\", or \"MRD\", it is \"" + t_detector->GetDetectorElement() + "\". Returning 0.", m_verbosity_debug );
         return 0;
     }
-    TH2D* firstHist = hists_emission->at( 0 );
+    TH2D        * referenceHist         { hists_emission->at( 0 )    };
+    TAxis       * referenceHist_xAxis   { referenceHist->GetXaxis()  };
+    unsigned int  refenceHist_nBins[ 3 ]{ referenceHist->GetNbinsX(), 
+                                          referenceHist->GetNbinsY(), 
+                                          referenceHist->GetNbinsY() };
 
-    int nBins[ 3 ]{ firstHist->GetNbinsX(), firstHist->GetNbinsY(), firstHist->GetNbinsY() };
+    double x_value_min, x_value_max;
+    if( t_time_start < 0 ) x_value_min = 0;
+    else                   x_value_min = get_particlePosition_value( t_particle, t_time_start, referenceHist );
+    if( t_time_stop < 0 ) x_value_max = referenceHist->GetXaxis()->GetNbins() - 1;
+    else                  x_value_max = get_particlePosition_value( t_particle, t_time_stop , referenceHist );
+    int x_index_min{ get_bin_index( x_value_min, referenceHist_xAxis ) },
+        x_index_max{ get_bin_index( x_value_min, referenceHist_xAxis ) };
+
     index_3 index_searching;
-    index_3 index_detectorCenter = get_bin_index_detector_center( particle_position_init, particle_direction, detector_position, firstHist, 0 );
+    index_3 index_detectorCenter{ get_bin_index_detector_center( particle_position_init, particle_direction, detector_position, referenceHist, x_value_min ) };
     index_3 index_current;
     queue < index_3 > indicies_searching( { index_detectorCenter } );
     bool checked[ nBins[ 0 ] ][ nBins[ 1 ] ][ nBins[ 2 ] ]; // initialize to false
@@ -453,12 +464,10 @@ double DetectorResponsePredictor::get_expected_height( Particle* t_particle, Det
     double height;
     TVector3 particleToDetector;
 
-    int x_index_min{ get_particlePosition_index( t_particle, t_time_start, firstHist ) }, 
-        x_index_max{ get_particlePosition_index( t_particle, t_time_stop , firstHist ) };
     while( !indicies_searching.empty() ) {
         index_searching = indicies_searching.front();
-        if( ( this->*get_isDetector )( particle_position_init, particle_direction, detector_position, detector_direction, firstHist, index_searching ) ) {
-            particleToDetector = detector_position - particle_position_init + particle_direction * get_bin_value( index_searching.x, firstHist->GetXaxis() );
+        if( ( this->*get_isDetector )( particle_position_init, particle_direction, detector_position, detector_direction, referenceHist, index_searching ) ) {
+            particleToDetector = detector_position - particle_position_init + particle_direction * get_bin_value( index_searching.x, referenceHist->GetXaxis() );
             height += eval_hists_emission_indicies( hists_emission, particle_energy_init, index_searching.x, index_searching.y ) 
                     * ( this->*get_transmittance )( particleToDetector.Mag(), eval_hists_emission_indicies( hists_emission_energies, particle_energy_init, index_searching.x, index_searching.y ) )
                     * ( this->*get_acceptance )( get_angle( particleToDetector, detector_direction ), t_detector->GetDetectorID() );

@@ -81,12 +81,6 @@ public:
     /**/ void set_verbosity( int t_verbosity ) { m_verbosity = t_verbosity; }
     /**/ int  get_verbosity() const            { return m_verbosity;        }
     /**/
-    /**/ void set_nPoints( int t_nPoints ) { m_nPoints = t_nPoints; }
-    /**/ int  get_nPoints() const          { return m_nPoints;      }
-    /**/
-    /**/ void set_nIterations( int t_nIterations ) { m_nIterations = t_nIterations; }
-    /**/ int  get_nIterations() const              { return m_nIterations;          }
-    /**/
     /**/ void reset_members();
     /**/
     /**/////////////////////////
@@ -183,8 +177,6 @@ protected:
     /**////////////////
     /**/
     /**/ int    m_verbosity      { m_verbosity_warning };
-    /**/ int    m_nPoints        { 4                   };
-    /**/ int    m_nIterations    { 10                  };
     /**/ double m_PMTdiameter    { 8 * 0.0254          };
     /**/ double m_LAPPDsideLength{ 20 * 0.01           };
     /**/
@@ -346,9 +338,9 @@ protected:
     /**/// Physical Functions ///
     /**//////////////////////////
     /**/
-    /**/ double get_particle_mass         ( Particle* t_particle                ) const;
-    /**/ double get_particlePosition_value( Particle* t_particle, double t_time ) const;
-    /**/ double get_particlePosition_index( Particle* t_particle, double t_time ) const;
+    /**/ double       get_particle_mass         ( Particle* t_particle                ) const;
+    /**/ double       get_particlePosition_value( Particle* t_particle, double t_time ) const;
+    /**/ unsigned int get_particlePosition_index( Particle* t_particle, double t_time ) const;
     /**/
     /**//////////////////////////
 };

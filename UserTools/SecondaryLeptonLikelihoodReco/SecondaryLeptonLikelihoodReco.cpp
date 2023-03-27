@@ -14,11 +14,48 @@ bool SecondaryLeptonLikelihoodReco::Initialise( std::string configfile, DataMode
     m_data = &data; //assigning transient data pointer
 
     // Load variables from config file
-    m_variables.Get( "verbosity"                  , m_verbosity                   );
-    m_variables.Get( "hists_emission_mu_water_dir", m_hists_emission_mu_water_dir );
-    m_variables.Get( "hists_emission_e_water_dir" , m_hists_emission_e_water_dir  );
-    m_variables.Get( "hists_emission_mu_sci_dir"  , m_hists_emission_mu_sci_dir   );
-    m_variables.Get( "hists_emission_e_sci_dir"   , m_hists_emission_e_sci_dir    );
+    m_variables.Get( "verbosity_SecondaryLeptonLikelihoodReco", m_verbosity_SecondaryLeptonLikelihoodReco );
+    m_variables.Get( "verbosity_DetectorResponsePRedictor"    , m_verbosity_DetectorResponsePRedictor     );
+    
+    m_variables.Get( "hists_emission_mu_water_path"           , m_hists_emission_mu_water_path            );
+    m_variables.Get( "hists_emission_e_water_path"            , m_hists_emission_e_water_path             );
+    m_variables.Get( "hists_emission_mu_sci_path"             , m_hists_emission_mu_sci_path              );
+    m_variables.Get( "hists_emission_e_sci_path"              , m_hists_emission_e_sci_path               );
+    
+    m_variables.Get( "hists_emission_mu_water_energy_min"     , m_hists_emission_mu_water_energy_min      );
+    m_variables.Get( "hists_emission_e_water_energy_min"      , m_hists_emission_e_water_energy_min       );
+    m_variables.Get( "hists_emission_mu_sci_energy_min"       , m_hists_emission_mu_sci_energy_min        );
+    m_variables.Get( "hists_emission_e_sci_energy_min"        , m_hists_emission_e_sci_energy_min         );
+                                                                
+    m_variables.Get( "hists_emission_mu_water_energy_delta"   , m_hists_emission_mu_water_energy_delta    );
+    m_variables.Get( "hists_emission_e_water_energy_delta"    , m_hists_emission_e_water_energy_delta     );
+    m_variables.Get( "hists_emission_mu_sci_energy_delta"     , m_hists_emission_mu_sci_energy_delta      );
+    m_variables.Get( "hists_emission_e_sci_energy_delta"      , m_hists_emission_e_sci_energy_delta       );
+                                                                
+    m_variables.Get( "hists_emission_mu_water_num"            , m_hists_emission_mu_water_num             );
+    m_variables.Get( "hists_emission_e_water_num"             , m_hists_emission_e_water_num              );
+    m_variables.Get( "hists_emission_mu_sci_num"              , m_hists_emission_mu_sci_num               );
+    m_variables.Get( "hists_emission_e_sci_num"               , m_hists_emission_e_sci_num                );
+                                                                
+    m_variables.Get( "hists_emission_mu_water_name"           , m_hists_emission_mu_water_name            );
+    m_variables.Get( "hists_emission_e_water_name"            , m_hists_emission_e_water_name             );
+    m_variables.Get( "hists_emission_mu_sci_name"             , m_hists_emission_mu_sci_name              );
+    m_variables.Get( "hists_emission_e_sci_name"              , m_hists_emission_e_sci_name               );
+                                                                
+    m_variables.Get( "hists_dEdX_mu_water_path"               , m_hists_dEdX_mu_water_path                );
+    m_variables.Get( "hists_dEdX_e_water_path"                , m_hists_dEdX_e_water_path                 );
+    m_variables.Get( "hists_dEdX_mu_sci_path"                 , m_hists_dEdX_mu_sci_path                  );
+    m_variables.Get( "hists_dEdX_e_sci_path"                  , m_hists_dEdX_e_sci_path                   );
+                                                                
+    m_variables.Get( "hists_dEdX_mu_water_path"               , m_hists_dEdX_mu_water_path                );
+    m_variables.Get( "hists_dEdX_e_water_path"                , m_hists_dEdX_e_water_path                 );
+    m_variables.Get( "hists_dEdX_mu_sci_path"                 , m_hists_dEdX_mu_sci_path                  );
+    m_variables.Get( "hists_dEdX_e_sci_path"                  , m_hists_dEdX_e_sci_path                   );
+                                                                
+    m_variables.Get( "hists_dEdX_mu_water_name"               , m_hists_dEdX_mu_water_name                );
+    m_variables.Get( "hists_dEdX_e_water_name"                , m_hists_dEdX_e_water_name                 );
+    m_variables.Get( "hists_dEdX_mu_sci_name"                 , m_hists_dEdX_mu_sci_name                  );
+    m_variables.Get( "hists_dEdX_e_sci_name"                  , m_hists_dEdX_e_sci_name                   );
 
     // Load digits
     if( !m_data->Stores.at( "RecoEvent" )->Get( "RecoDigit", m_digits ) ){
@@ -52,17 +89,17 @@ bool SecondaryLeptonLikelihoodReco::Finalise()
   return true;
 }
 
-bool SecondaryLeptonLikelihoodReco::load_hists( string t_hists_dir, void ( *loadingFunction )( vector< string >, vector< int >, vector< string > ) ) {
+bool SecondaryLeptonLikelihoodReco::load_hists( string t_hists_path, void ( *loadingFunction )( vector< string >, vector< int >, vector< string > ) ) {
   vector< string > hists_paths;
   vector< int    > hists_IDs;
   vector< string > hists_names;
 
-  if( !exists( t_hists_dir ) ) {
-    string temp_string = "SecondaryLeptonLikelihoodReco Tool: Error " + t_hists_dir + "does not exist!";
+  if( !exists( t_hists_path ) ) {
+    string temp_string = "SecondaryLeptonLikelihoodReco Tool: Error " + t_hists_path + " does not exist!";
     Log( temp_string.c_str(), m_verbosity_error, m_verbosity );
     return false;
   }
-  for( directory_entry& entry : directory_iterator( t_hists_dir ) ) {
+  for( directory_entry& entry : directory_iterator( t_hists_path ) ) {
     hists_paths.push_back( entry.path().root_path().generic_string() );
     hists_IDs.push_back( stoi( entry.path().stem().generic_string() ) );
     hists_paths.push_back( ";1" );
