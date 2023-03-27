@@ -42,10 +42,6 @@ private:
     /**/// User Variables ///
     /**//////////////////////
     /**/
-    /**/enum m_verbosity_enum { m_verbosity_error   = 0,
-    /**/                        m_verbosity_warning = 1,
-    /**/                        m_verbosity_message = 2,
-    /**/                        m_verbosity_debug   = 3 };
     /**/
     /**//////////////////////
 
@@ -56,7 +52,11 @@ private:
     /**///////////////////////////////
     /**/
     /**/ unsigned int    m_verbosity_SecondaryLeptonLikelihoodReco;
-    /**/ unsigned int    m_verbosity_DetectorResponsePRedictor    ;
+    /**/ unsigned int    m_verbosity_DetectorResponsePredictor    ;
+    /**/ enum            m_verbosity_enum{ m_verbosity_error   = 0,
+    /**/                                   m_verbosity_warning = 1,
+    /**/                                   m_verbosity_message = 2,
+    /**/                                   m_verbosity_debug   = 3 };
     /**/
     /**/ string          m_hists_emission_mu_water_path           ;
     /**/ string          m_hists_emission_e_water_path            ;
@@ -97,6 +97,9 @@ private:
     /**/ string          m_hists_dEdX_e_water_name                ;
     /**/ string          m_hists_dEdX_mu_sci_name                 ;
     /**/ string          m_hists_dEdX_e_sci_name                  ;
+    /**/
+    /**/ inline bool verbosity_check( const unsigned int  t_verbosity ) const;
+    /**/ inline bool path_check     ( const string      & t_path      ) const;
     /**/
     /**///////////////////////////////
 

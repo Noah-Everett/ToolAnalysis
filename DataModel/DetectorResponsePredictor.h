@@ -78,8 +78,8 @@ public:
     /**/// Get/Set Variables ///
     /**/////////////////////////
     /**/
-    /**/ void set_verbosity( int t_verbosity ) { m_verbosity = t_verbosity; }
-    /**/ int  get_verbosity() const            { return m_verbosity;        }
+    /**/ void         set_verbosity( unsigned int t_verbosity ) { m_verbosity = t_verbosity; }
+    /**/ unsigned int get_verbosity() const                     { return m_verbosity;        }
     /**/
     /**/ void reset_members();
     /**/
@@ -165,8 +165,8 @@ protected:
     /**/                        m_verbosity_message = 2,
     /**/                        m_verbosity_debug   = 3 };
     /**/
-    /**/ inline void Log_debug( const string&  t_message, const int  t_verbosity ) const;
-    /**/ inline void Log_debug( const string&& t_message, const int  t_verbosity ) const;
+    /**/ inline void Log_debug( const string&  t_message, const unsigned int t_verbosity ) const;
+    /**/ inline void Log_debug( const string&& t_message, const unsigned int t_verbosity ) const;
     /**/
     /**//////////////
 
@@ -176,9 +176,9 @@ protected:
     /**/// Settings ///
     /**////////////////
     /**/
-    /**/ int    m_verbosity      { m_verbosity_warning };
-    /**/ double m_PMTdiameter    { 8 * 0.0254          };
-    /**/ double m_LAPPDsideLength{ 20 * 0.01           };
+    /**/ unsigned int m_verbosity      { m_verbosity_warning };
+    /**/ double       m_PMTdiameter    { 8 * 0.0254          };
+    /**/ double       m_LAPPDsideLength{ 20 * 0.01           };
     /**/
     /**////////////////
 

@@ -317,12 +317,12 @@ inline double DetectorResponsePredictor::eval_hist_dEdX_MRDiron( const double t_
     return eval_hist( m_hist_dEdX_MRDiron, t_primaryEnergy );
 }
     
-inline void DetectorResponsePredictor::Log_debug( const string& t_message, const int t_verbosity ) const {
+inline void DetectorResponsePredictor::Log_debug( const string& t_message, const unsigned int t_verbosity ) const {
     if( t_verbosity >= m_verbosity )
         cout << "DetectorResponsePredictor || " << __FILE__ << "::" << __FUNCTION__ << " (" << __LINE__ << "): " << t_message;
 }
 
-inline void DetectorResponsePredictor::Log_debug( const string&& t_message, const int t_verbosity ) const {
+inline void DetectorResponsePredictor::Log_debug( const string&& t_message, const unsigned int t_verbosity ) const {
     if( t_verbosity >= m_verbosity )
         cout << "DetectorResponsePredictor || " << __FILE__ << "::" << __FUNCTION__ << " (" << __LINE__ << "): " << t_message;
 }
