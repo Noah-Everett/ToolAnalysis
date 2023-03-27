@@ -275,10 +275,16 @@ inline double DetectorResponsePredictor::eval_hists_emission_MRDsci( const doubl
     return eval_hists_emission_values( m_hists_emission_MRDsci, t_initialEnergy, t_trackLength, t_photonAngle );
 }
 
-double DetectorResponsePredictor::eval_hist( const TH1D  * t_hist,
-                                             const double  t_x   ) const {
+double DetectorResponsePredictor::eval_hist_value( const TH1D  * t_hist,
+                                                   const double  t_x    ) const {
     Log_debug( "    Evaluating histogram", m_verbosity_debug );
     return t_hist->Interpolate( t_x );
+}
+
+double DetectorResponsePredictor::eval_hist_index( const TH1D       * t_hist  ,
+                                                   const unsigned int t_xIndex ) const {
+    Log_debug( "    Evaluating histogram", m_verbosity_debug );
+    return t_hist->GetBinContent( t_xIndex );
 }
 
 inline double DetectorResponsePredictor::eval_hist_transmission_tankWater( const double t_photonEnergy ) const {
@@ -386,7 +392,7 @@ index_3 DetectorResponsePredictor::get_bin_index_detector_center( const TVector3
     return returnVariable;
 }
     
-double DetectorResponsePredictor::get_expected_height( Particle* t_particle, Detector* t_detector ) const {
+double DetectorResponsePredictor::get_expected_height( Particle* t_particle, Detector* t_detector, double t_time_start, double t_time_stop ) const {
     TVector3 particle_position_init( t_particle->GetStartVertex      ().X(),
                                      t_particle->GetStartVertex      ().Y(),
                                      t_particle->GetStartVertex      ().Z() );
@@ -446,7 +452,9 @@ double DetectorResponsePredictor::get_expected_height( Particle* t_particle, Det
     double percentPhiBin = 1 / nBins[ 2 ];
     double height;
     TVector3 particleToDetector;
-    
+
+    int x_index_min{ get_particlePosition_index( t_particle, t_time_start, firstHist ) }, 
+        x_index_max{ get_particlePosition_index( t_particle, t_time_stop , firstHist ) };
     while( !indicies_searching.empty() ) {
         index_searching = indicies_searching.front();
         if( ( this->*get_isDetector )( particle_position_init, particle_direction, detector_position, detector_direction, firstHist, index_searching ) ) {
@@ -459,9 +467,9 @@ double DetectorResponsePredictor::get_expected_height( Particle* t_particle, Det
                 for( int dy{ -1 }; dy <= 1; dy++ )
                     for( int dz{ -1 }; dz <= 1; dz++ ) {
                         index_current = { index_searching.x + dx, index_searching.y + dy, index_searching.z + dz };
-                        if( index_current.x >= 0 && index_current.x < nBins[ 0 ] &&
-                            index_current.y >= 0 && index_current.y < nBins[ 1 ] &&
-                            index_current.z >= 0 && index_current.z < nBins[ 2 ] &&
+                        if( index_current.x >= x_index_min && index_current.x <= x_index_max &&
+                            index_current.y >= 0           && index_current.y <  nBins[ 1 ]  &&
+                            index_current.z >= 0           && index_current.z <  nBins[ 2 ]  &&
                             !checked[ index_current.x ][ index_current.y ][ index_current.z ] )
                             indicies_searching.push( index_current );
                     }
@@ -472,8 +480,7 @@ double DetectorResponsePredictor::get_expected_height( Particle* t_particle, Det
     return height;
 }
     
-double DetectorResponsePredictor::get_expected_time( Particle* t_particle, Detector* t_detector ) const
-{
+double DetectorResponsePredictor::get_expected_time( Particle* t_particle, Detector* t_detector ) const {
     return 0;
 }
     
@@ -513,4 +520,52 @@ double DetectorResponsePredictor::get_transmittance_tankWater( const double t_di
 
 double DetectorResponsePredictor::get_transmittance_MRDsci( const double t_distance, const double t_photonEnergy ) const {
     return pow( eval_hist_transmission_MRDsci( t_photonEnergy ), t_distance );
+}
+
+double DetectorresponsePredictor::get_particle_mass( Particle* t_particle ) const {
+    return m_map_particleMasses->at( t_particle->GetPdgCode() );
+}
+
+double DetectorresponsePredictor::get_particlePosition_value( Particle* t_particle, double t_time, const TH1D* t_hist_dEdX ) const {
+    double mass{ get_particle_mass( t_particle ) };
+    const TAxis* x_axis{ t_hist_dEdX->GetXaxis() };
+    const unsigned int x_index_max{ x_axis->GetNbins() };
+    const double x_bin_width{ x_axis->GetBinWidth( 0 ) };
+
+    double time_cur{ 0 };
+    double x_value_cur{ 0 };
+    double speed_cur{ 0 };
+    double energy_cur{ t_particle->GetEnergy() };
+    for( unsigned int x_index_cur{ 0 }; x_index_cur < x_index_max && time_cur < t_time; x_index_cur++ ) {
+        speed_cur = sqrt( pow( energy_cur, 2 ) - pow( mass, 2 ) * pow( m_c, 4 ) ) / ( m_c * mass );
+        if( time_cur + x_bin_width / speed >= t_time )
+            return x_value_cur + ( t_time - time_cur ) * speed_cur;
+
+        time_cur    += x_bin_width / speed;
+        energy_cur  += eval_hist( t_hist_dEdX, x_index_cur );
+        x_value_cur += x_bin_width;
+    }
+
+    return -1; // outside of hist
+}
+
+double DetectorresponsePredictor::get_particlePosition_index( Particle* t_particle, double t_time, const TH1D* t_hist_dEdX ) const {
+    double mass{ get_particle_mass( t_particle ) };
+    const TAxis* x_axis{ t_hist_dEdX->GetXaxis() };
+    const unsigned int x_index_max{ x_axis->GetNbins() };
+    const double x_bin_width{ x_axis->GetBinWidth( 0 ) };
+
+    double time_cur{ 0 };
+    double speed_cur{ 0 };
+    double energy_cur{ t_particle->GetEnergy() };
+    for( unsigned int x_index_cur{ 0 }; x_index_cur < x_index_max && time_cur < t_time; x_index_cur++ ) {
+        speed_cur = sqrt( pow( energy_cur, 2 ) - pow( mass, 2 ) * pow( m_c, 4 ) ) / ( m_c * mass );
+        if( time_cur + x_bin_width / speed >= t_time )
+            return x_index_cur;
+
+        time_cur   += x_bin_width / speed;
+        energy_cur += eval_hist( t_hist_dEdX, x_index_cur );
+    }
+
+    return -1; // outside of hist
 }

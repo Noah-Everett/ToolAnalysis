@@ -139,6 +139,13 @@ public:
     /**/ inline double eval_hist_dEdX_MRDsci           ( const double t_primaryEnergy ) const;
     /**/ inline double eval_hist_dEdX_MRDiron          ( const double t_primaryEnergy ) const;
     /**/
+    /**/// Misc.
+    /**/ inline void   load_map_particleMasses( map< int, double >* t_map_particleMasses ) { m_map_particleMasses = t_map_particleMasses; }
+    /**/ inline double eval_map_particleMasses( int                 t_PDG                ) { return m_map_particleMasses->at( t_PDG );    }
+    /**/
+    /**/ inline void   set_c( double t_c ) { m_c = t_c;  }
+    /**/ inline double get_c()             { return m_c; }
+    /**/
     /**////////////////////////////
   
 
@@ -147,7 +154,7 @@ public:
     /**/// Detector Response Prediction ///
     /**////////////////////////////////////
     /**/
-    /**/ double get_expected_height( Particle* t_particle, Detector* t_detector ) const;
+    /**/ double get_expected_height( Particle* t_particle, Detector* t_detector, double t_time_start, double t_time_stop ) const;
     /**/ double get_expected_time  ( Particle* t_particle, Detector* t_detector ) const;
     /**/
     /**////////////////////////////////////
@@ -210,6 +217,10 @@ protected:
     /**/ TH1D* m_hist_dEdX_MRDsci;
     /**/ TH1D* m_hist_dEdX_MRDiron;
     /**/
+    /**/// Misc.
+    /**/ map< int, double >* m_map_particleMasses;
+    /**/ double              m_c{ 2.9998e8 };
+    /**/
     /**////////////////////////////
 
 
@@ -242,8 +253,10 @@ protected:
     /**/                                                 const double             t_initialEnergy   ,
     /**/                                                 const unsigned int       t_trackLengthIndex,
     /**/                                                 const unsigned int       t_photonAngleIndex ) const;
-    /**/ double           eval_hist                    ( const TH1D             * t_hist            ,
+    /**/ double           eval_hist_value              ( const TH1D             * t_hist            ,
     /**/                                                 const double             t_x                ) const;
+    /**/ double           eval_hist_index              ( const TH1D             * t_hist            ,
+    /**/                                                 const unsigned int       t_xIndex           ) const;
     /**/
     /**////////////////////////////
     
@@ -326,6 +339,18 @@ protected:
     /**/ double get_transmittance_MRDsci   ( const double t_distance, const double t_photonEnergy ) const;
     /**/
     /**///////////////////////////////
+    
+    
+    
+    /**//////////////////////////
+    /**/// Physical Functions ///
+    /**//////////////////////////
+    /**/
+    /**/ double get_particle_mass         ( Particle* t_particle                ) const;
+    /**/ double get_particlePosition_value( Particle* t_particle, double t_time ) const;
+    /**/ double get_particlePosition_index( Particle* t_particle, double t_time ) const;
+    /**/
+    /**//////////////////////////
 };
 
 #endif
