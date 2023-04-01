@@ -210,8 +210,9 @@ protected:
     /**/ TH1D* m_hist_dEdX_MRDiron;
     /**/
     /**/// Misc.
-    /**/ map< int, double >* m_map_particleMasses;
-    /**/ double              m_c{ 2.9998e8 };
+    /**/ map< int, double >* m_map_particleMasses{ new map< int, double >{ { 11, 0.5109989461 }, { -11, 0.5109989461 }, 
+    /**/                                           { 13, 105.6583755  }, { -13, 105.6583755  } } };
+    /**/ double              m_c{ 299792458 };
     /**/
     /**////////////////////////////
 

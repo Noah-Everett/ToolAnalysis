@@ -289,42 +289,42 @@ double DetectorResponsePredictor::eval_hist_index( const TH1D       * t_hist  ,
 
 inline double DetectorResponsePredictor::eval_hist_transmission_tankWater( const double t_photonEnergy ) const {
     Log_debug( "Evaluating tank water transmission histogram.", m_verbosity_debug );
-    return eval_hist( m_hist_transmission_tankWater, t_photonEnergy );
+    return eval_hist_value( m_hist_transmission_tankWater, t_photonEnergy );
 }
 
 inline double DetectorResponsePredictor::eval_hist_transmission_MRDsci( const double t_photonEnergy ) const {
     Log_debug( "Evaluating MRD scintilator transmission histogram.", m_verbosity_debug );
-    return eval_hist( m_hist_transmission_tankWater, t_photonEnergy );
+    return eval_hist_value( m_hist_transmission_tankWater, t_photonEnergy );
 }
 
 inline double DetectorResponsePredictor::eval_hist_dEdX_tankWater( const double t_primaryEnergy ) const {
     Log_debug( "Evaluating MRD scintilator dEdX histogram.", m_verbosity_debug );
-    return eval_hist( m_hist_dEdX_tankWater, t_primaryEnergy );
+    return eval_hist_value( m_hist_dEdX_tankWater, t_primaryEnergy );
 }
 
 inline double DetectorResponsePredictor::eval_hist_dEdX_tankSteel( const double t_primaryEnergy ) const {
     Log_debug( "Evaluating tank steel dEdX histogram.", m_verbosity_debug );
-    return eval_hist( m_hist_dEdX_tankSteel, t_primaryEnergy );
+    return eval_hist_value( m_hist_dEdX_tankSteel, t_primaryEnergy );
 }
 
 inline double DetectorResponsePredictor::eval_hist_dEdX_MRDsci( const double t_primaryEnergy ) const {
     Log_debug( "Evaluating MRD scinitilator dEdX histogram.", m_verbosity_debug );
-    return eval_hist( m_hist_dEdX_MRDsci, t_primaryEnergy );
+    return eval_hist_value( m_hist_dEdX_MRDsci, t_primaryEnergy );
 }
 
 inline double DetectorResponsePredictor::eval_hist_dEdX_MRDiron( const double t_primaryEnergy ) const {
     Log_debug( "Evaluating MRD ironr dEdX histogram.", m_verbosity_debug );
-    return eval_hist( m_hist_dEdX_MRDiron, t_primaryEnergy );
+    return eval_hist_value( m_hist_dEdX_MRDiron, t_primaryEnergy );
 }
     
 inline void DetectorResponsePredictor::Log_debug( const string& t_message, const unsigned int t_verbosity ) const {
     if( t_verbosity >= m_verbosity )
-        cout << "DetectorResponsePredictor || " << __FILE__ << "::" << __FUNCTION__ << " (" << __LINE__ << "): " << t_message;
+        cout << "DataModel_DetectorResponsePredictor || " << __FILE__ << "::" << __FUNCTION__ << " (" << __LINE__ << "): " << t_message;
 }
 
 inline void DetectorResponsePredictor::Log_debug( const string&& t_message, const unsigned int t_verbosity ) const {
     if( t_verbosity >= m_verbosity )
-        cout << "DetectorResponsePredictor || " << __FILE__ << "::" << __FUNCTION__ << " (" << __LINE__ << "): " << t_message;
+        cout << "DataModel_DetectorResponsePredictor || " << __FILE__ << "::" << __FUNCTION__ << " (" << __LINE__ << "): " << t_message;
 }
 
 inline double DetectorResponsePredictor::get_angle( const TVector3& t_vector_1, const TVector3& t_vector_2 ) const {
@@ -440,17 +440,17 @@ double DetectorResponsePredictor::get_expected_height( Particle* t_particle, Det
         Log_debug( "Detector::DetectorElement is not \"PMT\", \"LAPPD\", or \"MRD\", it is \"" + t_detector->GetDetectorElement() + "\". Returning 0.", m_verbosity_debug );
         return 0;
     }
-    TH2D        * referenceHist         { hists_emission->at( 0 )    };
-    TAxis       * referenceHist_xAxis   { referenceHist->GetXaxis()  };
+    const TH2D  * referenceHist         { hists_emission->at( 0 )    };
+    const TAxis * referenceHist_xAxis   { referenceHist->GetXaxis()  };
     unsigned int  refenceHist_nBins[ 3 ]{ referenceHist->GetNbinsX(), 
                                           referenceHist->GetNbinsY(), 
                                           referenceHist->GetNbinsY() };
 
     double x_value_min, x_value_max;
     if( t_time_start < 0 ) x_value_min = 0;
-    else                   x_value_min = get_particlePosition_value( t_particle, t_time_start, referenceHist );
-    if( t_time_stop < 0 ) x_value_max = referenceHist->GetXaxis()->GetNbins() - 1;
-    else                  x_value_max = get_particlePosition_value( t_particle, t_time_stop , referenceHist );
+    else                   x_value_min = get_particlePosition_value( t_particle, t_time_start );
+    if( t_time_stop  < 0 ) x_value_max = referenceHist->GetXaxis()->GetNbins() - 1;
+    else                   x_value_max = get_particlePosition_value( t_particle, t_time_stop );
     int x_index_min{ get_bin_index( x_value_min, referenceHist_xAxis ) },
         x_index_max{ get_bin_index( x_value_min, referenceHist_xAxis ) };
 
@@ -458,9 +458,8 @@ double DetectorResponsePredictor::get_expected_height( Particle* t_particle, Det
     index_3 index_detectorCenter{ get_bin_index_detector_center( particle_position_init, particle_direction, detector_position, referenceHist, x_value_min ) };
     index_3 index_current;
     queue < index_3 > indicies_searching( { index_detectorCenter } );
-    bool checked[ nBins[ 0 ] ][ nBins[ 1 ] ][ nBins[ 2 ] ]; // initialize to false
+    bool checked[ refenceHist_nBins[ 0 ] ][ refenceHist_nBins[ 1 ] ][ refenceHist_nBins[ 2 ] ]; // initialize to false
     checked[ index_detectorCenter.x ][ index_detectorCenter.y ][ index_detectorCenter.z ] = true;
-    double percentPhiBin = 1 / nBins[ 2 ];
     double height;
     TVector3 particleToDetector;
 
@@ -476,9 +475,9 @@ double DetectorResponsePredictor::get_expected_height( Particle* t_particle, Det
                 for( int dy{ -1 }; dy <= 1; dy++ )
                     for( int dz{ -1 }; dz <= 1; dz++ ) {
                         index_current = { index_searching.x + dx, index_searching.y + dy, index_searching.z + dz };
-                        if( index_current.x >= x_index_min && index_current.x <= x_index_max &&
-                            index_current.y >= 0           && index_current.y <  nBins[ 1 ]  &&
-                            index_current.z >= 0           && index_current.z <  nBins[ 2 ]  &&
+                        if( index_current.x >= x_index_min && index_current.x <= x_index_max             &&
+                            index_current.y >= 0           && index_current.y <  refenceHist_nBins[ 1 ]  &&
+                            index_current.z >= 0           && index_current.z <  refenceHist_nBins[ 2 ]  &&
                             !checked[ index_current.x ][ index_current.y ][ index_current.z ] )
                             indicies_searching.push( index_current );
                     }
@@ -531,49 +530,49 @@ double DetectorResponsePredictor::get_transmittance_MRDsci( const double t_dista
     return pow( eval_hist_transmission_MRDsci( t_photonEnergy ), t_distance );
 }
 
-double DetectorresponsePredictor::get_particle_mass( Particle* t_particle ) const {
+double DetectorResponsePredictor::get_particle_mass( Particle* t_particle ) const {
     return m_map_particleMasses->at( t_particle->GetPdgCode() );
 }
 
-double DetectorresponsePredictor::get_particlePosition_value( Particle* t_particle, double t_time, const TH1D* t_hist_dEdX ) const {
+double DetectorResponsePredictor::get_particlePosition_value( Particle* t_particle, double t_time ) const {
     double mass{ get_particle_mass( t_particle ) };
-    const TAxis* x_axis{ t_hist_dEdX->GetXaxis() };
+    const TAxis* x_axis{ m_hist_dEdX_tankWater->GetXaxis() };
     const unsigned int x_index_max{ x_axis->GetNbins() };
     const double x_bin_width{ x_axis->GetBinWidth( 0 ) };
 
     double time_cur{ 0 };
     double x_value_cur{ 0 };
     double speed_cur{ 0 };
-    double energy_cur{ t_particle->GetEnergy() };
+    double energy_cur{ t_particle->GetStartEnergy() };
     for( unsigned int x_index_cur{ 0 }; x_index_cur < x_index_max && time_cur < t_time; x_index_cur++ ) {
         speed_cur = sqrt( pow( energy_cur, 2 ) - pow( mass, 2 ) * pow( m_c, 4 ) ) / ( m_c * mass );
-        if( time_cur + x_bin_width / speed >= t_time )
+        if( time_cur + x_bin_width / speed_cur >= t_time )
             return x_value_cur + ( t_time - time_cur ) * speed_cur;
 
-        time_cur    += x_bin_width / speed;
-        energy_cur  += eval_hist( t_hist_dEdX, x_index_cur );
+        time_cur    += x_bin_width / speed_cur;
+        energy_cur  += eval_hist_index( m_hist_dEdX_tankWater, x_index_cur );
         x_value_cur += x_bin_width;
     }
 
     return -1; // outside of hist
 }
 
-double DetectorresponsePredictor::get_particlePosition_index( Particle* t_particle, double t_time, const TH1D* t_hist_dEdX ) const {
+unsigned int DetectorResponsePredictor::get_particlePosition_index( Particle* t_particle, double t_time ) const {
     double mass{ get_particle_mass( t_particle ) };
-    const TAxis* x_axis{ t_hist_dEdX->GetXaxis() };
+    const TAxis* x_axis{ m_hist_dEdX_tankWater->GetXaxis() };
     const unsigned int x_index_max{ x_axis->GetNbins() };
     const double x_bin_width{ x_axis->GetBinWidth( 0 ) };
 
     double time_cur{ 0 };
     double speed_cur{ 0 };
-    double energy_cur{ t_particle->GetEnergy() };
+    double energy_cur{ t_particle->GetStartEnergy() };
     for( unsigned int x_index_cur{ 0 }; x_index_cur < x_index_max && time_cur < t_time; x_index_cur++ ) {
         speed_cur = sqrt( pow( energy_cur, 2 ) - pow( mass, 2 ) * pow( m_c, 4 ) ) / ( m_c * mass );
-        if( time_cur + x_bin_width / speed >= t_time )
+        if( time_cur + x_bin_width / speed_cur >= t_time )
             return x_index_cur;
 
-        time_cur   += x_bin_width / speed;
-        energy_cur += eval_hist( t_hist_dEdX, x_index_cur );
+        time_cur   += x_bin_width / speed_cur;
+        energy_cur += eval_hist_index( m_hist_dEdX_tankWater, x_index_cur );
     }
 
     return -1; // outside of hist
