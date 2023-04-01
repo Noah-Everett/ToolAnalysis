@@ -26,6 +26,9 @@
 //*//                                                                                         //*//
 //*/////////////////////////////////////////////////////////////////////////////////////////////*//
 
+// #ifndef DETECTORRESPONSEPREDICTOR_CPP
+// #define DETECTORRESPONSEPREDICTOR_CPP
+
 #include "DetectorResponsePredictor.h"
   
 void DetectorResponsePredictor::reset_members()
@@ -111,7 +114,7 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
     return true;
 }
 
-inline bool DetectorResponsePredictor::load_hists_emission_tankWater( const vector< string >& t_hists_paths, 
+bool DetectorResponsePredictor::load_hists_emission_tankWater( const vector< string >& t_hists_paths, 
                                                                       const vector< int    >& t_hists_IDs  ,
                                                                       const vector< string >& t_hists_names ) {
     Log_debug( "Loading tank water emission histograms.", m_verbosity_debug );
@@ -121,7 +124,7 @@ inline bool DetectorResponsePredictor::load_hists_emission_tankWater( const vect
                                 m_binWidth_phi_tankWater                                  );
 }
 
-inline bool DetectorResponsePredictor::load_hists_emission_MRDsci( const vector< string >& t_hists_paths, 
+bool DetectorResponsePredictor::load_hists_emission_MRDsci( const vector< string >& t_hists_paths, 
                                                                    const vector< int    >& t_hists_IDs  ,
                                                                    const vector< string >& t_hists_names ) {
     Log_debug( "Loading MRD scintilator emission histograms.", m_verbosity_debug );
@@ -131,7 +134,7 @@ inline bool DetectorResponsePredictor::load_hists_emission_MRDsci( const vector<
                                 m_binWidth_phi_MRDsci                            );
 }
 
-inline bool DetectorResponsePredictor::load_hists_emission_tankWater_energies( const vector< string >& t_hists_paths, 
+bool DetectorResponsePredictor::load_hists_emission_tankWater_energies( const vector< string >& t_hists_paths, 
                                                                                const vector< int    >& t_hists_IDs  ,
                                                                                const vector< string >& t_hists_names ) {
     Log_debug( "Loading tank water average emission energy histograms.", m_verbosity_debug );
@@ -141,7 +144,7 @@ inline bool DetectorResponsePredictor::load_hists_emission_tankWater_energies( c
                                 m_binWidth_phi_tankWater                                       );
 }
 
-inline bool DetectorResponsePredictor::load_hists_emission_MRDsci_energies( const vector< string >& t_hists_paths, 
+bool DetectorResponsePredictor::load_hists_emission_MRDsci_energies( const vector< string >& t_hists_paths, 
                                                                             const vector< int    >& t_hists_IDs  ,
                                                                             const vector< string >& t_hists_names ) {
     Log_debug( "Loading MRD scintilator average emission energy histograms.", m_verbosity_debug );
@@ -167,37 +170,37 @@ bool DetectorResponsePredictor::load_hist( const type_hist*  m_hist    ,
         return false;
 }
 
-inline bool DetectorResponsePredictor::load_hist_transmission_tankWater( const string& t_hist_path,
+bool DetectorResponsePredictor::load_hist_transmission_tankWater( const string& t_hist_path,
                                                                          const string& t_hist_name ) {
     Log_debug( "Loading tank water transmission histogram.", m_verbosity_debug );
     return load_hist< TH1D >( m_hist_transmission_tankWater, t_hist_path, t_hist_name );
 }
 
-inline bool DetectorResponsePredictor::load_hist_transmission_MRDsci( const string& t_hist_path,
+bool DetectorResponsePredictor::load_hist_transmission_MRDsci( const string& t_hist_path,
                                                                       const string& t_hist_name ) {
     Log_debug( "Loading MRD scintilator transmission histogram.", m_verbosity_debug );
     return load_hist< TH1D >( m_hist_transmission_MRDsci, t_hist_path, t_hist_name );
 }
 
-inline bool DetectorResponsePredictor::load_hist_dEdX_tankWater( const string& t_hist_path,
+bool DetectorResponsePredictor::load_hist_dEdX_tankWater( const string& t_hist_path,
                                                                  const string& t_hist_name ) {
     Log_debug( "Loading tank water dEdX histogram.", m_verbosity_debug );
     return load_hist< TH1D >( m_hist_dEdX_tankWater, t_hist_path, t_hist_name );
 }
 
-inline bool DetectorResponsePredictor::load_hist_dEdX_tankSteel( const string& t_hist_path,
+bool DetectorResponsePredictor::load_hist_dEdX_tankSteel( const string& t_hist_path,
                                                                  const string& t_hist_name ) {
     Log_debug( "Loading tank steel dEdX histogram.", m_verbosity_debug );
     return load_hist< TH1D >( m_hist_dEdX_tankSteel, t_hist_path, t_hist_name );
 }
 
-inline bool DetectorResponsePredictor::load_hist_dEdX_MRDsci( const string& t_hist_path,
+bool DetectorResponsePredictor::load_hist_dEdX_MRDsci( const string& t_hist_path,
                                                               const string& t_hist_name ) {
     Log_debug( "Loading MRD scintilator dEdX histogram.", m_verbosity_debug );
     return load_hist< TH1D >( m_hist_dEdX_MRDsci, t_hist_path, t_hist_name );
 }
 
-inline bool DetectorResponsePredictor::load_hist_dEdX_MRDiron( const string& t_hist_path,
+bool DetectorResponsePredictor::load_hist_dEdX_MRDiron( const string& t_hist_path,
                                                                const string& t_hist_name ) {
     Log_debug( "Loading MRD iron dEdX histogram.", m_verbosity_debug );
     return load_hist< TH1D >( m_hist_dEdX_MRDiron, t_hist_path, t_hist_name );
@@ -261,14 +264,14 @@ double DetectorResponsePredictor::eval_hists_emission_indicies( const map< int, 
     return value;
 }
  
-inline double DetectorResponsePredictor::eval_hists_emission_tankWater( const double t_initialEnergy,
+double DetectorResponsePredictor::eval_hists_emission_tankWater( const double t_initialEnergy,
                                                                         const double t_trackLength  , 
                                                                         const double t_photonAngle   ) const {
     Log_debug( "Evaluating tank water emission histograms.", m_verbosity_debug );
     return eval_hists_emission_values( m_hists_emission_tankWater, t_initialEnergy, t_trackLength, t_photonAngle );
 }
 
-inline double DetectorResponsePredictor::eval_hists_emission_MRDsci( const double t_initialEnergy,
+double DetectorResponsePredictor::eval_hists_emission_MRDsci( const double t_initialEnergy,
                                                                      const double t_trackLength  , 
                                                                      const double t_photonAngle   ) const {
     Log_debug( "Evaluating MRD scintilator emission histograms.", m_verbosity_debug );
@@ -287,55 +290,55 @@ double DetectorResponsePredictor::eval_hist_index( const TH1D       * t_hist  ,
     return t_hist->GetBinContent( t_xIndex );
 }
 
-inline double DetectorResponsePredictor::eval_hist_transmission_tankWater( const double t_photonEnergy ) const {
+double DetectorResponsePredictor::eval_hist_transmission_tankWater( const double t_photonEnergy ) const {
     Log_debug( "Evaluating tank water transmission histogram.", m_verbosity_debug );
     return eval_hist_value( m_hist_transmission_tankWater, t_photonEnergy );
 }
 
-inline double DetectorResponsePredictor::eval_hist_transmission_MRDsci( const double t_photonEnergy ) const {
+double DetectorResponsePredictor::eval_hist_transmission_MRDsci( const double t_photonEnergy ) const {
     Log_debug( "Evaluating MRD scintilator transmission histogram.", m_verbosity_debug );
     return eval_hist_value( m_hist_transmission_tankWater, t_photonEnergy );
 }
 
-inline double DetectorResponsePredictor::eval_hist_dEdX_tankWater( const double t_primaryEnergy ) const {
+double DetectorResponsePredictor::eval_hist_dEdX_tankWater( const double t_primaryEnergy ) const {
     Log_debug( "Evaluating MRD scintilator dEdX histogram.", m_verbosity_debug );
     return eval_hist_value( m_hist_dEdX_tankWater, t_primaryEnergy );
 }
 
-inline double DetectorResponsePredictor::eval_hist_dEdX_tankSteel( const double t_primaryEnergy ) const {
+double DetectorResponsePredictor::eval_hist_dEdX_tankSteel( const double t_primaryEnergy ) const {
     Log_debug( "Evaluating tank steel dEdX histogram.", m_verbosity_debug );
     return eval_hist_value( m_hist_dEdX_tankSteel, t_primaryEnergy );
 }
 
-inline double DetectorResponsePredictor::eval_hist_dEdX_MRDsci( const double t_primaryEnergy ) const {
+double DetectorResponsePredictor::eval_hist_dEdX_MRDsci( const double t_primaryEnergy ) const {
     Log_debug( "Evaluating MRD scinitilator dEdX histogram.", m_verbosity_debug );
     return eval_hist_value( m_hist_dEdX_MRDsci, t_primaryEnergy );
 }
 
-inline double DetectorResponsePredictor::eval_hist_dEdX_MRDiron( const double t_primaryEnergy ) const {
+double DetectorResponsePredictor::eval_hist_dEdX_MRDiron( const double t_primaryEnergy ) const {
     Log_debug( "Evaluating MRD ironr dEdX histogram.", m_verbosity_debug );
     return eval_hist_value( m_hist_dEdX_MRDiron, t_primaryEnergy );
 }
     
-inline void DetectorResponsePredictor::Log_debug( const string& t_message, const unsigned int t_verbosity ) const {
+void DetectorResponsePredictor::Log_debug( const string& t_message, const unsigned int t_verbosity ) const {
     if( t_verbosity >= m_verbosity )
         cout << "DataModel_DetectorResponsePredictor || " << __FILE__ << "::" << __FUNCTION__ << " (" << __LINE__ << "): " << t_message;
 }
 
-inline void DetectorResponsePredictor::Log_debug( const string&& t_message, const unsigned int t_verbosity ) const {
+void DetectorResponsePredictor::Log_debug( const string&& t_message, const unsigned int t_verbosity ) const {
     if( t_verbosity >= m_verbosity )
         cout << "DataModel_DetectorResponsePredictor || " << __FILE__ << "::" << __FUNCTION__ << " (" << __LINE__ << "): " << t_message;
 }
 
-inline double DetectorResponsePredictor::get_angle( const TVector3& t_vector_1, const TVector3& t_vector_2 ) const {
+double DetectorResponsePredictor::get_angle( const TVector3& t_vector_1, const TVector3& t_vector_2 ) const {
     return acos( t_vector_1.Dot( t_vector_2 ) / ( t_vector_1.Mag() * t_vector_1.Mag() ) ); // =[0,pi]
 }
 
-inline double DetectorResponsePredictor::get_distance( const TVector3& t_point_1, const TVector3& t_point_2 ) const {
+double DetectorResponsePredictor::get_distance( const TVector3& t_point_1, const TVector3& t_point_2 ) const {
     return ( t_point_2 - t_point_1 ).Mag();
 }
 
-inline void DetectorResponsePredictor::normalize( TVector3& t_vector ) const {
+void DetectorResponsePredictor::normalize( TVector3& t_vector ) const {
     t_vector = t_vector.Unit();
 }
 
@@ -577,3 +580,5 @@ unsigned int DetectorResponsePredictor::get_particlePosition_index( Particle* t_
 
     return -1; // outside of hist
 }
+
+// #endif

@@ -92,53 +92,53 @@ public:
     /**////////////////////////////
     /**/
     /**/// Load Histograms
-    /**/ inline bool load_hists_emission_tankWater         ( const vector< string >& t_hists_paths, 
+    /**/ bool load_hists_emission_tankWater         ( const vector< string >& t_hists_paths, 
     /**/                                                     const vector< int    >& t_hists_IDs  ,
     /**/                                                     const vector< string >& t_hists_names );
-    /**/ inline bool load_hists_emission_MRDsci            ( const vector< string >& t_hists_paths, 
+    /**/ bool load_hists_emission_MRDsci            ( const vector< string >& t_hists_paths, 
     /**/                                                     const vector< int    >& t_hists_IDs  ,
     /**/                                                     const vector< string >& t_hists_names );
-    /**/ inline bool load_hists_emission_tankWater_energies( const vector< string >& t_hists_paths,
+    /**/ bool load_hists_emission_tankWater_energies( const vector< string >& t_hists_paths,
     /**/                                                     const vector< int    >& t_hists_IDs  ,
     /**/                                                     const vector< string >& t_hists_names );
-    /**/ inline bool load_hists_emission_MRDsci_energies   ( const vector< string >& t_hists_paths,
+    /**/ bool load_hists_emission_MRDsci_energies   ( const vector< string >& t_hists_paths,
     /**/                                                     const vector< int    >& t_hists_IDs  ,
     /**/                                                     const vector< string >& t_hists_names );
     /**/
-    /**/ inline bool load_hist_transmission_tankWater( const string& t_hist_path,
+    /**/ bool load_hist_transmission_tankWater( const string& t_hist_path,
     /**/                                               const string& t_hist_name );
-    /**/ inline bool load_hist_transmission_MRDsci   ( const string& t_hist_path,
+    /**/ bool load_hist_transmission_MRDsci   ( const string& t_hist_path,
     /**/                                               const string& t_hist_name );
-    /**/ inline bool load_hist_dEdX_tankWater        ( const string& t_hist_path,
+    /**/ bool load_hist_dEdX_tankWater        ( const string& t_hist_path,
     /**/                                               const string& t_hist_name );
-    /**/ inline bool load_hist_dEdX_tankSteel        ( const string& t_hist_path,
+    /**/ bool load_hist_dEdX_tankSteel        ( const string& t_hist_path,
     /**/                                               const string& t_hist_name );
-    /**/ inline bool load_hist_dEdX_MRDsci           ( const string& t_hist_path,
+    /**/ bool load_hist_dEdX_MRDsci           ( const string& t_hist_path,
     /**/                                               const string& t_hist_name );
-    /**/ inline bool load_hist_dEdX_MRDiron          ( const string& t_hist_path,
+    /**/ bool load_hist_dEdX_MRDiron          ( const string& t_hist_path,
     /**/                                               const string& t_hist_name );
     /**/
     /**/// Evaluate Histograms
-    /**/ inline double eval_hists_emission_tankWater( const double t_initialEnergy,
+    /**/ double eval_hists_emission_tankWater( const double t_initialEnergy,
     /**/                                              const double t_trackLength  , 
     /**/                                              const double t_photonAngle   ) const;
-    /**/ inline double eval_hists_emission_MRDsci   ( const double t_initialEnergy,
+    /**/ double eval_hists_emission_MRDsci   ( const double t_initialEnergy,
     /**/                                              const double t_trackLength  , 
     /**/                                              const double t_photonAngle   ) const;
     /**/
-    /**/ inline double eval_hist_transmission_tankWater( const double t_photonEnergy  ) const;
-    /**/ inline double eval_hist_transmission_MRDsci   ( const double t_photonEnergy  ) const;
-    /**/ inline double eval_hist_dEdX_tankWater        ( const double t_primaryEnergy ) const;
-    /**/ inline double eval_hist_dEdX_tankSteel        ( const double t_primaryEnergy ) const;
-    /**/ inline double eval_hist_dEdX_MRDsci           ( const double t_primaryEnergy ) const;
-    /**/ inline double eval_hist_dEdX_MRDiron          ( const double t_primaryEnergy ) const;
+    /**/ double eval_hist_transmission_tankWater( const double t_photonEnergy  ) const;
+    /**/ double eval_hist_transmission_MRDsci   ( const double t_photonEnergy  ) const;
+    /**/ double eval_hist_dEdX_tankWater        ( const double t_primaryEnergy ) const;
+    /**/ double eval_hist_dEdX_tankSteel        ( const double t_primaryEnergy ) const;
+    /**/ double eval_hist_dEdX_MRDsci           ( const double t_primaryEnergy ) const;
+    /**/ double eval_hist_dEdX_MRDiron          ( const double t_primaryEnergy ) const;
     /**/
     /**/// Misc.
-    /**/ inline void   load_map_particleMasses( map< int, double >* t_map_particleMasses ) { m_map_particleMasses = t_map_particleMasses; }
-    /**/ inline double eval_map_particleMasses( int                 t_PDG                ) { return m_map_particleMasses->at( t_PDG );    }
+    /**/ void   load_map_particleMasses( map< int, double >* t_map_particleMasses ) { m_map_particleMasses = t_map_particleMasses; }
+    /**/ double eval_map_particleMasses( int                 t_PDG                ) { return m_map_particleMasses->at( t_PDG );    }
     /**/
-    /**/ inline void   set_c( double t_c ) { m_c = t_c;  }
-    /**/ inline double get_c()             { return m_c; }
+    /**/ void   set_c( double t_c ) { m_c = t_c;  }
+    /**/ double get_c()             { return m_c; }
     /**/
     /**////////////////////////////
   
@@ -165,8 +165,8 @@ protected:
     /**/                        m_verbosity_message = 2,
     /**/                        m_verbosity_debug   = 3 };
     /**/
-    /**/ inline void Log_debug( const string&  t_message, const unsigned int t_verbosity ) const;
-    /**/ inline void Log_debug( const string&& t_message, const unsigned int t_verbosity ) const;
+    /**/ void Log_debug( const string&  t_message, const unsigned int t_verbosity ) const;
+    /**/ void Log_debug( const string&& t_message, const unsigned int t_verbosity ) const;
     /**/
     /**//////////////
 
@@ -259,10 +259,10 @@ protected:
     /**/// Helpful TVector Things ///
     /**//////////////////////////////
     /**/
-    /**/ inline double get_angle   ( const TVector3& t_vector_1, const TVector3& t_vector_2 ) const;
-    /**/ inline double get_distance( const TVector3& t_point_1 , const TVector3& t_point_2  ) const;
+    /**/ double get_angle   ( const TVector3& t_vector_1, const TVector3& t_vector_2 ) const;
+    /**/ double get_distance( const TVector3& t_point_1 , const TVector3& t_point_2  ) const;
     /**/
-    /**/ inline void normalize( TVector3& t_vector ) const;
+    /**/ void normalize( TVector3& t_vector ) const;
     /**/
     /**/ const TVector3 m_vector_x{ 1, 0, 0 };
     /**/ const TVector3 m_vector_y{ 0, 1, 0 };
