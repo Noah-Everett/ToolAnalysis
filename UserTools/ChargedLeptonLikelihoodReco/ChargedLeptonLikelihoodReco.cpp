@@ -20,14 +20,29 @@ bool SecondaryLeptonLikelihoodReco::Initialise( string configfile, DataModel& da
     m_data = &data; //assigning transient data pointer
 
     // Load variables from config file
-    if( !get_config_verbosity  ( "verbosity_SecondaryLeptonLikelihoodReco" , m_verbosity_SecondaryLeptonLikelihoodReco  ) ) return false;
-    if( !get_config_verbosity  ( "verbosity_DetectorResponsePredictor"     , m_verbosity_DetectorResponsePredictor      ) ) return false;
+    if( !get_config_verbosity  ( "verbosity_SecondaryLeptonLikelihoodReco"  , m_verbosity_SecondaryLeptonLikelihoodReco ) ) return false;
+    if( !get_config_verbosity  ( "verbosity_DetectorResponsePredictor"      , m_verbosity_DetectorResponsePredictor     ) ) return false;
     
-    if( !get_config_path       ( "hists_emission_mu_tankWater_path"        , m_hists_emission_mu_tankWater_path         ) ) return false;
-    if( !get_config_path       ( "hists_emission_e_tankWater_path"         , m_hists_emission_e_tankWater_path          ) ) return false;
-    if( !get_config_path       ( "hists_emission_mu_MRDsci_path"           , m_hists_emission_mu_MRDsci_path            ) ) return false;
-    if( !get_config_path       ( "hists_emission_e_MRDsci_path"            , m_hists_emission_e_MRDsci_path             ) ) return false;
+    if( !get_config_path       ( "hists_emission_mu_tankWater_energies_path", hists_emission_mu_tankWater_energies_path ) ) return false;
+    if( !get_config_path       ( "hists_emission_e_tankWater_energies_path" , hists_emission_e_tankWater_energies_path  ) ) return false;
+    if( !get_config_path       ( "hists_emission_mu_MRDsci_energies_path"   , hists_emission_mu_MRDsci_energies_path    ) ) return false;
+    if( !get_config_path       ( "hists_emission_e_MRDsci_energies_path"    , hists_emission_e_MRDsci_energies_path     ) ) return false;
     
+    if( !get_config_path       ( "hists_emission_mu_tankWater_counts_path"  , hists_emission_mu_tankWater_counts_path   ) ) return false;
+    if( !get_config_path       ( "hists_emission_e_tankWater_counts_path"   , hists_emission_e_tankWater_counts_path    ) ) return false;
+    if( !get_config_path       ( "hists_emission_mu_MRDsci_counts_path"     , hists_emission_mu_MRDsci_counts_path      ) ) return false;
+    if( !get_config_path       ( "hists_emission_e_MRDsci_counts_path"      , hists_emission_e_MRDsci_counts_path       ) ) return false;
+    
+    if( !get_config_histName   ( "hists_emission_mu_tankWater_energies_name", hists_emission_mu_tankWater_energies_name ) ) return false;
+    if( !get_config_histName   ( "hists_emission_e_tankWater_energies_name" , hists_emission_e_tankWater_energies_name  ) ) return false;
+    if( !get_config_histName   ( "hists_emission_mu_MRDsci_energies_name"   , hists_emission_mu_MRDsci_energies_name    ) ) return false;
+    if( !get_config_histName   ( "hists_emission_e_MRDsci_energies_name"    , hists_emission_e_MRDsci_energies_name     ) ) return false;
+    
+    if( !get_config_histName   ( "hists_emission_mu_tankWater_counts_name"  , hists_emission_mu_tankWater_counts_name   ) ) return false;
+    if( !get_config_histName   ( "hists_emission_e_tankWater_counts_name"   , hists_emission_e_tankWater_counts_name    ) ) return false;
+    if( !get_config_histName   ( "hists_emission_mu_MRDsci_counts_name"     , hists_emission_mu_MRDsci_counts_name      ) ) return false;
+    if( !get_config_histName   ( "hists_emission_e_MRDsci_counts_name"      , hists_emission_e_MRDsci_counts_name       ) ) return false;
+
     if( !get_config_unsignedInt( "hists_emission_mu_tankWater_energy_min"  , m_hists_emission_mu_tankWater_energy_min   ) ) return false;
     if( !get_config_unsignedInt( "hists_emission_e_tankWater_energy_min"   , m_hists_emission_e_tankWater_energy_min    ) ) return false;
     if( !get_config_unsignedInt( "hists_emission_mu_MRDsci_energy_min"     , m_hists_emission_mu_MRDsci_energy_min      ) ) return false;
@@ -42,11 +57,6 @@ bool SecondaryLeptonLikelihoodReco::Initialise( string configfile, DataModel& da
     if( !get_config_unsignedInt( "hists_emission_e_tankWater_num"          , m_hists_emission_e_tankWater_num           ) ) return false;
     if( !get_config_unsignedInt( "hists_emission_mu_MRDsci_num"            , m_hists_emission_mu_MRDsci_num             ) ) return false;
     if( !get_config_unsignedInt( "hists_emission_e_MRDsci_num"             , m_hists_emission_e_MRDsci_num              ) ) return false;
-
-    if( !get_config_histName   ( "hists_emission_mu_tankWater_name"        , m_hists_emission_mu_tankWater_name         ) ) return false;
-    if( !get_config_histName   ( "hists_emission_e_tankWater_name"         , m_hists_emission_e_tankWater_name          ) ) return false;
-    if( !get_config_histName   ( "hists_emission_mu_MRDsci_name"           , m_hists_emission_mu_MRDsci_name            ) ) return false;
-    if( !get_config_histName   ( "hists_emission_e_MRDsci_name"            , m_hists_emission_e_MRDsci_name             ) ) return false;
 
     if( !get_config_path       ( "hists_dEdX_mu_tankWater_path"            , m_hists_dEdX_mu_tankWater_path             ) ) return false;
     if( !get_config_path       ( "hists_dEdX_e_tankWater_path"             , m_hists_dEdX_e_tankWater_path              ) ) return false;
@@ -87,16 +97,20 @@ bool SecondaryLeptonLikelihoodReco::Initialise( string configfile, DataModel& da
     // Initialize DetectorResponsePredictor
     const unsigned int num_materials{ 2 };
     const unsigned int num_particles{ 2 };
+    const string       hists_emission_energies_paths[ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_energies_path, m_hists_emission_e_tankWater_energies_path }, 
+                                                                                        { m_hists_emission_mu_MRDsci_energies_path   , m_hists_emission_e_MRDsci_energies_path    } };
+    const string       hists_emission_counts_paths  [ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_counts_path  , m_hists_emission_e_tankWater_counts_path   }, 
+                                                                                        { m_hists_emission_mu_MRDsci_counts_path     , m_hists_emission_e_MRDsci_counts_path      } };
+    const string       hists_emission_energies_names[ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_energies_name, m_hists_emission_e_tankWater_energies_name }, 
+                                                                                        { m_hists_emission_mu_MRDsci_energies_name   , m_hists_emission_e_MRDsci_energies_name    } };
+    const string       hists_emission_counts_names  [ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_counts_name  , m_hists_emission_e_tankWater_counts_name   }, 
+                                                                                        { m_hists_emission_mu_MRDsci_counts_name     , m_hists_emission_e_MRDsci_counts_name      } };
     const unsigned int hists_emission_energy_mins  [ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_energy_min  , m_hists_emission_e_tankWater_energy_min   }, 
                                                                                        { m_hists_emission_mu_MRDsci_energy_min     , m_hists_emission_e_MRDsci_energy_min      } };
     const unsigned int hists_emission_energy_deltas[ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_energy_delta, m_hists_emission_e_tankWater_energy_delta }, 
                                                                                        { m_hists_emission_mu_MRDsci_energy_delta   , m_hists_emission_e_MRDsci_energy_delta    } };
     const unsigned int hists_emission_energy_nums  [ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_num         , m_hists_emission_e_tankWater_num          }, 
                                                                                        { m_hists_emission_mu_MRDsci_num            , m_hists_emission_e_MRDsci_num             } };
-    const string       hists_emission_paths        [ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_path        , m_hists_emission_e_tankWater_path         }, 
-                                                                                       { m_hists_emission_mu_MRDsci_path           , m_hists_emission_e_MRDsci_path            } };
-    const string       hists_emission_names        [ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_name        , m_hists_emission_e_tankWater_name         }, 
-                                                                                       { m_hists_emission_mu_MRDsci_name           , m_hists_emission_e_MRDsci_name            } };
     using DetectorResponsePredictorFunctionPtr = bool ( DetectorResponsePredictor::* )( const vector< string >&, const vector< int >&, const vector< string >& );
     DetectorResponsePredictorFunctionPtr load_hists_emissions[ num_materials ][ 2 ]{ { &DetectorResponsePredictor::load_hists_emission_tankWater, &DetectorResponsePredictor::load_hists_emission_tankWater_energies },
                                                                                      { &DetectorResponsePredictor::load_hists_emission_MRDsci   , &DetectorResponsePredictor::load_hists_emission_MRDsci_energies    } };

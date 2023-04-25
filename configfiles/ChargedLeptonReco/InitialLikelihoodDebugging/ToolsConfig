@@ -1,0 +1,11 @@
+LoadWCSim                   LoadWCSim                   ./configfiles/ChargedLeptonReco/InitialLikelihoodDebugging/LoadWCSimConfig
+LoadWCSimLAPPD              LoadWCSimLAPPD              ./configfiles/ChargedLeptonReco/InitialLikelihoodDebugging/LoadWCSimLAPPDConfig
+MCParticleProperties        MCParticleProperties        ./configfiles/ChargedLeptonReco/InitialLikelihoodDebugging/MCParticlePropertiesConfig
+MCRecoEventLoader           MCRecoEventLoader           ./configfiles/ChargedLeptonReco/InitialLikelihoodDebugging/MCRecoEventLoaderConfig
+#FindMrdTracks              FindMrdTracks               ./configfiles/FindMrdTracks/FindMrdTracksConfig
+DigitBuilder                DigitBuilder                ./configfiles/ChargedLeptonReco/InitialLikelihoodDebugging/DigitBuilderConfig
+EventSelector               EventSelector               ./configfiles/ChargedLeptonReco/InitialLikelihoodDebugging/EventSelectorConfig
+PhaseIITreeMaker            PhaseIITreeMaker            ./configfiles/ChargedLeptonReco/InitialLikelihoodDebugging/PhaseIITreeMakerConfig
+#SaveRecoEvent              SaveRecoEvent               ./configfiles/ChargedLeptonReco/InitialLikelihoodDebugging/SaveRecoEventConfig
+
+ChargedLeptonLikelihoodReco ChargedLeptonLikelihoodReco ./configfiles/ChargedLeptonReco/InitialLikelihoodDebugging/ChargedLeptonLikelihoodReco

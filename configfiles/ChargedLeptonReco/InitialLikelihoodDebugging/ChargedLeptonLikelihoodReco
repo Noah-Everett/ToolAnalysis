@@ -1,0 +1,69 @@
+# VERBOSITY
+verbosity_SecondaryLeptonLikelihoodReco   3
+verbosity_DetectorResponsePredictor       3
+
+# PHOTON EMISSION DATA
+hists_emission_mu_tankWater_energies_path /Data/water_doped-mu.root
+hists_emission_e_tankWater_energies_path  /Data/water_doped-e.root
+hists_emission_mu_MRDsci_energies_path    /Data/MRDScintilator-mu.root
+hists_emission_e_MRDsci_energies_path     /Data/MRDScintilator-e.root
+
+hists_emission_mu_tankWater_counts_path   /Data/water_doped-mu.root
+hists_emission_e_tankWater_counts_path    /Data/water_doped-e.root
+hists_emission_mu_MRDsci_counts_path      /Data/MRDScintilator-mu.root
+hists_emission_e_MRDsci_counts_path       /Data/MRDScintilator-e.root
+
+hists_emission_mu_tankWater_energies_name hist_emission_energies
+hists_emission_e_tankWater_energies_name  hist_emission_energies
+hists_emission_mu_MRDsci_energies_name    hist_emission_energies
+hists_emission_e_MRDsci_energies_name     hist_emission_energies
+
+hists_emission_mu_tankWater_counts_name   hist_emission_counts
+hists_emission_e_tankWater_counts_name    hist_emission_counts
+hists_emission_mu_MRDsci_counts_name      hist_emission_counts
+hists_emission_e_MRDsci_counts_name       hist_emission_counts
+
+hists_emission_mu_tankWater_energy_min    0
+hists_emission_e_tankWater_energy_min     0
+hists_emission_mu_MRDsci_energy_min       0
+hists_emission_e_MRDsci_energy_min        0
+
+hists_emission_mu_tankWater_energy_delta  10
+hists_emission_e_tankWater_energy_delta   10
+hists_emission_mu_MRDsci_energy_delta     10
+hists_emission_e_MRDsci_energy_delta      10
+
+hists_emission_mu_tankWater_num           121
+hists_emission_e_tankWater_num            121
+hists_emission_mu_MRDsci_num              121
+hists_emission_e_MRDsci_num               121
+
+# STOPPING POWER DATA
+hists_dEdX_mu_tankWater_path              /Data/water_doped-mu.root
+hists_dEdX_e_tankWater_path               /Data/water_doped-e.root
+hists_dEdX_mu_tankSteel_path              /Data/water_doped-mu.root
+hists_dEdX_e_tankSteel_path               /Data/water_doped-e.root
+hists_dEdX_mu_MRDsci_path                 /Data/MRDScintilator-mu.root
+hists_dEdX_e_MRDsci_path                  /Data/MRDScintilator-e.root
+hists_dEdX_mu_MRDiron_path                /Data/MRDScintilator-mu.root
+hists_dEdX_e_MRDiron_path                 /Data/MRDScintilator-e.root
+
+hists_dEdX_mu_tankWater_name              hists_dEdX_dEdX
+hists_dEdX_e_tankWater_name               hists_dEdX_dEdX
+hists_dEdX_mu_tankSteel_name              hists_dEdX_dEdX
+hists_dEdX_e_tankSteel_name               hists_dEdX_dEdX
+hists_dEdX_mu_MRDsci_name                 hists_dEdX_dEdX
+hists_dEdX_e_MRDsci_name                  hists_dEdX_dEdX
+hists_dEdX_mu_MRDiron_name                hists_dEdX_dEdX
+hists_dEdX_e_MRDiron_name                 hists_dEdX_dEdX
+
+# PHOTON TRANSMITTANCE DATA
+hists_transmittance_mu_tankWater_path     hist_transmittance
+hists_transmittance_e_tankWater_path      hist_transmittance
+hists_transmittance_mu_MRDsci_path        hist_transmittance
+hists_transmittance_e_MRDsci_path         hist_transmittance
+
+hists_transmittance_mu_tankWater_name     hist_transmittance
+hists_transmittance_e_tankWater_name      hist_transmittance
+hists_transmittance_mu_MRDsci_name        hist_transmittance
+hists_transmittance_e_MRDsci_name         hist_transmittance

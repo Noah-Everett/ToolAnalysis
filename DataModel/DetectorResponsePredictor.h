@@ -92,18 +92,16 @@ public:
     /**////////////////////////////
     /**/
     /**/// Load Histograms
-    /**/ bool load_hists_emission_tankWater         ( const vector< string >& t_hists_paths, 
-    /**/                                                     const vector< int    >& t_hists_IDs  ,
-    /**/                                                     const vector< string >& t_hists_names );
-    /**/ bool load_hists_emission_MRDsci            ( const vector< string >& t_hists_paths, 
-    /**/                                                     const vector< int    >& t_hists_IDs  ,
-    /**/                                                     const vector< string >& t_hists_names );
-    /**/ bool load_hists_emission_tankWater_energies( const vector< string >& t_hists_paths,
-    /**/                                                     const vector< int    >& t_hists_IDs  ,
-    /**/                                                     const vector< string >& t_hists_names );
-    /**/ bool load_hists_emission_MRDsci_energies   ( const vector< string >& t_hists_paths,
-    /**/                                                     const vector< int    >& t_hists_IDs  ,
-    /**/                                                     const vector< string >& t_hists_names );
+    /**/ bool load_hists_emission_tankWater( const vector< string >& t_hists_energies_paths,
+    /**/                                     const vector< string >& t_hists_counts_paths  ,
+    /**/                                     const vector< string >& t_hists_energies_names,
+    /**/                                     const vector< string >& t_hists_counts_names  ,
+    /**/                                     const vector< int    >& t_hists_IDs            );
+    /**/ bool load_hists_emission_MRDsci   ( const vector< string >& t_hists_energies_paths,
+    /**/                                     const vector< string >& t_hists_counts_paths  ,
+    /**/                                     const vector< string >& t_hists_energies_names,
+    /**/                                     const vector< string >& t_hists_counts_names  ,
+    /**/                                     const vector< int    >& t_hists_IDs            );
     /**/
     /**/ bool load_hist_transmission_tankWater( const string& t_hist_path,
     /**/                                               const string& t_hist_name );
@@ -190,10 +188,10 @@ protected:
     /**/
     /**/// Emission Histograms
     /**/ vector< int        >  m_hists_emission_initialEnergies;
-    /**/ map   < int, TH2D* >* m_hists_emission_tankWater;
-    /**/ map   < int, TH2D* >* m_hists_emission_MRDsci;
     /**/ map   < int, TH2D* >* m_hists_emission_tankWater_energies;
+    /**/ map   < int, TH2D* >* m_hists_emission_tankWater_counts;
     /**/ map   < int, TH2D* >* m_hists_emission_MRDsci_energies;
+    /**/ map   < int, TH2D* >* m_hists_emission_MRDsci_counts;
     /**/ double                m_binWidth_s_tankWater;
     /**/ double                m_binWidth_s_MRDsci;
     /**/ double                m_binWidth_theta_tankWater;
@@ -223,17 +221,20 @@ protected:
     /**////////////////////////////
     /**/
     /**/// Load Histograms
-    /**/ bool load_hists_emission(       map   < int, TH2D* >* t_hists_emission,
-    /**/                           const vector< string     >& t_hists_paths   , 
-    /**/                           const vector< int        >& t_hists_IDs     ,
-    /**/                           const vector< string     >& t_hists_names   ,
-    /**/                                 double              & t_binWidth_s    ,
-    /**/                                 double              & t_binWidth_theta,
-    /**/                                 double              & t_binWidth_phi   );
+    /**/ bool load_hists_emission(       map   < int, TH2D* >* t_hists_energies      ,
+    /**/                                 map   < int, TH2D* >* t_hists_counts        ,
+    /**/                           const vector< string     >& t_hists_energies_paths,
+    /**/                           const vector< string     >& t_hists_counts_paths  ,
+    /**/                           const vector< string     >& t_hists_energies_names,
+    /**/                           const vector< string     >& t_hists_counts_names  ,
+    /**/                           const vector< int        >& t_hists_IDs           ,
+    /**/                                 double              & t_binWidth_s          ,
+    /**/                                 double              & t_binWidth_theta      ,
+    /**/                                 double              & t_binWidth_phi         );
     /**/ template< typename type_hist >
-    /**/ bool load_hist          ( const type_hist           * t_hist          ,
-    /**/                           const string              & t_hist_path     ,
-    /**/                           const string              & t_hist_name      );
+    /**/ bool load_hist          ( const type_hist           * t_hist                ,
+    /**/                           const string              & t_hist_path           ,
+    /**/                           const string              & t_hist_name            );
     /**/
     /**/// Evaluate Histograms
     /**/ pair< int, int > get_closestEmissionHists     ( const map< int, TH2D* >* t_hists_emission  ,

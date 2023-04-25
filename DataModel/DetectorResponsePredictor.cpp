@@ -33,25 +33,30 @@
   
 void DetectorResponsePredictor::reset_members()
 {
-    m_verbosity = m_verbosity_warning       ;
-    m_hists_emission_initialEnergies.clear();
-    delete m_hists_emission_tankWater       ;
-    delete m_hists_emission_MRDsci          ;
-    delete m_hist_transmission_tankWater    ;
-    delete m_hist_transmission_MRDsci       ;
-    delete m_hist_dEdX_tankWater            ;
-    delete m_hist_dEdX_tankSteel            ;
-    delete m_hist_dEdX_MRDiron              ;
-    delete m_hist_dEdX_MRDiron              ;
+    m_verbosity = m_verbosity_warning         ;
+    m_hists_emission_initialEnergies.clear()  ;
+    delete m_hists_emission_tankWater_counts  ;
+    delete m_hists_emission_tankWater_energies;
+    delete m_hists_emission_MRDsci_counts     ;
+    delete m_hists_emission_MRDsci_energies   ;
+    delete m_hist_transmission_tankWater      ;
+    delete m_hist_transmission_MRDsci         ;
+    delete m_hist_dEdX_tankWater              ;
+    delete m_hist_dEdX_tankSteel              ;
+    delete m_hist_dEdX_MRDiron                ;
+    delete m_hist_dEdX_MRDiron                ;
 }
 
-bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >* t_hists_emission,
-                                                     const vector< string     >& t_hists_paths   , 
-                                                     const vector< int        >& t_hists_IDs     ,
-                                                     const vector< string     >& t_hists_names   ,
-                                                           double              & t_binWidth_s    ,
-                                                           double              & t_binWidth_theta,
-                                                           double              & t_binWidth_phi   ) {
+bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >* t_hists_energies      ,
+                                                           map   < int, TH2D* >* t_hists_counts        ,
+                                                     const vector< string     >& t_hists_energies_paths, 
+                                                     const vector< string     >& t_hists_counts_paths  , 
+                                                     const vector< string     >& t_hists_energies_names,
+                                                     const vector< string     >& t_hists_counts_names  ,
+                                                     const vector< int        >& t_hists_IDs           ,
+                                                           double              & t_binWidth_s          ,
+                                                           double              & t_binWidth_theta      ,
+                                                           double              & t_binWidth_phi         ) {
     Log_debug( "Loading emission histograms.", m_verbosity_debug );
     
     // Check IDs are strictly increasing
@@ -69,54 +74,98 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
                    " and `load_hists_emission_MRDsci()` should match.", m_verbosity_error );
         return false;
     }
+    // Check path vectors are the same size
+    if( t_hists_energies_paths.size() != t_hists_counts_paths.size() ) {
+        Log_debug( "Argument `t_hists_energies_paths` and `t_hists_counts_paths`" 
+                   " should be the same size.", m_verbosity_error );
+        return false;
+    }
+    // Check name vectors are the same size
+    if( t_hists_energies_names.size() != t_hists_counts_names.size() ) {
+        Log_debug( "Argument `t_hists_energies_names` and `t_hists_counts_names`" 
+                   " should be the same size.", m_verbosity_error );
+        return false;
+    }
 
-    // Load histogram map
-    THistReader< int, TH2D >* histReader{ new THistReader< int, TH2D >( t_hists_paths, t_hists_IDs, t_hists_names ) };
-    if( t_hists_emission ) delete t_hists_emission;
-    *t_hists_emission = *( histReader->get_histsMap_cp() );
+    // Load energy hist map
+    THistReader< int, TH2D >* histReader{ new THistReader< int, TH2D >( t_hists_energies_paths, t_hists_IDs, t_hists_energies_names ) };
+    if( t_hists_energies ) delete t_hists_energies;
+    *t_hists_energies = *( histReader->get_histsMap_cp() );
     delete histReader;
-    
     // If map wasnt returned
-    if( !t_hists_emission ) {
-        Log_debug( "`t_hists_emission` wasnt set.", m_verbosity_error );
+    if( !t_hists_energies ) {
+        Log_debug( "`t_hists_energies` wasn't set.", m_verbosity_error );
+        return false;
+    }
+    // Check that a hist with 0 energy exists
+    if( t_hists_energies->find( 0 ) == t_hists_energies->end() ) {
+        Log_debug( "`t_hists_energies` doesnt contain a hist with zero energy.", m_verbosity_error );
+        return false;
+    }
+    
+    // Load counts hist map
+    THistReader< int, TH2D >* histReader{ new THistReader< int, TH2D >( t_hists_counts_paths, t_hists_IDs, t_hists_counts_names ) };
+    if( t_hists_counts ) delete t_hists_counts;
+    *t_hists_counts = *( histReader->get_histsMap_cp() );
+    delete histReader;
+    // If map wasnt returned
+    if( !t_hists_counts ) {
+        Log_debug( "`t_hists_counts` wasn't set.", m_verbosity_error );
+        return false;
+    }
+    // Check that a hist with 0 energy exists
+    if( t_hists_counts->find( 0 ) == t_hists_counts->end() ) {
+        Log_debug( "`t_hists_counts` doesnt contain a hist with zero energy.", m_verbosity_error );
         return false;
     }
 
-    // Check that a hist with 0 energy exists
-    if( t_hists_emission->find( 0 ) == t_hists_emission->end() ) {
-        Log_debug( "`t_hists_emission` doesnt contain a hist with zero energy.", m_verbosity_error );
+    // Check energy and count hist maps are the same size
+    if( t_hists_energies_paths.size() != t_hists_counts_paths.size() ) {
+        Log_debug( "Argument `t_hists_energies_paths` and `t_hists_counts_paths`"
+                   " should be the same size.", m_verbosity_error );
         return false;
     }
-    
     // Check all TH2D axis are the same
-    double min_x  { t_hists_emission->at( 0 )->GetXaxis()->GetXmin()  };
-    double max_x  { t_hists_emission->at( 0 )->GetXaxis()->GetXmax()  };
-    int    nBins_x{ t_hists_emission->at( 0 )->GetXaxis()->GetNbins() };
-    double min_y  { t_hists_emission->at( 0 )->GetYaxis()->GetXmin()  };
-    double max_y  { t_hists_emission->at( 0 )->GetYaxis()->GetXmax()  };
-    int    nBins_y{ t_hists_emission->at( 0 )->GetYaxis()->GetNbins() };
-    for( auto const& [ i, h ] : *t_hists_emission )
+    double min_x  { t_hists_energies->at( 0 )->GetXaxis()->GetXmin()  };
+    double max_x  { t_hists_energies->at( 0 )->GetXaxis()->GetXmax()  };
+    int    nBins_x{ t_hists_energies->at( 0 )->GetXaxis()->GetNbins() };
+    double min_y  { t_hists_energies->at( 0 )->GetYaxis()->GetXmin()  };
+    double max_y  { t_hists_energies->at( 0 )->GetYaxis()->GetXmax()  };
+    int    nBins_y{ t_hists_energies->at( 0 )->GetYaxis()->GetNbins() };
+    for( auto const& [ i, h ] : *t_hists_energies )
         if( h->GetXaxis()->GetXmin()  != min_x   ||
             h->GetXaxis()->GetXmax()  != max_x   ||
             h->GetXaxis()->GetNbins() != nBins_x ||
             h->GetYaxis()->GetXmin()  != min_y   ||
             h->GetYaxis()->GetXmax()  != max_y   ||
             h->GetYaxis()->GetNbins() != nBins_y   ) {
-            Log_debug( "All histograms in `t_hists_emission` do not have the same axes (same min, max, and bin counts).", m_verbosity_error );
+            Log_debug( "All histograms in `t_hists_energies` do not have the same axes (same min, max, and bin counts).", m_verbosity_error );
             return false;
         }
-    
+    for( auto const& [ i, h ] : *t_hists_counts )
+        if( h->GetXaxis()->GetXmin()  != min_x   ||
+            h->GetXaxis()->GetXmax()  != max_x   ||
+            h->GetXaxis()->GetNbins() != nBins_x ||
+            h->GetYaxis()->GetXmin()  != min_y   ||
+            h->GetYaxis()->GetXmax()  != max_y   ||
+            h->GetYaxis()->GetNbins() != nBins_y   ) {
+            Log_debug( "All histograms in `t_hists_counts` do not have the same axes (same min, max, and bin counts).", m_verbosity_error );
+            return false;
+        }
+
     // Set bin widths
-    t_binWidth_s     = t_hists_emission->at( 0 )->GetXaxis()->GetBinWidth( 0 );
-    t_binWidth_theta = t_hists_emission->at( 0 )->GetYaxis()->GetBinWidth( 0 );
-    t_binWidth_phi   = t_hists_emission->at( 0 )->GetYaxis()->GetBinWidth( 0 );
+    t_binWidth_s     = t_hists_energies->at( 0 )->GetXaxis()->GetBinWidth( 0 );
+    t_binWidth_theta = t_hists_energies->at( 0 )->GetYaxis()->GetBinWidth( 0 );
+    t_binWidth_phi   = t_hists_energies->at( 0 )->GetYaxis()->GetBinWidth( 0 );
 
     return true;
 }
 
-bool DetectorResponsePredictor::load_hists_emission_tankWater( const vector< string >& t_hists_paths, 
-                                                                      const vector< int    >& t_hists_IDs  ,
-                                                                      const vector< string >& t_hists_names ) {
+bool DetectorResponsePredictor::load_hists_emission_tankWater( const vector< string >& t_hists_energies_paths,
+                                                               const vector< string >& t_hists_counts_paths  ,
+                                                               const vector< string >& t_hists_energies_names,
+                                                               const vector< string >& t_hists_counts_names  ,
+                                                               const vector< int    >& t_hists_IDs            );
     Log_debug( "Loading tank water emission histograms.", m_verbosity_debug );
     return load_hists_emission( m_hists_emission_tankWater, t_hists_paths             , 
                                 t_hists_IDs               , t_hists_names             , 
@@ -124,34 +173,16 @@ bool DetectorResponsePredictor::load_hists_emission_tankWater( const vector< str
                                 m_binWidth_phi_tankWater                                  );
 }
 
-bool DetectorResponsePredictor::load_hists_emission_MRDsci( const vector< string >& t_hists_paths, 
-                                                                   const vector< int    >& t_hists_IDs  ,
-                                                                   const vector< string >& t_hists_names ) {
+bool DetectorResponsePredictor::load_hists_emission_MRDsci( const vector< string >& t_hists_energies_paths,
+                                                            const vector< string >& t_hists_counts_paths  ,
+                                                            const vector< string >& t_hists_energies_names,
+                                                            const vector< string >& t_hists_counts_names  ,
+                                                            const vector< int    >& t_hists_IDs            );
     Log_debug( "Loading MRD scintilator emission histograms.", m_verbosity_debug );
     return load_hists_emission( m_hists_emission_MRDsci, t_hists_paths          , 
                                 t_hists_IDs            , t_hists_names          ,
                                 m_binWidth_s_MRDsci    , m_binWidth_theta_MRDsci,
                                 m_binWidth_phi_MRDsci                            );
-}
-
-bool DetectorResponsePredictor::load_hists_emission_tankWater_energies( const vector< string >& t_hists_paths, 
-                                                                               const vector< int    >& t_hists_IDs  ,
-                                                                               const vector< string >& t_hists_names ) {
-    Log_debug( "Loading tank water average emission energy histograms.", m_verbosity_debug );
-    return load_hists_emission( m_hists_emission_tankWater_energies, t_hists_paths             , 
-                                t_hists_IDs                        , t_hists_names             , 
-                                m_binWidth_s_tankWater             , m_binWidth_theta_tankWater, 
-                                m_binWidth_phi_tankWater                                       );
-}
-
-bool DetectorResponsePredictor::load_hists_emission_MRDsci_energies( const vector< string >& t_hists_paths, 
-                                                                            const vector< int    >& t_hists_IDs  ,
-                                                                            const vector< string >& t_hists_names ) {
-    Log_debug( "Loading MRD scintilator average emission energy histograms.", m_verbosity_debug );
-    return load_hists_emission( m_hists_emission_MRDsci_energies, t_hists_paths          , 
-                                t_hists_IDs                     , t_hists_names          ,
-                                m_binWidth_s_MRDsci             , m_binWidth_theta_MRDsci,
-                                m_binWidth_phi_MRDsci                                     );
 }
 
 template< typename type_hist >

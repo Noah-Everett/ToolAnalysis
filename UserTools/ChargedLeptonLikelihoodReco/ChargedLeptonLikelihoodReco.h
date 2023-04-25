@@ -64,10 +64,25 @@ private:
     /**/ unsigned int m_verbosity_SecondaryLeptonLikelihoodReco ;
     /**/ unsigned int m_verbosity_DetectorResponsePredictor     ;
     /**/
-    /**/ string       m_hists_emission_mu_tankWater_path        ;
-    /**/ string       m_hists_emission_e_tankWater_path         ;
-    /**/ string       m_hists_emission_mu_MRDsci_path           ;
-    /**/ string       m_hists_emission_e_MRDsci_path            ;
+    /**/ string       m_hists_emission_mu_tankWater_energies_path        ;
+    /**/ string       m_hists_emission_e_tankWater_energies_path         ;
+    /**/ string       m_hists_emission_mu_MRDsci_energies_path           ;
+    /**/ string       m_hists_emission_e_MRDsci_energies_path            ;
+    /**/
+    /**/ string       m_hists_emission_mu_tankWater_counts_path        ;
+    /**/ string       m_hists_emission_e_tankWater_counts_path         ;
+    /**/ string       m_hists_emission_mu_MRDsci_counts_path           ;
+    /**/ string       m_hists_emission_e_MRDsci_counts_path            ;
+    /**/
+    /**/ string       m_hists_emission_mu_tankWater_energies_name        ;
+    /**/ string       m_hists_emission_e_tankWater_energies_name         ;
+    /**/ string       m_hists_emission_mu_MRDsci_energies_name           ;
+    /**/ string       m_hists_emission_e_MRDsci_energies_name            ;
+    /**/
+    /**/ string       m_hists_emission_mu_tankWater_counts_name        ;
+    /**/ string       m_hists_emission_e_tankWater_counts_name         ;
+    /**/ string       m_hists_emission_mu_MRDsci_counts_name           ;
+    /**/ string       m_hists_emission_e_MRDsci_counts_name            ;
     /**/
     /**/ unsigned int m_hists_emission_mu_tankWater_energy_min  ;   
     /**/ unsigned int m_hists_emission_e_tankWater_energy_min   ;   
@@ -83,11 +98,6 @@ private:
     /**/ unsigned int m_hists_emission_e_tankWater_num          ;
     /**/ unsigned int m_hists_emission_mu_MRDsci_num            ;
     /**/ unsigned int m_hists_emission_e_MRDsci_num             ;
-    /**/
-    /**/ string       m_hists_emission_mu_tankWater_name        ;
-    /**/ string       m_hists_emission_e_tankWater_name         ;
-    /**/ string       m_hists_emission_mu_MRDsci_name           ;
-    /**/ string       m_hists_emission_e_MRDsci_name            ;
     /**/
     /**/ string       m_hists_dEdX_mu_tankWater_path            ;
     /**/ string       m_hists_dEdX_e_tankWater_path             ;
