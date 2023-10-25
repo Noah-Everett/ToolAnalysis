@@ -1,5 +1,5 @@
-#ifndef SecondaryLeptonLikelihoodReco_H
-#define SecondaryLeptonLikelihoodReco_H
+#ifndef ChargedLeptonLikelihoodReco_H
+#define ChargedLeptonLikelihoodReco_H
 
 #include <string>
 #include <iostream>
@@ -14,7 +14,7 @@ using std::string;
 using std::vector;
 
 /**
- * * \class SecondaryLeptonLikelihoodReco
+ * * \class ChargedLeptonLikelihoodReco
  *  *
  *   * Does stuff... Ill change this later... but will probably forget ):
  *   *
@@ -23,10 +23,10 @@ using std::vector;
  *   * Contact: noah.everett@mines.sdsmt.edu
  *   */
 
-class SecondaryLeptonLikelihoodReco: public Tool
+class ChargedLeptonLikelihoodReco: public Tool
 {
 public:
-    SecondaryLeptonLikelihoodReco() {}
+    ChargedLeptonLikelihoodReco() {}
     bool Initialise( string configfile, DataModel& data );
     bool Execute   ();
     bool Finalise  ();
@@ -61,7 +61,7 @@ private:
     /**/// Configuration Variables ///
     /**///////////////////////////////
     /**/
-    /**/ unsigned int m_verbosity_SecondaryLeptonLikelihoodReco ;
+    /**/ unsigned int m_verbosity_ChargedLeptonLikelihoodReco ;
     /**/ unsigned int m_verbosity_DetectorResponsePredictor     ;
     /**/
     /**/ string       m_hists_emission_mu_tankWater_energies_path        ;

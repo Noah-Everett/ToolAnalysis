@@ -104,25 +104,31 @@ public:
     /**/                                     const vector< int    >& t_hists_IDs            );
     /**/
     /**/ bool load_hist_transmission_tankWater( const string& t_hist_path,
-    /**/                                               const string& t_hist_name );
+    /**/                                        const string& t_hist_name );
     /**/ bool load_hist_transmission_MRDsci   ( const string& t_hist_path,
-    /**/                                               const string& t_hist_name );
+    /**/                                        const string& t_hist_name );
     /**/ bool load_hist_dEdX_tankWater        ( const string& t_hist_path,
-    /**/                                               const string& t_hist_name );
+    /**/                                        const string& t_hist_name );
     /**/ bool load_hist_dEdX_tankSteel        ( const string& t_hist_path,
-    /**/                                               const string& t_hist_name );
+    /**/                                        const string& t_hist_name );
     /**/ bool load_hist_dEdX_MRDsci           ( const string& t_hist_path,
-    /**/                                               const string& t_hist_name );
+    /**/                                        const string& t_hist_name );
     /**/ bool load_hist_dEdX_MRDiron          ( const string& t_hist_path,
-    /**/                                               const string& t_hist_name );
+    /**/                                        const string& t_hist_name );
     /**/
     /**/// Evaluate Histograms
-    /**/ double eval_hists_emission_tankWater( const double t_initialEnergy,
-    /**/                                              const double t_trackLength  , 
-    /**/                                              const double t_photonAngle   ) const;
-    /**/ double eval_hists_emission_MRDsci   ( const double t_initialEnergy,
-    /**/                                              const double t_trackLength  , 
-    /**/                                              const double t_photonAngle   ) const;
+    /**/ double eval_hists_emission_tankWater_energies( const double t_initialEnergy,
+    /**/                                                const double t_trackLength  , 
+    /**/                                                const double t_photonAngle   ) const;
+    /**/ double eval_hists_emission_tankWater_counts  ( const double t_initialEnergy,
+    /**/                                                const double t_trackLength  ,
+    /**/                                                const double t_photonAngle   ) const;
+    /**/ double eval_hists_emission_MRDsci_energies   ( const double t_initialEnergy,
+    /**/                                                const double t_trackLength  , 
+    /**/                                                const double t_photonAngle   ) const;
+    /**/ double eval_hists_emission_MRDsci_counts     ( const double t_initialEnergy,
+    /**/                                                const double t_trackLength  ,
+    /**/                                                const double t_photonAngle   ) const;
     /**/
     /**/ double eval_hist_transmission_tankWater( const double t_photonEnergy  ) const;
     /**/ double eval_hist_transmission_MRDsci   ( const double t_photonEnergy  ) const;

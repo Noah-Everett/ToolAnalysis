@@ -154,6 +154,6 @@ if (tool=="checkLAPPDStatus") ret=new checkLAPPDStatus;
 if (tool=="GetLAPPDEvents") ret=new GetLAPPDEvents;
 if (tool=="LAPPDDataDecoder") ret=new LAPPDDataDecoder;
 if (tool=="PythonScript") ret=new PythonScript;
-if (tool=="SecondaryLeptonLikelihoodReco") ret=new SecondaryLeptonLikelihoodReco;
+if (tool=="ChargedLeptonLikelihoodReco") ret=new ChargedLeptonLikelihoodReco;
 return ret;
 }
