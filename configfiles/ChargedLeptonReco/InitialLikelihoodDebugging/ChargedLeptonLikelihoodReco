@@ -1,6 +1,6 @@
 # VERBOSITY
-verbosity_SecondaryLeptonLikelihoodReco   3
-verbosity_DetectorResponsePredictor       3
+verbosity_ChargedLeptonLikelihoodReco     3 # 0=error, 1=warining, 2=message, and 3=debug
+verbosity_DetectorResponsePredictor       3 # 0=error, 1=warining, 2=message, and 3=debug
 
 # PHOTON EMISSION DATA
 hists_emission_mu_tankWater_energies_path /Data/water_doped-mu.root

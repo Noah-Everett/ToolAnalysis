@@ -48,10 +48,10 @@ private:
     /**/                        m_verbosity_warning = 1,
     /**/                        m_verbosity_message = 2,
     /**/                        m_verbosity_debug   = 3 };
-    /**/ map< unsigned int, string > m_verbosity_map{ { m_verbosity_error  , "ERROR  " },
+    /**/ map< unsigned int, string > m_verbosity_map{ { m_verbosity_error  , "ERROR"   },
     /**/                                              { m_verbosity_warning, "WARNING" },
     /**/                                              { m_verbosity_message, "MESSAGE" },
-    /**/                                              { m_verbosity_debug  , "DEBUG  " } };
+    /**/                                              { m_verbosity_debug  , "DEBUG"   } };
     /**/
     /**/////////////////
 
