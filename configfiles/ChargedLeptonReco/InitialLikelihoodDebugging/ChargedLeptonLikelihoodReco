@@ -58,10 +58,10 @@ hists_dEdX_mu_MRDiron_name                hists_dEdX_dEdX
 hists_dEdX_e_MRDiron_name                 hists_dEdX_dEdX
 
 # PHOTON TRANSMITTANCE DATA
-hists_transmittance_mu_tankWater_path     hist_transmittance
-hists_transmittance_e_tankWater_path      hist_transmittance
-hists_transmittance_mu_MRDsci_path        hist_transmittance
-hists_transmittance_e_MRDsci_path         hist_transmittance
+hists_transmittance_mu_tankWater_path     /Data/water_doped-mu.root
+hists_transmittance_e_tankWater_path      /Data/water_doped-e.root
+hists_transmittance_mu_MRDsci_path        /Data/MRDScintilator-mu.root
+hists_transmittance_e_MRDsci_path         /Data/MRDScintilator-e.root
 
 hists_transmittance_mu_tankWater_name     hist_transmittance
 hists_transmittance_e_tankWater_name      hist_transmittance

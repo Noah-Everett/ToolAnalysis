@@ -42,8 +42,9 @@ private:
     /**/// Messaging ///
     /**/////////////////
     /**/
-    /**/ inline void Log_debug( const string&  t_message, unsigned int t_verbosity );
-    /**/ inline void Log_debug( const string&& t_message, unsigned int t_verbosity );
+    /**/ inline void Log_debug   ( const string&  t_message      , unsigned int     t_verbosity );
+    /**/ inline void Log_debug   ( const string&& t_message      , unsigned int     t_verbosity );
+    /**/ inline void print_config( const string&  t_variable_name,          string& t_variable  );
     /**/ enum m_verbosity_enum{ m_verbosity_error   = 0,
     /**/                        m_verbosity_warning = 1,
     /**/                        m_verbosity_message = 2,

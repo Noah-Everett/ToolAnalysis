@@ -22,8 +22,6 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
     // Load variables from config file
     if( !get_config_verbosity  ( "verbosity_ChargedLeptonLikelihoodReco"    , m_verbosity_ChargedLeptonLikelihoodReco     ) ) return false;
     if( !get_config_verbosity  ( "verbosity_DetectorResponsePredictor"      , m_verbosity_DetectorResponsePredictor       ) ) return false;
-    Log_debug( "Verbosity level set to " + to_string( m_verbosity_ChargedLeptonLikelihoodReco ) + ".", m_verbosity_message );              
-    Log_debug( "Verbosity level set to " + to_string( m_verbosity_DetectorResponsePredictor   ) + ".", m_verbosity_message );              
                                                                                                                                            
     if( !get_config_path       ( "hists_emission_mu_tankWater_energies_path", m_hists_emission_mu_tankWater_energies_path ) ) return false;
     if( !get_config_path       ( "hists_emission_e_tankWater_energies_path" , m_hists_emission_e_tankWater_energies_path  ) ) return false;
@@ -222,6 +220,8 @@ inline bool ChargedLeptonLikelihoodReco::get_config_path( const string& t_variab
         Log_debug( temp_string + t_variable_name + "`: \"" + t_variable + "\". Path is not a \"regular file\" (cannot be a directory).", m_verbosity_error );
         return false;
     }
+
+    Log_debug( "Loaded path variable `" + t_variable_name + "`: \"" + t_variable + "\".", m_verbosity_debug );
     return true;
 }
 
@@ -235,6 +235,8 @@ inline bool ChargedLeptonLikelihoodReco::get_config_verbosity( const string& t_v
         Log_debug( temp_string + t_variable_name + "`: \"" + to_string( t_variable ) + "\". Must be 3 or less (0=error, 1=warining, 2=message, and 3=debug).", m_verbosity_error );
         return false;
     }
+
+    Log_debug( "Loaded verbosity variable `" + t_variable_name + "`: " + to_string( t_variable ) + ".", m_verbosity_debug );
     return true;
 }
 
@@ -248,6 +250,8 @@ inline bool ChargedLeptonLikelihoodReco::get_config_histName( const string& t_va
         Log_debug( temp_string + t_variable_name + "`: \"" + t_variable + "\". Must contain ';' (e.g. `histName;1`).", m_verbosity_error );
         return false;
     }
+
+    Log_debug( "Loaded histogram name variable `" + t_variable_name + "`: \"" + t_variable + "\".", m_verbosity_debug );
     return true;
 }
 
@@ -257,6 +261,8 @@ inline bool ChargedLeptonLikelihoodReco::get_config_unsignedInt( const string& t
         Log_debug( temp_string + t_variable_name + "`.", m_verbosity_error );
         return false;
     }
+
+    Log_debug( "Loaded unsigned int `" + t_variable_name + "`: " + to_string( t_variable ) + ".", m_verbosity_debug );
     return true;
 }
 
@@ -266,5 +272,7 @@ inline bool ChargedLeptonLikelihoodReco::get_config_double( const string& t_vari
         Log_debug( temp_string + t_variable_name + "`.", m_verbosity_error );
         return false;
     }
+
+    Log_debug( "Loaded double `" + t_variable_name + "`: " + to_string( t_variable ) + ".", m_verbosity_debug );
     return true;
 }
