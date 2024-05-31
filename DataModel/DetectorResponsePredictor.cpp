@@ -57,32 +57,32 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
                                                            double              & t_binWidth_s          ,
                                                            double              & t_binWidth_theta      ,
                                                            double              & t_binWidth_phi         ) {
-    Log_debug( "Loading emission histograms.", m_verbosity_debug );
+    LogD( "Loading emission histograms.", m_verbosity_debug );
     
     // Check IDs are strictly increasing
     if( m_hists_emission_initialEnergies.empty() ) {
         for( int i{ 0 }; i + 1 < t_hists_IDs.size(); i++ ) 
             if( t_hists_IDs[ i ] >= t_hists_IDs[ i + 1 ] ) {
-                Log_debug( "`t_hists_IDs` does not have strictly increasing entries.", m_verbosity_error );
+                LogD( "`t_hists_IDs` does not have strictly increasing entries.", m_verbosity_error );
                 return false;
             }
         m_hists_emission_initialEnergies = t_hists_IDs;
     }
     // Check IDs match existing IDs
     else if( m_hists_emission_initialEnergies != t_hists_IDs ) {
-        Log_debug( "Argument `t_hists_IDs` for `load_hists_emission_tankWater()`" 
+        LogD( "Argument `t_hists_IDs` for `load_hists_emission_tankWater()`" 
                    " and `load_hists_emission_MRDsci()` should match.", m_verbosity_error );
         return false;
     }
     // Check path vectors are the same size
     if( t_hists_energies_paths.size() != t_hists_counts_paths.size() ) {
-        Log_debug( "Argument `t_hists_energies_paths` and `t_hists_counts_paths`" 
+        LogD( "Argument `t_hists_energies_paths` and `t_hists_counts_paths`" 
                    " should be the same size.", m_verbosity_error );
         return false;
     }
     // Check name vectors are the same size
     if( t_hists_energies_names.size() != t_hists_counts_names.size() ) {
-        Log_debug( "Argument `t_hists_energies_names` and `t_hists_counts_names`" 
+        LogD( "Argument `t_hists_energies_names` and `t_hists_counts_names`" 
                    " should be the same size.", m_verbosity_error );
         return false;
     }
@@ -94,12 +94,12 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
     delete histReader;
     // If map wasnt returned
     if( !t_hists_energies ) {
-        Log_debug( "`t_hists_energies` wasn't set.", m_verbosity_error );
+        LogD( "`t_hists_energies` wasn't set.", m_verbosity_error );
         return false;
     }
     // Check that a hist with 0 energy exists
     if( t_hists_energies->find( 0 ) == t_hists_energies->end() ) {
-        Log_debug( "`t_hists_energies` doesnt contain a hist with zero energy.", m_verbosity_error );
+        LogD( "`t_hists_energies` doesnt contain a hist with zero energy.", m_verbosity_error );
         return false;
     }
     
@@ -110,18 +110,18 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
     delete histReader;
     // If map wasnt returned
     if( !t_hists_counts ) {
-        Log_debug( "`t_hists_counts` wasn't set.", m_verbosity_error );
+        LogD( "`t_hists_counts` wasn't set.", m_verbosity_error );
         return false;
     }
     // Check that a hist with 0 energy exists
     if( t_hists_counts->find( 0 ) == t_hists_counts->end() ) {
-        Log_debug( "`t_hists_counts` doesnt contain a hist with zero energy.", m_verbosity_error );
+        LogD( "`t_hists_counts` doesnt contain a hist with zero energy.", m_verbosity_error );
         return false;
     }
 
     // Check energy and count hist maps are the same size
     if( t_hists_energies_paths.size() != t_hists_counts_paths.size() ) {
-        Log_debug( "Argument `t_hists_energies_paths` and `t_hists_counts_paths`"
+        LogD( "Argument `t_hists_energies_paths` and `t_hists_counts_paths`"
                    " should be the same size.", m_verbosity_error );
         return false;
     }
@@ -141,7 +141,7 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
             h->GetYaxis()->GetXmin()  != min_y   ||
             h->GetYaxis()->GetXmax()  != max_y   ||
             h->GetYaxis()->GetNbins() != nBins_y   ) {
-            Log_debug( "All histograms in `t_hists_energies` do not have the same axes (same min, max, and bin counts).", m_verbosity_error );
+            LogD( "All histograms in `t_hists_energies` do not have the same axes (same min, max, and bin counts).", m_verbosity_error );
             return false;
         }
     }
@@ -155,7 +155,7 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
             h->GetYaxis()->GetXmin()  != min_y   ||
             h->GetYaxis()->GetXmax()  != max_y   ||
             h->GetYaxis()->GetNbins() != nBins_y   ) {
-            Log_debug( "All histograms in `t_hists_counts` do not have the same axes (same min, max, and bin counts).", m_verbosity_error );
+            LogD( "All histograms in `t_hists_counts` do not have the same axes (same min, max, and bin counts).", m_verbosity_error );
             return false;
         }
     }
@@ -173,7 +173,7 @@ bool DetectorResponsePredictor::load_hists_emission_tankWater( const vector< str
                                                                const vector< string >& t_hists_energies_names,
                                                                const vector< string >& t_hists_counts_names  ,
                                                                const vector< int    >& t_hists_IDs            ) {
-    Log_debug( "Loading tank water emission energy and count histograms.", m_verbosity_debug );
+    LogD( "Loading tank water emission energy and count histograms.", m_verbosity_debug );
     return load_hists_emission( m_hists_emission_tankWater_energies, m_hists_emission_tankWater_counts,
                                 t_hists_energies_paths             , t_hists_counts_paths             ,
                                 t_hists_energies_names             , t_hists_counts_names             ,
@@ -186,7 +186,7 @@ bool DetectorResponsePredictor::load_hists_emission_MRDsci( const vector< string
                                                             const vector< string >& t_hists_energies_names,
                                                             const vector< string >& t_hists_counts_names  ,
                                                             const vector< int    >& t_hists_IDs            ) {
-    Log_debug( "Loading MRD scintilator emission energy and count histograms.", m_verbosity_debug );
+    LogD( "Loading MRD scintilator emission energy and count histograms.", m_verbosity_debug );
     return load_hists_emission( m_hists_emission_MRDsci_energies, m_hists_emission_MRDsci_counts,
                                 t_hists_energies_paths          , t_hists_counts_paths          ,
                                 t_hists_energies_names          , t_hists_counts_names          ,
@@ -198,51 +198,51 @@ template< typename type_hist >
 bool DetectorResponsePredictor::load_hist( const type_hist*  m_hist    ,
                                            const string   & t_hist_path,
                                            const string   & t_hist_name ) {
-    Log_debug( "    Loading histogram.", m_verbosity_debug );
+    LogD( "    Loading histogram.", m_verbosity_debug );
     THistReader< bool, type_hist >* histReader{ new THistReader< bool, type_hist >( { t_hist_path }, { 1 }, { t_hist_name } ) };
     m_hist = histReader->get_histsMap_cp()->at( true );
     if( histReader ) {
         delete histReader;
-        Log_debug( "    Successfully loaded histogram.", m_verbosity_debug );
+        LogD( "    Successfully loaded histogram.", m_verbosity_debug );
         return true;
     } else
-        Log_debug( "    Failed to load histogram.", m_verbosity_debug );
+        LogD( "    Failed to load histogram.", m_verbosity_debug );
         return false;
 }
 
 bool DetectorResponsePredictor::load_hist_transmission_tankWater( const string& t_hist_path,
                                                                   const string& t_hist_name ) {
-    Log_debug( "Loading tank water transmission histogram.", m_verbosity_debug );
+    LogD( "Loading tank water transmission histogram.", m_verbosity_debug );
     return load_hist< TH1D >( m_hist_transmission_tankWater, t_hist_path, t_hist_name );
 }
 
 bool DetectorResponsePredictor::load_hist_transmission_MRDsci( const string& t_hist_path,
                                                                const string& t_hist_name ) {
-    Log_debug( "Loading MRD scintilator transmission histogram.", m_verbosity_debug );
+    LogD( "Loading MRD scintilator transmission histogram.", m_verbosity_debug );
     return load_hist< TH1D >( m_hist_transmission_MRDsci, t_hist_path, t_hist_name );
 }
 
 bool DetectorResponsePredictor::load_hist_dEdX_tankWater( const string& t_hist_path,
                                                           const string& t_hist_name ) {
-    Log_debug( "Loading tank water dEdX histogram.", m_verbosity_debug );
+    LogD( "Loading tank water dEdX histogram.", m_verbosity_debug );
     return load_hist< TH1D >( m_hist_dEdX_tankWater, t_hist_path, t_hist_name );
 }
 
 bool DetectorResponsePredictor::load_hist_dEdX_tankSteel( const string& t_hist_path,
                                                           const string& t_hist_name ) {
-    Log_debug( "Loading tank steel dEdX histogram.", m_verbosity_debug );
+    LogD( "Loading tank steel dEdX histogram.", m_verbosity_debug );
     return load_hist< TH1D >( m_hist_dEdX_tankSteel, t_hist_path, t_hist_name );
 }
 
 bool DetectorResponsePredictor::load_hist_dEdX_MRDsci( const string& t_hist_path,
                                                        const string& t_hist_name ) {
-    Log_debug( "Loading MRD scintilator dEdX histogram.", m_verbosity_debug );
+    LogD( "Loading MRD scintilator dEdX histogram.", m_verbosity_debug );
     return load_hist< TH1D >( m_hist_dEdX_MRDsci, t_hist_path, t_hist_name );
 }
 
 bool DetectorResponsePredictor::load_hist_dEdX_MRDiron( const string& t_hist_path,
                                                         const string& t_hist_name ) {
-    Log_debug( "Loading MRD iron dEdX histogram.", m_verbosity_debug );
+    LogD( "Loading MRD iron dEdX histogram.", m_verbosity_debug );
     return load_hist< TH1D >( m_hist_dEdX_MRDiron, t_hist_path, t_hist_name );
 }
 
@@ -252,11 +252,11 @@ pair< int, int > DetectorResponsePredictor::get_closestEmissionHists( const map<
     // which have energies just lower and just higher 
     // than t_initialEnergy.
     int index_lower{ 0 }, index_upper{ int(m_hists_emission_initialEnergies.size()) - 1 }; // typecast to int to avoid warning
-    Log_debug( "    Finding histograms with initial primary energies just below and above `t_initialEnergy` with bisection.", m_verbosity_debug );
+    LogD( "    Finding histograms with initial primary energies just below and above `t_initialEnergy` with bisection.", m_verbosity_debug );
     while( index_upper - index_lower != 1 ) {
-        Log_debug( "        [|]-Lower: index="  + to_string( index_lower ) + " && initEnergy=" + to_string( m_hists_emission_initialEnergies[ index_lower ] ) + "\n"
+        LogD( "        [|]-Lower: index="  + to_string( index_lower ) + " && initEnergy=" + to_string( m_hists_emission_initialEnergies[ index_lower ] ) + "\n"
                    "         \\--Upper: index=" + to_string( index_upper ) + " && initEnergy=" + to_string( m_hists_emission_initialEnergies[ index_upper ] ), m_verbosity_debug );
-        // Log_debug( m_temp_string + to_string( index_lower ) + " && initEnergy=", m_verbosity_debug );
+        // LogD( m_temp_string + to_string( index_lower ) + " && initEnergy=", m_verbosity_debug );
         if( m_hists_emission_initialEnergies[ ( index_lower + index_upper ) / 2 ] < t_initialEnergy )
             index_lower = ( index_lower + index_upper ) / 2;
         else if( m_hists_emission_initialEnergies[ ( index_lower + index_upper ) / 2 ] > t_initialEnergy )
@@ -270,7 +270,7 @@ double DetectorResponsePredictor::eval_hists_emission_values( const map< int, TH
                                                               const double             t_initialEnergy ,
                                                               const double             t_trackLength   ,
                                                               const double             t_photonAngle    ) const {
-    Log_debug( "    Evaluating emission histograms.", m_verbosity_debug );
+    LogD( "    Evaluating emission histograms.", m_verbosity_debug );
     pair< int, int > closestHists{ get_closestEmissionHists( t_hists_emission, t_initialEnergy ) };
 
     // Use linear inerpolation between upper and lower histograms
@@ -281,7 +281,7 @@ double DetectorResponsePredictor::eval_hists_emission_values( const map< int, TH
     double emission_upper{ t_hists_emission->at( initialEnergy_upper )->Interpolate( t_trackLength, t_photonAngle ) };
     double slope{ ( emission_upper - emission_upper ) / ( initialEnergy_lower - initialEnergy_upper ) };
     double value{ slope * ( t_initialEnergy - initialEnergy_lower ) + emission_lower }; // point slope
-    Log_debug( "    Interpolated value=" + to_string( value ) + ".", m_verbosity_debug );
+    LogD( "    Interpolated value=" + to_string( value ) + ".", m_verbosity_debug );
     return value;
 }
 
@@ -289,7 +289,7 @@ double DetectorResponsePredictor::eval_hists_emission_indicies( const map< int, 
                                                                 const double             t_initialEnergy   ,
                                                                 const unsigned int       t_trackLengthIndex, 
                                                                 const unsigned int       t_photonAngleIndex ) const {
-    Log_debug( "    Evaluating emission histograms.", m_verbosity_debug );
+    LogD( "    Evaluating emission histograms.", m_verbosity_debug );
     pair< int, int > closestHists{ get_closestEmissionHists( t_hists_emission, t_initialEnergy ) };
 
     // Use linear inerpolation between upper and lower histograms
@@ -300,88 +300,90 @@ double DetectorResponsePredictor::eval_hists_emission_indicies( const map< int, 
     double emission_upper{ t_hists_emission->at( initialEnergy_upper )->GetBinContent( t_trackLengthIndex, t_photonAngleIndex ) };
     double slope{ ( emission_upper - emission_upper ) / ( initialEnergy_lower - initialEnergy_upper ) };
     double value{ slope * ( t_initialEnergy - initialEnergy_lower ) + emission_lower }; // point slope
-    Log_debug( "    Interpolated value=" + to_string( value ) + ".", m_verbosity_debug );
+    LogD( "    Interpolated value=" + to_string( value ) + ".", m_verbosity_debug );
     return value;
 }
  
 double DetectorResponsePredictor::eval_hists_emission_tankWater_energies( const double t_initialEnergy,
                                                                           const double t_trackLength  , 
                                                                           const double t_photonAngle   ) const {
-    Log_debug( "Evaluating tank water emission energy histograms.", m_verbosity_debug );
+    LogD( "Evaluating tank water emission energy histograms.", m_verbosity_debug );
     return eval_hists_emission_values( m_hists_emission_tankWater_energies, t_initialEnergy, t_trackLength, t_photonAngle );
 }
 
 double DetectorResponsePredictor::eval_hists_emission_tankWater_counts( const double t_initialEnergy,
                                                                         const double t_trackLength  , 
                                                                         const double t_photonAngle   ) const {
-    Log_debug( "Evaluating tank water emission count histograms.", m_verbosity_debug );
+    LogD( "Evaluating tank water emission count histograms.", m_verbosity_debug );
     return eval_hists_emission_values( m_hists_emission_tankWater_counts, t_initialEnergy, t_trackLength, t_photonAngle );
 }
 
 double DetectorResponsePredictor::eval_hists_emission_MRDsci_energies( const double t_initialEnergy,
                                                                        const double t_trackLength  , 
                                                                        const double t_photonAngle   ) const {
-    Log_debug( "Evaluating MRD scintilator emission energy histograms.", m_verbosity_debug );
+    LogD( "Evaluating MRD scintilator emission energy histograms.", m_verbosity_debug );
     return eval_hists_emission_values( m_hists_emission_MRDsci_energies, t_initialEnergy, t_trackLength, t_photonAngle );
 }
 
 double DetectorResponsePredictor::eval_hists_emission_MRDsci_counts( const double t_initialEnergy,
                                                                      const double t_trackLength  , 
                                                                      const double t_photonAngle   ) const {
-    Log_debug( "Evaluating MRD scintilator emission count histograms.", m_verbosity_debug );
+    LogD( "Evaluating MRD scintilator emission count histograms.", m_verbosity_debug );
     return eval_hists_emission_values( m_hists_emission_MRDsci_counts, t_initialEnergy, t_trackLength, t_photonAngle );
 }
 
 double DetectorResponsePredictor::eval_hist_value( const TH1D  * t_hist,
                                                    const double  t_x    ) const {
-    Log_debug( "    Evaluating histogram", m_verbosity_debug );
+    LogD( "    Evaluating histogram", m_verbosity_debug );
     return t_hist->Interpolate( t_x );
 }
 
 double DetectorResponsePredictor::eval_hist_index( const TH1D       * t_hist  ,
                                                    const unsigned int t_xIndex ) const {
-    Log_debug( "    Evaluating histogram", m_verbosity_debug );
+    LogD( "    Evaluating histogram", m_verbosity_debug );
     return t_hist->GetBinContent( t_xIndex );
 }
 
 double DetectorResponsePredictor::eval_hist_transmission_tankWater( const double t_photonEnergy ) const {
-    Log_debug( "Evaluating tank water transmission histogram.", m_verbosity_debug );
+    LogD( "Evaluating tank water transmission histogram.", m_verbosity_debug );
     return eval_hist_value( m_hist_transmission_tankWater, t_photonEnergy );
 }
 
 double DetectorResponsePredictor::eval_hist_transmission_MRDsci( const double t_photonEnergy ) const {
-    Log_debug( "Evaluating MRD scintilator transmission histogram.", m_verbosity_debug );
+    LogD( "Evaluating MRD scintilator transmission histogram.", m_verbosity_debug );
     return eval_hist_value( m_hist_transmission_tankWater, t_photonEnergy );
 }
 
 double DetectorResponsePredictor::eval_hist_dEdX_tankWater( const double t_primaryEnergy ) const {
-    Log_debug( "Evaluating MRD scintilator dEdX histogram.", m_verbosity_debug );
+    LogD( "Evaluating MRD scintilator dEdX histogram.", m_verbosity_debug );
     return eval_hist_value( m_hist_dEdX_tankWater, t_primaryEnergy );
 }
 
 double DetectorResponsePredictor::eval_hist_dEdX_tankSteel( const double t_primaryEnergy ) const {
-    Log_debug( "Evaluating tank steel dEdX histogram.", m_verbosity_debug );
+    LogD( "Evaluating tank steel dEdX histogram.", m_verbosity_debug );
     return eval_hist_value( m_hist_dEdX_tankSteel, t_primaryEnergy );
 }
 
 double DetectorResponsePredictor::eval_hist_dEdX_MRDsci( const double t_primaryEnergy ) const {
-    Log_debug( "Evaluating MRD scinitilator dEdX histogram.", m_verbosity_debug );
+    LogD( "Evaluating MRD scinitilator dEdX histogram.", m_verbosity_debug );
     return eval_hist_value( m_hist_dEdX_MRDsci, t_primaryEnergy );
 }
 
 double DetectorResponsePredictor::eval_hist_dEdX_MRDiron( const double t_primaryEnergy ) const {
-    Log_debug( "Evaluating MRD ironr dEdX histogram.", m_verbosity_debug );
+    LogD( "Evaluating MRD ironr dEdX histogram.", m_verbosity_debug );
     return eval_hist_value( m_hist_dEdX_MRDiron, t_primaryEnergy );
 }
     
-void DetectorResponsePredictor::Log_debug( const string& t_message, const unsigned int t_verbosity ) const {
+void DetectorResponsePredictor::Log_debug( const string& t_message, const unsigned int t_verbosity, 
+                                           const string& t_file, const string& t_function, const int t_line ) const {
     if( t_verbosity >= m_verbosity )
-        cout << "DataModel_DetectorResponsePredictor || " << __FILE__ << "::" << __FUNCTION__ << " (" << __LINE__ << "): " << t_message;
+        cout << "DataModel_DetectorResponsePredictor || " << t_file << "::" << t_function << " (" << t_line << "): " << t_message;
 }
 
-void DetectorResponsePredictor::Log_debug( const string&& t_message, const unsigned int t_verbosity ) const {
+void DetectorResponsePredictor::Log_debug( const string&& t_message, const unsigned int t_verbosity,
+                                           const string&& t_file, const string&& t_function, const int t_line ) const {
     if( t_verbosity >= m_verbosity )
-        cout << "DataModel_DetectorResponsePredictor || " << __FILE__ << "::" << __FUNCTION__ << " (" << __LINE__ << "): " << t_message;
+        cout << "DataModel_DetectorResponsePredictor || " << t_file << "::" << t_function << " (" << t_line << "): " << t_message;
 }
 
 double DetectorResponsePredictor::get_angle( const TVector3& t_vector_1, const TVector3& t_vector_2 ) const {
@@ -495,7 +497,7 @@ double DetectorResponsePredictor::get_expected_height( Particle* t_particle, Det
         get_transmittance = &DetectorResponsePredictor::get_transmittance_MRDsci;
         get_acceptance = &DetectorResponsePredictor::get_acceptance_MRD;
     } else {
-        Log_debug( "Detector::DetectorElement is not \"PMT\", \"LAPPD\", or \"MRD\", it is \"" + t_detector->GetDetectorElement() + "\". Returning 0.", m_verbosity_debug );
+        LogD( "Detector::DetectorElement is not \"PMT\", \"LAPPD\", or \"MRD\", it is \"" + t_detector->GetDetectorElement() + "\". Returning 0.", m_verbosity_debug );
         return 0;
     }
     const TH2D  * referenceHist         { hists_emission_counts->at( 0 ) };

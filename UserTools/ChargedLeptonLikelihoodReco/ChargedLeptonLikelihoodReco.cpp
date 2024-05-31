@@ -86,14 +86,6 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
     if( !get_config_histName   ( "hists_transmittance_mu_MRDsci_name"       , m_hists_transmittance_mu_MRDsci_name        ) ) return false; 
     if( !get_config_histName   ( "hists_transmittance_e_MRDsci_name"        , m_hists_transmittance_e_MRDsci_name         ) ) return false; 
 
-    // Load digits
-    if( !m_data->Stores.at( "RecoEvent" )->Get( "RecoDigit", m_digits ) ){
-        string temp_string{ "Cannot retrieve RecoDigits. No digit from the RecoEvent!" };
-        Log_debug( temp_string, m_verbosity_error ); 
-        return false;
-    }
-    m_vtxGeo->LoadDigits( m_digits );
-
     // Initialize DetectorResponsePredictor
     const unsigned int num_materials{ 2 };
     const unsigned int num_particles{ 2 };
@@ -144,7 +136,7 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
                                                                                                   hists_emission_energies_names_cur, hists_emission_counts_names_cur,
                                                                                                   hists_emission_IDs_cur                                             ) ) {
                 string temp_string{ "Cannot load emission histograms (nMaterial=" };
-                Log_debug( temp_string + to_string( nMaterial ) + "and nParticle=" + to_string( nParticle ) + ").", m_verbosity_error );
+                LogD( temp_string + to_string( nMaterial ) + "and nParticle=" + to_string( nParticle ) + ").", m_verbosity_error );
                 return false;
             }
         }
@@ -182,6 +174,14 @@ bool ChargedLeptonLikelihoodReco::Execute()
     Log( "===========================================================================================", m_verbosity_debug, m_verbosity_ChargedLeptonLikelihoodReco );
     Log( "ChargedLeptonLikelihoodReco Tool: Executing", m_verbosity_debug, m_verbosity_ChargedLeptonLikelihoodReco );
 
+    // Load digits
+    if( !m_data->Stores.at( "RecoEvent" )->Get( "RecoDigit", m_digits ) ){
+        string temp_string{ "Cannot retrieve RecoDigits. No digit from the RecoEvent!" };
+        LogD( temp_string, m_verbosity_error ); 
+        return false;
+    }
+    m_vtxGeo->LoadDigits( m_digits );
+
     return true;
 }
 
@@ -194,85 +194,87 @@ bool ChargedLeptonLikelihoodReco::Finalise()
     return true;
 }
 
-inline void ChargedLeptonLikelihoodReco::Log_debug( const string& t_message, unsigned int t_verbosity ) {
+inline void ChargedLeptonLikelihoodReco::Log_debug( const string& t_message, unsigned int t_verbosity, 
+                                                    const string& t_file   , const string& t_function, int t_line ) {
     if( t_verbosity <= m_verbosity_ChargedLeptonLikelihoodReco )
         cout << "UserTool_ChargedLeptonLikelihoodReco || " << m_verbosity_map[ t_verbosity ] << " || " 
-             << __FILE__ << "::" << __FUNCTION__ << " (" << __LINE__ << "): " << t_message << endl;
+             << t_file << "::" << t_function << " (" << t_line << "): " << t_message << endl;
 }
 
-inline void ChargedLeptonLikelihoodReco::Log_debug( const string&& t_message, unsigned int t_verbosity ) {
+inline void ChargedLeptonLikelihoodReco::Log_debug( const string&& t_message, unsigned int t_verbosity,
+                                                    const string& t_file   , const string& t_function, int t_line ) {
     if( t_verbosity <= m_verbosity_ChargedLeptonLikelihoodReco )
         cout << "UserTool_ChargedLeptonLikelihoodReco || " << m_verbosity_map[ t_verbosity ] << " || " 
-             << __FILE__ << "::" << __FUNCTION__ << " (" << __LINE__ << "): " << t_message << endl;
+             << t_file << "::" << t_function << " (" << t_line << "): " << t_message << endl;
 }
 
 inline bool ChargedLeptonLikelihoodReco::get_config_path( const string& t_variable_name, string& t_variable ) {
     if( !m_variables.Get( t_variable_name, t_variable ) ) {
         string temp_string{ "Unable to load path variable `" };
-        Log_debug( temp_string + t_variable_name + "`.", m_verbosity_error );
+        LogD( temp_string + t_variable_name + "`.", m_verbosity_error );
         return false;
     } else if( !exists( t_variable ) ) {
         string temp_string{ "Invalid path for `" };
-        Log_debug( temp_string + t_variable_name + "`: \"" + t_variable + "\". Path does not exist.", m_verbosity_error );
+        LogD( temp_string + t_variable_name + "`: \"" + t_variable + "\". Path does not exist.", m_verbosity_error );
         return false;
     } else if( !is_regular_file( t_variable ) ) {
         string temp_string{ "Invalid path for `" };
-        Log_debug( temp_string + t_variable_name + "`: \"" + t_variable + "\". Path is not a \"regular file\" (cannot be a directory).", m_verbosity_error );
+        LogD( temp_string + t_variable_name + "`: \"" + t_variable + "\". Path is not a \"regular file\" (cannot be a directory).", m_verbosity_error );
         return false;
     }
 
-    Log_debug( "Loaded path variable `" + t_variable_name + "`: \"" + t_variable + "\".", m_verbosity_debug );
+    LogD( "Loaded path variable `" + t_variable_name + "`: \"" + t_variable + "\".", m_verbosity_debug );
     return true;
 }
 
 inline bool ChargedLeptonLikelihoodReco::get_config_verbosity( const string& t_variable_name, unsigned int& t_variable ) {
     if( !m_variables.Get( t_variable_name, t_variable ) ) {
         string temp_string{ "Unable to load verbosity variable `" };
-        Log_debug( temp_string + t_variable_name + "`.", m_verbosity_error );
+        LogD( temp_string + t_variable_name + "`.", m_verbosity_error );
         return false;
     } else if( t_variable > 3 ) {
         string temp_string{ "Invalid verbosity value for `" };
-        Log_debug( temp_string + t_variable_name + "`: \"" + to_string( t_variable ) + "\". Must be 3 or less (0=error, 1=warining, 2=message, and 3=debug).", m_verbosity_error );
+        LogD( temp_string + t_variable_name + "`: \"" + to_string( t_variable ) + "\". Must be 3 or less (0=error, 1=warining, 2=message, and 3=debug).", m_verbosity_error );
         return false;
     }
 
-    Log_debug( "Loaded verbosity variable `" + t_variable_name + "`: " + to_string( t_variable ) + ".", m_verbosity_debug );
+    LogD( "Loaded verbosity variable `" + t_variable_name + "`: " + to_string( t_variable ) + ".", m_verbosity_debug );
     return true;
 }
 
 inline bool ChargedLeptonLikelihoodReco::get_config_histName( const string& t_variable_name, string& t_variable ) {
     if( !m_variables.Get( t_variable_name, t_variable ) ) {
         string temp_string{ "Unable to load histogram name variable `" };
-        Log_debug( temp_string + t_variable_name + "`.", m_verbosity_error );
+        LogD( temp_string + t_variable_name + "`.", m_verbosity_error );
         return false;
     } else if( t_variable.find( ';' ) != string::npos ) {
         string temp_string{ "Invalid histogram name for `" };
-        Log_debug( temp_string + t_variable_name + "`: \"" + t_variable + "\". Must contain ';' (e.g. `histName;1`).", m_verbosity_error );
+        LogD( temp_string + t_variable_name + "`: \"" + t_variable + "\". Must contain ';' (e.g. `histName;1`).", m_verbosity_error );
         return false;
     }
 
-    Log_debug( "Loaded histogram name variable `" + t_variable_name + "`: \"" + t_variable + "\".", m_verbosity_debug );
+    LogD( "Loaded histogram name variable `" + t_variable_name + "`: \"" + t_variable + "\".", m_verbosity_debug );
     return true;
 }
 
 inline bool ChargedLeptonLikelihoodReco::get_config_unsignedInt( const string& t_variable_name, unsigned int& t_variable ) {
     if( !m_variables.Get( t_variable_name, t_variable ) ) {
         string temp_string{ "Unable to load unsigned int `" };
-        Log_debug( temp_string + t_variable_name + "`.", m_verbosity_error );
+        LogD( temp_string + t_variable_name + "`.", m_verbosity_error );
         return false;
     }
 
-    Log_debug( "Loaded unsigned int `" + t_variable_name + "`: " + to_string( t_variable ) + ".", m_verbosity_debug );
+    LogD( "Loaded unsigned int `" + t_variable_name + "`: " + to_string( t_variable ) + ".", m_verbosity_debug );
     return true;
 }
 
 inline bool ChargedLeptonLikelihoodReco::get_config_double( const string& t_variable_name, double& t_variable ) {
     if( !m_variables.Get( t_variable_name, t_variable ) ) {
         string temp_string{ "Unable to load double `" };
-        Log_debug( temp_string + t_variable_name + "`.", m_verbosity_error );
+        LogD( temp_string + t_variable_name + "`.", m_verbosity_error );
         return false;
     }
 
-    Log_debug( "Loaded double `" + t_variable_name + "`: " + to_string( t_variable ) + ".", m_verbosity_debug );
+    LogD( "Loaded double `" + t_variable_name + "`: " + to_string( t_variable ) + ".", m_verbosity_debug );
     return true;
 }

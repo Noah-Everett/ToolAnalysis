@@ -1,4 +1,4 @@
-//*/////////////////////////////////////////////////////////////////////////////////////////////*//
+/*/////////////////////////////////////////////////////////////////////////////////////////////*//
 //*//                                DetectorResponsePredictor.h                              //*//
 //*/////////////////////////////////////////////////////////////////////////////////////////////*//
 //*//                                                                                         //*//
@@ -169,8 +169,9 @@ protected:
     /**/                        m_verbosity_message = 2,
     /**/                        m_verbosity_debug   = 3 };
     /**/
-    /**/ void Log_debug( const string&  t_message, const unsigned int t_verbosity ) const;
-    /**/ void Log_debug( const string&& t_message, const unsigned int t_verbosity ) const;
+    /**/ #define LogD     (                t_message,                    t_verbosity ) Log_debug( t_message, t_verbosity, __FILE__, __FUNCTION__, __LINE__ )
+    /**/ void    Log_debug( const string&  t_message, const unsigned int t_verbosity, const string& t_file, const string& t_function, int t_line ) const;
+    /**/ void    Log_debug( const string&& t_message, const unsigned int t_verbosity, const string& t_file, const string& t_function, int t_line ) const;
     /**/
     /**//////////////
 
