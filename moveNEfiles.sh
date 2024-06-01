@@ -16,11 +16,11 @@ if [ ! -d "$TARGET_DIR" ]; then
 fi
 
 # Move files
-cp configfiles/ChargedLeptonReco ${TARGET_DIR}/configfiles
-cp UserTools/ChargedLeptonLikelihoodReco ${TARGET_DIR}/UserTools
-cp DataModel/DetectorResponsePredictor.* ${TARGET_DIR}/DataModel
-cp DataModel/LikelihoodCalculator.* ${TARGET_DIR}/DataModel
-cp DataModel/THistReader.h ${TARGET_DIR}/DataModel
+cp -r configfiles/ChargedLeptonReco ${TARGET_DIR}/configfiles
+cp -r UserTools/ChargedLeptonLikelihoodReco ${TARGET_DIR}/UserTools
+cp    DataModel/DetectorResponsePredictor.* ${TARGET_DIR}/DataModel
+cp    DataModel/LikelihoodCalculator.* ${TARGET_DIR}/DataModel
+cp    DataModel/THistReader.h ${TARGET_DIR}/DataModel
 
 # Check if the move command was successful
 if [ $? -eq 0 ]; then
