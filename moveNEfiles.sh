@@ -17,10 +17,10 @@ fi
 
 # Move files
 mv configfiles/ChargedLeptonReco ${TARGET_DIR}/configfiles
-mv UserTools/ChargedLeptonLikelihoodReco UserTools
-mv DataModel/DetectorResponsePredictor.* DataModel
-mv DataModel/LikelihoodCalculator.* DataModel
-mv DataModel/THistReader.h DataModel
+mv UserTools/ChargedLeptonLikelihoodReco ${TARGET_DIR}/UserTools
+mv DataModel/DetectorResponsePredictor.* ${TARGET_DIR}/DataModel
+mv DataModel/LikelihoodCalculator.* ${TARGET_DIR}/DataModel
+mv DataModel/THistReader.h ${TARGET_DIR}/DataModel
 
 # Check if the move command was successful
 if [ $? -eq 0 ]; then
