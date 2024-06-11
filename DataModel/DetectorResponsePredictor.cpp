@@ -89,11 +89,11 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
 
     // Load energy hist map
     THistReader< int, TH2D >* histReader{ new THistReader< int, TH2D >( t_hists_energies_paths, t_hists_IDs, t_hists_energies_names ) };
-    /* DELETE */ cout << "t_hists_energies.size() = " << t_hists_energies.size() << endl;
-    /* DELETE */ for (auto& hist : t_hists_energies) {
-    /* DELETE */     cout << "hist.first = " << hist.first << endl;
-    /* DELETE */     cout << "hist.second = " << hist.second << endl;
-    /* DELETE */     cout << endl;
+    /* DELETE */ cout << "t_hists_energies = " << t_hists_energies << endl;
+    /* DELETE */ cout << "t_hists_energies->size() = " << t_hists_energies->size() << endl;
+    /* DELETE */ for( pair< int, TH2D* > hist : *t_hists_energies ) {
+    /* DELETE */     cout << "    hist.first = " << hist.first << endl;
+    /* DELETE */     cout << "    hist.second = " << hist.second << endl;
     /* DELETE */ }
     if( t_hists_energies ) delete t_hists_energies;
     t_hists_energies = histReader->get_histsMap_cp();
