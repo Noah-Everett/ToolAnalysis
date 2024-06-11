@@ -106,7 +106,7 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
     // Load counts hist map
     histReader = new THistReader< int, TH2D >( t_hists_counts_paths, t_hists_IDs, t_hists_counts_names );
     if( t_hists_counts ) delete t_hists_counts;
-    *t_hists_counts = *( histReader->get_histsMap_cp() );
+    t_hists_counts = histReader->get_histsMap_cp();
     delete histReader;
     // If map wasnt returned
     if( !t_hists_counts ) {
