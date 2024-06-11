@@ -90,7 +90,7 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
     // Load energy hist map
     THistReader< int, TH2D >* histReader{ new THistReader< int, TH2D >( t_hists_energies_paths, t_hists_IDs, t_hists_energies_names ) };
     if( t_hists_energies ) delete t_hists_energies;
-    *t_hists_energies = *( histReader->get_histsMap_cp() );
+    t_hists_energies = histReader->get_histsMap_cp();
     delete histReader;
     // If map wasnt returned
     if( !t_hists_energies ) {
