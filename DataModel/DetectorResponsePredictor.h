@@ -195,10 +195,10 @@ protected:
     /**/
     /**/// Emission Histograms
     /**/ vector< int        >  m_hists_emission_initialEnergies;
-    /**/ map   < int, TH2D* >* m_hists_emission_tankWater_energies;
-    /**/ map   < int, TH2D* >* m_hists_emission_tankWater_counts;
-    /**/ map   < int, TH2D* >* m_hists_emission_MRDsci_energies;
-    /**/ map   < int, TH2D* >* m_hists_emission_MRDsci_counts;
+    /**/ map   < int, TH2D* >* m_hists_emission_tankWater_energies{ nullptr };
+    /**/ map   < int, TH2D* >* m_hists_emission_tankWater_counts  { nullptr };
+    /**/ map   < int, TH2D* >* m_hists_emission_MRDsci_energies   { nullptr };
+    /**/ map   < int, TH2D* >* m_hists_emission_MRDsci_counts     { nullptr };
     /**/ double                m_binWidth_s_tankWater;
     /**/ double                m_binWidth_s_MRDsci;
     /**/ double                m_binWidth_theta_tankWater;
@@ -207,12 +207,12 @@ protected:
     /**/ double                m_binWidth_phi_MRDsci;
     /**/
     /**/// Other Histograms
-    /**/ TH1D* m_hist_transmission_tankWater;
-    /**/ TH1D* m_hist_transmission_MRDsci;
-    /**/ TH1D* m_hist_dEdX_tankWater;
-    /**/ TH1D* m_hist_dEdX_tankSteel;
-    /**/ TH1D* m_hist_dEdX_MRDsci;
-    /**/ TH1D* m_hist_dEdX_MRDiron;
+    /**/ TH1D* m_hist_transmission_tankWater{ nullptr };
+    /**/ TH1D* m_hist_transmission_MRDsci   { nullptr };
+    /**/ TH1D* m_hist_dEdX_tankWater        { nullptr };
+    /**/ TH1D* m_hist_dEdX_tankSteel        { nullptr };
+    /**/ TH1D* m_hist_dEdX_MRDsci           { nullptr };
+    /**/ TH1D* m_hist_dEdX_MRDiron          { nullptr };
     /**/
     /**/// Misc.
     /**/ map< int, double >* m_map_particleMasses{ new map< int, double >{ { 11, 0.5109989461 }, { -11, 0.5109989461 }, 
