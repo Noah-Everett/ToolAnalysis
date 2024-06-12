@@ -172,9 +172,9 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
     /* DELETE */ }
 
     // Set bin widths
-    t_binWidth_s     = t_hists_energies->at( 0 ).second()->GetXaxis()->GetBinWidth( 0 );
-    t_binWidth_theta = t_hists_energies->at( 0 ).second()->GetYaxis()->GetBinWidth( 0 );
-    t_binWidth_phi   = t_hists_energies->at( 0 ).second()->GetYaxis()->GetBinWidth( 0 );
+    t_binWidth_s     = t_hists_energies->begin()->second()->GetXaxis()->GetBinWidth( 0 );
+    t_binWidth_theta = t_hists_energies->begin()->second()->GetYaxis()->GetBinWidth( 0 );
+    t_binWidth_phi   = t_hists_energies->begin()->second()->GetYaxis()->GetBinWidth( 0 );
 
     return true;
 }
