@@ -105,9 +105,10 @@ private:
 /**/     for( int i{ 0 }; i < t_hists_paths.size(); i++ ) {
 /**/         file = new TFile( t_hists_paths[ i ].c_str() );
 /**/ 	     entry.first = t_hists_IDs[ i ];
-/**/         entry.second = ( type_hist* )file->Get( t_hists_names[ i ].c_str() );
-/**/         cout << "binWidth 1: " << entry.second->GetBinWidth( 1 ) << endl;
-/**/         cout << "binWidth 0: " << entry.second->GetBinWidth( 0 ) << endl;
+// /**/         entry.second = ( type_hist* )file->Get( t_hists_names[ i ].c_str() );
+/**/         file->GetObject( t_hists_names[ i ].c_str(), entry.second );
+/* DELETE */         cout << "binWidth 1: " << entry.second->GetBinWidth( 1 ) << endl;
+/* DELETE */         cout << "binWidth 0: " << entry.second->GetBinWidth( 0 ) << endl;
 /**/         m_hists->insert( entry );
 /**/         if( file ) delete file;
 /**/     }
