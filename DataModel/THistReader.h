@@ -151,7 +151,8 @@ private:
 /**/ 
 /**/     if( m_hists->size() != t_hists_paths.size() )
 /**/         cout << "Error: Not all histograms were loaded" << endl;
-/* DELETE */ for( auto it = m_hists->end(); it != m_hists->begin(); it-- ) {
+/* DELETE */ for( auto it = m_hists->end(); it != m_hists->begin(); ) {
+/* DELETE */     --it;
 /* DELETE */     cout << "it->first = " << it->first << endl;
 /* DELETE */     auto temp = it->second;
 /* DELETE */     cout << "temp = " << temp << endl;
