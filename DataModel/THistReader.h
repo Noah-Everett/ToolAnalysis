@@ -133,6 +133,8 @@ private:
 /**/             continue;
 /**/         }
 /* DELETE */ cout << "entry.second->GetName() = " << entry.second->GetName() << endl;
+/* DELETE */ cout << "entry.second->GetTitle() = " << entry.second->GetTitle() << endl;
+/* DELETE */ cout << "entry.second->GetEntries() = " << entry.second->GetEntries() << endl;
 /**/
 /**/         const auto [ it, success ] = m_hists->insert( entry );
 /* DELETE */ cout << "it = " << it->first << endl;
