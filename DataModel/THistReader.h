@@ -104,26 +104,30 @@ private:
 /**/         TFile file{ t_hists_paths[ i ].c_str() };
 /**/         if( file.IsZombie() ) {
 /**/             cout << "Error: Could not open file with path " << t_hists_paths[ i ] << endl;
-/**/             return;
+/**/             continue;
 /**/         }
 /**/
-/**/         pair< type_ID, type_hist* > entry;
-/**/ 	     entry.first = t_hists_IDs[ i ];
+/**/         pair< type_ID, type_hist* >* entry{ new pair< type_ID, type_hist* > };
+/**/ 	     entry->first = t_hists_IDs[ i ];
 /**/
 /**/         type_hist* temp{ nullptr };
 /**/         file.GetObject( t_hists_names[ i ].c_str(), temp );
 /**/         if( !temp ) {
 /**/             cout << "Error: Could not find histogram with name " << t_hists_names[ i ] << endl;
-/**/             return;
+/**/             continue;
 /**/         }
-/**/         entry.second = dynamic_cast< type_hist* >( temp->Clone() );
-/**/         if( !entry.second ) {
+/**/
+/**/         entry->second = dynamic_cast< type_hist* >( temp->Clone() );
+/**/         if( !entry->second ) {
 /**/             cout << "Error: Could not cast histogram to type " << typeid( type_hist ).name() << endl;
-/**/             return;
+/**/             continue;
 /**/         }
 /**/
 /**/         m_hists->insert( entry );
 /**/     }
+/**/ 
+/**/     if( m_hists->size() != t_hists_paths.size() )
+/**/         cout << "Error: Not all histograms were loaded" << endl;
 /**/ }
 /**/
 /**/ template< typename type_ID, typename type_hist >
