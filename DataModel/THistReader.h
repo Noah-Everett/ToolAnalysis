@@ -103,6 +103,9 @@ private:
 /**/     TFile* file{ nullptr };
 /**/     pair< type_ID, type_hist* > entry;
 /**/     for( int i{ 0 }; i < t_hists_paths.size(); i++ ) {
+/* DELETE */ cout << "t_hists_paths[ i ] = " << t_hists_paths[ i ] << endl;
+/* DELETE */ cout << "t_hists_IDs[ i ] = " << t_hists_IDs[ i ] << endl;
+/* DELETE */ cout << "t_hists_names[ i ] = " << t_hists_names[ i ] << endl;
 /**/         file = new TFile( t_hists_paths[ i ].c_str() );
 /**/ 	     entry.first = t_hists_IDs[ i ];
 /**/         file->GetObject( t_hists_names[ i ].c_str(), entry.second );
