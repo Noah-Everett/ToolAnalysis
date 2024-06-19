@@ -113,9 +113,11 @@ private:
 /**/             cout << "Error: Could not find histogram with name " << t_hists_names[ i ] << endl;
 /**/             return;
 /**/         }
-/**/         entry.second->Draw();
+/* DELETE */ cout << "entry.first = " << entry.first << endl;
+/* DELETE */ cout << "entry.second = " << entry.second << endl;
 /**/         m_hists->insert( entry );
 /**/         if( file ) delete file;
+/* DELETE */ cout << endl;
 /**/     }
 /**/ }
 /**/
