@@ -132,8 +132,9 @@ private:
 /**/             cout << "Error: Could not cast histogram to type " << typeid( type_hist ).name() << endl;
 /**/             continue;
 /**/         }
+/* DELETE */ cout << "entry.second->GetName() = " << entry.second->GetName() << endl;
 /**/
-/**/         const auto [it, success] = m_hists->insert( entry );
+/**/         const auto [ it, success ] = m_hists->insert( entry );
 /* DELETE */ cout << "it = " << it->first << endl;
 /* DELETE */ cout << "success = " << success << endl;
 /**/         if( !success )
