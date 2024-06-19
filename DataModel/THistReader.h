@@ -103,6 +103,8 @@ private:
 /**/     for( int i{ 0 }; i < t_hists_paths.size(); i++ ) {
 /**/         TFile file{ t_hists_paths[ i ].c_str() };
 /**/         pair< type_ID, type_hist* > entry;
+/* DELETE */ cout << "entry.first = " << entry.first << endl;
+/* DELETE */ cout << "entry.second = " << entry.second << endl;
 /* DELETE */ cout << "t_hists_paths[ i ] = " << t_hists_paths[ i ] << endl;
 /* DELETE */ cout << "t_hists_IDs[ i ] = " << t_hists_IDs[ i ] << endl;
 /* DELETE */ cout << "t_hists_names[ i ] = " << t_hists_names[ i ] << endl;
