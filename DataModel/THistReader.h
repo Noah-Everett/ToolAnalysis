@@ -102,24 +102,27 @@ private:
 /**/
 /**/     for( int i{ 0 }; i < t_hists_paths.size(); i++ ) {
 /**/         TFile file{ t_hists_paths[ i ].c_str() };
+/**/         if( file.IsZombie() ) {
+/**/             cout << "Error: Could not open file with path " << t_hists_paths[ i ] << endl;
+/**/             return;
+/**/         }
+/**/
 /**/         pair< type_ID, type_hist* > entry;
-/* DELETE */ cout << "entry.first = " << entry.first << endl;
-/* DELETE */ cout << "entry.second = " << entry.second << endl;
-/* DELETE */ cout << "t_hists_paths[ i ] = " << t_hists_paths[ i ] << endl;
-/* DELETE */ cout << "t_hists_IDs[ i ] = " << t_hists_IDs[ i ] << endl;
-/* DELETE */ cout << "t_hists_names[ i ] = " << t_hists_names[ i ] << endl;
 /**/ 	     entry.first = t_hists_IDs[ i ];
-// /**/         file.GetObject( t_hists_names[ i ].c_str(), entry.second );
-// /**/         entry.second = (type_hist*)file.Get( t_hists_names[ i ].c_str() );
-/**/         entry.second = new type_hist{ *( (type_hist*)file.Get( t_hists_names[ i ].c_str() ) ) };
-/**/         if( !entry.second ) {
+/**/
+/**/         type_hist* temp{ nullptr };
+/**/         file.GetObject( t_hists_names[ i ].c_str(), temp );
+/**/         if( !temp ) {
 /**/             cout << "Error: Could not find histogram with name " << t_hists_names[ i ] << endl;
 /**/             return;
 /**/         }
-/* DELETE */ cout << "entry.first = " << entry.first << endl;
-/* DELETE */ cout << "entry.second = " << entry.second << endl;
+/**/         entry.second = dynamic_cast< type_hist* >( temp->Clone() );
+/**/         if( !entry.second ) {
+/**/             cout << "Error: Could not cast histogram to type " << typeid( type_hist ).name() << endl;
+/**/             return;
+/**/         }
+/**/
 /**/         m_hists->insert( entry );
-/* DELETE */ cout << endl;
 /**/     }
 /**/ }
 /**/
