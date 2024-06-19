@@ -110,7 +110,8 @@ private:
 /* DELETE */ cout << "t_hists_names[ i ] = " << t_hists_names[ i ] << endl;
 /**/ 	     entry.first = t_hists_IDs[ i ];
 // /**/         file.GetObject( t_hists_names[ i ].c_str(), entry.second );
-/**/         entry.second = (type_hist*)file.Get( t_hists_names[ i ].c_str() );
+// /**/         entry.second = (type_hist*)file.Get( t_hists_names[ i ].c_str() );
+/**/         entry.second = new type_hist{ *( (type_hist*)file.Get( t_hists_names[ i ].c_str() ) ) };
 /**/         if( !entry.second ) {
 /**/             cout << "Error: Could not find histogram with name " << t_hists_names[ i ] << endl;
 /**/             return;
