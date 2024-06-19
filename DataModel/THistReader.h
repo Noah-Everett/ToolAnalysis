@@ -152,6 +152,12 @@ private:
 /**/ 
 /**/     if( m_hists->size() != t_hists_paths.size() )
 /**/         cout << "Error: Not all histograms were loaded" << endl;
+/* DELETE */ for( auto it = m_hists->begin(); it != m_hists->end(); it++ ) {
+/* DELETE */     cout << "it->first = " << it->first << endl;
+/* DELETE */     cout << "it->second->GetName() = " << it->second->GetName() << endl;
+/* DELETE */     cout << "it->second->GetTitle() = " << it->second->GetTitle() << endl;
+/* DELETE */     cout << "it->second->GetEntries() = " << it->second->GetEntries() << endl;
+/* DELETE */ }
 /**/ }
 /**/
 /**/ template< typename type_ID, typename type_hist >
