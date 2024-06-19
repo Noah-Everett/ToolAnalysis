@@ -153,9 +153,11 @@ private:
 /**/         cout << "Error: Not all histograms were loaded" << endl;
 /* DELETE */ for( auto it = m_hists->begin(); it != m_hists->end(); it++ ) {
 /* DELETE */     cout << "it->first = " << it->first << endl;
-/* DELETE */     cout << "it->second->GetName() = " << it->second->GetName() << endl;
-/* DELETE */     cout << "it->second->GetTitle() = " << it->second->GetTitle() << endl;
-/* DELETE */     cout << "it->second->GetEntries() = " << it->second->GetEntries() << endl;
+/* DELETE */     auto temp = it->second;
+/* DELETE */     cout << "temp = " << temp << endl;
+/* DELETE */     cout << "temp->GetName() = " << temp->GetName() << endl;
+/* DELETE */     cout << "temp->GetTitle() = " << temp->GetTitle() << endl;
+/* DELETE */     cout << "temp->GetEntries() = " << temp->GetEntries() << endl;
 /* DELETE */ }
 /**/ }
 /**/
