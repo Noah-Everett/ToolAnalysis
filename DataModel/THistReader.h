@@ -136,7 +136,7 @@ private:
 /* DELETE */ cout << "entry.second->GetTitle() = " << entry.second->GetTitle() << endl;
 /* DELETE */ cout << "entry.second->GetEntries() = " << entry.second->GetEntries() << endl;
 /**/
-/**/         const result = m_hists->insert( entry );
+/**/         auto result = m_hists->insert( entry );
 /* DELETE */ cout << "result.first = " << result.first << endl;
 /* DELETE */ cout << "result.second = " << result.second << endl;
 /**/         if( !result.second )
