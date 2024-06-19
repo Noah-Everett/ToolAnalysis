@@ -173,7 +173,7 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
 
     // Set bin widths
     auto one = t_hists_energies->begin();
-    cout << "one = " << one << endl;
+    cout << "&one = " << &one << endl;
     auto two = one->second;
     cout << "two = " << two << endl;
     auto three = two->GetXaxis();
