@@ -136,11 +136,15 @@ private:
 /* DELETE */ cout << "entry.second->GetTitle() = " << entry.second->GetTitle() << endl;
 /* DELETE */ cout << "entry.second->GetEntries() = " << entry.second->GetEntries() << endl;
 /**/
-/**/         const auto [ it, success ] = m_hists->insert( entry );
-/* DELETE */ cout << "it = " << it->first << endl;
-/* DELETE */ cout << "success = " << success << endl;
-/**/         if( !success )
+/**/         const result = m_hists->insert( entry );
+/* DELETE */ cout << "result.first = " << result.first << endl;
+/* DELETE */ cout << "result.second = " << result.second << endl;
+/**/         if( !result.second )
 /**/             cout << "Error: Could not insert histogram into map" << endl;
+/* DELETE */ cout << "m_hists->size() = " << m_hists->size() << endl;
+/* DELETE */ cout << "m_hists->at( t_hists_IDs[ i ] )->GetName() = " << m_hists->at( t_hists_IDs[ i ] )->GetName() << endl;
+/* DELETE */ cout << "m_hists->at( t_hists_IDs[ i ] )->GetTitle() = " << m_hists->at( t_hists_IDs[ i ] )->GetTitle() << endl;
+/* DELETE */ cout << "m_hists->at( t_hists_IDs[ i ] )->GetEntries() = " << m_hists->at( t_hists_IDs[ i ] )->GetEntries() << endl;
 /**/
 /**/         file.Close();
 /* DELETE */ cout << endl;
