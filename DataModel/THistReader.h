@@ -106,12 +106,11 @@ private:
 /**/         file = new TFile( t_hists_paths[ i ].c_str() );
 /**/ 	     entry.first = t_hists_IDs[ i ];
 /**/         file->GetObject( t_hists_names[ i ].c_str(), entry.second );
-/**/         double min = entry.second->GetBinLowEdge( 1 );
-/**/         double max = entry.second->GetBinLowEdge( entry.second->GetNbinsX() ) + entry.second->GetBinWidth( entry.second->GetNbinsX() );
-/* DELETE */         cout << "binWidth 1: " << entry.second->GetBinWidth( 1 ) << endl;
-/* DELETE */         cout << "binWidth 0: " << entry.second->GetBinWidth( 0 ) << endl;
-/* DELETE */         cout << "min: " << min << endl;
-/* DELETE */         cout << "max: " << max << endl;
+/**/         if( !entry.second ) {
+/**/             cout << "Error: Could not find histogram with name " << t_hists_names[ i ] << endl;
+/**/             return;
+/**/         }
+/**/         entry.second->Draw();
 /**/         m_hists->insert( entry );
 /**/         if( file ) delete file;
 /**/     }
