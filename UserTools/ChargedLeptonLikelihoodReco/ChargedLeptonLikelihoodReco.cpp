@@ -125,11 +125,11 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
             hists_emission_counts_names_cur  .empty();
             hists_emission_IDs_cur           .empty();
             for( unsigned int nEnergy{ 0 }; nEnergy < hists_emission_energy_nums[ nMaterial ][ nParticle ]; nEnergy++ ) {
-                hists_emission_energies_paths_cur.push_back( hists_emission_energies_paths[ nMaterial ][ nParticle ] );
-                hists_emission_counts_paths_cur  .push_back( hists_emission_counts_paths  [ nMaterial ][ nParticle ] );
-                hists_emission_energies_names_cur.push_back( hists_emission_energies_names[ nMaterial ][ nParticle ] );
-                hists_emission_counts_names_cur  .push_back( hists_emission_counts_names  [ nMaterial ][ nParticle ] );
-                hists_emission_IDs_cur           .push_back( hists_emission_energy_cur                               );
+                hists_emission_energies_paths_cur.push_back( hists_emission_energies_paths[ nMaterial ][ nParticle ]                              );
+                hists_emission_counts_paths_cur  .push_back( hists_emission_counts_paths  [ nMaterial ][ nParticle ]                              );
+                hists_emission_energies_names_cur.push_back( hists_emission_energies_names[ nMaterial ][ nParticle ] + ";" + to_string( nEnergy ) );
+                hists_emission_counts_names_cur  .push_back( hists_emission_counts_names  [ nMaterial ][ nParticle ] + ";" + to_string( nEnergy ) );
+                hists_emission_IDs_cur           .push_back( hists_emission_energy_cur                                                            );
                 hists_emission_energy_cur += hists_emission_energy_deltas[ nMaterial ][ nParticle ];
             }
             if( !( DetectorResponsePredictors[ nParticle ]->*load_hists_emissions[ nMaterial ] )( hists_emission_energies_paths_cur, hists_emission_counts_paths_cur,
