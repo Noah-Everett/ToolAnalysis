@@ -108,11 +108,11 @@ private:
 /**/         }
 /**/
 /**/         pair< type_ID, type_hist* > entry;
-/* DELETE */ cout << "entry.first = " << t_hists_IDs[ i ] << endl;
-/* DELETE */ cout << "entry.second = " << t_hists_names[ i ] << endl;
+/* DELETE */ cout << "entry.first = " << entry.first << endl;
+/* DELETE */ cout << "entry.second = " << entry.second << endl;
 /**/ 	     entry.first = t_hists_IDs[ i ];
-/* DELETE */ cout << "entry.first = " << t_hists_IDs[ i ] << endl;
-/* DELETE */ cout << "entry.second = " << t_hists_names[ i ] << endl;
+/* DELETE */ cout << "entry.first = " << entry.first << endl;
+/* DELETE */ cout << "entry.second = " << entry.second << endl;
 /**/
 /**/         type_hist* temp{ nullptr };
 /* DELETE */ cout << "temp = " << temp << endl;
@@ -140,6 +140,7 @@ private:
 /**/             cout << "Error: Could not insert histogram into map" << endl;
 /**/
 /**/         file.Close();
+/* DELETE */ cout << endl;
 /**/     }
 /**/ 
 /**/     if( m_hists->size() != t_hists_paths.size() )
