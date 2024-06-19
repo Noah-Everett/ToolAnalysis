@@ -173,9 +173,13 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
 
     // Set bin widths
     auto one = t_hists_energies->begin();
+    cout << "one = " << one << endl;
     auto two = one->second;
+    cout << "two = " << two << endl;
     auto three = two->GetXaxis();
+    cout << "three = " << three << endl;
     auto four = three->GetBinWidth( 0 );
+    cout << "four = " << four << endl;
     t_binWidth_s     = t_hists_energies->begin()->second->GetXaxis()->GetBinWidth( 0 );
     t_binWidth_theta = t_hists_energies->begin()->second->GetYaxis()->GetBinWidth( 0 );
     t_binWidth_phi   = t_hists_energies->begin()->second->GetYaxis()->GetBinWidth( 0 );
