@@ -137,7 +137,6 @@ private:
 /* DELETE */ cout << "entry.second->GetEntries() = " << entry.second->GetEntries() << endl;
 /**/
 /**/         auto result = m_hists->insert( entry );
-/* DELETE */ cout << "result.first = " << result.first << endl;
 /* DELETE */ cout << "result.second = " << result.second << endl;
 /**/         if( !result.second )
 /**/             cout << "Error: Could not insert histogram into map" << endl;
