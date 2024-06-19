@@ -100,15 +100,14 @@ private:
 /**/         return;
 /**/     }
 /**/
-/**/     TFile* file{ nullptr };
-/**/     pair< type_ID, type_hist* > entry;
 /**/     for( int i{ 0 }; i < t_hists_paths.size(); i++ ) {
+/**/         TFile file{ t_hists_paths[ i ].c_str() };
+/**/         pair< type_ID, type_hist* > entry;
 /* DELETE */ cout << "t_hists_paths[ i ] = " << t_hists_paths[ i ] << endl;
 /* DELETE */ cout << "t_hists_IDs[ i ] = " << t_hists_IDs[ i ] << endl;
 /* DELETE */ cout << "t_hists_names[ i ] = " << t_hists_names[ i ] << endl;
-/**/         file = new TFile( t_hists_paths[ i ].c_str() );
 /**/ 	     entry.first = t_hists_IDs[ i ];
-/**/         file->GetObject( t_hists_names[ i ].c_str(), entry.second );
+/**/         file.GetObject( t_hists_names[ i ].c_str(), entry.second );
 /**/         if( !entry.second ) {
 /**/             cout << "Error: Could not find histogram with name " << t_hists_names[ i ] << endl;
 /**/             return;
@@ -116,7 +115,6 @@ private:
 /* DELETE */ cout << "entry.first = " << entry.first << endl;
 /* DELETE */ cout << "entry.second = " << entry.second << endl;
 /**/         m_hists->insert( entry );
-/**/         if( file ) delete file;
 /* DELETE */ cout << endl;
 /**/     }
 /**/ }
