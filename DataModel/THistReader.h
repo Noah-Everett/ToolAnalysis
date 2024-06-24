@@ -146,11 +146,15 @@ private:
 /* DELETE */ cout << "m_hists->at( t_hists_IDs[ i ] )->GetEntries() = " << m_hists->at( t_hists_IDs[ i ] )->GetEntries() << endl;
 /* DELETE */
 // print list entery to m_hists
-/* DELETE */ cout << "m_hists->end().first = " << (--m_hists->end())->first << endl;
-/* DELETE */ cout << "m_hists->end().second = " << (--m_hists->end())->second << endl;
-/* DELETE */ cout << "m_hists->end()->second->GetName() = " << (--m_hists->end())->second->GetName() << endl;
-/* DELETE */ cout << "m_hists->end()->second->GetTitle() = " << (--m_hists->end())->second->GetTitle() << endl;
-/* DELETE */ cout << "m_hists->end()->second->GetEntries() = " << (--m_hists->end())->second->GetEntries() << endl;
+/* DELETE */ cout << "m_(--hists->end()).first = " << (--m_hists->end())->first << endl;
+/* DELETE */ cout << "m_(--hists->end()).second = " << (--m_hists->end())->second << endl;
+/* DELETE */ cout << "m_(--hists->end())->second->GetName() = " << (--m_hists->end())->second->GetName() << endl;
+/* DELETE */ cout << "m_(--hists->end())->second->GetTitle() = " << (--m_hists->end())->second->GetTitle() << endl;
+/* DELETE */ cout << "m_(--hists->end())->second->GetEntries() = " << (--m_hists->end())->second->GetEntries() << endl;
+/* DELETE */ cout << "m_(--(--hists->end())).first = " << (--(--m_hists->end()))->first << endl;
+/* DELETE */ cout << "m_(--(--hists->end())).second = " << (--(--m_hists->end()))->second << endl;
+/* DELETE */ cout << "m_(--(--hists->end()))->second->GetName() = " << (--(--m_hists->end()))->second->GetName() << endl;
+/* DELETE */ cout << "m_(--(--hists->end()))->second->GetTitle() = " << (--(--m_hists->end()))->second->GetTitle() << endl;
 /**/
 /**/         file.Close();
 /* DELETE */ cout << endl;
