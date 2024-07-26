@@ -108,27 +108,15 @@ private:
 /**/         }
 /**/
 /**/         pair< type_ID, type_hist* > entry;
-/* DELETE */ cout << "entry.first = " << entry.first << endl;
-/* DELETE */ cout << "entry.second = " << entry.second << endl;
 /**/ 	     entry.first = t_hists_IDs[ i ];
-/* DELETE */ cout << "entry.first = " << entry.first << endl;
-/* DELETE */ cout << "entry.second = " << entry.second << endl;
 /**/
-/**/         type_hist* temp{ nullptr };
-/* DELETE */ cout << "temp = " << temp << endl;
-/**/         file.GetObject( t_hists_names[ i ].c_str(), temp );
-/* DELETE */ cout << "temp = " << temp << endl;
-/**/         if( !temp ) {
+/**/         file.GetObject( t_hists_names[ i ].c_str(), entry.second );
+/**/         if( !entry.second ) {
 /**/             cout << "Error: Could not find histogram with name " << t_hists_names[ i ] << endl;
 /**/             continue;
 /**/         }
 /**/
-///* DELETE */ auto temp2 = temp->Clone();
-///* DELETE */ cout << "temp2 = " << temp2 << endl;
-///**/         entry.second = dynamic_cast< type_hist* >( temp->Clone() );
-/* DELETE */ entry.second = new type_hist{ *temp };
-/* DELETE */ cout << "entry.second = " << entry.second << endl;
-// /**/         entry.second = dynamic_cast< type_hist* >( temp->Clone() );
+/**/         entry.second = dynamic_cast< type_hist* >( entry.second );
 /**/         if( !entry.second ) {
 /**/             cout << "Error: Could not cast histogram to type " << typeid( type_hist ).name() << endl;
 /**/             continue;
