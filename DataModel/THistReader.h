@@ -157,7 +157,7 @@ private:
 /* DELETE */ cout << "(--(--m_hists->end()))->second->GetName() = " << (--(--m_hists->end()))->second->GetName() << endl;
 /* DELETE */ cout << "(--(--m_hists->end()))->second->GetTitle() = " << (--(--m_hists->end()))->second->GetTitle() << endl;
 /**/
-/**/         file.Close();
+// /**/         file.Close();
 /* DELETE */ cout << endl;
 /**/     }
 /**/ 
