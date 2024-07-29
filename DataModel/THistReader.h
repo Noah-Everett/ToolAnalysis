@@ -121,32 +121,12 @@ private:
 /**/             cout << "Error: Could not cast histogram to type " << typeid( type_hist ).name() << endl;
 /**/             continue;
 /**/         }
-/* DELETE */ cout << "entry.second->GetName() = " << entry.second->GetName() << endl;
-/* DELETE */ cout << "entry.second->GetTitle() = " << entry.second->GetTitle() << endl;
-/* DELETE */ cout << "entry.second->GetEntries() = " << entry.second->GetEntries() << endl;
 /**/
 /**/         auto result = m_hists->insert( entry );
-/* DELETE */ cout << "result.second = " << result.second << endl;
 /**/         if( !result.second )
 /**/             cout << "Error: Could not insert histogram into map" << endl;
-/* DELETE */ cout << "m_hists->size() = " << m_hists->size() << endl;
-/* DELETE */ cout << "m_hists->at( t_hists_IDs[ i ] )->GetName() = " << m_hists->at( t_hists_IDs[ i ] )->GetName() << endl;
-/* DELETE */ cout << "m_hists->at( t_hists_IDs[ i ] )->GetTitle() = " << m_hists->at( t_hists_IDs[ i ] )->GetTitle() << endl;
-/* DELETE */ cout << "m_hists->at( t_hists_IDs[ i ] )->GetEntries() = " << m_hists->at( t_hists_IDs[ i ] )->GetEntries() << endl;
-/* DELETE */
-// print list entery to m_hists
-/* DELETE */ cout << "(--m_hists->end()).first = " << (--m_hists->end())->first << endl;
-/* DELETE */ cout << "(--m_hists->end()).second = " << (--m_hists->end())->second << endl;
-/* DELETE */ cout << "(--m_hists->end())->second->GetName() = " << (--m_hists->end())->second->GetName() << endl;
-/* DELETE */ cout << "(--m_hists->end())->second->GetTitle() = " << (--m_hists->end())->second->GetTitle() << endl;
-/* DELETE */ cout << "(--m_hists->end())->second->GetEntries() = " << (--m_hists->end())->second->GetEntries() << endl;
-/* DELETE */ cout << "(--(--m_hists->end())).first = " << (--(--m_hists->end()))->first << endl;
-/* DELETE */ cout << "(--(--m_hists->end())).second = " << (--(--m_hists->end()))->second << endl;
-/* DELETE */ cout << "(--(--m_hists->end()))->second->GetName() = " << (--(--m_hists->end()))->second->GetName() << endl;
-/* DELETE */ cout << "(--(--m_hists->end()))->second->GetTitle() = " << (--(--m_hists->end()))->second->GetTitle() << endl;
 /**/
-// /**/         file.Close();
-/* DELETE */ cout << endl;
+/**/         file.Close();
 /**/     }
 /**/ 
 /**/     if( m_hists->size() != t_hists_paths.size() )
