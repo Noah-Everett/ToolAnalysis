@@ -89,7 +89,7 @@ private:
     /**/// Copy THist ///
     /**//////////////////
     /**/
-    /**/ void copy_THist( const type_hist* t_original, type_hist* t_copy );
+    /**/ void copy_THist( const type_hist* t_original, type_hist*& t_copy );
     /**/
     /**//////////////////
 };
