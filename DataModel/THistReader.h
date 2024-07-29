@@ -27,6 +27,8 @@
 #include <ostream>
 
 #include "TFile.h"
+#include "TH1.h"
+#include "TH2.h"
 
 using std::map;
 using std::string;
@@ -82,6 +84,14 @@ private:
     /**/ map< type_ID, type_hist* >* m_hists{ new map< type_ID, type_hist* > };
     /**/
     /**////////////////////////
+
+    /**//////////////////
+    /**/// Copy THist ///
+    /**//////////////////
+    /**/
+    /**/ void copy_THist( const type_hist* t_original, type_hist* t_copy );
+    /**/
+    /**//////////////////
 };
 
 
@@ -110,17 +120,18 @@ private:
 /**/         pair< type_ID, type_hist* > entry;
 /**/ 	     entry.first = t_hists_IDs[ i ];
 /**/
-/**/         file.GetObject( t_hists_names[ i ].c_str(), entry.second );
-/**/         if( !entry.second ) {
+/**/         type_hist* temp{ nullptr };
+/**/         file.GetObject( t_hists_names[ i ].c_str(), temp );
+/**/         if( !temp ) {
 /**/             cout << "Error: Could not find histogram with name " << t_hists_names[ i ] << endl;
 /**/             continue;
 /**/         }
 /**/
-/* DELETE */ cout << "entry.second = " << entry.second << endl;
-/**/         entry.second = new type_hist( *(entry.second) );
+/* DELETE */ cout << "temp = " << temp << endl;
+/**/         copy_THist( temp, entry.second );
 /* DELETE */ cout << "entry.second = " << entry.second << endl;
 /**/         if( !entry.second ) {
-/**/             cout << "Error: Could not cast histogram to type " << typeid( type_hist ).name() << endl;
+/**/             cout << "Error: Could not copy histogram" << endl;
 /**/             continue;
 /**/         }
 /**/
@@ -159,6 +170,57 @@ private:
 /**/ void THistReader< type_ID, type_hist >::operator=( const THistReader* t_THistReader ) {
 /**/     if( m_hists ) delete m_hists;
 /**/     m_hists = new map< type_ID, type_hist* >{ *( t_THistReader->m_hists ) };
+/**/ }
+/**/
+/**/ template< typename type_ID, typename type_hist >
+/**/ void THistReader< type_ID, type_hist >::copy_THist( const type_hist* t_original, type_hist* t_copy ) {
+/**/     if( !t_original ) {
+/**/         cout << "Error: Original histogram is null" << endl;
+/**/         return;
+/**/     }
+/**/
+/**/     if( !t_copy )
+/**/         t_copy = new type_hist{ *t_original };
+/**/
+/**/     TString name = original_hist->GetName();
+/**/     TString title = original_hist->GetTitle();
+/**/     
+/**/     if( t_original->InheritsFrom( TH1::Class() ) ) {
+/**/         TH1* original_hist_1d = static_cast< TH1* >( original_hist );
+/**/         Int_t nxbins = original_hist_1d->GetNbinsX();
+/**/         Double_t xlow = original_hist_1d->GetXaxis()->GetXmin();
+/**/         Double_t xhigh = original_hist_1d->GetXaxis()->GetXmax();
+/**/     
+/**/         new_hist = new type_hist( name, title, nxbins, xlow, xhigh );
+/**/     
+/**/         for ( Int_t i = 1; i <= nxbins; ++i ) {
+/**/             Double_t content = original_hist_1d->GetBinContent( i );
+/**/             Double_t error = original_hist_1d->GetBinError( i );
+/**/             new_hist->SetBinContent( i, content );
+/**/             new_hist->SetBinError( i, error );
+/**/         }
+/**/     } else if( t_original->InheritsFrom( TH2::Class() ) ) {
+/**/         TH2* original_hist_2d = static_cast< TH2* >( original_hist );
+/**/         Int_t nxbins = original_hist_2d->GetNbinsX();
+/**/         Double_t xlow = original_hist_2d->GetXaxis()->GetXmin();
+/**/         Double_t xhigh = original_hist_2d->GetXaxis()->GetXmax();
+/**/         Int_t nybins = original_hist_2d->GetNbinsY();
+/**/         Double_t ylow = original_hist_2d->GetYaxis()->GetXmin();
+/**/         Double_t yhigh = original_hist_2d->GetYaxis()->GetXmax();
+/**/     
+/**/         new_hist = new type_hist( name, title, nxbins, xlow, xhigh, nybins, ylow, yhigh );
+/**/     
+/**/         for ( Int_t i = 1; i <= nxbins; ++i ) {
+/**/             for ( Int_t j = 1; j <= nybins; ++j ) {
+/**/                 Double_t content = original_hist_2d->GetBinContent( i, j );
+/**/                 Double_t error = original_hist_2d->GetBinError( i, j );
+/**/                 new_hist->SetBinContent( i, j, content );
+/**/                 new_hist->SetBinError( i, j, error );
+/**/             }
+/**/         }
+/**/     } else {
+/**/         cout << "Error: Histogram is not 1D or 2D" << endl;
+/**/     }
 /**/ }
 /**/
 /**////////////////////////////
