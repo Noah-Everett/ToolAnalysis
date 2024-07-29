@@ -127,6 +127,8 @@ private:
 /**/             cout << "Error: Could not insert histogram into map" << endl;
 /**/
 /**/         file.Close();
+/* DELETE */
+/* DELETE */
 /**/     }
 /**/ 
 /**/     if( m_hists->size() != t_hists_paths.size() )
