@@ -29,6 +29,7 @@
 #include "TFile.h"
 #include "TH1.h"
 #include "TH2.h"
+#include "TH3.h"
 
 using std::map;
 using std::string;
