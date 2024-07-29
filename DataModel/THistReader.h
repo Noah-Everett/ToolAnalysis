@@ -226,6 +226,41 @@ void THistReader<type_ID, TH2>::copy_THist(const TH2* t_original, TH2*& t_copy) 
         }
     }
 }
+
+template<typename type_ID>
+void THistReader<type_ID, TH3>::copy_THist(const TH3* t_original, TH3*& t_copy) {
+    if (!t_original) {
+        cout << "Error: Original histogram is null" << endl;
+        return;
+    }
+
+    // Create new histogram
+    TString name = t_original->GetName();
+    TString title = t_original->GetTitle();
+    Int_t nxbins = t_original->GetNbinsX();
+    Double_t xlow = t_original->GetXaxis()->GetXmin();
+    Double_t xhigh = t_original->GetXaxis()->GetXmax();
+    Int_t nybins = t_original->GetNbinsY();
+    Double_t ylow = t_original->GetYaxis()->GetXmin();
+    Double_t yhigh = t_original->GetYaxis()->GetXmax();
+    Int_t nzbins = t_original->GetNbinsZ();
+    Double_t zlow = t_original->GetZaxis()->GetXmin();
+    Double_t zhigh = t_original->GetZaxis()->GetXmax();
+
+    t_copy = new TH3(name, title, nxbins, xlow, xhigh, nybins, ylow, yhigh, nzbins, zlow, zhigh);
+
+    // Copy contents
+    for (Int_t i = 1; i <= nxbins; ++i) {
+        for (Int_t j = 1; j <= nybins; ++j) {
+            for (Int_t k = 1; k <= nzbins; ++k) {
+                Double_t content = t_original->GetBinContent(i, j, k);
+                Double_t error = t_original->GetBinError(i, j, k);
+                t_copy->SetBinContent(i, j, k, content);
+                t_copy->SetBinError(i, j, k, error);
+            }
+        }
+    }
+}
 /**/
 /**////////////////////////////
 
