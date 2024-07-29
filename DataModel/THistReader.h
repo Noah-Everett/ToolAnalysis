@@ -185,21 +185,7 @@ private:
 /**/     TString name = t_original->GetName();
 /**/     TString title = t_original->GetTitle();
 /**/     
-/**/     if( t_original->InheritsFrom( TH1::Class() ) ) {
-/**/         TH1* t_original_1d = static_cast< TH1* >( t_original );
-/**/         Int_t nxbins = t_original_1d->GetNbinsX();
-/**/         Double_t xlow = t_original_1d->GetXaxis()->GetXmin();
-/**/         Double_t xhigh = t_original_1d->GetXaxis()->GetXmax();
-/**/     
-/**/         t_copy = new type_hist( name, title, nxbins, xlow, xhigh );
-/**/     
-/**/         for ( Int_t i = 1; i <= nxbins; ++i ) {
-/**/             Double_t content = t_original_1d->GetBinContent( i );
-/**/             Double_t error = t_original_1d->GetBinError( i );
-/**/             t_copy->SetBinContent( i, content );
-/**/             t_copy->SetBinError( i, error );
-/**/         }
-/**/     } else if( t_original->InheritsFrom( TH2::Class() ) ) {
+/**/     if( t_original->InheritsFrom( TH2::Class() ) ) {
 /**/         TH2* t_original_2d = static_cast< TH2* >( t_original );
 /**/         Int_t nxbins = t_original_2d->GetNbinsX();
 /**/         Double_t xlow = t_original_2d->GetXaxis()->GetXmin();
@@ -217,6 +203,20 @@ private:
 /**/                 t_copy->SetBinContent( i, j, content );
 /**/                 t_copy->SetBinError( i, j, error );
 /**/             }
+/**/         }
+/**/     } else if( t_original->InheritsFrom( TH1::Class() ) ) {
+/**/         TH1* t_original_1d = static_cast< TH1* >( t_original );
+/**/         Int_t nxbins = t_original_1d->GetNbinsX();
+/**/         Double_t xlow = t_original_1d->GetXaxis()->GetXmin();
+/**/         Double_t xhigh = t_original_1d->GetXaxis()->GetXmax();
+/**/     
+/**/         t_copy = new type_hist( name, title, nxbins, xlow, xhigh );
+/**/     
+/**/         for ( Int_t i = 1; i <= nxbins; ++i ) {
+/**/             Double_t content = t_original_1d->GetBinContent( i );
+/**/             Double_t error = t_original_1d->GetBinError( i );
+/**/             t_copy->SetBinContent( i, content );
+/**/             t_copy->SetBinError( i, error );
 /**/         }
 /**/     } else {
 /**/         cout << "Error: Histogram is not 1D or 2D" << endl;
