@@ -128,7 +128,7 @@ private:
 /**/
 /**/         file.Close();
 /* DELETE */
-/* DELETE */
+/* DELETE */ cout << "DELETE" << endl;
 /**/     }
 /**/ 
 /**/     if( m_hists->size() != t_hists_paths.size() )
