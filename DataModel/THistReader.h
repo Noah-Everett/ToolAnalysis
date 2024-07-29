@@ -117,7 +117,7 @@ private:
 /**/         }
 /**/
 /* DELETE */ cout << "entry.second = " << entry.second << endl;
-/**/         entry.second = TH2D( entry.second );
+/**/         entry.second = TH2D( *(entry.second) );
 /* DELETE */ cout << "entry.second = " << entry.second << endl;
 /**/         if( !entry.second ) {
 /**/             cout << "Error: Could not cast histogram to type " << typeid( type_hist ).name() << endl;
