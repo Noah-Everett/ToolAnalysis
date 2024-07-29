@@ -172,8 +172,8 @@ private:
 /**/     m_hists = new map< type_ID, type_hist* >{ *( t_THistReader->m_hists ) };
 /**/ }
 /**/
-template<typename type_ID, typename type_hist>
-void THistReader<type_ID, type_hist>::copy_THist(const type_hist* t_original, type_hist*& t_copy) {
+template<typename type_ID>
+void THistReader<type_ID, TH1>::copy_THist(const TH1* t_original, TH1*& t_copy) {
     if (!t_original) {
         cout << "Error: Original histogram is null" << endl;
         return;
@@ -182,48 +182,48 @@ void THistReader<type_ID, type_hist>::copy_THist(const type_hist* t_original, ty
     // Create new histogram
     TString name = t_original->GetName();
     TString title = t_original->GetTitle();
+    Int_t nxbins = t_original->GetNbinsX();
+    Double_t xlow = t_original->GetXaxis()->GetXmin();
+    Double_t xhigh = t_original->GetXaxis()->GetXmax();
 
-    if (dynamic_cast<const TH2*>(t_original)) {
-        // Handle 2D histograms
-        const TH2* t_original_2d = dynamic_cast<const TH2*>(t_original);
-        Int_t nxbins = t_original_2d->GetNbinsX();
-        Double_t xlow = t_original_2d->GetXaxis()->GetXmin();
-        Double_t xhigh = t_original_2d->GetXaxis()->GetXmax();
-        Int_t nybins = t_original_2d->GetNbinsY();
-        Double_t ylow = t_original_2d->GetYaxis()->GetXmin();
-        Double_t yhigh = t_original_2d->GetYaxis()->GetXmax();
+    t_copy = new TH1(name, title, nxbins, xlow, xhigh);
 
-        // Create new histogram of the same type
-        t_copy = new type_hist(name, title, nxbins, xlow, xhigh, nybins, ylow, yhigh);
+    // Copy contents
+    for (Int_t i = 1; i <= nxbins; ++i) {
+        Double_t content = t_original->GetBinContent(i);
+        Double_t error = t_original->GetBinError(i);
+        t_copy->SetBinContent(i, content);
+        t_copy->SetBinError(i, error);
+    }
+}
 
-        // Copy contents
-        for (Int_t i = 1; i <= nxbins; ++i) {
-            for (Int_t j = 1; j <= nybins; ++j) {
-                Double_t content = t_original_2d->GetBinContent(i, j);
-                Double_t error = t_original_2d->GetBinError(i, j);
-                t_copy->SetBinContent(i, j, content);
-                t_copy->SetBinError(i, j, error);
-            }
+template<typename type_ID>
+void THistReader<type_ID, TH2>::copy_THist(const TH2* t_original, TH2*& t_copy) {
+    if (!t_original) {
+        cout << "Error: Original histogram is null" << endl;
+        return;
+    }
+
+    // Create new histogram
+    TString name = t_original->GetName();
+    TString title = t_original->GetTitle();
+    Int_t nxbins = t_original->GetNbinsX();
+    Double_t xlow = t_original->GetXaxis()->GetXmin();
+    Double_t xhigh = t_original->GetXaxis()->GetXmax();
+    Int_t nybins = t_original->GetNbinsY();
+    Double_t ylow = t_original->GetYaxis()->GetXmin();
+    Double_t yhigh = t_original->GetYaxis()->GetXmax();
+
+    t_copy = new TH2(name, title, nxbins, xlow, xhigh, nybins, ylow, yhigh);
+
+    // Copy contents
+    for (Int_t i = 1; i <= nxbins; ++i) {
+        for (Int_t j = 1; j <= nybins; ++j) {
+            Double_t content = t_original->GetBinContent(i, j);
+            Double_t error = t_original->GetBinError(i, j);
+            t_copy->SetBinContent(i, j, content);
+            t_copy->SetBinError(i, j, error);
         }
-    } else if (dynamic_cast<const TH1*>(t_original)) {
-        // Handle 1D histograms
-        const TH1* t_original_1d = dynamic_cast<const TH1*>(t_original);
-        Int_t nxbins = t_original_1d->GetNbinsX();
-        Double_t xlow = t_original_1d->GetXaxis()->GetXmin();
-        Double_t xhigh = t_original_1d->GetXaxis()->GetXmax();
-
-        // Create new histogram of the same type
-        t_copy = new type_hist(name, title, nxbins, xlow, xhigh);
-
-        // Copy contents
-        for (Int_t i = 1; i <= nxbins; ++i) {
-            Double_t content = t_original_1d->GetBinContent(i);
-            Double_t error = t_original_1d->GetBinError(i);
-            t_copy->SetBinContent(i, content);
-            t_copy->SetBinError(i, error);
-        }
-    } else {
-        cout << "Error: Histogram is not 1D or 2D" << endl;
     }
 }
 /**/
