@@ -90,7 +90,7 @@ private:
     /**/// Copy THist ///
     /**//////////////////
     /**/
-    /**/ void copy_THist( const type_hist* t_original, type_hist*& t_copy );
+    // /**/ void copy_THist( const type_hist* t_original, type_hist*& t_copy );
     /**/ void copy_THist( const TH1D     * t_original, TH1D     *& t_copy );
     /**/ void copy_THist( const TH2D     * t_original, TH2D     *& t_copy );
     /**/
