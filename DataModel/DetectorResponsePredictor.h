@@ -165,8 +165,8 @@ protected:
     /**//////////////
     /**/
     /**/ #define     LogD(                        t_message      ,                  t_verbosity ) Log_debug( t_message, t_verbosity, __FILE__, __FUNCTION__, __LINE__ )
-    /**/ inline void Log_debug   ( const string&  t_message      , unsigned int     t_verbosity, const string& t_file, const string& t_function, int t_line );
-    /**/ inline void Log_debug   ( const string&& t_message      , unsigned int     t_verbosity, const string& t_file, const string& t_function, int t_line );
+    /**/ inline void Log_debug   ( const string&  t_message      , unsigned int     t_verbosity, const string& t_file, const string& t_function, int t_line ) const;
+    /**/ inline void Log_debug   ( const string&& t_message      , unsigned int     t_verbosity, const string& t_file, const string& t_function, int t_line ) const;
     /**/
     /**/ enum m_verbosity_enum{ m_verbosity_error   = 0,
     /**/                        m_verbosity_warning = 1,
