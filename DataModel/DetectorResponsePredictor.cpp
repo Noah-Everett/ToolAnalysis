@@ -133,8 +133,9 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
     double min_y  { t_hists_energies->at( 0 )->GetYaxis()->GetXmin()  };
     double max_y  { t_hists_energies->at( 0 )->GetYaxis()->GetXmax()  };
     int    nBins_y{ t_hists_energies->at( 0 )->GetYaxis()->GetNbins() };
-    for( pair< int, TH2D* > hist : *t_hists_energies ) { // replaced structured binding to avoid warning
-        int   const& i = hist.first;
+    int i{ 0 };
+    // for( pair< int, TH2D* > hist : *t_hists_energies ) { // replaced structured binding to avoid warning
+        int   const& e = hist.first;
         TH2D* const& h = hist.second;
         if( abs( h->GetXaxis()->GetXmin()  - min_x   ) > epsilon ||
             abs( h->GetXaxis()->GetXmax()  - max_x   ) > epsilon ||
@@ -143,7 +144,7 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
             h->GetXaxis()->GetNbins() != nBins_x ||
             h->GetYaxis()->GetNbins() != nBins_y   ) {
             LogD( "All histograms in `t_hists_energies` do not have the same axes (same min, max, and bin counts).", m_verbosity_error );
-            LogD( "Error encountered on histogram with ID " + to_string( i ) + ".", m_verbosity_error );
+            LogD( "Error encountered on histogram with ID " + to_string( e ) + ", in file " + t_hists_energies_paths[ i ] + ", with name " + t_hists_energies_names[ i ] + ".", m_verbosity_debug );
             LogD( "With threashold `epsilon` = " + to_string( epsilon ) + ", one of the following is true:", m_verbosity_debug );
             LogD( "h->GetXaxis()->GetXmin() = "  + to_string( h->GetXaxis()->GetXmin () ) + " != " + to_string( min_x   ) + " = min_x"  , m_verbosity_debug );
             LogD( "h->GetXaxis()->GetXmax() = "  + to_string( h->GetXaxis()->GetXmax () ) + " != " + to_string( max_x   ) + " = max_x"  , m_verbosity_debug );
