@@ -49,7 +49,7 @@ public:
     /**/              const vector< type_ID >& t_hists_IDs  ,
     /**/              const vector< string  >& t_hists_names );
     /**/ THistReader( const THistReader* t_THistReader ): m_hists{ t_THistReader->get_histsMap_cp() } {}
-    /**/~THistReader() { delete m_hists; }
+    /**/~THistReader();
     /**/
     /**////////////////////////
 
@@ -83,6 +83,7 @@ private:
     /**////////////////////////
     /**/
     /**/ map< type_ID, type_hist* >* m_hists{ new map< type_ID, type_hist* > };
+    /**/ map< type_ID, TFile*     >* m_files{ new map< type_ID, TFile*      > };
     /**/
     /**////////////////////////
 
@@ -114,8 +115,11 @@ private:
 /**/     }
 /**/
 /**/     for( int i{ 0 }; i < t_hists_paths.size(); i++ ) {
-/**/         TFile file{ t_hists_paths[ i ].c_str() };
-/**/         if( file.IsZombie() ) {
+// /**/         TFile file{ t_hists_paths[ i ].c_str() };
+/**/         TFile* file{ new TFile{ t_hists_paths[ i ].c_str(), "READ" } };
+/**/         m_files->insert( pair< type_ID, TFile* >{ t_hists_IDs[ i ], file } );
+// /**/         if( file.IsZombie() ) {
+/**/         if( file->IsZombie() ) {
 /**/             cout << "Error: Could not open file with path " << t_hists_paths[ i ] << endl;
 /**/             continue;
 /**/         }
@@ -125,7 +129,8 @@ private:
 /**/
 // /**/         type_hist* temp{ nullptr };
 // /**/         file.GetObject( t_hists_names[ i ].c_str(), temp );
-/**/         file.GetObject( t_hists_names[ i ].c_str(), entry.second );
+// /**/         file.GetObject( t_hists_names[ i ].c_str(), entry.second );
+/**/         file->GetObject( t_hists_names[ i ].c_str(), entry.second );
 // /**/         if( !temp ) {
 /**/         if( !entry.second ) {
 /**/             cout << "Error: Could not find histogram with name " << t_hists_names[ i ] << endl;
@@ -144,7 +149,7 @@ private:
 /**/         if( !result.second )
 /**/             cout << "Error: Could not insert histogram into map" << endl;
 /**/
-/**/         file.Close("nodelete");
+// /**/         file.Close("nodelete");
 // /**/         file.Close();
 /* DELETE */
 /* DELETE */ cout << endl;
@@ -178,6 +183,19 @@ private:
 /* DELETE */     cout << "temp->GetTitle() = " << temp->GetTitle() << endl;
 /* DELETE */     cout << "temp->GetEntries() = " << temp->GetEntries() << endl;
 /* DELETE */ }
+/**/ }
+/**/
+/**/ template< typename type_ID, typename type_hist >
+/**/ THistReader< type_ID, type_hist >::~THistReader() {
+/**/     for( auto it = m_hists->begin(); it != m_hists->end(); ++it ) {
+/**/         if( it->second ) delete it->second;
+/**/     }
+/**/     delete m_hists;
+/**/
+/**/     for( auto it = m_files->begin(); it != m_files->end(); ++it ) {
+/**/         if( it->second ) it->second->Close();
+/**/     }
+/**/     delete m_files;
 /**/ }
 /**/
 /**/ template< typename type_ID, typename type_hist >
