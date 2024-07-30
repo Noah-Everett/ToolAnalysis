@@ -395,6 +395,8 @@ double DetectorResponsePredictor::eval_hist_dEdX_MRDiron( const double t_primary
     
 inline void DetectorResponsePredictor::Log_debug( const string& t_message, unsigned int t_verbosity,
                                                   const string& t_file   , const string& t_function, int t_line ) const {
+    if( m_verbosity < t_verbosity ) 
+        cout << "& `m_verbosity`= " << m_verbosity << " < `t_verbosity`= " << t_verbosity << endl;
     if( t_verbosity <= m_verbosity )
         cout << "DataModel_DetectorResponsePredictor  || " << m_verbosity_map.at( t_verbosity ) << " || "
              << t_file << "::" << t_function << " (" << t_line << "): " << t_message << endl;
@@ -402,6 +404,8 @@ inline void DetectorResponsePredictor::Log_debug( const string& t_message, unsig
 
 inline void DetectorResponsePredictor::Log_debug( const string&& t_message, unsigned int t_verbosity,
                                                   const string&  t_file   , const string& t_function, int t_line ) const {
+    if( m_verbosity < t_verbosity )
+        cout << "&& `m_verbosity`= " << m_verbosity << " < `t_verbosity`= " << t_verbosity << endl;
     if( t_verbosity <= m_verbosity )
         cout << "DataModel_DetectorResponsePredictor  || " << m_verbosity_map.at( t_verbosity ) << " || " 
              << t_file << "::" << t_function << " (" << t_line << "): " << t_message << endl;
