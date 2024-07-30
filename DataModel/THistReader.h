@@ -184,6 +184,7 @@ private:
 /**/ 
 /**/     // Create new histogram
 /**/     TString name = t_original->GetName();
+/**/     name += "(copy)";
 /**/     TString title = t_original->GetTitle();
 /**/     Int_t nbins = t_original->GetNbinsX();
 /**/     Double_t low = t_original->GetXaxis()->GetXmin();
@@ -207,6 +208,7 @@ private:
 /**/ 
 /**/     // Create new histogram
 /**/     TString name = t_original->GetName();
+/**/     name += "(copy)";
 /**/     TString title = t_original->GetTitle();
 /**/     Int_t nxbins = t_original->GetNbinsX();
 /**/     Double_t xlow = t_original->GetXaxis()->GetXmin();
