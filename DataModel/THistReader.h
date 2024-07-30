@@ -17,6 +17,7 @@
 //*/////////////////////////////////////////////////////////////////////////////////////////////*//
 //*//                                                                                         //*//
 //*/////////////////////////////////////////////////////////////////////////////////////////////*//
+
 #ifndef THISTREADER_H
 #define THISTREADER_H
 
@@ -58,11 +59,11 @@ public:
     }
 
     template< typename type_ID, typename type_hist >
-    void addHistMap(const map<type_ID, type_hist*>& histMap) {
+    void addHistMap(const map<type_ID, type_hist*>* histMap) {
         m_histMaps.push_back(std::make_pair(
-            reinterpret_cast<void*>(&histMap),
+            const_cast<void*>(static_cast<const void*>(histMap)),
             [](void* p) {
-                auto* map = reinterpret_cast<const map<type_ID, type_hist*>*>(p);
+                auto* map = static_cast<const map<type_ID, type_hist*>*>(p);
                 for (const auto& pair : *map) {
                     delete pair.second;
                 }
@@ -175,24 +176,24 @@ THistReader< type_ID, type_hist >::THistReader(const vector<string>& t_hists_pat
         m_hists[t_hists_IDs[i]] = hist;
     }
 
-    GlobalFileManager::getInstance().addHistMap(m_hists);
+    GlobalFileManager::getInstance().addHistMap(&m_hists);
 }
 
 template< typename type_ID, typename type_hist >
 THistReader< type_ID, type_hist >::THistReader(const THistReader& other) : m_hists(other.m_hists) {
-    GlobalFileManager::getInstance().addHistMap(m_hists);
+    GlobalFileManager::getInstance().addHistMap(&m_hists);
 }
 
 template< typename type_ID, typename type_hist >
 THistReader< type_ID, type_hist >::THistReader(THistReader&& other) noexcept : m_hists(std::move(other.m_hists)) {
-    GlobalFileManager::getInstance().addHistMap(m_hists);
+    GlobalFileManager::getInstance().addHistMap(&m_hists);
 }
 
 template< typename type_ID, typename type_hist >
 THistReader< type_ID, type_hist >& THistReader< type_ID, type_hist >::operator=(const THistReader& other) {
     if (this != &other) {
         m_hists = other.m_hists;
-        GlobalFileManager::getInstance().addHistMap(m_hists);
+        GlobalFileManager::getInstance().addHistMap(&m_hists);
     }
     return *this;
 }
@@ -201,7 +202,7 @@ template< typename type_ID, typename type_hist >
 THistReader< type_ID, type_hist >& THistReader< type_ID, type_hist >::operator=(THistReader&& other) noexcept {
     if (this != &other) {
         m_hists = std::move(other.m_hists);
-        GlobalFileManager::getInstance().addHistMap(m_hists);
+        GlobalFileManager::getInstance().addHistMap(&m_hists);
     }
     return *this;
 }
