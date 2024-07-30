@@ -144,7 +144,22 @@ private:
 /**/
 /**/         file.Close();
 /* DELETE */
-/* DELETE */ cout << "DELETE" << endl;
+/* DELETE */ cout << endl;
+/* DELETE */ cout << "(--m_hists->end()).first = " << (--m_hists->end())->first << endl;
+/* DELETE */ cout << "(--m_hists->end()).second = " << (--m_hists->end())->second << endl;
+/* DELETE */ cout << "(--m_hists->end())->second->GetName() = " << (--m_hists->end())->second->GetName() << endl;
+/* DELETE */ cout << "(--m_hists->end())->second->GetTitle() = " << (--m_hists->end())->second->GetTitle() << endl;
+/* DELETE */ cout << "(--m_hists->end())->second->GetEntries() = " << (--m_hists->end())->second->GetEntries() << endl;
+/* DELETE */ cout << "(--(--m_hists->end())).first = " << (--(--m_hists->end()))->first << endl;
+/* DELETE */ cout << "(--(--m_hists->end())).second = " << (--(--m_hists->end()))->second << endl;
+/* DELETE */ cout << "(--(--m_hists->end()))->second->GetName() = " << (--(--m_hists->end()))->second->GetName() << endl;
+/* DELETE */ cout << "(--(--m_hists->end()))->second->GetTitle() = " << (--(--m_hists->end()))->second->GetTitle() << endl;
+/* DELETE */ cout << "(--(--m_hists->end()))->second->GetEntries() = " << (--(--m_hists->end()))->second->GetEntries() << endl;
+/* DELETE */ cout << "(--(--(--m_hists->end()))).first = " << (--(--(--m_hists->end())))->first << endl;
+/* DELETE */ cout << "(--(--(--m_hists->end()))).second = " << (--(--(--m_hists->end())))->second << endl;
+/* DELETE */ cout << "(--(--(--m_hists->end())))->second->GetName() = " << (--(--(--m_hists->end())))->second->GetName() << endl;
+/* DELETE */ cout << "(--(--(--m_hists->end())))->second->GetTitle() = " << (--(--(--m_hists->end())))->second->GetTitle() << endl;
+/* DELETE */ cout << "(--(--(--m_hists->end())))->second->GetEntries() = " << (--(--(--m_hists->end())))->second->GetEntries() << endl;
 /**/     }
 /**/ 
 /**/     if( m_hists->size() != t_hists_paths.size() )
@@ -190,6 +205,7 @@ private:
 /**/     Double_t low = t_original->GetXaxis()->GetXmin();
 /**/     Double_t high = t_original->GetXaxis()->GetXmax();
 /**/ 
+/**/     if( t_copy ) delete t_copy;
 /**/     t_copy = new TH1D( name, title, nbins, low, high );
 /**/ 
 /**/     // Copy contents
@@ -217,6 +233,7 @@ private:
 /**/     Double_t ylow = t_original->GetYaxis()->GetXmin();
 /**/     Double_t yhigh = t_original->GetYaxis()->GetXmax();
 /**/ 
+/**/     if( t_copy ) delete t_copy;
 /**/     t_copy = new TH2D( name, title, nxbins, xlow, xhigh, nybins, ylow, yhigh );
 /**/ 
 /**/     // Copy contents
