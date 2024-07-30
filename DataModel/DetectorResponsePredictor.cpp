@@ -134,7 +134,7 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
     double max_y  { t_hists_energies->at( 0 )->GetYaxis()->GetXmax()  };
     int    nBins_y{ t_hists_energies->at( 0 )->GetYaxis()->GetNbins() };
     int i{ 0 };
-    // for( pair< int, TH2D* > hist : *t_hists_energies ) { // replaced structured binding to avoid warning
+    for( pair< int, TH2D* > hist : *t_hists_energies ) { // replaced structured binding to avoid warning
         int   const& e = hist.first;
         TH2D* const& h = hist.second;
         if( abs( h->GetXaxis()->GetXmin()  - min_x   ) > epsilon ||
@@ -154,6 +154,7 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
             LogD( "h->GetYaxis()->GetNbins() = " + to_string( h->GetYaxis()->GetNbins() ) + " != " + to_string( nBins_y ) + " = nBins_y", m_verbosity_debug );
             return false;
         }
+        i++;
     }
 
     for( pair< int, TH2D* > hist : *t_hists_counts ) { // replaced structured binding to avoid warning
