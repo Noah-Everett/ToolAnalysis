@@ -91,6 +91,8 @@ private:
     /**//////////////////
     /**/
     /**/ void copy_THist( const type_hist* t_original, type_hist*& t_copy );
+    /**/ void copy_THist( const TH1D     * t_original, TH1D     *& t_copy );
+    /**/ void copy_THist( const TH2D     * t_original, TH2D     *& t_copy );
     /**/
     /**//////////////////
 };
@@ -174,63 +176,57 @@ private:
 /**/ }
 /**/
 /**/ template< typename type_ID >
-/**/ class THistReader< type_ID, TH1D > {
-/**/     private:
-/**/         void copy_THist( const TH1D* t_original, TH1D*& t_copy ) {
-/**/             if( !t_original ) {
-/**/                 cout << "Error: Original histogram is null" << endl;
-/**/                 return;
-/**/             }
+/**/ void copy_THist( const TH1D* t_original, TH1D*& t_copy ) {
+/**/     if( !t_original ) {
+/**/         cout << "Error: Original histogram is null" << endl;
+/**/         return;
+/**/     }
 /**/ 
-/**/             // Create new histogram
-/**/             TString name = t_original->GetName();
-/**/             TString title = t_original->GetTitle();
-/**/             Int_t nbins = t_original->GetNbinsX();
-/**/             Double_t low = t_original->GetXaxis()->GetXmin();
-/**/             Double_t high = t_original->GetXaxis()->GetXmax();
+/**/     // Create new histogram
+/**/     TString name = t_original->GetName();
+/**/     TString title = t_original->GetTitle();
+/**/     Int_t nbins = t_original->GetNbinsX();
+/**/     Double_t low = t_original->GetXaxis()->GetXmin();
+/**/     Double_t high = t_original->GetXaxis()->GetXmax();
 /**/ 
-/**/             t_copy = new TH1D( name, title, nbins, low, high );
+/**/     t_copy = new TH1D( name, title, nbins, low, high );
 /**/ 
-/**/             // Copy contents
-/**/             for( Int_t i = 1; i <= nbins; ++i ) {
-/**/                 Double_t content = t_original->GetBinContent( i );
-/**/                 t_copy->SetBinContent( i, content );
-/**/             }
-/**/         }
-/**/ };
+/**/     // Copy contents
+/**/     for( Int_t i = 1; i <= nbins; ++i ) {
+/**/         Double_t content = t_original->GetBinContent( i );
+/**/         t_copy->SetBinContent( i, content );
+/**/     }
+/**/ }
 /**/ 
 /**/ template< typename type_ID >
-/**/ class THistReader< type_ID, TH2D > {
-/**/     private:
-/**/         void copy_THist( const TH2D* t_original, TH2D*& t_copy ) {
-/**/             if( !t_original ) {
-/**/                 cout << "Error: Original histogram is null" << endl;
-/**/                 return;
-/**/             }
+/**/ void copy_THist( const TH2D* t_original, TH2D*& t_copy ) {
+/**/     if( !t_original ) {
+/**/         cout << "Error: Original histogram is null" << endl;
+/**/         return;
+/**/     }
 /**/ 
-/**/             // Create new histogram
-/**/             TString name = t_original->GetName();
-/**/             TString title = t_original->GetTitle();
-/**/             Int_t nxbins = t_original->GetNbinsX();
-/**/             Double_t xlow = t_original->GetXaxis()->GetXmin();
-/**/             Double_t xhigh = t_original->GetXaxis()->GetXmax();
-/**/             Int_t nybins = t_original->GetNbinsY();
-/**/             Double_t ylow = t_original->GetYaxis()->GetXmin();
-/**/             Double_t yhigh = t_original->GetYaxis()->GetXmax();
+/**/     // Create new histogram
+/**/     TString name = t_original->GetName();
+/**/     TString title = t_original->GetTitle();
+/**/     Int_t nxbins = t_original->GetNbinsX();
+/**/     Double_t xlow = t_original->GetXaxis()->GetXmin();
+/**/     Double_t xhigh = t_original->GetXaxis()->GetXmax();
+/**/     Int_t nybins = t_original->GetNbinsY();
+/**/     Double_t ylow = t_original->GetYaxis()->GetXmin();
+/**/     Double_t yhigh = t_original->GetYaxis()->GetXmax();
 /**/ 
-/**/             t_copy = new TH2D( name, title, nxbins, xlow, xhigh, nybins, ylow, yhigh );
+/**/     t_copy = new TH2D( name, title, nxbins, xlow, xhigh, nybins, ylow, yhigh );
 /**/ 
-/**/             // Copy contents
-/**/             for( Int_t i = 1; i <= nxbins; ++i ) {
-/**/                 for( Int_t j = 1; j <= nybins; ++j ) {
-/**/                     Double_t content = t_original->GetBinContent( i, j );
-/**/                     Double_t error = t_original->GetBinError( i, j );
-/**/                     t_copy->SetBinContent( i, j, content );
-/**/                     t_copy->SetBinError( i, j, error );
-/**/                 }
-/**/             }
+/**/     // Copy contents
+/**/     for( Int_t i = 1; i <= nxbins; ++i ) {
+/**/         for( Int_t j = 1; j <= nybins; ++j ) {
+/**/             Double_t content = t_original->GetBinContent( i, j );
+/**/             Double_t error = t_original->GetBinError( i, j );
+/**/             t_copy->SetBinContent( i, j, content );
+/**/             t_copy->SetBinError( i, j, error );
 /**/         }
-/**/ };
+/**/     }
+/**/ }
 /**/
 /**////////////////////////////
 
