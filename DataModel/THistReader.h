@@ -26,7 +26,6 @@
 #include <vector>
 #include <ostream>
 #include <memory>
-#include <functional>
 
 #include "TFile.h"
 #include "TH1.h"
@@ -38,10 +37,6 @@ using std::string;
 using std::vector;
 using std::cout;
 using std::endl;
-
-// Forward declaration
-template< typename type_ID, typename type_hist >
-class THistReader;
 
 /**////////////////////////
 /**/// GlobalFileManager///
@@ -58,17 +53,8 @@ public:
         m_files.push_back(file);
     }
 
-    template< typename type_ID, typename type_hist >
-    void addHistMap(const map<type_ID, type_hist*>* histMap) {
-        m_histMaps.push_back(std::make_pair(
-            const_cast<void*>(static_cast<const void*>(histMap)),
-            [](void* p) {
-                auto* map = static_cast<const map<type_ID, type_hist*>*>(p);
-                for (const auto& pair : *map) {
-                    delete pair.second;
-                }
-            }
-        ));
+    void addHistogram(void* hist) {
+        m_histograms.push_back(hist);
     }
 
     ~GlobalFileManager() {
@@ -81,8 +67,8 @@ public:
         }
 
         // Delete all histograms
-        for (const auto& histMapPair : m_histMaps) {
-            histMapPair.second(histMapPair.first);
+        for (auto hist : m_histograms) {
+            delete static_cast<TH1*>(hist);
         }
     }
 
@@ -92,7 +78,7 @@ private:
     GlobalFileManager& operator=(const GlobalFileManager&) = delete;
 
     vector<TFile*> m_files;
-    vector<std::pair<void*, std::function<void(void*)>>> m_histMaps;
+    vector<void*> m_histograms;
 };
 /**/
 /**////////////////////////
@@ -174,26 +160,31 @@ THistReader< type_ID, type_hist >::THistReader(const vector<string>& t_hists_pat
         }
 
         m_hists[t_hists_IDs[i]] = hist;
+        GlobalFileManager::getInstance().addHistogram(hist);
     }
-
-    GlobalFileManager::getInstance().addHistMap(&m_hists);
 }
 
 template< typename type_ID, typename type_hist >
 THistReader< type_ID, type_hist >::THistReader(const THistReader& other) : m_hists(other.m_hists) {
-    GlobalFileManager::getInstance().addHistMap(&m_hists);
+    for (const auto& pair : m_hists) {
+        GlobalFileManager::getInstance().addHistogram(pair.second);
+    }
 }
 
 template< typename type_ID, typename type_hist >
 THistReader< type_ID, type_hist >::THistReader(THistReader&& other) noexcept : m_hists(std::move(other.m_hists)) {
-    GlobalFileManager::getInstance().addHistMap(&m_hists);
+    for (const auto& pair : m_hists) {
+        GlobalFileManager::getInstance().addHistogram(pair.second);
+    }
 }
 
 template< typename type_ID, typename type_hist >
 THistReader< type_ID, type_hist >& THistReader< type_ID, type_hist >::operator=(const THistReader& other) {
     if (this != &other) {
         m_hists = other.m_hists;
-        GlobalFileManager::getInstance().addHistMap(&m_hists);
+        for (const auto& pair : m_hists) {
+            GlobalFileManager::getInstance().addHistogram(pair.second);
+        }
     }
     return *this;
 }
@@ -202,7 +193,9 @@ template< typename type_ID, typename type_hist >
 THistReader< type_ID, type_hist >& THistReader< type_ID, type_hist >::operator=(THistReader&& other) noexcept {
     if (this != &other) {
         m_hists = std::move(other.m_hists);
-        GlobalFileManager::getInstance().addHistMap(&m_hists);
+        for (const auto& pair : m_hists) {
+            GlobalFileManager::getInstance().addHistogram(pair.second);
+        }
     }
     return *this;
 }
