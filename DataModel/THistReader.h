@@ -142,7 +142,8 @@ private:
 /**/         if( !result.second )
 /**/             cout << "Error: Could not insert histogram into map" << endl;
 /**/
-/**/         file.Close("nodelete");
+// /**/         file.Close("nodelete");
+/**/         file.Close();
 /* DELETE */
 /* DELETE */ cout << endl;
 // /* DELETE */ cout << "(--m_hists->end()).first = " << (--m_hists->end())->first << endl;
@@ -199,15 +200,14 @@ private:
 /**/     }
 /**/ 
 /**/     // Create new histogram
-/**/     TString name = t_original->GetName();
-/**/     name += " (copy)";
-/**/     TString title = t_original->GetTitle();
-/**/     Int_t nbins = t_original->GetNbinsX();
-/**/     Double_t low = t_original->GetXaxis()->GetXmin();
-/**/     Double_t high = t_original->GetXaxis()->GetXmax();
+/**/     TString  name  = t_original->GetName  ();
+/**/     TString  title = t_original->GetTitle ();
+/**/     Int_t    nbins = t_original->GetNbinsX();
+/**/     Double_t low   = t_original->GetXaxis ()->GetXmin();
+/**/     Double_t high  = t_original->GetXaxis ()->GetXmax();
 /**/ 
 /**/     if( t_copy ) delete t_copy;
-/**/     t_copy = new TH1D( name, title, nbins, low, high );
+/**/     t_copy = new TH1D( name+" (copy)", title, nbins, low, high );
 /**/ 
 /**/     // Copy contents
 /**/     for( Int_t i = 1; i <= nbins; ++i ) {
@@ -224,18 +224,17 @@ private:
 /**/     }
 /**/ 
 /**/     // Create new histogram
-/**/     TString name = t_original->GetName();
-/**/     name += " (copy)";
-/**/     TString title = t_original->GetTitle();
-/**/     Int_t nxbins = t_original->GetNbinsX();
-/**/     Double_t xlow = t_original->GetXaxis()->GetXmin();
-/**/     Double_t xhigh = t_original->GetXaxis()->GetXmax();
-/**/     Int_t nybins = t_original->GetNbinsY();
-/**/     Double_t ylow = t_original->GetYaxis()->GetXmin();
-/**/     Double_t yhigh = t_original->GetYaxis()->GetXmax();
+/**/     TString  name   = t_original->GetName  ();
+/**/     TString  title  = t_original->GetTitle ();
+/**/     Int_t    nxbins = t_original->GetNbinsX();
+/**/     Double_t xlow   = t_original->GetXaxis ()->GetXmin();
+/**/     Double_t xhigh  = t_original->GetXaxis ()->GetXmax();
+/**/     Int_t    nybins = t_original->GetNbinsY();
+/**/     Double_t ylow   = t_original->GetYaxis ()->GetXmin();
+/**/     Double_t yhigh  = t_original->GetYaxis ()->GetXmax();
 /**/ 
 /**/     if( t_copy ) delete t_copy;
-/**/     t_copy = new TH2D( name, title, nxbins, xlow, xhigh, nybins, ylow, yhigh );
+/**/     t_copy = new TH2D( name+" (copy)", title, nxbins, xlow, xhigh, nybins, ylow, yhigh );
 /**/ 
 /**/     // Copy contents
 /**/     for( Int_t i = 1; i <= nxbins; ++i ) {
