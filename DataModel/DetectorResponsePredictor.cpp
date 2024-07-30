@@ -137,10 +137,10 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
     for( pair< int, TH2D* > hist : *t_hists_energies ) { // replaced structured binding to avoid warning
         int   const& e = hist.first;
         TH2D* const& h = hist.second;
-        if( abs( h->GetXaxis()->GetXmin()  - min_x   ) > epsilon ||
-            abs( h->GetXaxis()->GetXmax()  - max_x   ) > epsilon ||
-            abs( h->GetYaxis()->GetXmin()  - min_y   ) > epsilon ||
-            abs( h->GetYaxis()->GetXmax()  - max_y   ) > epsilon ||
+        if( abs( h->GetXaxis()->GetXmin() - min_x   ) > epsilon ||
+            abs( h->GetXaxis()->GetXmax() - max_x   ) > epsilon ||
+            abs( h->GetYaxis()->GetXmin() - min_y   ) > epsilon ||
+            abs( h->GetYaxis()->GetXmax() - max_y   ) > epsilon ||
             h->GetXaxis()->GetNbins() != nBins_x ||
             h->GetYaxis()->GetNbins() != nBins_y   ) {
             LogD( "All histograms in `t_hists_energies` do not have the same axes (same min, max, and bin counts).", m_verbosity_error );

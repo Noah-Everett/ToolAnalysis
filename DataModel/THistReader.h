@@ -17,7 +17,6 @@
 //*/////////////////////////////////////////////////////////////////////////////////////////////*//
 //*//                                                                                         //*//
 //*/////////////////////////////////////////////////////////////////////////////////////////////*//
-
 #ifndef THISTREADER_H
 #define THISTREADER_H
 
@@ -25,6 +24,8 @@
 #include <string>
 #include <vector>
 #include <ostream>
+#include <memory>
+#include <functional>
 
 #include "TFile.h"
 #include "TH1.h"
@@ -37,6 +38,64 @@ using std::vector;
 using std::cout;
 using std::endl;
 
+// Forward declaration
+template< typename type_ID, typename type_hist >
+class THistReader;
+
+/**////////////////////////
+/**/// GlobalFileManager///
+/**////////////////////////
+/**/
+class GlobalFileManager {
+public:
+    static GlobalFileManager& getInstance() {
+        static GlobalFileManager instance;
+        return instance;
+    }
+
+    void addFile(TFile* file) {
+        m_files.push_back(file);
+    }
+
+    template< typename type_ID, typename type_hist >
+    void addHistMap(const map<type_ID, type_hist*>& histMap) {
+        m_histMaps.push_back(std::make_pair(
+            reinterpret_cast<void*>(&histMap),
+            [](void* p) {
+                auto* map = reinterpret_cast<const map<type_ID, type_hist*>*>(p);
+                for (const auto& pair : *map) {
+                    delete pair.second;
+                }
+            }
+        ));
+    }
+
+    ~GlobalFileManager() {
+        // Close all files
+        for (auto file : m_files) {
+            if (file) {
+                file->Close();
+                delete file;
+            }
+        }
+
+        // Delete all histograms
+        for (const auto& histMapPair : m_histMaps) {
+            histMapPair.second(histMapPair.first);
+        }
+    }
+
+private:
+    GlobalFileManager() {}
+    GlobalFileManager(const GlobalFileManager&) = delete;
+    GlobalFileManager& operator=(const GlobalFileManager&) = delete;
+
+    vector<TFile*> m_files;
+    vector<std::pair<void*, std::function<void(void*)>>> m_histMaps;
+};
+/**/
+/**////////////////////////
+
 template< typename type_ID, typename type_hist >
 class THistReader
 {
@@ -45,125 +104,117 @@ public:
     /**/// (Con/De)structor ///
     /**////////////////////////
     /**/
-    /**/ THistReader( const vector< string  >& t_hists_paths, 
-    /**/              const vector< type_ID >& t_hists_IDs  ,
-    /**/              const vector< string  >& t_hists_names );
-    /**/ THistReader( const THistReader* t_THistReader ): m_hists{ t_THistReader->get_histsMap_cp() } {}
-    /**/~THistReader();
+    THistReader(const vector<string>& t_hists_paths, 
+                const vector<type_ID>& t_hists_IDs,
+                const vector<string>& t_hists_names);
+    THistReader(const THistReader& other);
+    THistReader(THistReader&& other) noexcept;
+    ~THistReader() = default;
     /**/
     /**////////////////////////
-
-
 
     /**////////////////////////
     /**/// Access Functions ///
     /**////////////////////////
     /**/
-    /**/ type_hist                 * get_hist       ( const type_ID& t_ID ) const { return m_hists->at( t_ID ); }
-    /**/ map< type_ID, type_hist* >* get_histsMap   (                     )       { return m_hists;             }
-    /**/ map< type_ID, type_hist* >* get_histsMap_cp(                     ) const;
+    type_hist* get_hist(const type_ID& t_ID) const;
+    const map<type_ID, type_hist*>& get_histsMap() const { return m_hists; }
     /**/
     /**////////////////////////
-
-
 
     /**/////////////////////////
     /**/// Setting Functions ///
     /**/////////////////////////
     /**/
-    /**/ void operator=( const THistReader* t_THistReader );
+    THistReader& operator=(const THistReader& other);
+    THistReader& operator=(THistReader&& other) noexcept;
     /**/
     /**/////////////////////////
-
-
 
 private:
     /**////////////////////////
     /**/// Member Variables ///
     /**////////////////////////
     /**/
-    /**/ map< type_ID, type_hist* >* m_hists{ new map< type_ID, type_hist* > };
-    /**/ map< type_ID, TFile*     >* m_files{ new map< type_ID, TFile*      > };
+    map<type_ID, type_hist*> m_hists;
     /**/
     /**////////////////////////
 };
 
-
-  
 /**////////////////////////////
 /**/// Function Definitions ///
 /**////////////////////////////
 /**/
-/**/ template< typename type_ID, typename type_hist >
-/**/ THistReader< type_ID, type_hist >::THistReader( const vector< string > & t_hists_paths,
-/**/                                                 const vector< type_ID >& t_hists_IDs  ,
-/**/                                                 const vector< string  >& t_hists_names ) {
-/**/     if( t_hists_paths.size() != t_hists_IDs.size() || t_hists_paths.size() != t_hists_names.size() ) {
-/**/         cout << "Error: hists_paths, hists_IDs, and hists_names "
-/**/              << "vectors should all be the same length" << endl;
-/**/         return;
-/**/     }
-/**/
-/**/     for( int i{ 0 }; i < t_hists_paths.size(); i++ ) {
-/**/         TFile* file{ new TFile{ t_hists_paths[ i ].c_str(), "READ" } };
-/**/         m_files->insert( pair< type_ID, TFile* >{ t_hists_IDs[ i ], file } );
-/**/         if( file->IsZombie() ) {
-/**/             cout << "Error: Could not open file with path " << t_hists_paths[ i ] << endl;
-/**/             continue;
-/**/         }
-/**/
-/**/         pair< type_ID, type_hist* > entry;
-/**/ 	     entry.first = t_hists_IDs[ i ];
-/**/
-/**/         file->GetObject( t_hists_names[ i ].c_str(), entry.second );
-/**/         if( !entry.second ) {
-/**/             cout << "Error: Could not find histogram with name " << t_hists_names[ i ] << endl;
-/**/             continue;
-/**/         }
-/**/
-/**/         if( !entry.second ) {
-/**/             cout << "Error: Could not copy histogram" << endl;
-/**/             continue;
-/**/         }
-/**/
-/**/         auto result = m_hists->insert( entry );
-/**/         if( !result.second )
-/**/             cout << "Error: Could not insert histogram into map" << endl;
-/**/     }
-/**/ 
-/**/     if( m_hists->size() != t_hists_paths.size() )
-/**/         cout << "Error: Not all histograms were loaded" << endl;
-/**/ }
-/**/
-/**/ template< typename type_ID, typename type_hist >
-/**/ THistReader< type_ID, type_hist >::~THistReader() {
-/**/     for( auto it = m_hists->begin(); it != m_hists->end(); ++it ) {
-/**/         if( it->second ) delete it->second;
-/**/     }
-/**/     delete m_hists;
-/**/
-/**/     for( auto it = m_files->begin(); it != m_files->end(); ++it ) {
-/**/         if( it->second ) it->second->Close();
-/**/     }
-/**/     delete m_files;
-/**/ }
-/**/
-/**/ template< typename type_ID, typename type_hist >
-/**/ map< type_ID, type_hist* >* THistReader< type_ID, type_hist >::get_histsMap_cp() const {
-/**/     map< type_ID, type_hist* >* temp{ new map< type_ID, type_hist* > };
-/**/     *temp = *m_hists;
-/**/     return temp;
-/**/ }
-/**/
-/**/
-/**/ template< typename type_ID, typename type_hist >
-/**/ void THistReader< type_ID, type_hist >::operator=( const THistReader* t_THistReader ) {
-/**/     if( m_hists ) delete m_hists;
-/**/     m_hists = new map< type_ID, type_hist* >{ *( t_THistReader->m_hists ) };
-/**/
-/**/     if( m_files ) delete m_files;
-/**/     m_files = new map< type_ID, TFile* >{ *( t_THistReader->m_files ) };
-/**/ }
+template< typename type_ID, typename type_hist >
+THistReader< type_ID, type_hist >::THistReader(const vector<string>& t_hists_paths, 
+                                               const vector<type_ID>& t_hists_IDs,
+                                               const vector<string>& t_hists_names) 
+{
+    if (t_hists_paths.size() != t_hists_IDs.size() || t_hists_paths.size() != t_hists_names.size()) {
+        cout << "Error: hists_paths, hists_IDs, and hists_names "
+             << "vectors should all be the same length" << endl;
+        return;
+    }
+
+    for (size_t i = 0; i < t_hists_paths.size(); i++) {
+        TFile* file = new TFile(t_hists_paths[i].c_str(), "READ");
+        GlobalFileManager::getInstance().addFile(file);
+        
+        if (file->IsZombie()) {
+            cout << "Error: Could not open file with path " << t_hists_paths[i] << endl;
+            continue;
+        }
+
+        type_hist* hist = nullptr;
+        file->GetObject(t_hists_names[i].c_str(), hist);
+        if (!hist) {
+            cout << "Error: Could not find histogram with name " << t_hists_names[i] << endl;
+            continue;
+        }
+
+        m_hists[t_hists_IDs[i]] = hist;
+    }
+
+    GlobalFileManager::getInstance().addHistMap(m_hists);
+}
+
+template< typename type_ID, typename type_hist >
+THistReader< type_ID, type_hist >::THistReader(const THistReader& other) : m_hists(other.m_hists) {
+    GlobalFileManager::getInstance().addHistMap(m_hists);
+}
+
+template< typename type_ID, typename type_hist >
+THistReader< type_ID, type_hist >::THistReader(THistReader&& other) noexcept : m_hists(std::move(other.m_hists)) {
+    GlobalFileManager::getInstance().addHistMap(m_hists);
+}
+
+template< typename type_ID, typename type_hist >
+THistReader< type_ID, type_hist >& THistReader< type_ID, type_hist >::operator=(const THistReader& other) {
+    if (this != &other) {
+        m_hists = other.m_hists;
+        GlobalFileManager::getInstance().addHistMap(m_hists);
+    }
+    return *this;
+}
+
+template< typename type_ID, typename type_hist >
+THistReader< type_ID, type_hist >& THistReader< type_ID, type_hist >::operator=(THistReader&& other) noexcept {
+    if (this != &other) {
+        m_hists = std::move(other.m_hists);
+        GlobalFileManager::getInstance().addHistMap(m_hists);
+    }
+    return *this;
+}
+
+template< typename type_ID, typename type_hist >
+type_hist* THistReader< type_ID, type_hist >::get_hist(const type_ID& t_ID) const { 
+    auto it = m_hists.find(t_ID);
+    if (it != m_hists.end()) {
+        return it->second;
+    }
+    cout << "Error: Histogram with ID " << t_ID << " not found." << endl;
+    return nullptr;
+}
 /**/
 /**////////////////////////////
 
