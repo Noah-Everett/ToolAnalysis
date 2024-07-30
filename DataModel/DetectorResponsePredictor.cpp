@@ -136,15 +136,6 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
     for( pair< int, TH2D* > hist : *t_hists_energies ) { // replaced structured binding to avoid warning
         int   const& i = hist.first;
         TH2D* const& h = hist.second;
-        // if( h->GetXaxis()->GetXmin()  != min_x   ||
-        //     h->GetXaxis()->GetXmax()  != max_x   ||
-        //     h->GetXaxis()->GetNbins() != nBins_x ||
-        //     h->GetYaxis()->GetXmin()  != min_y   ||
-        //     h->GetYaxis()->GetXmax()  != max_y   ||
-        //     h->GetYaxis()->GetNbins() != nBins_y   ) {
-        //     LogD( "All histograms in `t_hists_energies` do not have the same axes (same min, max, and bin counts).", m_verbosity_error );
-        //     return false;
-        // }
         if( abs( h->GetXaxis()->GetXmin()  - min_x   ) > epsilon ||
             abs( h->GetXaxis()->GetXmax()  - max_x   ) > epsilon ||
             abs( h->GetYaxis()->GetXmin()  - min_y   ) > epsilon ||
@@ -152,7 +143,8 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
             h->GetXaxis()->GetNbins() != nBins_x ||
             h->GetYaxis()->GetNbins() != nBins_y   ) {
             LogD( "All histograms in `t_hists_energies` do not have the same axes (same min, max, and bin counts).", m_verbosity_error );
-            LogD( "Threashold `epsilon` = " + to_string( epsilon ), m_verbosity_debug );
+            LogD( "Error encountered on histogram with ID " + to_string( i ) + ".", m_verbosity_error );
+            LogD( "With threashold `epsilon` = " + to_string( epsilon ) + ", one of the following is true:", m_verbosity_debug );
             LogD( "h->GetXaxis()->GetXmin() = "  + to_string( h->GetXaxis()->GetXmin () ) + " != " + to_string( min_x   ) + " = min_x"  , m_verbosity_debug );
             LogD( "h->GetXaxis()->GetXmax() = "  + to_string( h->GetXaxis()->GetXmax () ) + " != " + to_string( max_x   ) + " = max_x"  , m_verbosity_debug );
             LogD( "h->GetYaxis()->GetXmin() = "  + to_string( h->GetYaxis()->GetXmin () ) + " != " + to_string( min_y   ) + " = min_y"  , m_verbosity_debug );
