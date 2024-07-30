@@ -141,32 +141,25 @@ private:
 /**/         auto result = m_hists->insert( entry );
 /**/         if( !result.second )
 /**/             cout << "Error: Could not insert histogram into map" << endl;
-/* DELETE */
-/* DELETE */ cout << endl;
-/* DELETE */ cout << "(--m_hists->end()).first = " << (--m_hists->end())->first << endl;
-/* DELETE */ cout << "(--m_hists->end()).second = " << (--m_hists->end())->second << endl;
-/* DELETE */ cout << "(--m_hists->end())->second->GetName() = " << (--m_hists->end())->second->GetName() << endl;
-/* DELETE */ cout << "(--m_hists->end())->second->GetTitle() = " << (--m_hists->end())->second->GetTitle() << endl;
-/* DELETE */ cout << "(--m_hists->end())->second->GetEntries() = " << (--m_hists->end())->second->GetEntries() << endl;
 /**/
 /**/         file.Close("nodelete");
 /* DELETE */
 /* DELETE */ cout << endl;
-/* DELETE */ cout << "(--m_hists->end()).first = " << (--m_hists->end())->first << endl;
-/* DELETE */ cout << "(--m_hists->end()).second = " << (--m_hists->end())->second << endl;
-/* DELETE */ cout << "(--m_hists->end())->second->GetName() = " << (--m_hists->end())->second->GetName() << endl;
-/* DELETE */ cout << "(--m_hists->end())->second->GetTitle() = " << (--m_hists->end())->second->GetTitle() << endl;
-/* DELETE */ cout << "(--m_hists->end())->second->GetEntries() = " << (--m_hists->end())->second->GetEntries() << endl;
-/* DELETE */ cout << "(--(--m_hists->end())).first = " << (--(--m_hists->end()))->first << endl;
-/* DELETE */ cout << "(--(--m_hists->end())).second = " << (--(--m_hists->end()))->second << endl;
-/* DELETE */ cout << "(--(--m_hists->end()))->second->GetName() = " << (--(--m_hists->end()))->second->GetName() << endl;
-/* DELETE */ cout << "(--(--m_hists->end()))->second->GetTitle() = " << (--(--m_hists->end()))->second->GetTitle() << endl;
-/* DELETE */ cout << "(--(--m_hists->end()))->second->GetEntries() = " << (--(--m_hists->end()))->second->GetEntries() << endl;
-/* DELETE */ cout << "(--(--(--m_hists->end()))).first = " << (--(--(--m_hists->end())))->first << endl;
-/* DELETE */ cout << "(--(--(--m_hists->end()))).second = " << (--(--(--m_hists->end())))->second << endl;
-/* DELETE */ cout << "(--(--(--m_hists->end())))->second->GetName() = " << (--(--(--m_hists->end())))->second->GetName() << endl;
-/* DELETE */ cout << "(--(--(--m_hists->end())))->second->GetTitle() = " << (--(--(--m_hists->end())))->second->GetTitle() << endl;
-/* DELETE */ cout << "(--(--(--m_hists->end())))->second->GetEntries() = " << (--(--(--m_hists->end())))->second->GetEntries() << endl;
+// /* DELETE */ cout << "(--m_hists->end()).first = " << (--m_hists->end())->first << endl;
+// /* DELETE */ cout << "(--m_hists->end()).second = " << (--m_hists->end())->second << endl;
+// /* DELETE */ cout << "(--m_hists->end())->second->GetName() = " << (--m_hists->end())->second->GetName() << endl;
+// /* DELETE */ cout << "(--m_hists->end())->second->GetTitle() = " << (--m_hists->end())->second->GetTitle() << endl;
+// /* DELETE */ cout << "(--m_hists->end())->second->GetEntries() = " << (--m_hists->end())->second->GetEntries() << endl;
+// /* DELETE */ cout << "(--(--m_hists->end())).first = " << (--(--m_hists->end()))->first << endl;
+// /* DELETE */ cout << "(--(--m_hists->end())).second = " << (--(--m_hists->end()))->second << endl;
+// /* DELETE */ cout << "(--(--m_hists->end()))->second->GetName() = " << (--(--m_hists->end()))->second->GetName() << endl;
+// /* DELETE */ cout << "(--(--m_hists->end()))->second->GetTitle() = " << (--(--m_hists->end()))->second->GetTitle() << endl;
+// /* DELETE */ cout << "(--(--m_hists->end()))->second->GetEntries() = " << (--(--m_hists->end()))->second->GetEntries() << endl;
+// /* DELETE */ cout << "(--(--(--m_hists->end()))).first = " << (--(--(--m_hists->end())))->first << endl;
+// /* DELETE */ cout << "(--(--(--m_hists->end()))).second = " << (--(--(--m_hists->end())))->second << endl;
+// /* DELETE */ cout << "(--(--(--m_hists->end())))->second->GetName() = " << (--(--(--m_hists->end())))->second->GetName() << endl;
+// /* DELETE */ cout << "(--(--(--m_hists->end())))->second->GetTitle() = " << (--(--(--m_hists->end())))->second->GetTitle() << endl;
+// /* DELETE */ cout << "(--(--(--m_hists->end())))->second->GetEntries() = " << (--(--(--m_hists->end())))->second->GetEntries() << endl;
 /**/     }
 /**/ 
 /**/     if( m_hists->size() != t_hists_paths.size() )
