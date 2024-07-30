@@ -109,6 +109,10 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
     DetectorResponsePredictorFunctionPtr load_hists_emissions[ num_materials ]{ &DetectorResponsePredictor::load_hists_emission_tankWater, 
                                                                                 &DetectorResponsePredictor::load_hists_emission_MRDsci    };
     DetectorResponsePredictor* DetectorResponsePredictors[ num_particles ]{ m_DetectorResponsePredictor_mu, m_DetectorResponsePredictor_e };
+    for( unsigned int nParticle{ 0 }; nParticle < num_particles; nParticle++ ) {
+        LogD( "Setting verbosity for DetectorResponsePredictor (nParticle=" + to_string( nParticle ) + ").", m_verbosity_debug );
+        DetectorResponsePredictors[ nParticle ]->set_verbosity( m_verbosity_DetectorResponsePredictor );
+    }
 
     unsigned int     hists_emission_energy_cur        ;
     vector< string > hists_emission_energies_paths_cur;
