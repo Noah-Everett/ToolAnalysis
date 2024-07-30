@@ -106,7 +106,7 @@ public:
     /**/
     type_hist* get_hist(const type_ID& t_ID) const;
     const map<type_ID, type_hist*>& get_histsMap() const { return m_hists; }
-    const map<type_ID, type_hist*>* get_histsMap_cp() const;
+    map<type_ID, type_hist*>* get_histsMap_cp() const;
     /**/
     /**////////////////////////
 
