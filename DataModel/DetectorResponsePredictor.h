@@ -164,6 +164,10 @@ protected:
     /**/// Output ///
     /**//////////////
     /**/
+    /**/ #define     LogD(                        t_message      ,                  t_verbosity ) Log_debug( t_message, t_verbosity, __FILE__, __FUNCTION__, __LINE__ )
+    /**/ inline void Log_debug   ( const string&  t_message      , unsigned int     t_verbosity, const string& t_file, const string& t_function, int t_line );
+    /**/ inline void Log_debug   ( const string&& t_message      , unsigned int     t_verbosity, const string& t_file, const string& t_function, int t_line );
+    /**/
     /**/ enum m_verbosity_enum{ m_verbosity_error   = 0,
     /**/                        m_verbosity_warning = 1,
     /**/                        m_verbosity_message = 2,
@@ -172,10 +176,6 @@ protected:
     /**/                                              { m_verbosity_warning, "WARNING" },
     /**/                                              { m_verbosity_message, "MESSAGE" },
     /**/                                              { m_verbosity_debug  , "DEBUG"   } };
-    /**/
-    /**/ #define LogD(                     t_message,                    t_verbosity ) Log_debug( t_message, t_verbosity, __FILE__, __FUNCTION__, __LINE__ )
-    /**/ void    Log_debug( const string&  t_message, unsigned int t_verbosity, const string&  t_file, const string&  t_function, int t_line ) const;
-    /**/ void    Log_debug( const string&& t_message, unsigned int t_verbosity, const string&& t_file, const string&& t_function, int t_line ) const;
     /**/
     /**//////////////
 
