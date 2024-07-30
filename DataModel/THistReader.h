@@ -212,7 +212,7 @@ type_hist* THistReader< type_ID, type_hist >::get_hist(const type_ID& t_ID) cons
 }
 
 template< typename type_ID, typename type_hist >
-const map<type_ID, type_hist*>* THistReader< type_ID, type_hist >::get_histsMap_cp() const {
+map<type_ID, type_hist*>* THistReader< type_ID, type_hist >::get_histsMap_cp() const {
     return new map< type_ID, type_hist* >( m_hists );
 }
 /**/
