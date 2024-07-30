@@ -126,7 +126,8 @@ private:
 // /**/         type_hist* temp{ nullptr };
 // /**/         file.GetObject( t_hists_names[ i ].c_str(), temp );
 /**/         file.GetObject( t_hists_names[ i ].c_str(), entry.second );
-/**/         if( !temp ) {
+// /**/         if( !temp ) {
+/**/         if( !entry.second ) {
 /**/             cout << "Error: Could not find histogram with name " << t_hists_names[ i ] << endl;
 /**/             continue;
 /**/         }
