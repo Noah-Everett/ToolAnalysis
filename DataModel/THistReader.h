@@ -106,6 +106,7 @@ public:
     /**/
     type_hist* get_hist(const type_ID& t_ID) const;
     const map<type_ID, type_hist*>& get_histsMap() const { return m_hists; }
+    const map<type_ID, type_hist*>* get_histsMap_cp() const;
     /**/
     /**////////////////////////
 
@@ -208,6 +209,11 @@ type_hist* THistReader< type_ID, type_hist >::get_hist(const type_ID& t_ID) cons
     }
     cout << "Error: Histogram with ID " << t_ID << " not found." << endl;
     return nullptr;
+}
+
+template< typename type_ID, typename type_hist >
+const map<type_ID, type_hist*>* THistReader< type_ID, type_hist >::get_histsMap_cp() const {
+    return new map< type_ID, type_hist* >( m_hists );
 }
 /**/
 /**////////////////////////////
