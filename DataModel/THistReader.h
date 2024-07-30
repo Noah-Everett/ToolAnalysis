@@ -149,7 +149,7 @@ private:
 /* DELETE */ cout << "(--m_hists->end())->second->GetTitle() = " << (--m_hists->end())->second->GetTitle() << endl;
 /* DELETE */ cout << "(--m_hists->end())->second->GetEntries() = " << (--m_hists->end())->second->GetEntries() << endl;
 /**/
-/**/         file.Close();
+/**/         file.Close("nodelete");
 /* DELETE */
 /* DELETE */ cout << endl;
 /* DELETE */ cout << "(--m_hists->end()).first = " << (--m_hists->end())->first << endl;
@@ -207,7 +207,7 @@ private:
 /**/ 
 /**/     // Create new histogram
 /**/     TString name = t_original->GetName();
-/**/     name += "(copy)";
+/**/     name += " (copy)";
 /**/     TString title = t_original->GetTitle();
 /**/     Int_t nbins = t_original->GetNbinsX();
 /**/     Double_t low = t_original->GetXaxis()->GetXmin();
@@ -232,7 +232,7 @@ private:
 /**/ 
 /**/     // Create new histogram
 /**/     TString name = t_original->GetName();
-/**/     name += "(copy)";
+/**/     name += " (copy)";
 /**/     TString title = t_original->GetTitle();
 /**/     Int_t nxbins = t_original->GetNbinsX();
 /**/     Double_t xlow = t_original->GetXaxis()->GetXmin();
