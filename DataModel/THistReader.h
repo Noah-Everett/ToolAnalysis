@@ -123,15 +123,16 @@ private:
 /**/         pair< type_ID, type_hist* > entry;
 /**/ 	     entry.first = t_hists_IDs[ i ];
 /**/
-/**/         type_hist* temp{ nullptr };
-/**/         file.GetObject( t_hists_names[ i ].c_str(), temp );
+// /**/         type_hist* temp{ nullptr };
+// /**/         file.GetObject( t_hists_names[ i ].c_str(), temp );
+/**/         file.GetObject( t_hists_names[ i ].c_str(), entry.second );
 /**/         if( !temp ) {
 /**/             cout << "Error: Could not find histogram with name " << t_hists_names[ i ] << endl;
 /**/             continue;
 /**/         }
 /**/
-/* DELETE */ cout << "temp = " << temp << endl;
-/**/         copy_THist( temp, entry.second );
+// /* DELETE */ cout << "temp = " << temp << endl;
+// /**/         copy_THist( temp, entry.second );
 /* DELETE */ cout << "entry.second = " << entry.second << endl;
 /**/         if( !entry.second ) {
 /**/             cout << "Error: Could not copy histogram" << endl;
@@ -142,8 +143,8 @@ private:
 /**/         if( !result.second )
 /**/             cout << "Error: Could not insert histogram into map" << endl;
 /**/
-// /**/         file.Close("nodelete");
-/**/         file.Close();
+/**/         file.Close("nodelete");
+// /**/         file.Close();
 /* DELETE */
 /* DELETE */ cout << endl;
 // /* DELETE */ cout << "(--m_hists->end()).first = " << (--m_hists->end())->first << endl;
