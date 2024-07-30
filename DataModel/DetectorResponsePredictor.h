@@ -168,6 +168,10 @@ protected:
     /**/                        m_verbosity_warning = 1,
     /**/                        m_verbosity_message = 2,
     /**/                        m_verbosity_debug   = 3 };
+    /**/ map< unsigned int, string > m_verbosity_map{ { m_verbosity_error  , "ERROR"   },
+    /**/                                              { m_verbosity_warning, "WARNING" },
+    /**/                                              { m_verbosity_message, "MESSAGE" },
+    /**/                                              { m_verbosity_debug  , "DEBUG"   } };
     /**/
     /**/ #define LogD(                     t_message,                    t_verbosity ) Log_debug( t_message, t_verbosity, __FILE__, __FUNCTION__, __LINE__ )
     /**/ void    Log_debug( const string&  t_message, const unsigned int t_verbosity, const string&  t_file, const string&  t_function, int t_line ) const;
