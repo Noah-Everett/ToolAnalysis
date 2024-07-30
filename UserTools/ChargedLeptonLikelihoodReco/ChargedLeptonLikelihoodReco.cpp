@@ -137,11 +137,11 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
                                                                                                   hists_emission_IDs_cur                                             ) ) {
                 string temp_string{ "Cannot load emission histograms (nMaterial=" };
                 LogD( temp_string + to_string( nMaterial ) + " and nParticle=" + to_string( nParticle ) + ").", m_verbosity_error );
-                LogD( "  hists_emission_energies_paths_cur[0]: " + hists_emission_energies_paths_cur[ 0 ]  , m_verbosity_debug );
-                LogD( "  hists_emission_counts_paths_cur  [0]: " + hists_emission_counts_paths_cur  [ 0 ]  , m_verbosity_debug );
-                LogD( "  hists_emission_energies_names_cur[0]: " + hists_emission_energies_names_cur[ 0 ]  , m_verbosity_debug );
-                LogD( "  hists_emission_counts_names_cur  [0]: " + hists_emission_counts_names_cur  [ 0 ]  , m_verbosity_debug );
-                LogD( "  hists_emission_IDs_cur           [0]: " + to_string( hists_emission_IDs_cur[ 0 ] ), m_verbosity_debug );
+                LogD( "hists_emission_energies_paths_cur[0]: " + hists_emission_energies_paths_cur[ 0 ]  , m_verbosity_debug );
+                LogD( "hists_emission_counts_paths_cur  [0]: " + hists_emission_counts_paths_cur  [ 0 ]  , m_verbosity_debug );
+                LogD( "hists_emission_energies_names_cur[0]: " + hists_emission_energies_names_cur[ 0 ]  , m_verbosity_debug );
+                LogD( "hists_emission_counts_names_cur  [0]: " + hists_emission_counts_names_cur  [ 0 ]  , m_verbosity_debug );
+                LogD( "hists_emission_IDs_cur           [0]: " + to_string( hists_emission_IDs_cur[ 0 ] ), m_verbosity_debug );
                 return false;
             }
         }
