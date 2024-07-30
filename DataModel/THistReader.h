@@ -175,8 +175,8 @@ private:
 /**/     m_hists = new map< type_ID, type_hist* >{ *( t_THistReader->m_hists ) };
 /**/ }
 /**/
-/**/ template< typename type_ID >
-/**/ void copy_THist( const TH1D* t_original, TH1D*& t_copy ) {
+/**/ template< typename type_ID, typename type_hist >
+/**/ void THistReader< type_ID, type_hist >::copy_THist( const TH1D* t_original, TH1D*& t_copy ) {
 /**/     if( !t_original ) {
 /**/         cout << "Error: Original histogram is null" << endl;
 /**/         return;
@@ -198,8 +198,8 @@ private:
 /**/     }
 /**/ }
 /**/ 
-/**/ template< typename type_ID >
-/**/ void copy_THist( const TH2D* t_original, TH2D*& t_copy ) {
+/**/ template< typename type_ID, typename type_hist >
+/**/ void THistReader< type_ID, type_hist >::copy_THist( const TH2D* t_original, TH2D*& t_copy ) {
 /**/     if( !t_original ) {
 /**/         cout << "Error: Original histogram is null" << endl;
 /**/         return;
