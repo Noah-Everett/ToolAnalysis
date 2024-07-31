@@ -58,28 +58,6 @@ class GlobalFileManager {
         vector< void* >          m_histograms;
 };
 
-template< typename type_ID, typename type_hist >
-class THistReader {
-    public:
-        THistReader( const vector< string >& t_hists_paths, const vector< type_ID >& t_hists_IDs,
-                     const vector< string >& t_hists_names );
-        THistReader( const THistReader& other );
-        THistReader( THistReader&& other ) noexcept;
-        ~THistReader() = default;
-        type_hist*                        get_hist( const type_ID& t_ID ) const;
-
-        const map< type_ID, type_hist* >& get_histsMap() const {
-            return m_hists;
-        }
-
-        map< type_ID, type_hist* >* get_histsMap_cp() const;
-        THistReader&                operator=( const THistReader& other );
-        THistReader&                operator=( THistReader&& other ) noexcept;
-
-    private:
-        map< type_ID, type_hist* > m_hists;
-};
-
 GlobalFileManager::GlobalFileManager() {
 }
 
@@ -109,6 +87,28 @@ GlobalFileManager::~GlobalFileManager() {
         delete static_cast< TH1* >( hist );
     }
 }
+
+template< typename type_ID, typename type_hist >
+class THistReader {
+    public:
+        THistReader( const vector< string >& t_hists_paths, const vector< type_ID >& t_hists_IDs,
+                     const vector< string >& t_hists_names );
+        THistReader( const THistReader& other );
+        THistReader( THistReader&& other ) noexcept;
+        ~THistReader() = default;
+        type_hist*                        get_hist( const type_ID& t_ID ) const;
+
+        const map< type_ID, type_hist* >& get_histsMap() const {
+            return m_hists;
+        }
+
+        map< type_ID, type_hist* >* get_histsMap_cp() const;
+        THistReader&                operator=( const THistReader& other );
+        THistReader&                operator=( THistReader&& other ) noexcept;
+
+    private:
+        map< type_ID, type_hist* > m_hists;
+};
 
 template< typename type_ID, typename type_hist >
 THistReader< type_ID, type_hist >::THistReader( const vector< string >&  t_hists_paths,
