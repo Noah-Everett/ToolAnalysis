@@ -58,18 +58,18 @@ class GlobalFileManager {
         vector< void* >          m_histograms;
 };
 
-GlobalFileManager::GlobalFileManager() {
+inline GlobalFileManager::GlobalFileManager() {
 }
 
-GlobalFileManager& GlobalFileManager::getInstance() {
+inline GlobalFileManager& GlobalFileManager::getInstance() {
     return m_instance;
 }
 
-void GlobalFileManager::addFile( TFile* file ) {
+inline void GlobalFileManager::addFile( TFile* file ) {
     m_files.push_back( file );
 }
 
-void GlobalFileManager::addHistogram( void* hist ) {
+inline void GlobalFileManager::addHistogram( void* hist ) {
     m_histograms.push_back( hist );
 }
 
