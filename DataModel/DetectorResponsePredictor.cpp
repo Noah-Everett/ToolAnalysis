@@ -171,17 +171,6 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
         }
     }
 
-    /* DELETE */ cout << "t_hists_energies = " << t_hists_energies << endl;
-    /* DELETE */ if( t_hists_energies ) cout << "t_hists_energies->size() = " << t_hists_energies->size() << endl;
-    /* DELETE */ if( t_hists_energies ) {
-    /* DELETE */     for( pair< int, TH2D* > hist : *t_hists_energies ) { // replaced structured binding to avoid warning
-    /* DELETE */         int   const& i = hist.first;
-    /* DELETE */         TH2D* const& h = hist.second;
-    /* DELETE */         cout << "i = " << i << endl;
-    /* DELETE */         cout << "h = " << h << endl;
-    /* DELETE */     }
-    /* DELETE */ }
-
     // Set bin widths
     auto one = t_hists_energies->begin();
     cout << "&one = " << &one << endl;
