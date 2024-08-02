@@ -27,7 +27,7 @@
 #include "TH3.h"
 
 #include <map>
-#include <ostream>
+#include <iostream>
 #include <string>
 #include <vector>
 
