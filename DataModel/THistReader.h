@@ -388,6 +388,21 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, const char* ( t
 }
 
 template< typename type_hist >
+bool check_property( const type_hist* t_0, const type_hist* t_1, const char* ( TNamed::*t_property )() const ) {
+    if( ! t_0 || ! t_1 ) {
+        cout << "Error: Histogram is null" << endl;
+        return false;
+    }
+
+    if( ( t_0->*t_property )() != ( t_1->*t_property )() ) {
+        cout << "Error: Histogram property does not match" << endl;
+        return false;
+    }
+
+    return true;
+}
+
+template< typename type_hist >
 bool check_property( const type_hist* t_0, const type_hist* t_1, Int_t ( type_hist::*t_property )() const ) {
     if( ! t_0 || ! t_1 ) {
         cout << "Error: Histogram is null" << endl;
