@@ -107,7 +107,7 @@ vector< void* > export_TH( const TH1D* t_original ) {
     return exported;
 }
 
-TH1D* import_TH( vector< void* >& t_exported ) {
+void import_TH( vector< void* >& t_exported ) {
     if( t_exported.empty() ) {
         cout << "Error: Exported histogram is empty" << endl;
         return nullptr;
@@ -167,7 +167,7 @@ vector< void* > export_TH( const TH2D* t_original ) {
     return exported;
 }
 
-TH2D* import_TH( vector< void* >& t_exported ) {
+void import_TH( vector< void* >& t_exported ) {
     if( t_exported.empty() ) {
         cout << "Error: Exported histogram is empty" << endl;
         return nullptr;
@@ -240,7 +240,7 @@ vector< void* > export_TH( const TH3D* t_original ) {
     return exported;
 }
 
-TH3D* import_TH( vector< void* >& t_exported ) {
+void import_TH( vector< void* >& t_exported ) {
     if( t_exported.empty() ) {
         cout << "Error: Exported histogram is empty" << endl;
         return nullptr;
@@ -376,17 +376,25 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >&  t_hists
         vector< void* > export { export_TH( temp ) };
         if( export.empty() ) {
             cout << "Error: Could not export histogram" << endl;
+            delete temp;
             continue;
-        } else if( ! check_copy( temp, import_TH( export ) ) ) {
+        } 
+        type_hist* temp2{ nullptr };
+        import_TH( export, temp2 );
+        if( ! check_copy( temp, temp2 ) ) {
             cout << "Error: Copied histogram does not match original" << endl;
+            delete temp;
+            delete temp2;
             continue;
         }
+        delete temp2;
 
         file.Close();
 
-        entry.second = import_TH( export );
+        import_TH( export, entry.second );
         if( ! entry.second ) {
             cout << "Error: Could not import histogram" << endl;
+            delete temp;
             continue;
         }
 
@@ -394,6 +402,8 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >&  t_hists
         if( ! result.second ) {
             cout << "Error: Could not insert histogram into map" << endl;
         }
+
+        delete temp;
     }
 
     if( m_hists->size() != t_hists_paths.size() ) {

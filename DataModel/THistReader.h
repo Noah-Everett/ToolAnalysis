@@ -24,6 +24,7 @@
 #include "TFile.h"
 #include "TH1.h"
 #include "TH2.h"
+#include "TH3.h"
 
 #include <map>
 #include <ostream>
@@ -45,9 +46,9 @@ vector< void* > export_TH( const TH1D* t_original );
 vector< void* > export_TH( const TH2D* t_original );
 vector< void* > export_TH( const TH3D* t_original );
 
-import_TH( vector< void* >& t_exported, TH1D* t_copy );
-import_TH( vector< void* >& t_exported, TH2D* t_copy );
-import_TH( vector< void* >& t_exported, TH3D* t_copy );
+void import_TH( vector< void* >& t_exported, TH1D* t_copy );
+void import_TH( vector< void* >& t_exported, TH2D* t_copy );
+void import_TH( vector< void* >& t_exported, TH3D* t_copy );
 
 bool check_copy( const TH1D* t_original, TH1D* t_copy );
 bool check_copy( const TH2D* t_original, TH2D* t_copy );
