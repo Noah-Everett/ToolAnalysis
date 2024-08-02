@@ -418,7 +418,7 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type
     return true;
 }
 
-template< type_hist >
+template< typename type_hist >
 bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_hist::*t_property )( Int_t, Int_t ) const, Int_t t_bin_0,
                      Int_t t_bin_1, Double_t t_tolerance = 1e-6 ) {
     if( ! t_0 || ! t_1 ) {
@@ -434,7 +434,7 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type
     return true;
 }
 
-template< type_hist >
+template< typename type_hist >
 bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_hist::*t_property )( Int_t, Int_t, Int_t ) const,
                      Int_t t_bin_0, Int_t t_bin_1, Int_t t_bin_2, Double_t t_tolerance = 1e-6 ) {
     if( ! t_0 || ! t_1 ) {
