@@ -372,8 +372,8 @@ TH3D* copy_TH( const TH3D* t_original ) {
     return t_copy;
 }
 
-template< typename type_hist >
-bool check_property( const type_hist* t_0, const type_hist* t_1, const char* ( type_hist::*t_property )() const ) {
+template< typename type_hist, typename type_property >
+bool check_property( const type_hist* t_0, const type_hist* t_1, const char* ( type_property::*t_property )() const ) {
     if( ! t_0 || ! t_1 ) {
         cout << "Error: Histogram is null" << endl;
         return false;
@@ -387,8 +387,8 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, const char* ( t
     return true;
 }
 
-template< typename type_hist >
-bool check_property( const type_hist* t_0, const type_hist* t_1, const char* ( TNamed::*t_property )() const ) {
+template< typename type_hist, typename type_property >
+bool check_property( const type_hist* t_0, const type_hist* t_1, Int_t ( type_property::*t_property )() const ) {
     if( ! t_0 || ! t_1 ) {
         cout << "Error: Histogram is null" << endl;
         return false;
@@ -402,23 +402,8 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, const char* ( T
     return true;
 }
 
-template< typename type_hist >
-bool check_property( const type_hist* t_0, const type_hist* t_1, Int_t ( type_hist::*t_property )() const ) {
-    if( ! t_0 || ! t_1 ) {
-        cout << "Error: Histogram is null" << endl;
-        return false;
-    }
-
-    if( ( t_0->*t_property )() != ( t_1->*t_property )() ) {
-        cout << "Error: Histogram property does not match" << endl;
-        return false;
-    }
-
-    return true;
-}
-
-template< typename type_hist >
-bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_hist::*t_property )( Int_t ) const, Int_t t_bin,
+template< typename type_hist, typename type_property >
+bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_property::*t_property )( Int_t ) const, Int_t t_bin,
                      Double_t t_tolerance = 1e-6 ) {
     if( ! t_0 || ! t_1 ) {
         cout << "Error: Histogram is null" << endl;
@@ -433,8 +418,8 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type
     return true;
 }
 
-template< typename type_hist >
-bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_hist::*t_property )( Int_t, Int_t ) const, Int_t t_bin_0,
+template< typename type_hist, typename type_property >
+bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_property::*t_property )( Int_t, Int_t ) const, Int_t t_bin_0,
                      Int_t t_bin_1, Double_t t_tolerance = 1e-6 ) {
     if( ! t_0 || ! t_1 ) {
         cout << "Error: Histogram is null" << endl;
@@ -449,8 +434,8 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type
     return true;
 }
 
-template< typename type_hist >
-bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_hist::*t_property )( Int_t, Int_t, Int_t ) const,
+template< typename type_hist, typename type_property >
+bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_property::*t_property )( Int_t, Int_t, Int_t ) const,
                      Int_t t_bin_0, Int_t t_bin_1, Int_t t_bin_2, Double_t t_tolerance = 1e-6 ) {
     if( ! t_0 || ! t_1 ) {
         cout << "Error: Histogram is null" << endl;
