@@ -341,6 +341,7 @@ THistMap< type_ID, type_hist >::~THistMap() {
     }
 }
 
+template< typename type_ID, typename type_hist >
 void THistMap< type_ID, type_hist >::operator=( const THistMap& t_THistMap ) {
     for( pair< type_ID, type_hist* >& entry : t_THistMap ) {
         if( ! entry.second ) {
