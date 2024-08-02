@@ -201,8 +201,8 @@ cleanup:
     delete nxbins;
     delete xlow;
     delete xhigh;
-    for( Double_t* content : t_exported ) {
-        if( content ) delete content;
+    for( void* content : t_exported ) {
+        if( content ) delete ( Double_t* ) content;
     }
 
     return;
@@ -256,8 +256,8 @@ cleanup:
     delete nybins;
     delete ylow;
     delete yhigh;
-    for( Double_t* content : t_exported ) {
-        if( content ) delete content;
+    for( void* content : t_exported ) {
+        if( content ) delete ( Double_t* ) content;
     }
 }
 
@@ -318,8 +318,8 @@ cleanup:
     delete nzbins;
     delete zlow;
     delete zhigh;
-    for( Double_t* content : t_exported ) {
-        if( content ) delete content;
+    for( void* content : t_exported ) {
+        if( content ) delete ( Double_t* ) content;
     }
 
     return t_copy;
