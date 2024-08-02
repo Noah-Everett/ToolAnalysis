@@ -47,16 +47,16 @@ void DetectorResponsePredictor::reset_members()
     delete m_hist_dEdX_MRDiron                ;
 }
 
-bool DetectorResponsePredictor::load_hists_emission(       THistMap< int, TH2D* >* t_hists_energies      ,
-                                                           THistMap< int, TH2D* >* t_hists_counts        ,
-                                                     const vector  < string     >& t_hists_energies_paths, 
-                                                     const vector  < string     >& t_hists_counts_paths  , 
-                                                     const vector  < string     >& t_hists_energies_names,
-                                                     const vector  < string     >& t_hists_counts_names  ,
-                                                     const vector  < int        >& t_hists_IDs           ,
-                                                           double                & t_binWidth_s          ,
-                                                           double                & t_binWidth_theta      ,
-                                                           double                & t_binWidth_phi         ) {
+bool DetectorResponsePredictor::load_hists_emission(       THistMap< int, TH2D >* t_hists_energies      ,
+                                                           THistMap< int, TH2D >* t_hists_counts        ,
+                                                     const vector  < string    >& t_hists_energies_paths, 
+                                                     const vector  < string    >& t_hists_counts_paths  , 
+                                                     const vector  < string    >& t_hists_energies_names,
+                                                     const vector  < string    >& t_hists_counts_names  ,
+                                                     const vector  < int       >& t_hists_IDs           ,
+                                                           double               & t_binWidth_s          ,
+                                                           double               & t_binWidth_theta      ,
+                                                           double               & t_binWidth_phi         ) {
     LogD( "Loading emission histograms.", m_verbosity_debug );
     
     // Check IDs are strictly increasing
@@ -273,7 +273,7 @@ bool DetectorResponsePredictor::load_hist_dEdX_MRDiron( const string& t_hist_pat
     return load_hist< TH1D >( m_hist_dEdX_MRDiron, t_hist_path, t_hist_name );
 }
 
-pair< int, int > DetectorResponsePredictor::get_closestEmissionHists( const THistMap< int, TH2D* >* t_hists_emission,
+pair< int, int > DetectorResponsePredictor::get_closestEmissionHists( const THistMap< int, TH2D >* t_hists_emission,
                                                                       const double                  t_initialEnergy  ) const {
     // Bisect histogram energies to find the histograms 
     // which have energies just lower and just higher 
@@ -293,7 +293,7 @@ pair< int, int > DetectorResponsePredictor::get_closestEmissionHists( const THis
     return { index_lower, index_upper };
 }
 
-double DetectorResponsePredictor::eval_hists_emission_values( const THistMap< int, TH2D* >* t_hists_emission,
+double DetectorResponsePredictor::eval_hists_emission_values( const THistMap< int, TH2D >* t_hists_emission,
                                                               const double                  t_initialEnergy ,
                                                               const double                  t_trackLength   ,
                                                               const double                  t_photonAngle    ) const {
@@ -312,7 +312,7 @@ double DetectorResponsePredictor::eval_hists_emission_values( const THistMap< in
     return value;
 }
 
-double DetectorResponsePredictor::eval_hists_emission_indicies( const THistMap< int, TH2D* >* t_hists_emission  ,
+double DetectorResponsePredictor::eval_hists_emission_indicies( const THistMap< int, TH2D >* t_hists_emission  ,
                                                                 const double                  t_initialEnergy   ,
                                                                 const unsigned int            t_trackLengthIndex, 
                                                                 const unsigned int            t_photonAngleIndex ) const {

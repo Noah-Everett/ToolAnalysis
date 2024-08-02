@@ -198,17 +198,17 @@ protected:
     /**////////////////////////////
     /**/
     /**/// Emission Histograms
-    /**/ vector  < int        >  m_hists_emission_initialEnergies;
-    /**/ THistMap< int, TH2D* >* m_hists_emission_tankWater_energies{ nullptr };
-    /**/ THistMap< int, TH2D* >* m_hists_emission_tankWater_counts  { nullptr };
-    /**/ THistMap< int, TH2D* >* m_hists_emission_MRDsci_energies   { nullptr };
-    /**/ THistMap< int, TH2D* >* m_hists_emission_MRDsci_counts     { nullptr };
-    /**/ double                  m_binWidth_s_tankWater;
-    /**/ double                  m_binWidth_s_MRDsci;
-    /**/ double                  m_binWidth_theta_tankWater;
-    /**/ double                  m_binWidth_theta_MRDsci;
-    /**/ double                  m_binWidth_phi_tankWater;
-    /**/ double                  m_binWidth_phi_MRDsci;
+    /**/ vector  < int       >  m_hists_emission_initialEnergies;
+    /**/ THistMap< int, TH2D >* m_hists_emission_tankWater_energies{ nullptr };
+    /**/ THistMap< int, TH2D >* m_hists_emission_tankWater_counts  { nullptr };
+    /**/ THistMap< int, TH2D >* m_hists_emission_MRDsci_energies   { nullptr };
+    /**/ THistMap< int, TH2D >* m_hists_emission_MRDsci_counts     { nullptr };
+    /**/ double                 m_binWidth_s_tankWater;
+    /**/ double                 m_binWidth_s_MRDsci;
+    /**/ double                 m_binWidth_theta_tankWater;
+    /**/ double                 m_binWidth_theta_MRDsci;
+    /**/ double                 m_binWidth_phi_tankWater;
+    /**/ double                 m_binWidth_phi_MRDsci;
     /**/
     /**/// Other Histograms
     /**/ TH1D* m_hist_transmission_tankWater{ nullptr };
@@ -232,36 +232,36 @@ protected:
     /**////////////////////////////
     /**/
     /**/// Load Histograms
-    /**/ bool load_hists_emission(       THistMap< int, TH2D* >* t_hists_energies      ,
-    /**/                                 THistMap< int, TH2D* >* t_hists_counts        ,
-    /**/                           const vector  < string     >& t_hists_energies_paths,
-    /**/                           const vector  < string     >& t_hists_counts_paths  ,
-    /**/                           const vector  < string     >& t_hists_energies_names,
-    /**/                           const vector  < string     >& t_hists_counts_names  ,
-    /**/                           const vector  < int        >& t_hists_IDs           ,
-    /**/                                 double                & t_binWidth_s          ,
-    /**/                                 double                & t_binWidth_theta      ,
-    /**/                                 double                & t_binWidth_phi         );
+    /**/ bool load_hists_emission(       THistMap< int, TH2D >* t_hists_energies      ,
+    /**/                                 THistMap< int, TH2D >* t_hists_counts        ,
+    /**/                           const vector  < string    >& t_hists_energies_paths,
+    /**/                           const vector  < string    >& t_hists_counts_paths  ,
+    /**/                           const vector  < string    >& t_hists_energies_names,
+    /**/                           const vector  < string    >& t_hists_counts_names  ,
+    /**/                           const vector  < int       >& t_hists_IDs           ,
+    /**/                                 double               & t_binWidth_s          ,
+    /**/                                 double               & t_binWidth_theta      ,
+    /**/                                 double               & t_binWidth_phi         );
     /**/ template< typename type_hist >
     /**/ bool load_hist          ( const type_hist           * t_hist                ,
     /**/                           const string              & t_hist_path           ,
     /**/                           const string              & t_hist_name            );
     /**/
     /**/// Evaluate Histograms
-    /**/ pair< int, int > get_closestEmissionHists     ( const THistMap< int, TH2D* >* t_hists_emission  ,
-    /**/                                                 const double                  t_initialEnergy    ) const;
-    /**/ double           eval_hists_emission_values   ( const THistMap< int, TH2D* >* t_hists_emission  ,
-    /**/                                                 const double                  t_initialEnergy   ,
-    /**/                                                 const double                  t_trackLength     ,
-    /**/                                                 const double                  t_photonAngle      ) const;
-    /**/ double           eval_hists_emission_indicies ( const THistMap< int, TH2D* >* t_hists_emission  ,
-    /**/                                                 const double                  t_initialEnergy   ,
-    /**/                                                 const unsigned int            t_trackLengthIndex,
-    /**/                                                 const unsigned int            t_photonAngleIndex ) const;
-    /**/ double           eval_hist_value              ( const TH1D                  * t_hist            ,
-    /**/                                                 const double                  t_x                ) const;
-    /**/ double           eval_hist_index              ( const TH1D                  * t_hist            ,
-    /**/                                                 const unsigned int            t_xIndex           ) const;
+    /**/ pair< int, int > get_closestEmissionHists     ( const THistMap< int, TH2D >* t_hists_emission  ,
+    /**/                                                 const double                 t_initialEnergy    ) const;
+    /**/ double           eval_hists_emission_values   ( const THistMap< int, TH2D >* t_hists_emission  ,
+    /**/                                                 const double                 t_initialEnergy   ,
+    /**/                                                 const double                 t_trackLength     ,
+    /**/                                                 const double                 t_photonAngle      ) const;
+    /**/ double           eval_hists_emission_indicies ( const THistMap< int, TH2D >* t_hists_emission  ,
+    /**/                                                 const double                 t_initialEnergy   ,
+    /**/                                                 const unsigned int           t_trackLengthIndex,
+    /**/                                                 const unsigned int           t_photonAngleIndex ) const;
+    /**/ double           eval_hist_value              ( const TH1D                 * t_hist            ,
+    /**/                                                 const double                 t_x                ) const;
+    /**/ double           eval_hist_index              ( const TH1D                 * t_hist            ,
+    /**/                                                 const unsigned int           t_xIndex           ) const;
     /**/
     /**////////////////////////////
     
