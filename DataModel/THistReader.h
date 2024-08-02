@@ -84,6 +84,6 @@ class THistReader {
         THistMap< type_ID, type_hist > m_hists;
 };
 
-#include "THistReader.tpp"
+#include "DataModel/THistReader.tpp"
 
 #endif

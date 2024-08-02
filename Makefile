@@ -78,7 +78,6 @@ include/Tool.h: $(ToolDAQPath)/ToolDAQFramework/src/Tool/Tool.h
 	cp UserTools/*.h include/
 	cp UserTools/*/*.h include/
 	cp DataModel/*.h include/
-	cp DataModel/*.tpp include/
 
 
 lib/libToolChain.so: $(ToolDAQPath)/ToolDAQFramework/src/ToolChain/* | lib/libLogging.so lib/libStore.so lib/libServiceDiscovery.so lib/libLogging.so lib/libDataModel.so
@@ -103,7 +102,6 @@ clean:
 lib/libDataModel.so: DataModel/* lib/libLogging.so lib/libStore.so $(patsubst DataModel/%.cpp, DataModel/%.o, $(wildcard DataModel/*.cpp)) DataModel/DataModel_RootDict.cpp
 	@echo -e "\n*************** Making " $@ "****************"
 	cp -f DataModel/*.h include/
-	cp -f DataModel/*.tpp include/
 	$(CC) DataModel/*.o -I include -L lib -lStore  -lLogging  -o lib/libDataModel.so $(DataModelInclude) $(DataModelLib) $(ZMQLib) $(ZMQInclude)  $(BoostLib) $(BoostInclude)
 
 DataModel/DataModel_Linkdef.hh: linkdefpreamble.txt linkdefincludeheader.txt linkdefpostamble.txt $(wildcard DataModel/*.h)
