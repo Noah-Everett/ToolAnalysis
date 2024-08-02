@@ -67,7 +67,7 @@ class THistReader {
         THistMap< type_ID, type_hist > m_hists;
 };
 
-vector< void* > export_TH( const TH1D* t_original ) {
+inline vector< void* > export_TH( const TH1D* t_original ) {
     if( ! t_original ) {
         cout << "Error: Original histogram is null" << endl;
         return {};
@@ -88,7 +88,7 @@ vector< void* > export_TH( const TH1D* t_original ) {
     return exported;
 }
 
-vector< void* > export_TH( const TH2D* t_original ) {
+inline vector< void* > export_TH( const TH2D* t_original ) {
     if( ! t_original ) {
         cout << "Error: Original histogram is null" << endl;
         return {};
@@ -114,7 +114,7 @@ vector< void* > export_TH( const TH2D* t_original ) {
     return exported;
 }
 
-vector< void* > export_TH( const TH3D* t_original ) {
+inline vector< void* > export_TH( const TH3D* t_original ) {
     if( ! t_original ) {
         cout << "Error: Original histogram is null" << endl;
         return {};
@@ -189,7 +189,7 @@ cleanup:
     return;
 }
 
-void import_TH( vector< void* >& t_exported, TH2D* t_copy ) {
+inline void import_TH( vector< void* >& t_exported, TH2D* t_copy ) {
     if( t_exported.empty() ) {
         cout << "Error: Exported histogram is empty" << endl;
         return;
@@ -242,7 +242,7 @@ cleanup:
     }
 }
 
-void import_TH( vector< void* >& t_exported, TH3D* t_copy ) {
+inline void import_TH( vector< void* >& t_exported, TH3D* t_copy ) {
     if( t_exported.empty() ) {
         cout << "Error: Exported histogram is empty" << endl;
         return;
@@ -306,7 +306,7 @@ cleanup:
     return;
 }
 
-TH1D* copy_TH( const TH1D* t_original ) {
+inline TH1D* copy_TH( const TH1D* t_original ) {
     if( ! t_original ) {
         cout << "Error: Original histogram is null" << endl;
         return nullptr;
@@ -328,7 +328,7 @@ TH1D* copy_TH( const TH1D* t_original ) {
     return t_copy;
 }
 
-TH2D* copy_TH( const TH2D* t_original ) {
+inline TH2D* copy_TH( const TH2D* t_original ) {
     if( ! t_original ) {
         cout << "Error: Original histogram is null" << endl;
         return nullptr;
@@ -350,7 +350,7 @@ TH2D* copy_TH( const TH2D* t_original ) {
     return t_copy;
 }
 
-TH3D* copy_TH( const TH3D* t_original ) {
+inline TH3D* copy_TH( const TH3D* t_original ) {
     if( ! t_original ) {
         cout << "Error: Original histogram is null" << endl;
         return nullptr;
