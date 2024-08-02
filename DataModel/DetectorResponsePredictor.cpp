@@ -273,8 +273,8 @@ bool DetectorResponsePredictor::load_hist_dEdX_MRDiron( const string& t_hist_pat
     return load_hist< TH1D >( m_hist_dEdX_MRDiron, t_hist_path, t_hist_name );
 }
 
-pair< int, int > DetectorResponsePredictor::get_closestEmissionHists( const map< int, TH2D* >* t_hists_emission,
-                                                                      const double             t_initialEnergy  ) const {
+pair< int, int > DetectorResponsePredictor::get_closestEmissionHists( const THistMap< int, TH2D* >* t_hists_emission,
+                                                                      const double                  t_initialEnergy  ) const {
     // Bisect histogram energies to find the histograms 
     // which have energies just lower and just higher 
     // than t_initialEnergy.
@@ -293,10 +293,10 @@ pair< int, int > DetectorResponsePredictor::get_closestEmissionHists( const map<
     return { index_lower, index_upper };
 }
 
-double DetectorResponsePredictor::eval_hists_emission_values( const map< int, TH2D* >* t_hists_emission,
-                                                              const double             t_initialEnergy ,
-                                                              const double             t_trackLength   ,
-                                                              const double             t_photonAngle    ) const {
+double DetectorResponsePredictor::eval_hists_emission_values( const THistMap< int, TH2D* >* t_hists_emission,
+                                                              const double                  t_initialEnergy ,
+                                                              const double                  t_trackLength   ,
+                                                              const double                  t_photonAngle    ) const {
     LogD( "    Evaluating emission histograms.", m_verbosity_debug );
     pair< int, int > closestHists{ get_closestEmissionHists( t_hists_emission, t_initialEnergy ) };
 
@@ -312,10 +312,10 @@ double DetectorResponsePredictor::eval_hists_emission_values( const map< int, TH
     return value;
 }
 
-double DetectorResponsePredictor::eval_hists_emission_indicies( const map< int, TH2D* >* t_hists_emission  ,
-                                                                const double             t_initialEnergy   ,
-                                                                const unsigned int       t_trackLengthIndex, 
-                                                                const unsigned int       t_photonAngleIndex ) const {
+double DetectorResponsePredictor::eval_hists_emission_indicies( const THistMap< int, TH2D* >* t_hists_emission  ,
+                                                                const double                  t_initialEnergy   ,
+                                                                const unsigned int            t_trackLengthIndex, 
+                                                                const unsigned int            t_photonAngleIndex ) const {
     LogD( "    Evaluating emission histograms.", m_verbosity_debug );
     pair< int, int > closestHists{ get_closestEmissionHists( t_hists_emission, t_initialEnergy ) };
 
