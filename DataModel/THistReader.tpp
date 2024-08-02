@@ -334,14 +334,14 @@ THistMap< type_ID, type_hist >::THistMap( const THistMap& t_THistMap ) {
 
 template< typename type_ID, typename type_hist >
 THistMap< type_ID, type_hist >::~THistMap() {
-    for( auto& entry : *this ) {
+    for( pair< type_ID, type_hist* > entry : *this ) {
         if( entry.second ) delete entry.second;
     }
 }
 
 template< typename type_ID, typename type_hist >
 void THistMap< type_ID, type_hist >::operator=( const THistMap& t_THistMap ) {
-    for( pair< type_ID, type_hist* >& entry : t_THistMap ) {
+    for( pair< type_ID, type_hist* > entry : t_THistMap ) {
         if( ! entry.second ) {
             cout << "Error: Histogram is null" << endl;
             continue;
@@ -419,7 +419,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
             continue;
         }
 
-        auto result = m_hists->insert( entry );
+        auto result = m_hists.insert( entry );
         if( ! result.second ) {
             cout << "Error: Could not insert histogram into map" << endl;
         }
@@ -427,7 +427,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
         delete temp;
     }
 
-    if( m_hists->size() != t_hists_paths.size() ) {
+    if( m_hists.size() != t_hists_paths.size() ) {
         cout << "Error: Not all histograms were loaded" << endl;
     }
 }
