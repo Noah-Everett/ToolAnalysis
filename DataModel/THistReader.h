@@ -55,7 +55,7 @@ bool check_copy( const TH2D* t_original, TH2D* t_copy );
 bool check_copy( const TH3D* t_original, TH3D* t_copy );
 
 template< typename type_ID, typename type_hist >
-class THistMap : map< type_ID, type_hist* > {
+class THistMap : public map< type_ID, type_hist* > {
     public:
         THistMap();
         THistMap( const THistMap& t_THistMap );
