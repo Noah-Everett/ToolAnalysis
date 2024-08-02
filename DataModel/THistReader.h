@@ -602,7 +602,9 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
             continue;
         }
         type_hist* temp2{ nullptr };
+        cout << "Importing histogram...: " << LINE << endl;
         import_TH( exported, temp2 );
+        cout << "Done: " << LINE << endl;
         if( ! check_copy( temp, temp2 ) ) {
             cout << "Error: Copied histogram does not match original" << endl;
             delete temp;
