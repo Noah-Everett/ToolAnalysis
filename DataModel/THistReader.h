@@ -38,22 +38,6 @@ using std::pair;
 using std::string;
 using std::vector;
 
-TH1D* copy_TH( const TH1D* t_original );
-TH2D* copy_TH( const TH2D* t_original );
-TH3D* copy_TH( const TH3D* t_original );
-
-vector< void* > export_TH( const TH1D* t_original );
-vector< void* > export_TH( const TH2D* t_original );
-vector< void* > export_TH( const TH3D* t_original );
-
-void import_TH( vector< void* >& t_exported, TH1D* t_copy );
-void import_TH( vector< void* >& t_exported, TH2D* t_copy );
-void import_TH( vector< void* >& t_exported, TH3D* t_copy );
-
-bool check_copy( const TH1D* t_original, TH1D* t_copy );
-bool check_copy( const TH2D* t_original, TH2D* t_copy );
-bool check_copy( const TH3D* t_original, TH3D* t_copy );
-
 template< typename type_ID, typename type_hist >
 class THistMap : public map< type_ID, type_hist* > {
     public:
@@ -387,6 +371,151 @@ cleanup:
     }
 
     return;
+}
+
+bool check_copy( const TH1D* t_original, const TH1D* t_copy ) {
+    if( ! t_original || ! t_copy ) {
+        cout << "Error: Original or copied histogram is null" << endl;
+        return false;
+    }
+
+    if( t_original->GetName() != t_copy->GetName() ) {
+        cout << "Error: Copied histogram name does not match original" << endl;
+        return false;
+    } else if( t_original->GetTitle() != t_copy->GetTitle() ) {
+        cout << "Error: Copied histogram title does not match original" << endl;
+        return false;
+    } else if( t_original->GetNbinsX() != t_copy->GetNbinsX() ) {
+        cout << "Error: Copied histogram number of bins does not match original" << endl;
+        return false;
+    } else if( t_original->GetXaxis()->GetXmin() != t_copy->GetXaxis()->GetXmin() ) {
+        cout << "Error: Copied histogram x-axis minimum does not match original" << endl;
+        return false;
+    } else if( t_original->GetXaxis()->GetXmax() != t_copy->GetXaxis()->GetXmax() ) {
+        cout << "Error: Copied histogram x-axis maximum does not match original" << endl;
+        return false;
+    }
+
+    for( Int_t i = 1; i <= t_original->GetNbinsX(); ++i ) {
+        if( t_original->GetBinContent( i ) != t_copy->GetBinContent( i ) ) {
+            cout << "Error: Copied histogram bin content does not match original" << endl;
+            return false;
+        } else if( t_original->GetBinError( i ) != t_copy->GetBinError( i ) ) {
+            cout << "Error: Copied histogram bin error does not match original" << endl;
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool check_copy( const TH2D* t_original, const TH2D* t_copy ) {
+    if( ! t_original || ! t_copy ) {
+        cout << "Error: Original or copied histogram is null" << endl;
+        return false;
+    }
+
+    if( t_original->GetName() != t_copy->GetName() ) {
+        cout << "Error: Copied histogram name does not match original" << endl;
+        return false;
+    } else if( t_original->GetTitle() != t_copy->GetTitle() ) {
+        cout << "Error: Copied histogram title does not match original" << endl;
+        return false;
+    } else if( t_original->GetNbinsX() != t_copy->GetNbinsX() ) {
+        cout << "Error: Copied histogram number of x bins does not match original" << endl;
+        return false;
+    } else if( t_original->GetXaxis()->GetXmin() != t_copy->GetXaxis()->GetXmin() ) {
+        cout << "Error: Copied histogram x-axis minimum does not match original" << endl;
+        return false;
+    } else if( t_original->GetXaxis()->GetXmax() != t_copy->GetXaxis()->GetXmax() ) {
+        cout << "Error: Copied histogram x-axis maximum does not match original" << endl;
+        return false;
+    } else if( t_original->GetNbinsY() != t_copy->GetNbinsY() ) {
+        cout << "Error: Copied histogram number of y bins does not match original" << endl;
+        return false;
+    } else if( t_original->GetYaxis()->GetXmin() != t_copy->GetYaxis()->GetXmin() ) {
+        cout << "Error: Copied histogram y-axis minimum does not match original" << endl;
+        return false;
+    } else if( t_original->GetYaxis()->GetXmax() != t_copy->GetYaxis()->GetXmax() ) {
+        cout << "Error: Copied histogram y-axis maximum does not match original" << endl;
+        return false;
+    }
+
+    for( Int_t i = 1; i <= t_original->GetNbinsX(); ++i ) {
+        for( Int_t j = 1; j <= t_original->GetNbinsY(); ++j ) {
+            if( t_original->GetBinContent( i, j ) != t_copy
+                ->GetBinContent( i, j ) ) {
+                cout << "Error: Copied histogram bin content does not match original" << endl;
+                return false;
+            } else if( t_original->GetBinError( i, j ) != t_copy
+                ->GetBinError( i, j ) ) {
+                cout << "Error: Copied histogram bin error does not match original" << endl;
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+bool check_copy( const TH3D* t_original, const TH3D* t_copy ) {
+    if( ! t_original || ! t_copy ) {
+        cout << "Error: Original or copied histogram is null" << endl;
+        return false;
+    }
+
+    if( t_original->GetName() != t_copy->GetName() ) {
+        cout << "Error: Copied histogram name does not match original" << endl;
+        return false;
+    } else if( t_original->GetTitle() != t_copy->GetTitle() ) {
+        cout << "Error: Copied histogram title does not match original" << endl;
+        return false;
+    } else if( t_original->GetNbinsX() != t_copy->GetNbinsX() ) {
+        cout << "Error: Copied histogram number of x bins does not match original" << endl;
+        return false;
+    } else if( t_original->GetXaxis()->GetXmin() != t_copy->GetXaxis()->GetXmin() ) {
+        cout << "Error: Copied histogram x-axis minimum does not match original" << endl;
+        return false;
+    } else if( t_original->GetXaxis()->GetXmax() != t_copy->GetXaxis()->GetXmax() ) {
+        cout << "Error: Copied histogram x-axis maximum does not match original" << endl;
+        return false;
+    } else if( t_original->GetNbinsY() != t_copy->GetNbinsY() ) {
+        cout << "Error: Copied histogram number of y bins does not match original" << endl;
+        return false;
+    } else if( t_original->GetYaxis()->GetXmin() != t_copy->GetYaxis()->GetXmin() ) {
+        cout << "Error: Copied histogram y-axis minimum does not match original" << endl;
+        return false;
+    } else if( t_original->GetYaxis()->GetXmax() != t_copy->GetYaxis()->GetXmax() ) {
+        cout << "Error: Copied histogram y-axis maximum does not match original" << endl;
+        return false;
+    } else if( t_original->GetNbinsZ() != t_copy->GetNbinsZ() ) {
+        cout << "Error: Copied histogram number of z bins does not match original" << endl;
+        return false;
+    } else if( t_original->GetZaxis()->GetXmin() != t_copy->GetZaxis()->GetXmin() ) {
+        cout << "Error: Copied histogram z-axis minimum does not match original" << endl;
+        return false;
+    } else if( t_original->GetZaxis()->GetXmax() != t_copy->GetZaxis()->GetXmax() ) {
+        cout << "Error: Copied histogram z-axis maximum does not match original" << endl;
+        return false;
+    }
+
+    for( Int_t i = 1; i <= t_original->GetNbinsX(); ++i ) {
+        for( Int_t j = 1; j <= t_original->GetNbinsY(); ++j ) {
+            for( Int_t k = 1; k <= t_original->GetNbinsZ(); ++k ) {
+                if( t_original->GetBinContent( i, j, k ) != t_copy
+                    ->GetBinContent( i, j, k ) ) {
+                    cout << "Error: Copied histogram bin content does not match original" << endl;
+                    return false;
+                } else if( t_original->GetBinError( i, j, k ) != t_copy
+                    ->GetBinError( i, j, k ) ) {
+                    cout << "Error: Copied histogram bin error does not match original" << endl;
+                    return false;
+                }
+            }
+        }
+    }
+
+    return true;
 }
 
 template< typename type_ID, typename type_hist >
