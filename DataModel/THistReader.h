@@ -145,72 +145,6 @@ vector< void* > export_TH( const TH3D* t_original ) {
     return exported;
 }
 
-TH1D* copy_TH( const TH1D* t_original ) {
-    if( ! t_original ) {
-        cout << "Error: Original histogram is null" << endl;
-        return nullptr;
-    }
-
-    vector< void* > exported = export_TH( t_original );
-    if( exported.empty() ) {
-        cout << "Error: Could not export histogram" << endl;
-        return nullptr;
-    }
-
-    TH1D* t_copy = nullptr;
-    import_TH( exported, t_copy );
-    if( ! t_copy ) {
-        cout << "Error: Could not copy histogram" << endl;
-        return nullptr;
-    }
-
-    return t_copy;
-}
-
-TH2D* copy_TH( const TH2D* t_original ) {
-    if( ! t_original ) {
-        cout << "Error: Original histogram is null" << endl;
-        return nullptr;
-    }
-
-    vector< void* > exported = export_TH( t_original );
-    if( exported.empty() ) {
-        cout << "Error: Could not export histogram" << endl;
-        return nullptr;
-    }
-
-    TH2D* t_copy = nullptr;
-    import_TH( exported, t_copy );
-    if( ! t_copy ) {
-        cout << "Error: Could not copy histogram" << endl;
-        return nullptr;
-    }
-
-    return t_copy;
-}
-
-TH3D* copy_TH( const TH3D* t_original ) {
-    if( ! t_original ) {
-        cout << "Error: Original histogram is null" << endl;
-        return nullptr;
-    }
-
-    vector< void* > exported = export_TH( t_original );
-    if( exported.empty() ) {
-        cout << "Error: Could not export histogram" << endl;
-        return nullptr;
-    }
-
-    TH3D* t_copy = nullptr;
-    import_TH( exported, t_copy );
-    if( ! t_copy ) {
-        cout << "Error: Could not copy histogram" << endl;
-        return nullptr;
-    }
-
-    return t_copy;
-}
-
 void import_TH( vector< void* >& t_exported, TH1D* t_copy ) {
     if( t_exported.empty() ) {
         cout << "Error: Exported histogram is empty" << endl;
@@ -370,6 +304,72 @@ cleanup:
     }
 
     return;
+}
+
+TH1D* copy_TH( const TH1D* t_original ) {
+    if( ! t_original ) {
+        cout << "Error: Original histogram is null" << endl;
+        return nullptr;
+    }
+
+    vector< void* > exported = export_TH( t_original );
+    if( exported.empty() ) {
+        cout << "Error: Could not export histogram" << endl;
+        return nullptr;
+    }
+
+    TH1D* t_copy = nullptr;
+    import_TH( exported, t_copy );
+    if( ! t_copy ) {
+        cout << "Error: Could not copy histogram" << endl;
+        return nullptr;
+    }
+
+    return t_copy;
+}
+
+TH2D* copy_TH( const TH2D* t_original ) {
+    if( ! t_original ) {
+        cout << "Error: Original histogram is null" << endl;
+        return nullptr;
+    }
+
+    vector< void* > exported = export_TH( t_original );
+    if( exported.empty() ) {
+        cout << "Error: Could not export histogram" << endl;
+        return nullptr;
+    }
+
+    TH2D* t_copy = nullptr;
+    import_TH( exported, t_copy );
+    if( ! t_copy ) {
+        cout << "Error: Could not copy histogram" << endl;
+        return nullptr;
+    }
+
+    return t_copy;
+}
+
+TH3D* copy_TH( const TH3D* t_original ) {
+    if( ! t_original ) {
+        cout << "Error: Original histogram is null" << endl;
+        return nullptr;
+    }
+
+    vector< void* > exported = export_TH( t_original );
+    if( exported.empty() ) {
+        cout << "Error: Could not export histogram" << endl;
+        return nullptr;
+    }
+
+    TH3D* t_copy = nullptr;
+    import_TH( exported, t_copy );
+    if( ! t_copy ) {
+        cout << "Error: Could not copy histogram" << endl;
+        return nullptr;
+    }
+
+    return t_copy;
 }
 
 template< type_hist >
