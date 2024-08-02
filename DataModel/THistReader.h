@@ -372,7 +372,7 @@ TH3D* copy_TH( const TH3D* t_original ) {
     return t_copy;
 }
 
-template< type_hist >
+template< typename type_hist >
 bool check_property( const type_hist* t_0, const type_hist* t_1, const char* ( type_hist::*t_property )() const ) {
     if( ! t_0 || ! t_1 ) {
         cout << "Error: Histogram is null" << endl;
@@ -387,7 +387,7 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, const char* ( t
     return true;
 }
 
-template< type_hist >
+template< typename type_hist >
 bool check_property( const type_hist* t_0, const type_hist* t_1, Int_t ( type_hist::*t_property )() const ) {
     if( ! t_0 || ! t_1 ) {
         cout << "Error: Histogram is null" << endl;
@@ -402,7 +402,7 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, Int_t ( type_hi
     return true;
 }
 
-template< type_hist >
+template< typename type_hist >
 bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_hist::*t_property )( Int_t ) const, Int_t t_bin,
                      Double_t t_tolerance = 1e-6 ) {
     if( ! t_0 || ! t_1 ) {
