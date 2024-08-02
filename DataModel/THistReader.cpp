@@ -180,13 +180,15 @@ void import_TH( vector< void* >& t_exported, TH1D* t_copy ) {
 
     t_copy = new TH1D( *name, *title, *nxbins, *xlow, *xhigh );
 
+    Int_t nxbins_val = *nxbins;
+
     delete name;
     delete title;
     delete nxbins;
     delete xlow;
     delete xhigh;
 
-    for( Int_t i = 1; i <= nxbins; ++i ) {
+    for( Int_t i = 1; i <= nxbins_val; ++i ) {
         Double_t* content = static_cast< Double_t* >( t_exported[ 5 + 2 * ( i - 1 ) ] );
         Double_t* error   = static_cast< Double_t* >( t_exported[ 6 + 2 * ( i - 1 ) ] );
 
@@ -219,6 +221,9 @@ void import_TH( vector< void* >& t_exported, TH2D* t_copy ) {
 
     t_copy = new TH2D( *name, *title, *nxbins, *xlow, *xhigh, *nybins, *ylow, *yhigh );
 
+    Int_t nxbins_val = *nxbins;
+    Int_t nybins_val = *nybins;
+
     delete name;
     delete title;
     delete nxbins;
@@ -228,10 +233,10 @@ void import_TH( vector< void* >& t_exported, TH2D* t_copy ) {
     delete ylow;
     delete yhigh;
 
-    for( Int_t i = 1; i <= nxbins; ++i ) {
-        for( Int_t j = 1; j <= nybins; ++j ) {
-            Double_t* content = static_cast< Double_t* >( t_exported[ 8 + 2 * ( i - 1 ) * nybins + 2 * ( j - 1 ) ] );
-            Double_t* error   = static_cast< Double_t* >( t_exported[ 9 + 2 * ( i - 1 ) * nybins + 2 * ( j - 1 ) ] );
+    for( Int_t i = 1; i <= nxbins_val; ++i ) {
+        for( Int_t j = 1; j <= nybins_val; ++j ) {
+            Double_t* content = static_cast< Double_t* >( t_exported[ 8 + 2 * ( i - 1 ) * nybins_val + 2 * ( j - 1 ) ] );
+            Double_t* error   = static_cast< Double_t* >( t_exported[ 9 + 2 * ( i - 1 ) * nybins_val + 2 * ( j - 1 ) ] );
 
             t_copy->SetBinContent( i, j, *content );
             t_copy->SetBinError( i, j, *error );
@@ -266,6 +271,10 @@ void import_TH( vector< void* >& t_exported, TH3D* t_copy ) {
 
     t_copy = new TH3D( *name, *title, *nxbins, *xlow, *xhigh, *nybins, *ylow, *yhigh, *nzbins, *zlow, *zhigh );
 
+    Int_t nxbins_val = *nxbins;
+    Int_t nybins_val = *nybins;
+    Int_t nzbins_val = *nzbins;
+
     delete name;
     delete title;
     delete nxbins;
@@ -282,9 +291,9 @@ void import_TH( vector< void* >& t_exported, TH3D* t_copy ) {
         for( Int_t j = 1; j <= nybins; ++j ) {
             for( Int_t k = 1; k <= nzbins; ++k ) {
                 Double_t* content = static_cast< Double_t* >(
-                    t_exported[ 11 + 2 * ( i - 1 ) * nybins * nzbins + 2 * ( j - 1 ) * nzbins + 2 * ( k - 1 ) ] );
+                    t_exported[ 11 + 2 * ( i - 1 ) * nybins_val * nzbins_val + 2 * ( j - 1 ) * nzbins_val + 2 * ( k - 1 ) ] );
                 Double_t* error = static_cast< Double_t* >(
-                    t_exported[ 12 + 2 * ( i - 1 ) * nybins * nzbins + 2 * ( j - 1 ) * nzbins + 2 * ( k - 1 ) ] );
+                    t_exported[ 12 + 2 * ( i - 1 ) * nybins_val * nzbins_val + 2 * ( j - 1 ) * nzbins_val + 2 * ( k - 1 ) ] );
 
                 t_copy->SetBinContent( i, j, k, *content );
                 t_copy->SetBinError( i, j, k, *error );
@@ -353,9 +362,8 @@ void THistMap< type_ID, type_hist >::operator=( const THistMap& t_THistMap ) {
 }
 
 template< typename type_ID, typename type_hist >
-THistReader< type_ID, type_hist >::THistReader( const vector< string >&  t_hists_paths,
-                                                const vector< type_ID >& t_hists_IDs,
-                                                const vector< string >&  t_hists_names ) {
+THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_paths, const vector< type_ID >& t_hists_IDs,
+                                                const vector< string >& t_hists_names ) {
     if( t_hists_paths.size() != t_hists_IDs.size() || t_hists_paths.size() != t_hists_names.size() ) {
         cout << "Error: hists_paths, hists_IDs, and hists_names "
              << "vectors should all be the same length" << endl;
@@ -384,7 +392,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >&  t_hists
             cout << "Error: Could not export histogram" << endl;
             delete temp;
             continue;
-        } 
+        }
         type_hist* temp2{ nullptr };
         import_TH( export, temp2 );
         if( ! check_copy( temp, temp2 ) ) {
@@ -422,7 +430,7 @@ THistReader< type_ID, type_hist >::THistReader( const THistReader* t_THistReader
     if( ! t_THistReader ) {
         cout << "Error: THistReader is null" << endl;
         return;
-    } else if ( ! t_THistReader->get_histsMap() ) {
+    } else if( ! t_THistReader->get_histsMap() ) {
         cout << "Error: THistReader histogram map is null" << endl;
         return;
     }
@@ -451,7 +459,7 @@ type_hist* THistReader< type_ID, type_hist >::get_hist( const type_ID& t_ID ) co
     if( result == m_hists->end() ) {
         cout << "Error: Could not find histogram with ID " << t_ID << endl;
         return nullptr;
-    } else if ( ! result->second ) {
+    } else if( ! result->second ) {
         cout << "Error: Histogram is null" << endl;
         return nullptr;
     }
