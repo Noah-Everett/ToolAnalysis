@@ -84,7 +84,7 @@ lib/libToolChain.so: $(ToolDAQPath)/ToolDAQFramework/src/ToolChain/* | lib/libLo
 	@echo -e "/n*************** Making " $@ "****************"
 	cp $(ToolDAQPath)/ToolDAQFramework/UserTools/Factory/*.h include/
 	cp $(ToolDAQPath)/ToolDAQFramework/src/ToolChain/*.h include/
-	$(CC) $(ToolDAQPath)/ToolDAQFramework/src/ToolChain/ToolChain.cpp -I include -I DataModel/*.tpp -lpthread -L lib -lStore -lDataModel -lServiceDiscovery -lLogging -o lib/libToolChain.so $(DataModelInclude) $(DataModelLib) $(ZMQLib) $(ZMQInclude) $(MyToolsInclude)  $(BoostLib) $(BoostInclude)
+	$(CC) $(ToolDAQPath)/ToolDAQFramework/src/ToolChain/ToolChain.cpp -I include -lpthread -L lib -lStore -lDataModel -lServiceDiscovery -lLogging -o lib/libToolChain.so $(DataModelInclude) $(DataModelLib) $(ZMQLib) $(ZMQInclude) $(MyToolsInclude)  $(BoostLib) $(BoostInclude)
 
 
 clean: 
@@ -102,7 +102,7 @@ clean:
 lib/libDataModel.so: DataModel/* lib/libLogging.so lib/libStore.so $(patsubst DataModel/%.cpp, DataModel/%.o, $(wildcard DataModel/*.cpp)) DataModel/DataModel_RootDict.cpp
 	@echo -e "\n*************** Making " $@ "****************"
 	cp -f DataModel/*.h include/
-	$(CC) DataModel/*.o -I include -I DataModel/*.tpp -L lib -lStore  -lLogging  -o lib/libDataModel.so $(DataModelInclude) $(DataModelLib) $(ZMQLib) $(ZMQInclude)  $(BoostLib) $(BoostInclude)
+	$(CC) DataModel/*.o -I include -I DataModel -L lib -lStore  -lLogging  -o lib/libDataModel.so $(DataModelInclude) $(DataModelLib) $(ZMQLib) $(ZMQInclude)  $(BoostLib) $(BoostInclude)
 
 DataModel/DataModel_Linkdef.hh: linkdefpreamble.txt linkdefincludeheader.txt linkdefpostamble.txt $(wildcard DataModel/*.h)
 	@cat linkdefpreamble.txt > $@
