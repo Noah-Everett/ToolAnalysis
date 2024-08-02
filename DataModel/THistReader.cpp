@@ -290,11 +290,11 @@ void import_TH( vector< void* >& t_exported, TH3D* t_copy ) {
         goto cleanup;
     }
 
-    t_copy = new TH3D( *name, *title, *nxbins, *xlow, *xhigh, *nybins, *ylow, *yhigh, *nzbins, *zlow, *zhigh );
+    t_copy = new TH3D( *name, *title, nxbins_val, *xlow, *xhigh, nybins_val, *ylow, *yhigh, nzbins_val, *zlow, *zhigh );
 
-    for( Int_t i = 1; i <= nxbins; ++i ) {
-        for( Int_t j = 1; j <= nybins; ++j ) {
-            for( Int_t k = 1; k <= nzbins; ++k ) {
+    for( Int_t i = 1; i <= nxbins_val; ++i ) {
+        for( Int_t j = 1; j <= nybins_val; ++j ) {
+            for( Int_t k = 1; k <= nzbins_val; ++k ) {
                 Double_t* content = static_cast< Double_t* >(
                     t_exported[ 11 + 2 * ( i - 1 ) * nybins_val * nzbins_val + 2 * ( j - 1 ) * nzbins_val + 2 * ( k - 1 ) ] );
                 Double_t* error = static_cast< Double_t* >(
