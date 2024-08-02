@@ -330,8 +330,19 @@ THistMap< type_ID, type_hist >::THistMap() {
 }
 
 template< typename type_ID, typename type_hist >
-THistMap< type_ID, type_hist >::THistMap( const THistMap* t_THistMap ) {
-    for( pair< type_ID, type_hist* >& entry : *t_THistMap ) {
+THistMap< type_ID, type_hist >::THistMap( const THistMap& t_THistMap ) {
+    *this = t_THistMap;
+}
+
+template< typename type_ID, typename type_hist >
+THistMap< type_ID, type_hist >::~THistMap() {
+    for( auto& entry : *this ) {
+        if( entry.second ) delete entry.second;
+    }
+}
+
+void THistMap< type_ID, type_hist >::operator=( const THistMap& t_THistMap ) {
+    for( pair< type_ID, type_hist* >& entry : t_THistMap ) {
         if( ! entry.second ) {
             cout << "Error: Histogram is null" << endl;
             continue;
@@ -353,30 +364,9 @@ THistMap< type_ID, type_hist >::THistMap( const THistMap* t_THistMap ) {
         }
     }
 
-    if( this->size() != t_THistMap->size() ) {
+    if( this->size() != t_THistMap.size() ) {
         cout << "Error: Not all histograms were copied" << endl;
     }
-}
-
-template< typename type_ID, typename type_hist >
-THistMap< type_ID, type_hist >::THistMap( const THistMap& t_THistMap ) {
-    THistMap( &t_THistMap );
-}
-
-template< typename type_ID, typename type_hist >
-THistMap< type_ID, type_hist >::~THistMap() {
-    for( auto& entry : *this ) {
-        if( entry.second ) delete entry.second;
-    }
-}
-
-template< typename type_ID, typename type_hist >
-void THistMap< type_ID, type_hist >::operator=( const THistMap* t_THistMap ) {
-    THistMap( t_THistMap );
-}
-
-void THistMap< type_ID, type_hist >::operator=( const THistMap& t_THistMap ) {
-    THistMap( &t_THistMap );
 }
 
 template< typename type_ID, typename type_hist >
@@ -444,27 +434,19 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
 }
 
 template< typename type_ID, typename type_hist >
-THistReader< type_ID, type_hist >::THistReader( const THistReader* t_THistReader ) {
-    if( ! t_THistReader ) {
-        cout << "Error: THistReader is null" << endl;
-        return;
-    } else if( ! t_THistReader->get_histsMap() ) {
+THistReader< type_ID, type_hist >::THistReader( const THistReader& t_THistReader ) {
+    if( ! t_THistReader.get_histsMap() ) {
         cout << "Error: THistReader histogram map is null" << endl;
         return;
     }
 
-    m_hists = *( t_THistReader->get_histsMap() );
+    m_hists = *( t_THistReader.get_histsMap() );
 
-    if( m_hists->size() != t_THistReader->get_histsMap()->size() ) {
+    if( m_hists->size() != t_THistReader.get_histsMap()->size() ) {
         cout << "Error: Not all histograms were copied" << endl;
     }
 
     return;
-}
-
-template< typename type_ID, typename type_hist >
-THistReader< type_ID, type_hist >::THistReader( const THistReader& t_THistReader ) {
-    THistReader( &t_THistReader );
 }
 
 template< typename type_ID, typename type_hist >
@@ -488,11 +470,6 @@ type_hist* THistReader< type_ID, type_hist >::get_hist( const type_ID& t_ID ) co
 template< typename type_ID, typename type_hist >
 THistMap< type_ID, type_hist >* THistReader< type_ID, type_hist >::get_histsMap() const {
     return new THistMap< type_ID, type_hist >( m_hists );
-}
-
-template< typename type_ID, typename type_hist >
-void THistReader< type_ID, type_hist >::operator=( const THistReader* t_THistReader ) {
-    THistReader( t_THistReader );
 }
 
 template< typename type_ID, typename type_hist >

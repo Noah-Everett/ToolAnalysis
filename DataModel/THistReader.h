@@ -58,12 +58,10 @@ template< typename type_ID, typename type_hist >
 class THistMap : map< type_ID, type_hist* > {
     public:
         THistMap();
-        THistMap( const THistMap* t_THistMap );
         THistMap( const THistMap& t_THistMap );
 
         ~THistMap();
 
-        void operator=( const THistMap* t_THistMap );
         void operator=( const THistMap& t_THistMap );
 };
 
@@ -73,7 +71,6 @@ class THistReader {
         THistReader( const vector< string >& t_hists_paths, const vector< type_ID >& t_hists_IDs,
                      const vector< string >& t_hists_names );
 
-        THistReader( const THistReader* t_THistReader );
         THistReader( const THistReader& t_THistReader );
 
         ~THistReader();
@@ -81,7 +78,6 @@ class THistReader {
         type_hist*                      get_hist( const type_ID& t_ID ) const;
         THistMap< type_ID, type_hist >* get_histsMap() const;
 
-        void operator=( const THistReader* t_THistReader );
         void operator=( const THistReader& t_THistReader );
 
     private:
