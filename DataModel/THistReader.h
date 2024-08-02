@@ -394,6 +394,16 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, Int_t ( type_pr
 }
 
 template< typename type_hist, typename type_property >
+bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_property::*t_property )() const, t_tolerance = 1e-6 ) {
+    if( abs( ( t_0->*t_property )() - ( t_1->*t_property )() ) > t_tolerance ) {
+        cout << "Error: Histogram property does not match" << endl;
+        return false;
+    }
+
+    return true;
+}
+
+template< typename type_hist, typename type_property >
 bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_property::*t_property )( Int_t ) const, Int_t t_bin,
                      Double_t t_tolerance = 1e-6 ) {
     if( abs( ( t_0->*t_property )( t_bin ) - ( t_1->*t_property )( t_bin ) ) > t_tolerance ) {
