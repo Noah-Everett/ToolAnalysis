@@ -209,7 +209,6 @@ inline void import_TH( vector< void* >& t_exported, TH2D* t_copy, TString t_name
         name = new TString( t_name );
     }
 
-    TString* name = static_cast< TString* >( t_exported[ 0 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
     TString* title = static_cast< TString* >( t_exported[ 1 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
@@ -285,7 +284,6 @@ inline void import_TH( vector< void* >& t_exported, TH3D* t_copy, TString t_name
         name = new TString( t_name );
     }
 
-    TString* name = static_cast< TString* >( t_exported[ 0 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
     TString* title = static_cast< TString* >( t_exported[ 1 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
