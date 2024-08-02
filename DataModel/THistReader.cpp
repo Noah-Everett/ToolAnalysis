@@ -264,7 +264,7 @@ cleanup:
 void import_TH( vector< void* >& t_exported, TH3D* t_copy ) {
     if( t_exported.empty() ) {
         cout << "Error: Exported histogram is empty" << endl;
-        return nullptr;
+        return;
     }
 
     if( t_copy ) delete t_copy;
@@ -322,7 +322,7 @@ cleanup:
         if( content ) delete ( Double_t* ) content;
     }
 
-    return t_copy;
+    return;
 }
 
 template< typename type_ID, typename type_hist >
