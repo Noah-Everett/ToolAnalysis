@@ -145,7 +145,7 @@ inline vector< void* > export_TH( const TH3D* t_original ) {
     return exported;
 }
 
-inline void import_TH( vector< void* >& t_exported, TH1D* t_copy ) {
+inline void import_TH( vector< void* >& t_exported, TH1D* t_copy, string& t_name = "" ) {
     if( t_exported.empty() ) {
         cout << "Error: Exported histogram is empty" << endl;
         return;
@@ -153,7 +153,12 @@ inline void import_TH( vector< void* >& t_exported, TH1D* t_copy ) {
 
     if( t_copy ) delete t_copy;
 
-    TString*  name   = static_cast< TString* >( t_exported[ 0 ] );
+    TString* name{ nullptr };
+    if( t_name == "" ) {
+        name = static_cast< TString* >( t_exported[ 0 ] );
+    } else {
+        name = new TString( t_name.c_str() );
+    }
     TString*  title  = static_cast< TString* >( t_exported[ 1 ] );
     Int_t*    nxbins = static_cast< Int_t* >( t_exported[ 2 ] );
     Double_t* xlow   = static_cast< Double_t* >( t_exported[ 3 ] );
@@ -189,31 +194,36 @@ cleanup:
     return;
 }
 
-inline void import_TH( vector< void* >& t_exported, TH2D* t_copy ) {
+inline void import_TH( vector< void* >& t_exported, TH2D* t_copy, string& t_name = "" ) {
     if( t_exported.empty() ) {
         cout << "Error: Exported histogram is empty" << endl;
         return;
     }
-    cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
 
     if( t_copy ) delete t_copy;
-    cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
 
-    TString*  name   = static_cast< TString* >( t_exported[ 0 ] );
+    TString* name{ nullptr };
+    if( t_name = "" ) {
+        name = static_cast< TString* >( t_exported[ 0 ] );
+    } else {
+        name = new TString( t_name.c_str() );
+    }
+
+    TString* name = static_cast< TString* >( t_exported[ 0 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
-    TString*  title  = static_cast< TString* >( t_exported[ 1 ] );
+    TString* title = static_cast< TString* >( t_exported[ 1 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
-    Int_t*    nxbins = static_cast< Int_t* >( t_exported[ 2 ] );
+    Int_t* nxbins = static_cast< Int_t* >( t_exported[ 2 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
-    Double_t* xlow   = static_cast< Double_t* >( t_exported[ 3 ] );
+    Double_t* xlow = static_cast< Double_t* >( t_exported[ 3 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
-    Double_t* xhigh  = static_cast< Double_t* >( t_exported[ 4 ] );
+    Double_t* xhigh = static_cast< Double_t* >( t_exported[ 4 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
-    Int_t*    nybins = static_cast< Int_t* >( t_exported[ 5 ] );
+    Int_t* nybins = static_cast< Int_t* >( t_exported[ 5 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
-    Double_t* ylow   = static_cast< Double_t* >( t_exported[ 6 ] );
+    Double_t* ylow = static_cast< Double_t* >( t_exported[ 6 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
-    Double_t* yhigh  = static_cast< Double_t* >( t_exported[ 7 ] );
+    Double_t* yhigh = static_cast< Double_t* >( t_exported[ 7 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
 
     Int_t nxbins_val = *nxbins;
@@ -266,31 +276,36 @@ inline void import_TH( vector< void* >& t_exported, TH3D* t_copy ) {
         return;
     }
 
-    cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
     if( t_copy ) delete t_copy;
-    cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
 
-    TString*  name   = static_cast< TString* >( t_exported[ 0 ] );
+    TString name{ nullptr };
+    if( t_name = "" ) {
+        name = static_cast< TString* >( t_exported[ 0 ] );
+    } else {
+        name = new TString( t_name.c_str() );
+    }
+
+    TString* name = static_cast< TString* >( t_exported[ 0 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
-    TString*  title  = static_cast< TString* >( t_exported[ 1 ] );
+    TString* title = static_cast< TString* >( t_exported[ 1 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
-    Int_t*    nxbins = static_cast< Int_t* >( t_exported[ 2 ] );
+    Int_t* nxbins = static_cast< Int_t* >( t_exported[ 2 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
-    Double_t* xlow   = static_cast< Double_t* >( t_exported[ 3 ] );
+    Double_t* xlow = static_cast< Double_t* >( t_exported[ 3 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
-    Double_t* xhigh  = static_cast< Double_t* >( t_exported[ 4 ] );
+    Double_t* xhigh = static_cast< Double_t* >( t_exported[ 4 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
-    Int_t*    nybins = static_cast< Int_t* >( t_exported[ 5 ] );
+    Int_t* nybins = static_cast< Int_t* >( t_exported[ 5 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
-    Double_t* ylow   = static_cast< Double_t* >( t_exported[ 6 ] );
+    Double_t* ylow = static_cast< Double_t* >( t_exported[ 6 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
-    Double_t* yhigh  = static_cast< Double_t* >( t_exported[ 7 ] );
+    Double_t* yhigh = static_cast< Double_t* >( t_exported[ 7 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
-    Int_t*    nzbins = static_cast< Int_t* >( t_exported[ 8 ] );
+    Int_t* nzbins = static_cast< Int_t* >( t_exported[ 8 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
-    Double_t* zlow   = static_cast< Double_t* >( t_exported[ 9 ] );
+    Double_t* zlow = static_cast< Double_t* >( t_exported[ 9 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
-    Double_t* zhigh  = static_cast< Double_t* >( t_exported[ 10 ] );
+    Double_t* zhigh = static_cast< Double_t* >( t_exported[ 10 ] );
     cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
 
     Int_t nxbins_val = *nxbins;
@@ -433,7 +448,8 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, Int_t ( type_pr
 }
 
 template< typename type_hist, typename type_property >
-bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_property::*t_property )() const, Double_t t_tolerance = 1e-6 ) {
+bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_property::*t_property )() const,
+                     Double_t t_tolerance = 1e-6 ) {
     if( abs( ( t_0->*t_property )() - ( t_1->*t_property )() ) > t_tolerance ) {
         cout << "Error: Histogram property does not match" << endl;
         return false;
@@ -642,7 +658,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
         }
         type_hist* temp2{ nullptr };
         cout << "Importing histogram...: " << __LINE__ << endl;
-        import_TH( exported, temp2 );
+        import_TH( exported, temp2, "TEST" );
         cout << "Done: " << __LINE__ << endl;
         if( ! check_copy( temp, temp2 ) ) {
             cout << "Error: Copied histogram does not match original" << endl;
