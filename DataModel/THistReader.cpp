@@ -436,18 +436,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
 
 template< typename type_ID, typename type_hist >
 THistReader< type_ID, type_hist >::THistReader( const THistReader& t_THistReader ) {
-    if( ! t_THistReader.get_histsMap() ) {
-        cout << "Error: THistReader histogram map is null" << endl;
-        return;
-    }
-
-    m_hists = *( t_THistReader.get_histsMap() );
-
-    if( m_hists->size() != t_THistReader.get_histsMap()->size() ) {
-        cout << "Error: Not all histograms were copied" << endl;
-    }
-
-    return;
+    *this = t_THistReader;
 }
 
 template< typename type_ID, typename type_hist >
@@ -475,5 +464,16 @@ THistMap< type_ID, type_hist >* THistReader< type_ID, type_hist >::get_histsMap(
 
 template< typename type_ID, typename type_hist >
 void THistReader< type_ID, type_hist >::operator=( const THistReader& t_THistReader ) {
-    THistReader( &t_THistReader );
+    if( ! t_THistReader.get_histsMap() ) {
+        cout << "Error: THistReader histogram map is null" << endl;
+        return;
+    }
+
+    m_hists = *( t_THistReader.get_histsMap() );
+
+    if( m_hists->size() != t_THistReader.get_histsMap()->size() ) {
+        cout << "Error: Not all histograms were copied" << endl;
+    }
+
+    return;
 }
