@@ -449,7 +449,7 @@ bool check_null( const type_hist* t_0, const type_hist* t_1 ) {
     return true;
 }
 
-bool check_copy( const TH1D* t_original, const TH1D* t_copy ) {
+inline bool check_copy( const TH1D* t_original, const TH1D* t_copy ) {
     if( ! check_null( t_original, t_copy ) ) return false;
 
     bool value = true;
@@ -469,7 +469,7 @@ bool check_copy( const TH1D* t_original, const TH1D* t_copy ) {
     return value;
 }
 
-bool check_copy( const TH2D* t_original, const TH2D* t_copy ) {
+inline bool check_copy( const TH2D* t_original, const TH2D* t_copy ) {
     if( ! check_null( t_original, t_copy ) ) return false;
 
     bool value = true;
@@ -494,7 +494,7 @@ bool check_copy( const TH2D* t_original, const TH2D* t_copy ) {
     return value;
 }
 
-bool check_copy( const TH3D* t_original, const TH3D* t_copy ) {
+inline bool check_copy( const TH3D* t_original, const TH3D* t_copy ) {
     if( ! check_null( t_original, t_copy ) ) return false;
 
     bool value = true;
