@@ -313,9 +313,9 @@ double DetectorResponsePredictor::eval_hists_emission_values( const THistMap< in
 }
 
 double DetectorResponsePredictor::eval_hists_emission_indicies( const THistMap< int, TH2D >* t_hists_emission  ,
-                                                                const double                  t_initialEnergy   ,
-                                                                const unsigned int            t_trackLengthIndex, 
-                                                                const unsigned int            t_photonAngleIndex ) const {
+                                                                const double                 t_initialEnergy   ,
+                                                                const unsigned int           t_trackLengthIndex, 
+                                                                const unsigned int           t_photonAngleIndex ) const {
     LogD( "    Evaluating emission histograms.", m_verbosity_debug );
     pair< int, int > closestHists{ get_closestEmissionHists( t_hists_emission, t_initialEnergy ) };
 
@@ -501,8 +501,8 @@ double DetectorResponsePredictor::get_expected_height( Particle* t_particle, Det
     double ( DetectorResponsePredictor::*get_transmittance )( const double, const double ) const;
     double ( DetectorResponsePredictor::*get_acceptance    )( const double, const int ) const;
     double phiBinWidth;
-    map< int, TH2D* >* hists_emission_counts;
-    map< int, TH2D* >* hists_emission_energies;
+    THistMap< int, TH2D >* hists_emission_counts;
+    THistMap< int, TH2D >* hists_emission_energies;
     if( t_detector->GetDetectorElement() == "PMT" ) {
         hists_emission_energies = m_hists_emission_tankWater_energies;
         hists_emission_counts   = m_hists_emission_tankWater_counts;
