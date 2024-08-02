@@ -178,15 +178,14 @@ void import_TH( vector< void* >& t_exported, TH1D* t_copy ) {
     Double_t* xlow   = static_cast< Double_t* >( t_exported[ 3 ] );
     Double_t* xhigh  = static_cast< Double_t* >( t_exported[ 4 ] );
 
-    t_copy = new TH1D( *name, *title, *nxbins, *xlow, *xhigh );
-
     Int_t nxbins_val = *nxbins;
 
-    delete name;
-    delete title;
-    delete nxbins;
-    delete xlow;
-    delete xhigh;
+    if( t_exported.size() != 5 + 2 * nxbins_val ) {
+        cout << "Error: Exported histogram does not match expected size" << endl;
+        goto cleanup;
+    }
+
+    t_copy = new TH1D( *name, *title, *nxbins, *xlow, *xhigh );
 
     for( Int_t i = 1; i <= nxbins_val; ++i ) {
         Double_t* content = static_cast< Double_t* >( t_exported[ 5 + 2 * ( i - 1 ) ] );
@@ -194,18 +193,25 @@ void import_TH( vector< void* >& t_exported, TH1D* t_copy ) {
 
         t_copy->SetBinContent( i, *content );
         t_copy->SetBinError( i, *error );
-
-        delete content;
-        delete error;
     }
 
-    return t_copy;
+cleanup:
+    delete name;
+    delete title;
+    delete nxbins;
+    delete xlow;
+    delete xhigh;
+    for( Double_t* content : t_exported ) {
+        if( content ) delete content;
+    }
+
+    return;
 }
 
 void import_TH( vector< void* >& t_exported, TH2D* t_copy ) {
     if( t_exported.empty() ) {
         cout << "Error: Exported histogram is empty" << endl;
-        return nullptr;
+        return;
     }
 
     if( t_copy ) delete t_copy;
@@ -219,19 +225,15 @@ void import_TH( vector< void* >& t_exported, TH2D* t_copy ) {
     Double_t* ylow   = static_cast< Double_t* >( t_exported[ 6 ] );
     Double_t* yhigh  = static_cast< Double_t* >( t_exported[ 7 ] );
 
-    t_copy = new TH2D( *name, *title, *nxbins, *xlow, *xhigh, *nybins, *ylow, *yhigh );
-
     Int_t nxbins_val = *nxbins;
     Int_t nybins_val = *nybins;
 
-    delete name;
-    delete title;
-    delete nxbins;
-    delete xlow;
-    delete xhigh;
-    delete nybins;
-    delete ylow;
-    delete yhigh;
+    if( t_exported.size() != 8 + 2 * nxbins_val * nybins_val ) {
+        cout << "Error: Exported histogram does not match expected size" << endl;
+        goto cleanup;
+    }
+
+    t_copy = new TH2D( *name, *title, nxbins_val, *xlow, *xhigh, nybins_val, *ylow, *yhigh );
 
     for( Int_t i = 1; i <= nxbins_val; ++i ) {
         for( Int_t j = 1; j <= nybins_val; ++j ) {
@@ -240,13 +242,23 @@ void import_TH( vector< void* >& t_exported, TH2D* t_copy ) {
 
             t_copy->SetBinContent( i, j, *content );
             t_copy->SetBinError( i, j, *error );
-
-            delete content;
-            delete error;
         }
     }
 
-    return t_copy;
+    return;
+
+cleanup:
+    delete name;
+    delete title;
+    delete nxbins;
+    delete xlow;
+    delete xhigh;
+    delete nybins;
+    delete ylow;
+    delete yhigh;
+    for( Double_t* content : t_exported ) {
+        if( content ) delete content;
+    }
 }
 
 void import_TH( vector< void* >& t_exported, TH3D* t_copy ) {
@@ -269,23 +281,16 @@ void import_TH( vector< void* >& t_exported, TH3D* t_copy ) {
     Double_t* zlow   = static_cast< Double_t* >( t_exported[ 9 ] );
     Double_t* zhigh  = static_cast< Double_t* >( t_exported[ 10 ] );
 
-    t_copy = new TH3D( *name, *title, *nxbins, *xlow, *xhigh, *nybins, *ylow, *yhigh, *nzbins, *zlow, *zhigh );
-
     Int_t nxbins_val = *nxbins;
     Int_t nybins_val = *nybins;
     Int_t nzbins_val = *nzbins;
 
-    delete name;
-    delete title;
-    delete nxbins;
-    delete xlow;
-    delete xhigh;
-    delete nybins;
-    delete ylow;
-    delete yhigh;
-    delete nzbins;
-    delete zlow;
-    delete zhigh;
+    if( t_exported.size() != 11 + 2 * nxbins_val * nybins_val * nzbins_val ) {
+        cout << "Error: Exported histogram does not match expected size" << endl;
+        goto cleanup;
+    }
+
+    t_copy = new TH3D( *name, *title, *nxbins, *xlow, *xhigh, *nybins, *ylow, *yhigh, *nzbins, *zlow, *zhigh );
 
     for( Int_t i = 1; i <= nxbins; ++i ) {
         for( Int_t j = 1; j <= nybins; ++j ) {
@@ -297,11 +302,24 @@ void import_TH( vector< void* >& t_exported, TH3D* t_copy ) {
 
                 t_copy->SetBinContent( i, j, k, *content );
                 t_copy->SetBinError( i, j, k, *error );
-
-                delete content;
-                delete error;
             }
         }
+    }
+
+cleanup:
+    delete name;
+    delete title;
+    delete nxbins;
+    delete xlow;
+    delete xhigh;
+    delete nybins;
+    delete ylow;
+    delete yhigh;
+    delete nzbins;
+    delete zlow;
+    delete zhigh;
+    for( Double_t* content : t_exported ) {
+        if( content ) delete content;
     }
 
     return t_copy;
