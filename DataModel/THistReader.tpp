@@ -18,8 +18,6 @@
 //*//                                                                                         //*//
 //*/////////////////////////////////////////////////////////////////////////////////////////////*//
 
-#include "THistReader.h"
-
 TH1D* copy_TH( const TH1D* t_original ) {
     if( ! t_original ) {
         cout << "Error: Original histogram is null" << endl;
