@@ -396,14 +396,14 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
             continue;
         }
 
-        vector< void* > export { export_TH( temp ) };
-        if( export.empty() ) {
+        vector< void* > exported { export_TH( temp ) };
+        if( exported.empty() ) {
             cout << "Error: Could not export histogram" << endl;
             delete temp;
             continue;
         }
         type_hist* temp2{ nullptr };
-        import_TH( export, temp2 );
+        import_TH( exported, temp2 );
         if( ! check_copy( temp, temp2 ) ) {
             cout << "Error: Copied histogram does not match original" << endl;
             delete temp;
@@ -414,7 +414,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
 
         file.Close();
 
-        import_TH( export, entry.second );
+        import_TH( exported, entry.second );
         if( ! entry.second ) {
             cout << "Error: Could not import histogram" << endl;
             delete temp;
