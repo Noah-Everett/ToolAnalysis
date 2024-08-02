@@ -145,7 +145,7 @@ inline vector< void* > export_TH( const TH3D* t_original ) {
     return exported;
 }
 
-void import_TH( vector< void* >& t_exported, TH1D* t_copy ) {
+inline void import_TH( vector< void* >& t_exported, TH1D* t_copy ) {
     if( t_exported.empty() ) {
         cout << "Error: Exported histogram is empty" << endl;
         return;
