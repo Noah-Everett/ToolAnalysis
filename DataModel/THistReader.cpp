@@ -107,40 +107,6 @@ vector< void* > export_TH( const TH1D* t_original ) {
     return exported;
 }
 
-void import_TH( vector< void* >& t_exported ) {
-    if( t_exported.empty() ) {
-        cout << "Error: Exported histogram is empty" << endl;
-        return nullptr;
-    }
-
-    TString*  name   = static_cast< TString* >( t_exported[ 0 ] );
-    TString*  title  = static_cast< TString* >( t_exported[ 1 ] );
-    Int_t*    nxbins = static_cast< Int_t* >( t_exported[ 2 ] );
-    Double_t* xlow   = static_cast< Double_t* >( t_exported[ 3 ] );
-    Double_t* xhigh  = static_cast< Double_t* >( t_exported[ 4 ] );
-
-    TH1D* t_copy = new TH1D( *name, *title, *nxbins, *xlow, *xhigh );
-
-    delete name;
-    delete title;
-    delete nxbins;
-    delete xlow;
-    delete xhigh;
-
-    for( Int_t i = 1; i <= nxbins; ++i ) {
-        Double_t* content = static_cast< Double_t* >( t_exported[ 5 + 2 * ( i - 1 ) ] );
-        Double_t* error   = static_cast< Double_t* >( t_exported[ 6 + 2 * ( i - 1 ) ] );
-
-        t_copy->SetBinContent( i, *content );
-        t_copy->SetBinError( i, *error );
-
-        delete content;
-        delete error;
-    }
-
-    return t_copy;
-}
-
 vector< void* > export_TH( const TH2D* t_original ) {
     if( ! t_original ) {
         cout << "Error: Original histogram is null" << endl;
@@ -165,48 +131,6 @@ vector< void* > export_TH( const TH2D* t_original ) {
     }
 
     return exported;
-}
-
-void import_TH( vector< void* >& t_exported ) {
-    if( t_exported.empty() ) {
-        cout << "Error: Exported histogram is empty" << endl;
-        return nullptr;
-    }
-
-    TString*  name   = static_cast< TString* >( t_exported[ 0 ] );
-    TString*  title  = static_cast< TString* >( t_exported[ 1 ] );
-    Int_t*    nxbins = static_cast< Int_t* >( t_exported[ 2 ] );
-    Double_t* xlow   = static_cast< Double_t* >( t_exported[ 3 ] );
-    Double_t* xhigh  = static_cast< Double_t* >( t_exported[ 4 ] );
-    Int_t*    nybins = static_cast< Int_t* >( t_exported[ 5 ] );
-    Double_t* ylow   = static_cast< Double_t* >( t_exported[ 6 ] );
-    Double_t* yhigh  = static_cast< Double_t* >( t_exported[ 7 ] );
-
-    TH2D* t_copy = new TH2D( *name, *title, *nxbins, *xlow, *xhigh, *nybins, *ylow, *yhigh );
-
-    delete name;
-    delete title;
-    delete nxbins;
-    delete xlow;
-    delete xhigh;
-    delete nybins;
-    delete ylow;
-    delete yhigh;
-
-    for( Int_t i = 1; i <= nxbins; ++i ) {
-        for( Int_t j = 1; j <= nybins; ++j ) {
-            Double_t* content = static_cast< Double_t* >( t_exported[ 8 + 2 * ( i - 1 ) * nybins + 2 * ( j - 1 ) ] );
-            Double_t* error   = static_cast< Double_t* >( t_exported[ 9 + 2 * ( i - 1 ) * nybins + 2 * ( j - 1 ) ] );
-
-            t_copy->SetBinContent( i, j, *content );
-            t_copy->SetBinError( i, j, *error );
-
-            delete content;
-            delete error;
-        }
-    }
-
-    return t_copy;
 }
 
 vector< void* > export_TH( const TH3D* t_original ) {
@@ -240,11 +164,93 @@ vector< void* > export_TH( const TH3D* t_original ) {
     return exported;
 }
 
-void import_TH( vector< void* >& t_exported ) {
+void import_TH( vector< void* >& t_exported, TH1D* t_copy ) {
+    if( t_exported.empty() ) {
+        cout << "Error: Exported histogram is empty" << endl;
+        return;
+    }
+
+    if( t_copy ) delete t_copy;
+
+    TString*  name   = static_cast< TString* >( t_exported[ 0 ] );
+    TString*  title  = static_cast< TString* >( t_exported[ 1 ] );
+    Int_t*    nxbins = static_cast< Int_t* >( t_exported[ 2 ] );
+    Double_t* xlow   = static_cast< Double_t* >( t_exported[ 3 ] );
+    Double_t* xhigh  = static_cast< Double_t* >( t_exported[ 4 ] );
+
+    t_copy = new TH1D( *name, *title, *nxbins, *xlow, *xhigh );
+
+    delete name;
+    delete title;
+    delete nxbins;
+    delete xlow;
+    delete xhigh;
+
+    for( Int_t i = 1; i <= nxbins; ++i ) {
+        Double_t* content = static_cast< Double_t* >( t_exported[ 5 + 2 * ( i - 1 ) ] );
+        Double_t* error   = static_cast< Double_t* >( t_exported[ 6 + 2 * ( i - 1 ) ] );
+
+        t_copy->SetBinContent( i, *content );
+        t_copy->SetBinError( i, *error );
+
+        delete content;
+        delete error;
+    }
+
+    return t_copy;
+}
+
+void import_TH( vector< void* >& t_exported, TH2D* t_copy ) {
     if( t_exported.empty() ) {
         cout << "Error: Exported histogram is empty" << endl;
         return nullptr;
     }
+
+    if( t_copy ) delete t_copy;
+
+    TString*  name   = static_cast< TString* >( t_exported[ 0 ] );
+    TString*  title  = static_cast< TString* >( t_exported[ 1 ] );
+    Int_t*    nxbins = static_cast< Int_t* >( t_exported[ 2 ] );
+    Double_t* xlow   = static_cast< Double_t* >( t_exported[ 3 ] );
+    Double_t* xhigh  = static_cast< Double_t* >( t_exported[ 4 ] );
+    Int_t*    nybins = static_cast< Int_t* >( t_exported[ 5 ] );
+    Double_t* ylow   = static_cast< Double_t* >( t_exported[ 6 ] );
+    Double_t* yhigh  = static_cast< Double_t* >( t_exported[ 7 ] );
+
+    t_copy = new TH2D( *name, *title, *nxbins, *xlow, *xhigh, *nybins, *ylow, *yhigh );
+
+    delete name;
+    delete title;
+    delete nxbins;
+    delete xlow;
+    delete xhigh;
+    delete nybins;
+    delete ylow;
+    delete yhigh;
+
+    for( Int_t i = 1; i <= nxbins; ++i ) {
+        for( Int_t j = 1; j <= nybins; ++j ) {
+            Double_t* content = static_cast< Double_t* >( t_exported[ 8 + 2 * ( i - 1 ) * nybins + 2 * ( j - 1 ) ] );
+            Double_t* error   = static_cast< Double_t* >( t_exported[ 9 + 2 * ( i - 1 ) * nybins + 2 * ( j - 1 ) ] );
+
+            t_copy->SetBinContent( i, j, *content );
+            t_copy->SetBinError( i, j, *error );
+
+            delete content;
+            delete error;
+        }
+    }
+
+    return t_copy;
+}
+
+void import_TH( vector< void* >& t_exported, TH3D* t_copy ) {
+    if( t_exported.empty() ) {
+        cout << "Error: Exported histogram is empty" << endl;
+        return nullptr;
+    }
+
+    if( t_copy ) delete t_copy;
 
     TString*  name   = static_cast< TString* >( t_exported[ 0 ] );
     TString*  title  = static_cast< TString* >( t_exported[ 1 ] );
@@ -258,7 +264,7 @@ void import_TH( vector< void* >& t_exported ) {
     Double_t* zlow   = static_cast< Double_t* >( t_exported[ 9 ] );
     Double_t* zhigh  = static_cast< Double_t* >( t_exported[ 10 ] );
 
-    TH3D* t_copy = new TH3D( *name, *title, *nxbins, *xlow, *xhigh, *nybins, *ylow, *yhigh, *nzbins, *zlow, *zhigh );
+    t_copy = new TH3D( *name, *title, *nxbins, *xlow, *xhigh, *nybins, *ylow, *yhigh, *nzbins, *zlow, *zhigh );
 
     delete name;
     delete title;
