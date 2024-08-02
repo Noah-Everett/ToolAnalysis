@@ -154,7 +154,7 @@ inline void import_TH( vector< void* >& t_exported, TH1D* t_copy, string t_name 
     if( t_copy ) delete t_copy;
 
     TString* name{ nullptr };
-    if( t_name == "" ) {
+    if( t_name.EqualTo( "" ) ) {
         name = static_cast< TString* >( t_exported[ 0 ] );
     } else {
         name = new TString( t_name );
@@ -203,7 +203,7 @@ inline void import_TH( vector< void* >& t_exported, TH2D* t_copy, string t_name 
     if( t_copy ) delete t_copy;
 
     TString* name{ nullptr };
-    if( t_name = "" ) {
+    if( t_name.EqualTo( "" ) ) {
         name = static_cast< TString* >( t_exported[ 0 ] );
     } else {
         name = new TString( t_name );
@@ -279,7 +279,7 @@ inline void import_TH( vector< void* >& t_exported, TH3D* t_copy, TString t_name
     if( t_copy ) delete t_copy;
 
     TString* name{ nullptr };
-    if( t_name = "" ) {
+    if( t_name.EqualTo( "" ) ) {
         name = static_cast< TString* >( t_exported[ 0 ] );
     } else {
         name = new TString( t_name );
