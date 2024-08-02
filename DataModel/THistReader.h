@@ -145,7 +145,7 @@ inline vector< void* > export_TH( const TH3D* t_original ) {
     return exported;
 }
 
-inline void import_TH( vector< void* >& t_exported, TH1D* t_copy, string& t_name = "" ) {
+inline void import_TH( vector< void* >& t_exported, TH1D* t_copy, string t_name = "" ) {
     if( t_exported.empty() ) {
         cout << "Error: Exported histogram is empty" << endl;
         return;
@@ -157,7 +157,7 @@ inline void import_TH( vector< void* >& t_exported, TH1D* t_copy, string& t_name
     if( t_name == "" ) {
         name = static_cast< TString* >( t_exported[ 0 ] );
     } else {
-        name = new TString( t_name.c_str() );
+        name = new TString( t_name );
     }
     TString*  title  = static_cast< TString* >( t_exported[ 1 ] );
     Int_t*    nxbins = static_cast< Int_t* >( t_exported[ 2 ] );
@@ -194,7 +194,7 @@ cleanup:
     return;
 }
 
-inline void import_TH( vector< void* >& t_exported, TH2D* t_copy, string& t_name = "" ) {
+inline void import_TH( vector< void* >& t_exported, TH2D* t_copy, string t_name = "" ) {
     if( t_exported.empty() ) {
         cout << "Error: Exported histogram is empty" << endl;
         return;
@@ -206,7 +206,7 @@ inline void import_TH( vector< void* >& t_exported, TH2D* t_copy, string& t_name
     if( t_name = "" ) {
         name = static_cast< TString* >( t_exported[ 0 ] );
     } else {
-        name = new TString( t_name.c_str() );
+        name = new TString( t_name );
     }
 
     TString* name = static_cast< TString* >( t_exported[ 0 ] );
@@ -270,7 +270,7 @@ cleanup:
     return;
 }
 
-inline void import_TH( vector< void* >& t_exported, TH3D* t_copy ) {
+inline void import_TH( vector< void* >& t_exported, TH3D* t_copy, TString t_name = "" ) {
     if( t_exported.empty() ) {
         cout << "Error: Exported histogram is empty" << endl;
         return;
@@ -278,11 +278,11 @@ inline void import_TH( vector< void* >& t_exported, TH3D* t_copy ) {
 
     if( t_copy ) delete t_copy;
 
-    TString name{ nullptr };
+    TString* name{ nullptr };
     if( t_name = "" ) {
         name = static_cast< TString* >( t_exported[ 0 ] );
     } else {
-        name = new TString( t_name.c_str() );
+        name = new TString( t_name );
     }
 
     TString* name = static_cast< TString* >( t_exported[ 0 ] );
