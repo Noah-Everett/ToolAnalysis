@@ -47,16 +47,16 @@ void DetectorResponsePredictor::reset_members()
     delete m_hist_dEdX_MRDiron                ;
 }
 
-bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >* t_hists_energies      ,
-                                                           map   < int, TH2D* >* t_hists_counts        ,
-                                                     const vector< string     >& t_hists_energies_paths, 
-                                                     const vector< string     >& t_hists_counts_paths  , 
-                                                     const vector< string     >& t_hists_energies_names,
-                                                     const vector< string     >& t_hists_counts_names  ,
-                                                     const vector< int        >& t_hists_IDs           ,
-                                                           double              & t_binWidth_s          ,
-                                                           double              & t_binWidth_theta      ,
-                                                           double              & t_binWidth_phi         ) {
+bool DetectorResponsePredictor::load_hists_emission(       THistMap< int, TH2D* >* t_hists_energies      ,
+                                                           THistMap< int, TH2D* >* t_hists_counts        ,
+                                                     const vector  < string     >& t_hists_energies_paths, 
+                                                     const vector  < string     >& t_hists_counts_paths  , 
+                                                     const vector  < string     >& t_hists_energies_names,
+                                                     const vector  < string     >& t_hists_counts_names  ,
+                                                     const vector  < int        >& t_hists_IDs           ,
+                                                           double                & t_binWidth_s          ,
+                                                           double                & t_binWidth_theta      ,
+                                                           double                & t_binWidth_phi         ) {
     LogD( "Loading emission histograms.", m_verbosity_debug );
     
     // Check IDs are strictly increasing
@@ -90,7 +90,7 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
     // Load energy hist map
     THistReader< int, TH2D >* histReader{ new THistReader< int, TH2D >( t_hists_energies_paths, t_hists_IDs, t_hists_energies_names ) };
     if( t_hists_energies ) delete t_hists_energies;
-    t_hists_energies = histReader->get_histsMap_cp();
+    t_hists_energies = histReader->get_histsMap();
     delete histReader;
     // If map wasnt returned
     if( !t_hists_energies ) {
@@ -106,7 +106,7 @@ bool DetectorResponsePredictor::load_hists_emission(       map   < int, TH2D* >*
     // Load counts hist map
     histReader = new THistReader< int, TH2D >( t_hists_counts_paths, t_hists_IDs, t_hists_counts_names );
     if( t_hists_counts ) delete t_hists_counts;
-    t_hists_counts = histReader->get_histsMap_cp();
+    t_hists_counts = histReader->get_histsMap();
     delete histReader;
     // If map wasnt returned
     if( !t_hists_counts ) {
@@ -227,7 +227,7 @@ bool DetectorResponsePredictor::load_hist( const type_hist*  m_hist    ,
                                            const string   & t_hist_name ) {
     LogD( "    Loading histogram.", m_verbosity_debug );
     THistReader< bool, type_hist >* histReader{ new THistReader< bool, type_hist >( { t_hist_path }, { 1 }, { t_hist_name } ) };
-    m_hist = histReader->get_histsMap_cp()->at( true );
+    m_hist = histReader->get_histsMap()->at( true );
     if( histReader ) {
         delete histReader;
         LogD( "    Successfully loaded histogram.", m_verbosity_debug );
