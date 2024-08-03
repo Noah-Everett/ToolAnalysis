@@ -21,6 +21,7 @@
 #ifndef THISTREADER_H
 #define THISTREADER_H
 
+#include "TROOT.h"
 #include "TFile.h"
 #include "TH1.h"
 #include "TH2.h"
