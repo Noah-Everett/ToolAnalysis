@@ -229,7 +229,7 @@ bool DetectorResponsePredictor::load_hist( const type_hist*  m_hist    ,
                                            const string   & t_hist_path,
                                            const string   & t_hist_name ) {
     LogD( "    Loading histogram.", m_verbosity_debug );
-    THistReader< bool, type_hist >* histReader{ new THistReader< bool, type_hist >( { t_hist_path }, { 1 }, { t_hist_name }, m_verbosity_THistReader ) };
+    THistReader< bool, type_hist >* histReader{ new THistReader< bool, type_hist >( { t_hist_path }, { 1 }, { t_hist_name }, "", m_verbosity_THistReader ) };
     m_hist = histReader->get_histsMap()->at( true );
     if( histReader ) {
         delete histReader;
