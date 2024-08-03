@@ -669,7 +669,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
 
         file.Close();
 
-        import_TH( exported, entry.second, t_hists_names[ i ] + to_string( t_hists_IDs[ i ] ) );
+        import_TH( exported, entry.second, t_hists_names[ i ] + "@" + to_string( t_hists_IDs[ i ] ) );
         if( ! entry.second ) {
             cout << "Error: Could not import histogram" << endl;
             delete temp;
