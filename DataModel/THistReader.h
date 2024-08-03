@@ -247,7 +247,7 @@ inline void import_TH( vector< void* >& t_exported, TH1D*& t_copy, TString t_nam
     }
 
     // Check if object with the same name already exists
-    if( gDirectory->Get( *name ) ) {
+    if( gROOT->FindObjectAny( *name ) ) {
         if( t_verbosity >= 1 )
             cout << "Warning: Object with the name `" << *name << "` already exists. Setting name to `" << *name << "_copy`" << endl;
         *name += "_copy";
@@ -415,7 +415,7 @@ inline void import_TH( vector< void* >& t_exported, TH3D*& t_copy, TString t_nam
         goto cleanup;
     }
 
-    if( gDirectory->Get( *name ) ) {
+    if( gROOT->FindObjectAny( *name ) ) {
         if( t_verbosity >= 1 )
             cout << "Warning: Object with the name `" << *name << "` already exists. Setting name to `" << *name << "_copy`" << endl;
         *name += "_copy";
@@ -759,7 +759,7 @@ void THistMap< type_ID, type_hist >::operator=( const THistMap& t_THistMap ) {
         if( ! temp ) {
             cout << "Error: Could not copy histogram" << endl;
             continue;
-        } else if( ! check_copy( entry.second, temp ) ) {
+        } else if( ! check_copy( entry.second, temp, "NAME" ) ) {
             cout << "Error: Copied histogram does not match original" << endl;
             delete temp;
             continue;
