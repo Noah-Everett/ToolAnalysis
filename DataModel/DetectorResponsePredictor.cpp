@@ -56,7 +56,8 @@ bool DetectorResponsePredictor::load_hists_emission(       THistMap< int, TH2D >
                                                      const vector  < int       >& t_hists_IDs           ,
                                                            double               & t_binWidth_s          ,
                                                            double               & t_binWidth_theta      ,
-                                                           double               & t_binWidth_phi         ) {
+                                                           double               & t_binWidth_phi        ,
+                                                     const string               & t_hists_material       ) {
     LogD( "Loading emission histograms.", m_verbosity_debug );
     
     // Check IDs are strictly increasing
@@ -88,7 +89,7 @@ bool DetectorResponsePredictor::load_hists_emission(       THistMap< int, TH2D >
     }
 
     // Load energy hist map
-    THistReader< int, TH2D >* histReader{ new THistReader< int, TH2D >( t_hists_energies_paths, t_hists_IDs, t_hists_energies_names, m_verbosity_THistReader ) };
+    THistReader< int, TH2D >* histReader{ new THistReader< int, TH2D >( t_hists_energies_paths, t_hists_IDs, t_hists_energies_names, t_hists_material+"_energies", m_verbosity_THistReader ) };
     if( t_hists_energies ) delete t_hists_energies;
     t_hists_energies = histReader->get_histsMap();
     delete histReader;
@@ -104,7 +105,7 @@ bool DetectorResponsePredictor::load_hists_emission(       THistMap< int, TH2D >
     }
     
     // Load counts hist map
-    histReader = new THistReader< int, TH2D >( t_hists_counts_paths, t_hists_IDs, t_hists_counts_names, m_verbosity_THistReader );
+    histReader = new THistReader< int, TH2D >( t_hists_counts_paths, t_hists_IDs, t_hists_counts_names, t_hists_material+"_counts", m_verbosity_THistReader );
     if( t_hists_counts ) delete t_hists_counts;
     t_hists_counts = histReader->get_histsMap();
     delete histReader;
@@ -205,7 +206,8 @@ bool DetectorResponsePredictor::load_hists_emission_tankWater( const vector< str
                                 t_hists_energies_paths             , t_hists_counts_paths             ,
                                 t_hists_energies_names             , t_hists_counts_names             ,
                                 t_hists_IDs                        , m_binWidth_s_tankWater           , 
-                                m_binWidth_theta_tankWater         , m_binWidth_phi_tankWater          );
+                                m_binWidth_theta_tankWater         , m_binWidth_phi_tankWater         ,
+                                "tankWater"                                                            );
 }
 
 bool DetectorResponsePredictor::load_hists_emission_MRDsci( const vector< string >& t_hists_energies_paths,
@@ -218,7 +220,8 @@ bool DetectorResponsePredictor::load_hists_emission_MRDsci( const vector< string
                                 t_hists_energies_paths          , t_hists_counts_paths          ,
                                 t_hists_energies_names          , t_hists_counts_names          ,
                                 t_hists_IDs                     , m_binWidth_s_MRDsci           , 
-                                m_binWidth_theta_MRDsci         , m_binWidth_phi_MRDsci          );
+                                m_binWidth_theta_MRDsci         , m_binWidth_phi_MRDsci         ,
+                                "MRDsci"                                                         );
 }
 
 template< typename type_hist >

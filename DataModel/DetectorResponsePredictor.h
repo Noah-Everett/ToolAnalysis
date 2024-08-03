@@ -245,7 +245,8 @@ protected:
     /**/                           const vector  < int       >& t_hists_IDs           ,
     /**/                                 double               & t_binWidth_s          ,
     /**/                                 double               & t_binWidth_theta      ,
-    /**/                                 double               & t_binWidth_phi         );
+    /**/                                 double               & t_binWidth_phi        ,
+    /**/                           const string               & t_hists_material       );
     /**/ template< typename type_hist >
     /**/ bool load_hist          ( const type_hist           * t_hist                ,
     /**/                           const string              & t_hist_path           ,

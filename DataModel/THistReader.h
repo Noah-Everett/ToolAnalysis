@@ -56,7 +56,7 @@ template< typename type_ID, typename type_hist >
 class THistReader {
     public:
         THistReader( const vector< string >& t_hists_paths, const vector< type_ID >& t_hists_IDs, const vector< string >& t_hists_names,
-                     unsigned int t_verbosity = 1 );
+                     const string& t_hists_class, unsigned int t_verbosity = 1 );
 
         THistReader( const THistReader& t_THistReader );
 
@@ -749,115 +749,117 @@ void THistMap< type_ID, type_hist >::operator=( const THistMap& t_THistMap ) {
 
 template< typename type_ID, typename type_hist >
 THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_paths, const vector< type_ID >& t_hists_IDs,
-                                                const vector< string >& t_hists_names, unsigned int t_verbosity )
+                                                const vector< string >& t_hists_names, const string& t_hists_class,
+                                                unsigned int t_verbosity ) {
     : m_verbosity{ t_verbosity } {
-    if( m_verbosity >= m_verbosity_debug ) {
-        cout << "THistReader: Loading histograms" << endl;
-    }
-
-    if( t_hists_paths.size() != t_hists_IDs.size() || t_hists_paths.size() != t_hists_names.size() ) {
-        cout << "Error: hists_paths, hists_IDs, and hists_names "
-             << "vectors should all be the same length" << endl;
-        return;
-    }
-
-    for( int i{ 0 }; i < t_hists_paths.size(); i++ ) {
-        TFile file{ t_hists_paths[ i ].c_str() };
-        if( file.IsZombie() ) {
-            cout << "Error: Could not open file with path " << t_hists_paths[ i ] << endl;
-            continue;
+        if( m_verbosity >= m_verbosity_debug ) {
+            cout << "THistReader: Loading histograms" << endl;
         }
 
-        pair< type_ID, type_hist* > entry;
-        entry.first = t_hists_IDs[ i ];
-
-        type_hist* temp{ nullptr };
-        file.GetObject( t_hists_names[ i ].c_str(), temp );
-        if( ! temp ) {
-            cout << "Error: Could not find histogram with name " << t_hists_names[ i ] << endl;
-            continue;
+        if( t_hists_paths.size() != t_hists_IDs.size() || t_hists_paths.size() != t_hists_names.size() ) {
+            cout << "Error: hists_paths, hists_IDs, and hists_names "
+                 << "vectors should all be the same length" << endl;
+            return;
         }
 
-        vector< void* > exported{ export_TH( temp, m_verbosity ) };
-        if( exported.empty() ) {
-            cout << "Error: Could not export histogram" << endl;
-            delete temp;
-            continue;
-        }
-        type_hist* temp2{ nullptr };
-        import_TH( exported, temp2, "TEST", m_verbosity );
-        if( ! check_copy( temp, temp2, "NAME" ) ) {
-            cout << "Error: Copied histogram does not match original" << endl;
+        for( int i{ 0 }; i < t_hists_paths.size(); i++ ) {
+            TFile file{ t_hists_paths[ i ].c_str() };
+            if( file.IsZombie() ) {
+                cout << "Error: Could not open file with path " << t_hists_paths[ i ] << endl;
+                continue;
+            }
+
+            pair< type_ID, type_hist* > entry;
+            entry.first = t_hists_IDs[ i ];
+
+            type_hist* temp{ nullptr };
+            file.GetObject( t_hists_names[ i ].c_str(), temp );
+            if( ! temp ) {
+                cout << "Error: Could not find histogram with name " << t_hists_names[ i ] << endl;
+                continue;
+            }
+
+            vector< void* > exported{ export_TH( temp, m_verbosity ) };
+            if( exported.empty() ) {
+                cout << "Error: Could not export histogram" << endl;
+                delete temp;
+                continue;
+            }
+            type_hist* temp2{ nullptr };
+            import_TH( exported, temp2, "TEST", m_verbosity );
+            if( ! check_copy( temp, temp2, "NAME" ) ) {
+                cout << "Error: Copied histogram does not match original" << endl;
+                delete temp;
+                delete temp2;
+                return;
+            }
+
             delete temp;
             delete temp2;
+            file.Close();
+
+            import_TH( exported, entry.second, t_hists_names[ i ] + "_" + to_string( t_hists_IDs[ i ] ) + "MeV_" + t_hists_class,
+                       m_verbosity );
+            if( ! entry.second ) {
+                cout << "Error: Could not import histogram" << endl;
+                delete temp;
+                return;
+            }
+
+            auto result = m_hists.insert( entry );
+            if( ! result.second ) {
+                cout << "Error: Could not insert histogram into map" << endl;
+            }
+        }
+
+        if( m_hists.size() != t_hists_paths.size() ) {
+            cout << "Error: Not all histograms were loaded" << endl;
+        }
+    }
+
+    template< typename type_ID, typename type_hist >
+    THistReader< type_ID, type_hist >::THistReader( const THistReader& t_THistReader ) {
+        *this = t_THistReader;
+    }
+
+    template< typename type_ID, typename type_hist >
+    THistReader< type_ID, type_hist >::~THistReader() {
+    }
+
+    template< typename type_ID, typename type_hist >
+    type_hist* THistReader< type_ID, type_hist >::get_hist( const type_ID& t_ID ) const {
+        pair< type_ID, type_hist* >* result = m_hists->find( t_ID );
+        if( result == m_hists->end() ) {
+            cout << "Error: Could not find histogram with ID " << t_ID << endl;
+            return nullptr;
+        } else if( ! result->second ) {
+            cout << "Error: Histogram is null" << endl;
+            return nullptr;
+        }
+
+        return result->second;
+    }
+
+    template< typename type_ID, typename type_hist >
+    THistMap< type_ID, type_hist >* THistReader< type_ID, type_hist >::get_histsMap() const {
+        return new THistMap< type_ID, type_hist >( m_hists );
+    }
+
+    template< typename type_ID, typename type_hist >
+    void THistReader< type_ID, type_hist >::operator=( const THistReader& t_THistReader ) {
+        if( ! t_THistReader.get_histsMap() ) {
+            cout << "Error: THistReader histogram map is null" << endl;
             return;
         }
 
-        delete temp;
-        delete temp2;
-        file.Close();
+        m_verbosity = t_THistReader.m_verbosity;
+        m_hists     = *( t_THistReader.get_histsMap() );
 
-        import_TH( exported, entry.second, t_hists_names[ i ] + "@" + to_string( t_hists_IDs[ i ] ), m_verbosity );
-        if( ! entry.second ) {
-            cout << "Error: Could not import histogram" << endl;
-            delete temp;
-            return;
+        if( m_hists->size() != t_THistReader.get_histsMap()->size() ) {
+            cout << "Error: Not all histograms were copied" << endl;
         }
 
-        auto result = m_hists.insert( entry );
-        if( ! result.second ) {
-            cout << "Error: Could not insert histogram into map" << endl;
-        }
-    }
-
-    if( m_hists.size() != t_hists_paths.size() ) {
-        cout << "Error: Not all histograms were loaded" << endl;
-    }
-}
-
-template< typename type_ID, typename type_hist >
-THistReader< type_ID, type_hist >::THistReader( const THistReader& t_THistReader ) {
-    *this = t_THistReader;
-}
-
-template< typename type_ID, typename type_hist >
-THistReader< type_ID, type_hist >::~THistReader() {
-}
-
-template< typename type_ID, typename type_hist >
-type_hist* THistReader< type_ID, type_hist >::get_hist( const type_ID& t_ID ) const {
-    pair< type_ID, type_hist* >* result = m_hists->find( t_ID );
-    if( result == m_hists->end() ) {
-        cout << "Error: Could not find histogram with ID " << t_ID << endl;
-        return nullptr;
-    } else if( ! result->second ) {
-        cout << "Error: Histogram is null" << endl;
-        return nullptr;
-    }
-
-    return result->second;
-}
-
-template< typename type_ID, typename type_hist >
-THistMap< type_ID, type_hist >* THistReader< type_ID, type_hist >::get_histsMap() const {
-    return new THistMap< type_ID, type_hist >( m_hists );
-}
-
-template< typename type_ID, typename type_hist >
-void THistReader< type_ID, type_hist >::operator=( const THistReader& t_THistReader ) {
-    if( ! t_THistReader.get_histsMap() ) {
-        cout << "Error: THistReader histogram map is null" << endl;
         return;
     }
-
-    m_verbosity = t_THistReader.m_verbosity;
-    m_hists     = *( t_THistReader.get_histsMap() );
-
-    if( m_hists->size() != t_THistReader.get_histsMap()->size() ) {
-        cout << "Error: Not all histograms were copied" << endl;
-    }
-
-    return;
-}
 
 #endif
