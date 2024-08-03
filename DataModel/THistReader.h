@@ -159,6 +159,7 @@ inline void import_TH( vector< void* >& t_exported, TH1D*& t_copy, TString t_nam
     } else {
         name = new TString( t_name );
     }
+    cout << "NAME = " << *name << endl;
     TString*  title  = static_cast< TString* >( t_exported[ 1 ] );
     Int_t*    nxbins = static_cast< Int_t* >( t_exported[ 2 ] );
     Double_t* xlow   = static_cast< Double_t* >( t_exported[ 3 ] );
