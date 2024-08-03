@@ -323,7 +323,7 @@ inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_nam
         goto cleanup;
     }
 
-    if( gDirectory->Get( *name ) ) {
+    if( gROOT->FindObject( *name ) ) {
         if( t_verbosity >= 1 )
             cout << "Warning: Object with the name `" << *name << "` already exists. Setting name to `" << *name << "_copy`" << endl;
         *name += "_copy";
