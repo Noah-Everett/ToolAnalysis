@@ -47,17 +47,17 @@ void DetectorResponsePredictor::reset_members()
     delete m_hist_dEdX_MRDiron                ;
 }
 
-bool DetectorResponsePredictor::load_hists_emission(       THistMap< int, TH2D >* t_hists_energies      ,
-                                                           THistMap< int, TH2D >* t_hists_counts        ,
-                                                     const vector  < string    >& t_hists_energies_paths, 
-                                                     const vector  < string    >& t_hists_counts_paths  , 
-                                                     const vector  < string    >& t_hists_energies_names,
-                                                     const vector  < string    >& t_hists_counts_names  ,
-                                                     const vector  < int       >& t_hists_IDs           ,
-                                                           double               & t_binWidth_s          ,
-                                                           double               & t_binWidth_theta      ,
-                                                           double               & t_binWidth_phi        ,
-                                                     const string               & t_hists_material       ) {
+bool DetectorResponsePredictor::load_hists_emission(       THistMap< int, TH2D >*& t_hists_energies      ,
+                                                           THistMap< int, TH2D >*& t_hists_counts        ,
+                                                     const vector  < string    > & t_hists_energies_paths, 
+                                                     const vector  < string    > & t_hists_counts_paths  , 
+                                                     const vector  < string    > & t_hists_energies_names,
+                                                     const vector  < string    > & t_hists_counts_names  ,
+                                                     const vector  < int       > & t_hists_IDs           ,
+                                                           double                & t_binWidth_s          ,
+                                                           double                & t_binWidth_theta      ,
+                                                           double                & t_binWidth_phi        ,
+                                                     const string                & t_hists_material       ) {
     LogD( "Loading emission histograms.", m_verbosity_debug );
     
     // Check IDs are strictly increasing
@@ -225,9 +225,9 @@ bool DetectorResponsePredictor::load_hists_emission_MRDsci( const vector< string
 }
 
 template< typename type_hist >
-bool DetectorResponsePredictor::load_hist( const type_hist*  m_hist    ,
-                                           const string   & t_hist_path,
-                                           const string   & t_hist_name ) {
+bool DetectorResponsePredictor::load_hist( const type_hist*&  m_hist    ,
+                                           const string    & t_hist_path,
+                                           const string    & t_hist_name ) {
     LogD( "    Loading histogram.", m_verbosity_debug );
     THistReader< bool, type_hist >* histReader{ new THistReader< bool, type_hist >( { t_hist_path }, { 1 }, { t_hist_name }, "", m_verbosity_THistReader ) };
     m_hist = histReader->get_histsMap()->at( true );
@@ -297,9 +297,9 @@ pair< int, int > DetectorResponsePredictor::get_closestEmissionHists( const THis
 }
 
 double DetectorResponsePredictor::eval_hists_emission_values( const THistMap< int, TH2D >* t_hists_emission,
-                                                              const double                  t_initialEnergy ,
-                                                              const double                  t_trackLength   ,
-                                                              const double                  t_photonAngle    ) const {
+                                                              const double                 t_initialEnergy ,
+                                                              const double                 t_trackLength   ,
+                                                              const double                 t_photonAngle    ) const {
     LogD( "    Evaluating emission histograms.", m_verbosity_debug );
     pair< int, int > closestHists{ get_closestEmissionHists( t_hists_emission, t_initialEnergy ) };
 

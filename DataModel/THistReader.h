@@ -46,6 +46,9 @@ class THistMap : public map< type_ID, type_hist* > {
 
         ~THistMap();
 
+        void set_verbosity( unsigned int t_verbosity );
+        unsigned int get_verbosity() const;
+
         void operator=( const THistMap& t_THistMap );
 
     private:
@@ -717,6 +720,16 @@ THistMap< type_ID, type_hist >::~THistMap() {
 }
 
 template< typename type_ID, typename type_hist >
+void THistMap< type_ID, type_hist >::set_verbosity( unsigned int t_verbosity ) {
+    m_verbosity = t_verbosity;
+}
+
+template< typename type_ID, typename type_hist >
+unsigned int THistMap< type_ID, type_hist >::get_verbosity() const {
+    return m_verbosity;
+}
+
+template< typename type_ID, typename type_hist >
 void THistMap< type_ID, type_hist >::operator=( const THistMap& t_THistMap ) {
     m_verbosity = t_THistMap.m_verbosity;
 
@@ -752,6 +765,8 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
                                                 const vector< string >& t_hists_names, const string& t_hists_class,
                                                 unsigned int t_verbosity )
     : m_verbosity{ t_verbosity } {
+    m_hists.set_verbosity( m_verbosity );
+
     if( m_verbosity >= m_verbosity_debug ) {
         cout << "THistReader: Loading histograms" << endl;
     }
