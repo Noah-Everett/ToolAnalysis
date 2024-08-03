@@ -395,7 +395,9 @@ inline TH3D* copy_TH( const TH3D* t_original ) {
 template< typename type_hist, typename type_property >
 bool check_property( const type_hist* t_0, const type_hist* t_1, const char* ( type_property::*t_property )() const,
                      TString t_property_name, TString t_properties_ignore = "" ) {
-    if( ! t_properties_ignore.ToLower.Contains( t_property_name.ToLower() ) && ( t_0->*t_property )() != ( t_1->*t_property )() ) {
+    t_property_name.ToLower();
+    t_property_ignore.ToLower();
+    if( ! t_properties_ignore.Contains( t_property_name ) && ( t_0->*t_property )() != ( t_1->*t_property )() ) {
         cout << "Error: Histogram property `" << t_property_name << "` does not match:\n"
              << "  original = " << ( t_0->*t_property )() << "\n"
              << "  copy     = " << ( t_1->*t_property )() << endl;
@@ -408,7 +410,9 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, const char* ( t
 template< typename type_hist, typename type_property >
 bool check_property( const type_hist* t_0, const type_hist* t_1, Int_t ( type_property::*t_property )() const, TString t_property_name,
                      TString t_properties_ignore = "" ) {
-    if( ! t_properties_ignore.ToLower.Contains( t_property_name.ToLower ) && ( t_0->*t_property )() != ( t_1->*t_property )() ) {
+    t_property_name.ToLower();
+    t_properties_ignore.ToLower();
+    if( ! t_properties_ignore.Contains( t_property_name ) && ( t_0->*t_property )() != ( t_1->*t_property )() ) {
         cout << "Error: Histogram property `" << t_property_name << "` does not match:\n"
              << "  original = " << ( t_0->*t_property )() << "\n"
              << "  copy     = " << ( t_1->*t_property )() << endl;
@@ -421,7 +425,9 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, Int_t ( type_pr
 template< typename type_hist, typename type_property >
 bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_property::*t_property )() const, TString t_property_name,
                      TString t_properties_ignore = "", Double_t t_tolerance = 1e-6 ) {
-    if( ! t_properties_ignore.ToLower.Contains( t_property_name.ToLower ) &&
+    t_property_name.ToLower();
+    t_properties_ignore.ToLower();
+    if( ! t_properties_ignore.Contains( t_property_name ) &&
         abs( ( t_0->*t_property )() - ( t_1->*t_property )() ) > t_tolerance ) {
         cout << "Error: Histogram property `" << t_property_name << "` does not match:\n"
              << "  original = " << ( t_0->*t_property )() << "\n"
@@ -435,7 +441,9 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type
 template< typename type_hist, typename type_property >
 bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_property::*t_property )( Int_t ) const, Int_t t_bin,
                      TString t_property_name, TString t_properties_ignore = "", Double_t t_tolerance = 1e-6 ) {
-    if( ! t_properties_ignore.ToLower.Contains( t_property_name.ToLower ) &&
+    t_property_name.ToLower();
+    t_properties_ignore.ToLower();
+    if( ! t_properties_ignore.Contains( t_property_name ) &&
         abs( ( t_0->*t_property )( t_bin ) - ( t_1->*t_property )( t_bin ) ) > t_tolerance ) {
         cout << "Error: Histogram property `" << t_property_name << "` does not match:\n"
              << "  original = " << ( t_0->*t_property )( t_bin ) << "\n"
@@ -450,7 +458,9 @@ template< typename type_hist, typename type_property >
 bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_property::*t_property )( Int_t, Int_t ) const,
                      Int_t t_bin_0, Int_t t_bin_1, TString t_property_name, TString t_properties_ignore = "",
                      Double_t t_tolerance = 1e-6 ) {
-    if( ! t_properties_ignore.ToLower.Contains( t_property_name.ToLower ) &&
+    t_property_name.ToLower();
+    t_properties_ignore.ToLower();
+    if( ! t_properties_ignore.Contains( t_property_name ) &&
         abs( ( t_0->*t_property )( t_bin_0, t_bin_1 ) - ( t_1->*t_property )( t_bin_0, t_bin_1 ) ) > t_tolerance ) {
         cout << "Error: Histogram property `" << t_property_name << "` does not match:\n"
              << "  original = " << ( t_0->*t_property )( t_bin_0, t_bin_1 ) << "\n"
@@ -465,7 +475,9 @@ template< typename type_hist, typename type_property >
 bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_property::*t_property )( Int_t, Int_t, Int_t ) const,
                      Int_t t_bin_0, Int_t t_bin_1, Int_t t_bin_2, TString t_property_name, TString t_properties_ignore = "",
                      Double_t t_tolerance = 1e-6 ) {
-    if( ! t_properties_ignore.ToLower.Contains( t_property_name.ToLower ) &&
+    t_property_name.ToLower();
+    t_properties_ignore.ToLower();
+    if( ! t_properties_ignore.Contains( t_property_name ) &&
         abs( ( t_0->*t_property )( t_bin_0, t_bin_1, t_bin_2 ) - ( t_1->*t_property )( t_bin_0, t_bin_1, t_bin_2 ) ) > t_tolerance ) {
         cout << "Error: Histogram property `" << t_property_name << "` does not match:\n"
              << "  original = " << ( t_0->*t_property )( t_bin_0, t_bin_1, t_bin_2 ) << "\n"
