@@ -397,7 +397,7 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, const char* ( t
                      TString t_property_name, TString t_properties_ignore = "" ) {
     t_property_name.ToLower();
     t_properties_ignore.ToLower();
-    if( ! t_properties_ignore.Contains( t_property_name ) && ( t_0->*t_property )() != ( t_1->*t_property )() ) {
+    if( ! t_properties_ignore.Contains( t_property_name ) && strcmp( ( t_0->*t_property )(), ( t_1->*t_property )() ) ) {
         cout << "Error: Histogram property `" << t_property_name << "` does not match:\n"
              << "  original = " << ( t_0->*t_property )() << "\n"
              << "  copy     = " << ( t_1->*t_property )() << endl;
