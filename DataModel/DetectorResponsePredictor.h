@@ -248,7 +248,7 @@ protected:
     /**/                                 double                & t_binWidth_phi        ,
     /**/                           const string                & t_hists_material       );
     /**/ template< typename type_hist >
-    /**/ bool load_hist          ( const type_hist           *& t_hist                ,
+    /**/ bool load_hist          (       type_hist           *& t_hist                ,
     /**/                           const string               & t_hist_path           ,
     /**/                           const string               & t_hist_name            );
     /**/

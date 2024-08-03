@@ -225,7 +225,7 @@ bool DetectorResponsePredictor::load_hists_emission_MRDsci( const vector< string
 }
 
 template< typename type_hist >
-bool DetectorResponsePredictor::load_hist( const type_hist*&  m_hist    ,
+bool DetectorResponsePredictor::load_hist(       type_hist*&  m_hist    ,
                                            const string    & t_hist_path,
                                            const string    & t_hist_name ) {
     LogD( "    Loading histogram.", m_verbosity_debug );
