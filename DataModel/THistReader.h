@@ -489,6 +489,8 @@ inline bool check_copy( const TH1D* t_original, const TH1D* t_copy, TString t_pr
     value &= check_property( t_original->GetXaxis(), t_copy->GetXaxis(), &TAxis::GetXmax, "Xmax", t_properties_ignore );
 
     for( Int_t i = 1; i <= t_original->GetNbinsX(); ++i ) {
+        if( ! value )
+            break;
         value &= check_property( t_original, t_copy, &TH1D::GetBinContent, i, "BinContent", t_properties_ignore );
         value &= check_property( t_original, t_copy, &TH1D::GetBinError, i, "BinError", t_properties_ignore );
     }
@@ -513,6 +515,8 @@ inline bool check_copy( const TH2D* t_original, const TH2D* t_copy, TString t_pr
 
     for( Int_t i = 1; i <= t_original->GetNbinsX(); ++i ) {
         for( Int_t j = 1; j <= t_original->GetNbinsY(); ++j ) {
+            if( ! value )
+                break;
             value &= check_property( t_original, t_copy, &TH2D::GetBinContent, i, j, "BinContent", t_properties_ignore );
             value &= check_property( t_original, t_copy, &TH2D::GetBinError, i, j, "BinError", t_properties_ignore );
         }
@@ -542,6 +546,8 @@ inline bool check_copy( const TH3D* t_original, const TH3D* t_copy, TString t_pr
     for( Int_t i = 1; i <= t_original->GetNbinsX(); ++i ) {
         for( Int_t j = 1; j <= t_original->GetNbinsY(); ++j ) {
             for( Int_t k = 1; k <= t_original->GetNbinsZ(); ++k ) {
+                if( ! value )
+                    break;
                 value &= check_property( t_original, t_copy, &TH3D::GetBinContent, i, j, k, "BinContent", t_properties_ignore );
                 value &= check_property( t_original, t_copy, &TH3D::GetBinError, i, j, k, "BinError", t_properties_ignore );
             }
