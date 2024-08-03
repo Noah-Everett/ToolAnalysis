@@ -245,6 +245,12 @@ inline void import_TH( vector< void* >& t_exported, TH1D*& t_copy, TString t_nam
         goto cleanup;
     }
 
+    // Check if object with the same name already exists
+    if( gDirectory->Get( *name ) && t_verbosity >= 1 ) {
+        cout << "Warning: Object with the name `" << *name << "` already exists. Setting name to `"
+             << *name << "_copy`" << endl;
+        *name += "_copy";
+    }
     t_copy = new TH1D( *name, *title, *nxbins, *xlow, *xhigh );
 
     for( Int_t i = 1; i <= nxbins_val; ++i ) {
