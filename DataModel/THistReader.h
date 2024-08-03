@@ -46,7 +46,7 @@ class THistMap : public map< type_ID, type_hist* > {
 
         ~THistMap();
 
-        void set_verbosity( unsigned int t_verbosity );
+        void         set_verbosity( unsigned int t_verbosity );
         unsigned int get_verbosity() const;
 
         void operator=( const THistMap& t_THistMap );
@@ -246,9 +246,9 @@ inline void import_TH( vector< void* >& t_exported, TH1D*& t_copy, TString t_nam
     }
 
     // Check if object with the same name already exists
-    if( gDirectory->Get( *name ) && t_verbosity >= 1 ) {
-        cout << "Warning: Object with the name `" << *name << "` already exists. Setting name to `"
-             << *name << "_copy`" << endl;
+    if( gDirectory->Get( *name ) ) {
+        if( t_verbosity >= 1 )
+            cout << "Warning: Object with the name `" << *name << "` already exists. Setting name to `" << *name << "_copy`" << endl;
         *name += "_copy";
     }
     t_copy = new TH1D( *name, *title, *nxbins, *xlow, *xhigh );
@@ -452,14 +452,14 @@ inline TH1D* copy_TH( const TH1D* t_original, unsigned int t_verbosity = 0 ) {
         return nullptr;
     }
 
-    vector< void* > exported = export_TH( t_original );
+    vector< void* > exported = export_TH( t_original, t_verbosity );
     if( exported.empty() ) {
         cout << "Error: Could not export histogram" << endl;
         return nullptr;
     }
 
     TH1D* t_copy = nullptr;
-    import_TH( exported, t_copy );
+    import_TH( exported, t_copy, "", t_verbosity );
     if( ! t_copy ) {
         cout << "Error: Could not copy histogram" << endl;
         return nullptr;
@@ -478,14 +478,14 @@ inline TH2D* copy_TH( const TH2D* t_original, unsigned int t_verbosity = 0 ) {
         return nullptr;
     }
 
-    vector< void* > exported = export_TH( t_original );
+    vector< void* > exported = export_TH( t_original, t_verbosity );
     if( exported.empty() ) {
         cout << "Error: Could not export histogram" << endl;
         return nullptr;
     }
 
     TH2D* t_copy = nullptr;
-    import_TH( exported, t_copy );
+    import_TH( exported, t_copy, "", t_verbosity );
     if( ! t_copy ) {
         cout << "Error: Could not copy histogram" << endl;
         return nullptr;
@@ -504,14 +504,14 @@ inline TH3D* copy_TH( const TH3D* t_original, unsigned int t_verbosity = 0 ) {
         return nullptr;
     }
 
-    vector< void* > exported = export_TH( t_original );
+    vector< void* > exported = export_TH( t_original, t_verbosity );
     if( exported.empty() ) {
         cout << "Error: Could not export histogram" << endl;
         return nullptr;
     }
 
     TH3D* t_copy = nullptr;
-    import_TH( exported, t_copy );
+    import_TH( exported, t_copy, "", t_verbosity );
     if( ! t_copy ) {
         cout << "Error: Could not copy histogram" << endl;
         return nullptr;
