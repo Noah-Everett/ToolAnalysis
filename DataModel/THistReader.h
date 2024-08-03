@@ -428,8 +428,7 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type
                      TString t_properties_ignore = "", Double_t t_tolerance = 1e-6 ) {
     t_property_name.ToLower();
     t_properties_ignore.ToLower();
-    if( ! t_properties_ignore.Contains( t_property_name ) &&
-        abs( ( t_0->*t_property )() - ( t_1->*t_property )() ) > t_tolerance ) {
+    if( ! t_properties_ignore.Contains( t_property_name ) && abs( ( t_0->*t_property )() - ( t_1->*t_property )() ) > t_tolerance ) {
         cout << "Error: Histogram property `" << t_property_name << "` does not match:\n"
              << "  original = " << ( t_0->*t_property )() << "\n"
              << "  copy     = " << ( t_1->*t_property )() << endl;
@@ -665,8 +664,9 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
             delete temp2;
             return;
         }
-        delete temp2;
 
+        delete temp;
+        delete temp2;
         file.Close();
 
         import_TH( exported, entry.second, t_hists_names[ i ] + "@" + to_string( t_hists_IDs[ i ] ) );
@@ -680,8 +680,6 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
         if( ! result.second ) {
             cout << "Error: Could not insert histogram into map" << endl;
         }
-
-        delete temp;
     }
 
     if( m_hists.size() != t_hists_paths.size() ) {
