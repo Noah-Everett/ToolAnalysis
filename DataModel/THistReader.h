@@ -394,8 +394,8 @@ inline TH3D* copy_TH( const TH3D* t_original ) {
 
 template< typename type_hist, typename type_property >
 bool check_property( const type_hist* t_0, const type_hist* t_1, const char* ( type_property::*t_property )() const,
-                     TString t_property_name ) {
-    if( ( t_0->*t_property )() != ( t_1->*t_property )() ) {
+                     TString t_property_name, TString t_properties_ignore = "" ) {
+    if( ! t_properties_ignore.Contains( t_property_name ) || ( t_0->*t_property )() != ( t_1->*t_property )() ) {
         cout << "Error: Histogram property `" << t_property_name << "` does not match" << endl;
         return false;
     }
@@ -404,8 +404,9 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, const char* ( t
 }
 
 template< typename type_hist, typename type_property >
-bool check_property( const type_hist* t_0, const type_hist* t_1, Int_t ( type_property::*t_property )() const, TString t_property_name ) {
-    if( ( t_0->*t_property )() != ( t_1->*t_property )() ) {
+bool check_property( const type_hist* t_0, const type_hist* t_1, Int_t ( type_property::*t_property )() const, TString t_property_name,
+                     TString t_properties_ignore = "" ) {
+    if( ! t_properties_ignore.Contains( t_property_name ) || ( t_0->*t_property )() != ( t_1->*t_property )() ) {
         cout << "Error: Histogram property `" << t_property_name << "` does not match" << endl;
         return false;
     }
@@ -415,8 +416,8 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, Int_t ( type_pr
 
 template< typename type_hist, typename type_property >
 bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_property::*t_property )() const, TString t_property_name,
-                     Double_t t_tolerance = 1e-6 ) {
-    if( abs( ( t_0->*t_property )() - ( t_1->*t_property )() ) > t_tolerance ) {
+                     TString t_properties_ignore = "", Double_t t_tolerance = 1e-6 ) {
+    if( ! t_properties_ignore.Contains( t_property_name ) || abs( ( t_0->*t_property )() - ( t_1->*t_property )() ) > t_tolerance ) {
         cout << "Error: Histogram property `" << t_property_name << "` does not match" << endl;
         return false;
     }
@@ -426,8 +427,9 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type
 
 template< typename type_hist, typename type_property >
 bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_property::*t_property )( Int_t ) const, Int_t t_bin,
-                     TString t_property_name, Double_t t_tolerance = 1e-6 ) {
-    if( abs( ( t_0->*t_property )( t_bin ) - ( t_1->*t_property )( t_bin ) ) > t_tolerance ) {
+                     TString t_property_name, TString t_properties_ignore = "", Double_t t_tolerance = 1e-6 ) {
+    if( ! t_properties_ignore.Contains( t_property_name ) ||
+        abs( ( t_0->*t_property )( t_bin ) - ( t_1->*t_property )( t_bin ) ) > t_tolerance ) {
         cout << "Error: Histogram property `" << t_property_name << "` does not match" << endl;
         return false;
     }
@@ -437,8 +439,10 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type
 
 template< typename type_hist, typename type_property >
 bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_property::*t_property )( Int_t, Int_t ) const,
-                     Int_t t_bin_0, Int_t t_bin_1, TString t_property_name, Double_t t_tolerance = 1e-6 ) {
-    if( abs( ( t_0->*t_property )( t_bin_0, t_bin_1 ) - ( t_1->*t_property )( t_bin_0, t_bin_1 ) ) > t_tolerance ) {
+                     Int_t t_bin_0, Int_t t_bin_1, TString t_property_name, TString t_properties_ignore = "",
+                     Double_t t_tolerance = 1e-6 ) {
+    if( ! t_properties_ignore.Contains( t_property_name ) ||
+        abs( ( t_0->*t_property )( t_bin_0, t_bin_1 ) - ( t_1->*t_property )( t_bin_0, t_bin_1 ) ) > t_tolerance ) {
         cout << "Error: Histogram property `" << t_property_name << "` does not match" << endl;
         return false;
     }
@@ -448,8 +452,10 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type
 
 template< typename type_hist, typename type_property >
 bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_property::*t_property )( Int_t, Int_t, Int_t ) const,
-                     Int_t t_bin_0, Int_t t_bin_1, Int_t t_bin_2, TString t_property_name, Double_t t_tolerance = 1e-6 ) {
-    if( abs( ( t_0->*t_property )( t_bin_0, t_bin_1, t_bin_2 ) - ( t_1->*t_property )( t_bin_0, t_bin_1, t_bin_2 ) ) > t_tolerance ) {
+                     Int_t t_bin_0, Int_t t_bin_1, Int_t t_bin_2, TString t_property_name, TString t_properties_ignore = "",
+                     Double_t t_tolerance = 1e-6 ) {
+    if( ! t_properties_ignore.Contains( t_property_name ) ||
+        abs( ( t_0->*t_property )( t_bin_0, t_bin_1, t_bin_2 ) - ( t_1->*t_property )( t_bin_0, t_bin_1, t_bin_2 ) ) > t_tolerance ) {
         cout << "Error: Histogram property `" << t_property_name << "` does not match" << endl;
         return false;
     }
@@ -470,74 +476,74 @@ bool check_null( const type_hist* t_0, const type_hist* t_1 ) {
     return true;
 }
 
-inline bool check_copy( const TH1D* t_original, const TH1D* t_copy ) {
+inline bool check_copy( const TH1D* t_original, const TH1D* t_copy, TString t_properties_ignore = "" ) {
     if( ! check_null( t_original, t_copy ) ) return false;
 
     bool value = true;
 
-    value &= check_property( t_original, t_copy, &TH1D::GetName, "Name" );
-    value &= check_property( t_original, t_copy, &TH1D::GetTitle, "Title" );
-    value &= check_property( t_original, t_copy, &TH1D::GetNbinsX, "NbinsX" );
+    value &= check_property( t_original, t_copy, &TH1D::GetName, "Name", t_properties_ignore );
+    value &= check_property( t_original, t_copy, &TH1D::GetTitle, "Title", t_properties_ignore );
+    value &= check_property( t_original, t_copy, &TH1D::GetNbinsX, "NbinsX", t_properties_ignore );
 
-    value &= check_property( t_original->GetXaxis(), t_copy->GetXaxis(), &TAxis::GetXmin, "Xmin" );
-    value &= check_property( t_original->GetXaxis(), t_copy->GetXaxis(), &TAxis::GetXmax, "Xmax" );
+    value &= check_property( t_original->GetXaxis(), t_copy->GetXaxis(), &TAxis::GetXmin, "Xmin", t_properties_ignore );
+    value &= check_property( t_original->GetXaxis(), t_copy->GetXaxis(), &TAxis::GetXmax, "Xmax", t_properties_ignore );
 
     for( Int_t i = 1; i <= t_original->GetNbinsX(); ++i ) {
-        value &= check_property( t_original, t_copy, &TH1D::GetBinContent, i, "BinContent" );
-        value &= check_property( t_original, t_copy, &TH1D::GetBinError, i, "BinError" );
+        value &= check_property( t_original, t_copy, &TH1D::GetBinContent, i, "BinContent", t_properties_ignore );
+        value &= check_property( t_original, t_copy, &TH1D::GetBinError, i, "BinError", t_properties_ignore );
     }
 
     return value;
 }
 
-inline bool check_copy( const TH2D* t_original, const TH2D* t_copy ) {
+inline bool check_copy( const TH2D* t_original, const TH2D* t_copy, TString t_properties_ignore = "" ) {
     if( ! check_null( t_original, t_copy ) ) return false;
 
     bool value = true;
 
-    value &= check_property( t_original, t_copy, &TH2D::GetName, "Name" );
-    value &= check_property( t_original, t_copy, &TH2D::GetTitle, "Title" );
-    value &= check_property( t_original, t_copy, &TH2D::GetNbinsX, "NbinsX" );
-    value &= check_property( t_original, t_copy, &TH2D::GetNbinsY, "NbinsY" );
+    value &= check_property( t_original, t_copy, &TH2D::GetName, "Name", t_properties_ignore );
+    value &= check_property( t_original, t_copy, &TH2D::GetTitle, "Title", t_properties_ignore );
+    value &= check_property( t_original, t_copy, &TH2D::GetNbinsX, "NbinsX", t_properties_ignore );
+    value &= check_property( t_original, t_copy, &TH2D::GetNbinsY, "NbinsY", t_properties_ignore );
 
-    value &= check_property( t_original->GetXaxis(), t_copy->GetXaxis(), &TAxis::GetXmin, "Xmin" );
-    value &= check_property( t_original->GetXaxis(), t_copy->GetXaxis(), &TAxis::GetXmax, "Xmax" );
-    value &= check_property( t_original->GetYaxis(), t_copy->GetYaxis(), &TAxis::GetXmin, "Ymin" );
-    value &= check_property( t_original->GetYaxis(), t_copy->GetYaxis(), &TAxis::GetXmax, "Ymax" );
+    value &= check_property( t_original->GetXaxis(), t_copy->GetXaxis(), &TAxis::GetXmin, "Xmin", t_properties_ignore );
+    value &= check_property( t_original->GetXaxis(), t_copy->GetXaxis(), &TAxis::GetXmax, "Xmax", t_properties_ignore );
+    value &= check_property( t_original->GetYaxis(), t_copy->GetYaxis(), &TAxis::GetXmin, "Ymin", t_properties_ignore );
+    value &= check_property( t_original->GetYaxis(), t_copy->GetYaxis(), &TAxis::GetXmax, "Ymax", t_properties_ignore );
 
     for( Int_t i = 1; i <= t_original->GetNbinsX(); ++i ) {
         for( Int_t j = 1; j <= t_original->GetNbinsY(); ++j ) {
-            value &= check_property( t_original, t_copy, &TH2D::GetBinContent, i, j, "BinContent" );
-            value &= check_property( t_original, t_copy, &TH2D::GetBinError, i, j, "BinError" );
+            value &= check_property( t_original, t_copy, &TH2D::GetBinContent, i, j, "BinContent", t_properties_ignore );
+            value &= check_property( t_original, t_copy, &TH2D::GetBinError, i, j, "BinError", t_properties_ignore );
         }
     }
 
     return value;
 }
 
-inline bool check_copy( const TH3D* t_original, const TH3D* t_copy ) {
+inline bool check_copy( const TH3D* t_original, const TH3D* t_copy, TString t_properties_ignore = "" ) {
     if( ! check_null( t_original, t_copy ) ) return false;
 
     bool value = true;
 
-    value &= check_property( t_original, t_copy, &TH3D::GetName, "Name" );
-    value &= check_property( t_original, t_copy, &TH3D::GetTitle, "Title" );
-    value &= check_property( t_original, t_copy, &TH3D::GetNbinsX, "NbinsX" );
-    value &= check_property( t_original, t_copy, &TH3D::GetNbinsY, "NbinsY" );
-    value &= check_property( t_original, t_copy, &TH3D::GetNbinsZ, "NbinsZ" );
+    value &= check_property( t_original, t_copy, &TH3D::GetName, "Name", t_properties_ignore );
+    value &= check_property( t_original, t_copy, &TH3D::GetTitle, "Title", t_properties_ignore );
+    value &= check_property( t_original, t_copy, &TH3D::GetNbinsX, "NbinsX", t_properties_ignore );
+    value &= check_property( t_original, t_copy, &TH3D::GetNbinsY, "NbinsY", t_properties_ignore );
+    value &= check_property( t_original, t_copy, &TH3D::GetNbinsZ, "NbinsZ", t_properties_ignore );
 
-    value &= check_property( t_original->GetXaxis(), t_copy->GetXaxis(), &TAxis::GetXmin, "Xmin" );
-    value &= check_property( t_original->GetXaxis(), t_copy->GetXaxis(), &TAxis::GetXmax, "Xmax" );
-    value &= check_property( t_original->GetYaxis(), t_copy->GetYaxis(), &TAxis::GetXmin, "Ymin" );
-    value &= check_property( t_original->GetYaxis(), t_copy->GetYaxis(), &TAxis::GetXmax, "Ymax" );
-    value &= check_property( t_original->GetZaxis(), t_copy->GetZaxis(), &TAxis::GetXmin, "Zmin" );
-    value &= check_property( t_original->GetZaxis(), t_copy->GetZaxis(), &TAxis::GetXmax, "Zmax" );
+    value &= check_property( t_original->GetXaxis(), t_copy->GetXaxis(), &TAxis::GetXmin, "Xmin", t_properties_ignore );
+    value &= check_property( t_original->GetXaxis(), t_copy->GetXaxis(), &TAxis::GetXmax, "Xmax", t_properties_ignore );
+    value &= check_property( t_original->GetYaxis(), t_copy->GetYaxis(), &TAxis::GetXmin, "Ymin", t_properties_ignore );
+    value &= check_property( t_original->GetYaxis(), t_copy->GetYaxis(), &TAxis::GetXmax, "Ymax", t_properties_ignore );
+    value &= check_property( t_original->GetZaxis(), t_copy->GetZaxis(), &TAxis::GetXmin, "Zmin", t_properties_ignore );
+    value &= check_property( t_original->GetZaxis(), t_copy->GetZaxis(), &TAxis::GetXmax, "Zmax", t_properties_ignore );
 
     for( Int_t i = 1; i <= t_original->GetNbinsX(); ++i ) {
         for( Int_t j = 1; j <= t_original->GetNbinsY(); ++j ) {
             for( Int_t k = 1; k <= t_original->GetNbinsZ(); ++k ) {
-                value &= check_property( t_original, t_copy, &TH3D::GetBinContent, i, j, k, "BinContent" );
-                value &= check_property( t_original, t_copy, &TH3D::GetBinError, i, j, k, "BinError" );
+                value &= check_property( t_original, t_copy, &TH3D::GetBinContent, i, j, k, "BinContent", t_properties_ignore );
+                value &= check_property( t_original, t_copy, &TH3D::GetBinError, i, j, k, "BinError", t_properties_ignore );
             }
         }
     }
@@ -624,7 +630,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
         }
         type_hist* temp2{ nullptr };
         import_TH( exported, temp2, "TEST" );
-        if( ! check_copy( temp, temp2 ) ) {
+        if( ! check_copy( temp, temp2, "NAME" ) ) {
             cout << "Error: Copied histogram does not match original" << endl;
             delete temp;
             delete temp2;
