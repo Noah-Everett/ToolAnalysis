@@ -81,6 +81,9 @@ public:
     /**/ void         set_verbosity( unsigned int t_verbosity ) { m_verbosity = t_verbosity; }
     /**/ unsigned int get_verbosity() const                     { return m_verbosity;        }
     /**/
+    /**/ void         set_verbosity_THistReader( unsigned int t_verbosity ) { m_verbosity_THistReader = t_verbosity; }
+    /**/ unsigned int get_verbosity_THistReader() const                     { return m_verbosity_THistReader;        }
+    /**/
     /**/ void reset_members();
     /**/
     /**/////////////////////////
@@ -185,9 +188,10 @@ protected:
     /**/// Settings ///
     /**////////////////
     /**/
-    /**/ unsigned int m_verbosity      { m_verbosity_warning };
-    /**/ double       m_PMTdiameter    { 8 * 0.0254          };
-    /**/ double       m_LAPPDsideLength{ 20 * 0.01           };
+    /**/ unsigned int m_verbosity            { m_verbosity_warning };
+    /**/ unsigned int m_verbosity_THistReader{ m_verbosity_warning };
+    /**/ double       m_PMTdiameter          { 8 * 0.0254          }; // 8 inches in meters
+    /**/ double       m_LAPPDsideLength      { 20 * 0.01           }; // 20 cm in meters
     /**/
     /**////////////////
 

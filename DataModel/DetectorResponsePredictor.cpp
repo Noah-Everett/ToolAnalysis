@@ -88,7 +88,7 @@ bool DetectorResponsePredictor::load_hists_emission(       THistMap< int, TH2D >
     }
 
     // Load energy hist map
-    THistReader< int, TH2D >* histReader{ new THistReader< int, TH2D >( t_hists_energies_paths, t_hists_IDs, t_hists_energies_names ) };
+    THistReader< int, TH2D >* histReader{ new THistReader< int, TH2D >( t_hists_energies_paths, t_hists_IDs, t_hists_energies_names, m_verbosity_THistReader ) };
     if( t_hists_energies ) delete t_hists_energies;
     t_hists_energies = histReader->get_histsMap();
     delete histReader;
@@ -104,7 +104,7 @@ bool DetectorResponsePredictor::load_hists_emission(       THistMap< int, TH2D >
     }
     
     // Load counts hist map
-    histReader = new THistReader< int, TH2D >( t_hists_counts_paths, t_hists_IDs, t_hists_counts_names );
+    histReader = new THistReader< int, TH2D >( t_hists_counts_paths, t_hists_IDs, t_hists_counts_names, m_verbosity_THistReader );
     if( t_hists_counts ) delete t_hists_counts;
     t_hists_counts = histReader->get_histsMap();
     delete histReader;
@@ -226,7 +226,7 @@ bool DetectorResponsePredictor::load_hist( const type_hist*  m_hist    ,
                                            const string   & t_hist_path,
                                            const string   & t_hist_name ) {
     LogD( "    Loading histogram.", m_verbosity_debug );
-    THistReader< bool, type_hist >* histReader{ new THistReader< bool, type_hist >( { t_hist_path }, { 1 }, { t_hist_name } ) };
+    THistReader< bool, type_hist >* histReader{ new THistReader< bool, type_hist >( { t_hist_path }, { 1 }, { t_hist_name }, m_verbosity_THistReader ) };
     m_hist = histReader->get_histsMap()->at( true );
     if( histReader ) {
         delete histReader;

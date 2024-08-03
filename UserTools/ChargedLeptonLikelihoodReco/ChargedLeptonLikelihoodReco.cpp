@@ -22,6 +22,7 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
     // Load variables from config file
     if( !get_config_verbosity  ( "verbosity_ChargedLeptonLikelihoodReco"    , m_verbosity_ChargedLeptonLikelihoodReco     ) ) return false;
     if( !get_config_verbosity  ( "verbosity_DetectorResponsePredictor"      , m_verbosity_DetectorResponsePredictor       ) ) return false;
+    if( !get_config_verbosity  ( "verbosity_THistReader"                    , m_verbosity_THistReader                     ) ) return false;
                                                                                                                                            
     if( !get_config_path       ( "hists_emission_mu_tankWater_energies_path", m_hists_emission_mu_tankWater_energies_path ) ) return false;
     if( !get_config_path       ( "hists_emission_e_tankWater_energies_path" , m_hists_emission_e_tankWater_energies_path  ) ) return false;
@@ -112,6 +113,7 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
     for( unsigned int nParticle{ 0 }; nParticle < num_particles; nParticle++ ) {
         LogD( "Setting verbosity for DetectorResponsePredictor (nParticle=" + to_string( nParticle ) + ").", m_verbosity_debug );
         DetectorResponsePredictors[ nParticle ]->set_verbosity( m_verbosity_DetectorResponsePredictor );
+        DetectorResponsePredictors[ nParticle ]->set_verbosity_THistReader( m_verbosity_THistReader );
     }
 
     unsigned int     hists_emission_energy_cur        ;

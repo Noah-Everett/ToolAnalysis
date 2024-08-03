@@ -41,18 +41,22 @@ using std::vector;
 template< typename type_ID, typename type_hist >
 class THistMap : public map< type_ID, type_hist* > {
     public:
-        THistMap();
+        THistMap( unsigned int t_verbosity = 1 );
         THistMap( const THistMap& t_THistMap );
 
         ~THistMap();
 
         void operator=( const THistMap& t_THistMap );
+
+    private:
+        unsigned int m_verbosity;
 };
 
 template< typename type_ID, typename type_hist >
 class THistReader {
     public:
-        THistReader( const vector< string >& t_hists_paths, const vector< type_ID >& t_hists_IDs, const vector< string >& t_hists_names );
+        THistReader( const vector< string >& t_hists_paths, const vector< type_ID >& t_hists_IDs, const vector< string >& t_hists_names,
+                     unsigned int t_verbosity = 1 );
 
         THistReader( const THistReader& t_THistReader );
 
@@ -65,11 +69,24 @@ class THistReader {
 
     private:
         THistMap< type_ID, type_hist > m_hists;
+
+        unsigned int m_verbosity;
+
+        enum m_verbosity_enum
+        {
+            m_verbosity_error   = 0,
+            m_verbosity_warning = 1,
+            m_verbosity_message = 2,
+            m_verbosity_debug   = 3
+        };
 };
 
-inline vector< void* > export_TH( const TH1D* t_original ) {
+inline vector< void* > export_TH( const TH1D* t_original, unsigned int t_verbosity = 0 ) {
+    if( t_verbsoity >= 3 ) cout << "Exporting TH1D";
+
     if( ! t_original ) {
-        cout << "Error: Original histogram is null" << endl;
+        cout << "...\n"
+             << "Error: Original histogram is null" << endl;
         return {};
     }
 
@@ -80,6 +97,14 @@ inline vector< void* > export_TH( const TH1D* t_original ) {
     exported.push_back( ( void* )( new Double_t( t_original->GetXaxis()->GetXmin() ) ) );
     exported.push_back( ( void* )( new Double_t( t_original->GetXaxis()->GetXmax() ) ) );
 
+    if( t_verbosity >= 3 )
+        cout << " with the properties: {"
+             << "Name = " << t_original->GetName() << ", "
+             << "Title = " << t_original->GetTitle() << ", "
+             << "NbinsX = " << t_original->GetNbinsX() << ", "
+             << "Xmin = " << t_original->GetXaxis()->GetXmin() << ", "
+             << "Xmax = " << t_original->GetXaxis()->GetXmax() << "}" << endl;
+
     for( Int_t i = 1; i <= t_original->GetNbinsX(); ++i ) {
         exported.push_back( ( void* )( new Double_t( t_original->GetBinContent( i ) ) ) );
         exported.push_back( ( void* )( new Double_t( t_original->GetBinError( i ) ) ) );
@@ -88,9 +113,12 @@ inline vector< void* > export_TH( const TH1D* t_original ) {
     return exported;
 }
 
-inline vector< void* > export_TH( const TH2D* t_original ) {
+inline vector< void* > export_TH( const TH2D* t_original, unsigned int t_verbosity = 0 ) {
+    if( t_verbosity >= 3 ) cout << "Exporting TH2D";
+
     if( ! t_original ) {
-        cout << "Error: Original histogram is null" << endl;
+        cout << "...\n"
+             << "Error: Original histogram is null" << endl;
         return {};
     }
 
@@ -104,6 +132,17 @@ inline vector< void* > export_TH( const TH2D* t_original ) {
     exported.push_back( ( void* )( new Double_t( t_original->GetYaxis()->GetXmin() ) ) );
     exported.push_back( ( void* )( new Double_t( t_original->GetYaxis()->GetXmax() ) ) );
 
+    if( t_verbosity >= 3 )
+        cout << " with the properties: {"
+             << "Name = " << t_original->GetName() << ", "
+             << "Title = " << t_original->GetTitle() << ", "
+             << "NbinsX = " << t_original->GetNbinsX() << ", "
+             << "Xmin = " << t_original->GetXaxis()->GetXmin() << ", "
+             << "Xmax = " << t_original->GetXaxis()->GetXmax() << ", "
+             << "NbinsY = " << t_original->GetNbinsY() << ", "
+             << "Ymin = " << t_original->GetYaxis()->GetXmin() << ", "
+             << "Ymax = " << t_original->GetYaxis()->GetXmax() << "}" << endl;
+
     for( Int_t i = 1; i <= t_original->GetNbinsX(); ++i ) {
         for( Int_t j = 1; j <= t_original->GetNbinsY(); ++j ) {
             exported.push_back( ( void* )( new Double_t( t_original->GetBinContent( i, j ) ) ) );
@@ -114,9 +153,12 @@ inline vector< void* > export_TH( const TH2D* t_original ) {
     return exported;
 }
 
-inline vector< void* > export_TH( const TH3D* t_original ) {
+inline vector< void* > export_TH( const TH3D* t_original, unsigned int t_verbosity = 0 ) {
+    if( t_verbosity >= 3 ) cout << "Exporting TH3D";
+
     if( ! t_original ) {
-        cout << "Error: Original histogram is null" << endl;
+        cout << "...\n"
+             << "Error: Original histogram is null" << endl;
         return {};
     }
 
@@ -133,6 +175,20 @@ inline vector< void* > export_TH( const TH3D* t_original ) {
     exported.push_back( ( void* )( new Double_t( t_original->GetZaxis()->GetXmin() ) ) );
     exported.push_back( ( void* )( new Double_t( t_original->GetZaxis()->GetXmax() ) ) );
 
+    if( t_verbosity >= 3 )
+        cout << " with the properties: {"
+             << "Name = " << t_original->GetName() << ", "
+             << "Title = " << t_original->GetTitle() << ", "
+             << "NbinsX = " << t_original->GetNbinsX() << ", "
+             << "Xmin = " << t_original->GetXaxis()->GetXmin() << ", "
+             << "Xmax = " << t_original->GetXaxis()->GetXmax() << ", "
+             << "NbinsY = " << t_original->GetNbinsY() << ", "
+             << "Ymin = " << t_original->GetYaxis()->GetXmin() << ", "
+             << "Ymax = " << t_original->GetYaxis()->GetXmax() << ", "
+             << "NbinsZ = " << t_original->GetNbinsZ() << ", "
+             << "Zmin = " << t_original->GetZaxis()->GetXmin() << ", "
+             << "Zmax = " << t_original->GetZaxis()->GetXmax() << "}" << endl;
+
     for( Int_t i = 1; i <= t_original->GetNbinsX(); ++i ) {
         for( Int_t j = 1; j <= t_original->GetNbinsY(); ++j ) {
             for( Int_t k = 1; k <= t_original->GetNbinsZ(); ++k ) {
@@ -145,9 +201,12 @@ inline vector< void* > export_TH( const TH3D* t_original ) {
     return exported;
 }
 
-inline void import_TH( vector< void* >& t_exported, TH1D*& t_copy, TString t_name = "" ) {
+inline void import_TH( vector< void* >& t_exported, TH1D*& t_copy, TString t_name = "", unsigned int t_verbosity = 0 ) {
+    if( t_verbosity >= 3 ) cout << "Importing TH1D";
+
     if( t_exported.empty() ) {
-        cout << "Error: Exported histogram is empty" << endl;
+        cout << "...\n"
+             << "Error: Exported histogram vector is empty" << endl;
         return;
     }
 
@@ -165,6 +224,18 @@ inline void import_TH( vector< void* >& t_exported, TH1D*& t_copy, TString t_nam
     Double_t* xhigh  = static_cast< Double_t* >( t_exported[ 4 ] );
 
     Int_t nxbins_val = *nxbins;
+
+    if( t_verbosity >= 3 ) {
+        cout << " with the properties: {";
+        if( t_name.EqualTo( "" ) )
+            cout << "Name = " << *name << ", ";
+        else
+            cout << "t_Name = " << t_name << ", " << "Name = " << *name << ", ";
+        cout << "Title = " << *title << ", "
+             << "NbinsX = " << *nxbins << ", "
+             << "Xmin = " << *xlow << ", "
+             << "Xmax = " << *xhigh << "}" << endl;
+    }
 
     if( t_exported.size() != 5 + 2 * nxbins_val ) {
         cout << "Error: Exported histogram does not match expected size" << endl;
@@ -194,9 +265,12 @@ cleanup:
     return;
 }
 
-inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_name = "" ) {
+inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_name = "", unsigned int t_verbosity = 0 ) {
+    if( t_verbosity >= 3 ) cout << "Importing TH2D";
+
     if( t_exported.empty() ) {
-        cout << "Error: Exported histogram is empty" << endl;
+        cout << "...\n"
+             << "Error: Exported histogram vector is empty" << endl;
         return;
     }
 
@@ -209,7 +283,6 @@ inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_nam
         name = new TString( t_name );
     }
 
-    cout << "NAME = " << *name << endl;
     TString*  title  = static_cast< TString* >( t_exported[ 1 ] );
     Int_t*    nxbins = static_cast< Int_t* >( t_exported[ 2 ] );
     Double_t* xlow   = static_cast< Double_t* >( t_exported[ 3 ] );
@@ -220,6 +293,21 @@ inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_nam
 
     Int_t nxbins_val = *nxbins;
     Int_t nybins_val = *nybins;
+
+    if( t_verbosity >= 3 ) {
+        cout << " with the properties: {";
+        if( t_name.EqualTo( "" ) )
+            cout << "Name = " << *name << ", ";
+        else
+            cout << "t_Name = " << t_name << ", " << "Name = " << *name << ", ";
+        cout << "Title = " << *title << ", "
+             << "NbinsX = " << *nxbins << ", "
+             << "Xmin = " << *xlow << ", "
+             << "Xmax = " << *xhigh << ", "
+             << "NbinsY = " << *nybins << ", "
+             << "Ymin = " << *ylow << ", "
+             << "Ymax = " << *yhigh << "}" << endl;
+    }
 
     if( t_exported.size() != 8 + 2 * nxbins_val * nybins_val ) {
         cout << "Error: Exported histogram does not match expected size" << endl;
@@ -256,9 +344,12 @@ cleanup:
     return;
 }
 
-inline void import_TH( vector< void* >& t_exported, TH3D*& t_copy, TString t_name = "" ) {
+inline void import_TH( vector< void* >& t_exported, TH3D*& t_copy, TString t_name = "", unsigned int t_verbosity = 0 ) {
+    if( t_verbosity >= 3 ) cout << "Importing TH3D";
+
     if( t_exported.empty() ) {
-        cout << "Error: Exported histogram is empty" << endl;
+        cout << "...\n"
+             << "Error: Exported histogram vector is empty" << endl;
         return;
     }
 
@@ -286,6 +377,24 @@ inline void import_TH( vector< void* >& t_exported, TH3D*& t_copy, TString t_nam
     Int_t nybins_val = *nybins;
     Int_t nzbins_val = *nzbins;
 
+    if( t_verbosity >= 3 ) {
+        cout << " with the properties: {";
+        if( t_name.EqualTo( "" ) )
+            cout << "Name = " << *name << ", ";
+        else
+            cout << "t_Name = " << t_name << ", " << "Name = " << *name << ", ";
+        cout << "Title = " << *title << ", "
+             << "NbinsX = " << *nxbins << ", "
+             << "Xmin = " << *xlow << ", "
+             << "Xmax = " << *xhigh << ", "
+             << "NbinsY = " << *nybins << ", "
+             << "Ymin = " << *ylow << ", "
+             << "Ymax = " << *yhigh << ", "
+             << "NbinsZ = " << *nzbins << ", "
+             << "Zmin = " << *zlow << ", "
+             << "Zmax = " << *zhigh << "}" << endl;
+    }
+
     if( t_exported.size() != 11 + 2 * nxbins_val * nybins_val * nzbins_val ) {
         cout << "Error: Exported histogram does not match expected size" << endl;
         goto cleanup;
@@ -308,7 +417,6 @@ inline void import_TH( vector< void* >& t_exported, TH3D*& t_copy, TString t_nam
     }
 
 cleanup:
-    cout << __FILE__ << " (" << __FUNCTION__ << "): " << __LINE__ << endl;
     delete name;
     delete title;
     delete nxbins;
@@ -327,7 +435,9 @@ cleanup:
     return;
 }
 
-inline TH1D* copy_TH( const TH1D* t_original ) {
+inline TH1D* copy_TH( const TH1D* t_original, unsigned int t_verbosity = 0 ) {
+    if( t_verbosity >= 3 ) cout << "Copying TH1D...";
+
     if( ! t_original ) {
         cout << "Error: Original histogram is null" << endl;
         return nullptr;
@@ -346,10 +456,14 @@ inline TH1D* copy_TH( const TH1D* t_original ) {
         return nullptr;
     }
 
+    if( t_verbosity >= 3 ) cout << "Done copying TH1D" << endl;
+
     return t_copy;
 }
 
-inline TH2D* copy_TH( const TH2D* t_original ) {
+inline TH2D* copy_TH( const TH2D* t_original, unsigned int t_verbosity = 0 ) {
+    if( t_verbosity >= 3 ) cout << "Copying TH2D...";
+
     if( ! t_original ) {
         cout << "Error: Original histogram is null" << endl;
         return nullptr;
@@ -368,10 +482,14 @@ inline TH2D* copy_TH( const TH2D* t_original ) {
         return nullptr;
     }
 
+    if( t_verbosity >= 3 ) cout << "Done copying TH2D" << endl;
+
     return t_copy;
 }
 
-inline TH3D* copy_TH( const TH3D* t_original ) {
+inline TH3D* copy_TH( const TH3D* t_original, unsigned int t_verbosity = 0 ) {
+    if( t_verbosity >= 3 ) cout << "Copying TH3D...";
+
     if( ! t_original ) {
         cout << "Error: Original histogram is null" << endl;
         return nullptr;
@@ -389,6 +507,8 @@ inline TH3D* copy_TH( const TH3D* t_original ) {
         cout << "Error: Could not copy histogram" << endl;
         return nullptr;
     }
+
+    if( t_verbosity >= 3 ) cout << "Done copying TH3D" << endl;
 
     return t_copy;
 }
@@ -580,7 +700,8 @@ inline bool check_copy( const TH3D* t_original, const TH3D* t_copy, TString t_pr
 }
 
 template< typename type_ID, typename type_hist >
-THistMap< type_ID, type_hist >::THistMap() {
+THistMap< type_ID, type_hist >::THistMap( unsigned int t_verbosity )
+    : m_verbosity{ t_verbosity } {
 }
 
 template< typename type_ID, typename type_hist >
@@ -597,12 +718,14 @@ THistMap< type_ID, type_hist >::~THistMap() {
 
 template< typename type_ID, typename type_hist >
 void THistMap< type_ID, type_hist >::operator=( const THistMap& t_THistMap ) {
+    m_verbosity = t_THistMap.m_verbosity;
+
     for( pair< type_ID, type_hist* > entry : t_THistMap ) {
         if( ! entry.second ) {
             cout << "Error: Histogram is null" << endl;
             continue;
         }
-        type_hist* temp = copy_TH( entry.second );
+        type_hist* temp = copy_TH( entry.second, m_verbosity );
         if( ! temp ) {
             cout << "Error: Could not copy histogram" << endl;
             continue;
@@ -626,7 +749,12 @@ void THistMap< type_ID, type_hist >::operator=( const THistMap& t_THistMap ) {
 
 template< typename type_ID, typename type_hist >
 THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_paths, const vector< type_ID >& t_hists_IDs,
-                                                const vector< string >& t_hists_names ) {
+                                                const vector< string >& t_hists_names, unsigned int t_verbosity )
+    : m_verbosity{ t_verbosity } {
+    if( m_verbosity >= m_verbosity_debug ) {
+        cout << "THistReader: Loading histograms" << endl;
+    }
+
     if( t_hists_paths.size() != t_hists_IDs.size() || t_hists_paths.size() != t_hists_names.size() ) {
         cout << "Error: hists_paths, hists_IDs, and hists_names "
              << "vectors should all be the same length" << endl;
@@ -650,14 +778,14 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
             continue;
         }
 
-        vector< void* > exported{ export_TH( temp ) };
+        vector< void* > exported{ export_TH( temp, m_verbosity ) };
         if( exported.empty() ) {
             cout << "Error: Could not export histogram" << endl;
             delete temp;
             continue;
         }
         type_hist* temp2{ nullptr };
-        import_TH( exported, temp2, "TEST" );
+        import_TH( exported, temp2, "TEST", m_verbosity );
         if( ! check_copy( temp, temp2, "NAME" ) ) {
             cout << "Error: Copied histogram does not match original" << endl;
             delete temp;
@@ -669,7 +797,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
         delete temp2;
         file.Close();
 
-        import_TH( exported, entry.second, t_hists_names[ i ] + "@" + to_string( t_hists_IDs[ i ] ) );
+        import_TH( exported, entry.second, t_hists_names[ i ] + "@" + to_string( t_hists_IDs[ i ] ), m_verbosity );
         if( ! entry.second ) {
             cout << "Error: Could not import histogram" << endl;
             delete temp;
@@ -722,7 +850,8 @@ void THistReader< type_ID, type_hist >::operator=( const THistReader& t_THistRea
         return;
     }
 
-    m_hists = *( t_THistReader.get_histsMap() );
+    m_verbosity = t_THistReader.m_verbosity;
+    m_hists     = *( t_THistReader.get_histsMap() );
 
     if( m_hists->size() != t_THistReader.get_histsMap()->size() ) {
         cout << "Error: Not all histograms were copied" << endl;

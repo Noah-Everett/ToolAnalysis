@@ -64,7 +64,8 @@ private:
     /**///////////////////////////////
     /**/
     /**/ unsigned int m_verbosity_ChargedLeptonLikelihoodReco ;
-    /**/ unsigned int m_verbosity_DetectorResponsePredictor     ;
+    /**/ unsigned int m_verbosity_DetectorResponsePredictor   ;
+    /**/ unsigned int m_verbosity_THistReader                 ;
     /**/
     /**/ string       m_hists_emission_mu_tankWater_energies_path        ;
     /**/ string       m_hists_emission_e_tankWater_energies_path         ;
