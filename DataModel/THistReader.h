@@ -640,7 +640,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
             cout << "Error: Copied histogram does not match original" << endl;
             delete temp;
             delete temp2;
-            continue;
+            return;
         }
         delete temp2;
 
@@ -650,7 +650,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
         if( ! entry.second ) {
             cout << "Error: Could not import histogram" << endl;
             delete temp;
-            continue;
+            return;
         }
 
         auto result = m_hists.insert( entry );
