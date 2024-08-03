@@ -82,7 +82,7 @@ class THistReader {
 };
 
 inline vector< void* > export_TH( const TH1D* t_original, unsigned int t_verbosity = 0 ) {
-    if( t_verbsoity >= 3 ) cout << "Exporting TH1D";
+    if( t_verbosity >= 3 ) cout << "Exporting TH1D";
 
     if( ! t_original ) {
         cout << "...\n"
