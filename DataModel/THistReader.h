@@ -396,7 +396,9 @@ template< typename type_hist, typename type_property >
 bool check_property( const type_hist* t_0, const type_hist* t_1, const char* ( type_property::*t_property )() const,
                      TString t_property_name, TString t_properties_ignore = "" ) {
     if( ! t_properties_ignore.Contains( t_property_name ) && ( t_0->*t_property )() != ( t_1->*t_property )() ) {
-        cout << "Error: Histogram property `" << t_property_name << "` does not match" << endl;
+        cout << "Error: Histogram property `" << t_property_name << "` does not match:\n"
+             << "  original = " << ( t_0->*t_property )() << "\n"
+             << "  copy     = " << ( t_1->*t_property )() << endl;
         return false;
     }
 
@@ -407,7 +409,9 @@ template< typename type_hist, typename type_property >
 bool check_property( const type_hist* t_0, const type_hist* t_1, Int_t ( type_property::*t_property )() const, TString t_property_name,
                      TString t_properties_ignore = "" ) {
     if( ! t_properties_ignore.Contains( t_property_name ) && ( t_0->*t_property )() != ( t_1->*t_property )() ) {
-        cout << "Error: Histogram property `" << t_property_name << "` does not match" << endl;
+        cout << "Error: Histogram property `" << t_property_name << "` does not match:\n"
+             << "  original = " << ( t_0->*t_property )() << "\n"
+             << "  copy     = " << ( t_1->*t_property )() << endl;
         return false;
     }
 
@@ -418,7 +422,9 @@ template< typename type_hist, typename type_property >
 bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type_property::*t_property )() const, TString t_property_name,
                      TString t_properties_ignore = "", Double_t t_tolerance = 1e-6 ) {
     if( ! t_properties_ignore.Contains( t_property_name ) && abs( ( t_0->*t_property )() - ( t_1->*t_property )() ) > t_tolerance ) {
-        cout << "Error: Histogram property `" << t_property_name << "` does not match" << endl;
+        cout << "Error: Histogram property `" << t_property_name << "` does not match:\n"
+             << "  original = " << ( t_0->*t_property )() << "\n"
+             << "  copy     = " << ( t_1->*t_property )() << endl;
         return false;
     }
 
@@ -430,7 +436,9 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type
                      TString t_property_name, TString t_properties_ignore = "", Double_t t_tolerance = 1e-6 ) {
     if( ! t_properties_ignore.Contains( t_property_name ) &&
         abs( ( t_0->*t_property )( t_bin ) - ( t_1->*t_property )( t_bin ) ) > t_tolerance ) {
-        cout << "Error: Histogram property `" << t_property_name << "` does not match" << endl;
+        cout << "Error: Histogram property `" << t_property_name << "` does not match:\n"
+             << "  original = " << ( t_0->*t_property )( t_bin ) << "\n"
+             << "  copy     = " << ( t_1->*t_property )( t_bin ) << endl;
         return false;
     }
 
@@ -443,7 +451,9 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type
                      Double_t t_tolerance = 1e-6 ) {
     if( ! t_properties_ignore.Contains( t_property_name ) &&
         abs( ( t_0->*t_property )( t_bin_0, t_bin_1 ) - ( t_1->*t_property )( t_bin_0, t_bin_1 ) ) > t_tolerance ) {
-        cout << "Error: Histogram property `" << t_property_name << "` does not match" << endl;
+        cout << "Error: Histogram property `" << t_property_name << "` does not match:\n"
+             << "  original = " << ( t_0->*t_property )( t_bin_0, t_bin_1 ) << "\n"
+             << "  copy     = " << ( t_1->*t_property )( t_bin_0, t_bin_1 ) << endl;
         return false;
     }
 
@@ -456,7 +466,9 @@ bool check_property( const type_hist* t_0, const type_hist* t_1, Double_t ( type
                      Double_t t_tolerance = 1e-6 ) {
     if( ! t_properties_ignore.Contains( t_property_name ) &&
         abs( ( t_0->*t_property )( t_bin_0, t_bin_1, t_bin_2 ) - ( t_1->*t_property )( t_bin_0, t_bin_1, t_bin_2 ) ) > t_tolerance ) {
-        cout << "Error: Histogram property `" << t_property_name << "` does not match" << endl;
+        cout << "Error: Histogram property `" << t_property_name << "` does not match:\n"
+             << "  original = " << ( t_0->*t_property )( t_bin_0, t_bin_1, t_bin_2 ) << "\n"
+             << "  copy     = " << ( t_1->*t_property )( t_bin_0, t_bin_1, t_bin_2 ) << endl;
         return false;
     }
 
@@ -489,8 +501,7 @@ inline bool check_copy( const TH1D* t_original, const TH1D* t_copy, TString t_pr
     value &= check_property( t_original->GetXaxis(), t_copy->GetXaxis(), &TAxis::GetXmax, "Xmax", t_properties_ignore );
 
     for( Int_t i = 1; i <= t_original->GetNbinsX(); ++i ) {
-        if( ! value )
-            break;
+        if( ! value ) break;
         value &= check_property( t_original, t_copy, &TH1D::GetBinContent, i, "BinContent", t_properties_ignore );
         value &= check_property( t_original, t_copy, &TH1D::GetBinError, i, "BinError", t_properties_ignore );
     }
@@ -515,8 +526,7 @@ inline bool check_copy( const TH2D* t_original, const TH2D* t_copy, TString t_pr
 
     for( Int_t i = 1; i <= t_original->GetNbinsX(); ++i ) {
         for( Int_t j = 1; j <= t_original->GetNbinsY(); ++j ) {
-            if( ! value )
-                break;
+            if( ! value ) break;
             value &= check_property( t_original, t_copy, &TH2D::GetBinContent, i, j, "BinContent", t_properties_ignore );
             value &= check_property( t_original, t_copy, &TH2D::GetBinError, i, j, "BinError", t_properties_ignore );
         }
@@ -546,8 +556,7 @@ inline bool check_copy( const TH3D* t_original, const TH3D* t_copy, TString t_pr
     for( Int_t i = 1; i <= t_original->GetNbinsX(); ++i ) {
         for( Int_t j = 1; j <= t_original->GetNbinsY(); ++j ) {
             for( Int_t k = 1; k <= t_original->GetNbinsZ(); ++k ) {
-                if( ! value )
-                    break;
+                if( ! value ) break;
                 value &= check_property( t_original, t_copy, &TH3D::GetBinContent, i, j, k, "BinContent", t_properties_ignore );
                 value &= check_property( t_original, t_copy, &TH3D::GetBinError, i, j, k, "BinError", t_properties_ignore );
             }
