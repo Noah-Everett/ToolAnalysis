@@ -145,7 +145,7 @@ inline vector< void* > export_TH( const TH3D* t_original ) {
     return exported;
 }
 
-inline void import_TH( vector< void* >& t_exported, TH1D* t_copy, TString t_name = "" ) {
+inline void import_TH( vector< void* >& t_exported, TH1D*& t_copy, TString t_name = "" ) {
     if( t_exported.empty() ) {
         cout << "Error: Exported histogram is empty" << endl;
         return;
@@ -194,7 +194,7 @@ cleanup:
     return;
 }
 
-inline void import_TH( vector< void* >& t_exported, TH2D* t_copy, TString t_name = "" ) {
+inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_name = "" ) {
     if( t_exported.empty() ) {
         cout << "Error: Exported histogram is empty" << endl;
         return;
@@ -255,7 +255,7 @@ cleanup:
     return;
 }
 
-inline void import_TH( vector< void* >& t_exported, TH3D* t_copy, TString t_name = "" ) {
+inline void import_TH( vector< void* >& t_exported, TH3D*& t_copy, TString t_name = "" ) {
     if( t_exported.empty() ) {
         cout << "Error: Exported histogram is empty" << endl;
         return;
