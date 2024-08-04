@@ -41,6 +41,7 @@ using std::vector;
 
 template< typename type_ID, typename type_hist >
 class THistMap : public map< type_ID, type_hist* > {
+    public:
         THistMap( unsigned int t_verbosity = 1 );
         THistMap( const THistMap& t_THistMap );
 
@@ -52,7 +53,7 @@ class THistMap : public map< type_ID, type_hist* > {
         void operator=( const THistMap& t_THistMap );
 
     private:
-        unsigned int         m_verbosity;
+        unsigned int m_verbosity;
 };
 
 template< typename type_ID, typename type_hist >
@@ -65,7 +66,7 @@ class THistReader {
 
         ~THistReader();
 
-        type_hist*                      get_hist( const type_ID& t_ID ) const;
+        type_hist*                                   get_hist( const type_ID& t_ID ) const;
         shared_ptr< THistMap< type_ID, type_hist > > get_histsMap() const;
 
         void operator=( const THistReader& t_THistReader );
