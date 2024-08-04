@@ -223,10 +223,10 @@ inline void import_TH( vector< void* >& t_exported, TH1D*& t_copy, TString t_nam
     } else {
         name = new TString( t_name );
     }
-    TString*&  title  = static_cast< TString*& >( t_exported[ 1 ] );
-    Int_t*&    nxbins = static_cast< Int_t*& >( t_exported[ 2 ] );
-    Double_t*& xlow   = static_cast< Double_t*& >( t_exported[ 3 ] );
-    Double_t*& xhigh  = static_cast< Double_t*& >( t_exported[ 4 ] );
+    TString*  title  = static_cast< TString* >( t_exported[ 1 ] );
+    Int_t*    nxbins = static_cast< Int_t* >( t_exported[ 2 ] );
+    Double_t* xlow   = static_cast< Double_t* >( t_exported[ 3 ] );
+    Double_t* xhigh  = static_cast< Double_t* >( t_exported[ 4 ] );
 
     Int_t nxbins_val = *nxbins;
 
@@ -305,13 +305,13 @@ inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_nam
         name = new TString( t_name );
     }
 
-    TString*&  title  = static_cast< TString*& >( t_exported[ 1 ] );
-    Int_t*&    nxbins = static_cast< Int_t*& >( t_exported[ 2 ] );
-    Double_t*& xlow   = static_cast< Double_t*& >( t_exported[ 3 ] );
-    Double_t*& xhigh  = static_cast< Double_t*& >( t_exported[ 4 ] );
-    Int_t*&    nybins = static_cast< Int_t*& >( t_exported[ 5 ] );
-    Double_t*& ylow   = static_cast< Double_t*& >( t_exported[ 6 ] );
-    Double_t*& yhigh  = static_cast< Double_t*& >( t_exported[ 7 ] );
+    TString*  title  = static_cast< TString* >( t_exported[ 1 ] );
+    Int_t*    nxbins = static_cast< Int_t* >( t_exported[ 2 ] );
+    Double_t* xlow   = static_cast< Double_t* >( t_exported[ 3 ] );
+    Double_t* xhigh  = static_cast< Double_t* >( t_exported[ 4 ] );
+    Int_t*    nybins = static_cast< Int_t* >( t_exported[ 5 ] );
+    Double_t* ylow   = static_cast< Double_t* >( t_exported[ 6 ] );
+    Double_t* yhigh  = static_cast< Double_t* >( t_exported[ 7 ] );
 
     Int_t nxbins_val = *nxbins;
     Int_t nybins_val = *nybins;
@@ -400,16 +400,16 @@ inline void import_TH( vector< void* >& t_exported, TH3D*& t_copy, TString t_nam
         name = new TString( t_name );
     }
 
-    TString*&  title  = static_cast< TString*& >( t_exported[ 1 ] );
-    Int_t*&    nxbins = static_cast< Int_t*& >( t_exported[ 2 ] );
-    Double_t*& xlow   = static_cast< Double_t*& >( t_exported[ 3 ] );
-    Double_t*& xhigh  = static_cast< Double_t*& >( t_exported[ 4 ] );
-    Int_t*&    nybins = static_cast< Int_t*& >( t_exported[ 5 ] );
-    Double_t*& ylow   = static_cast< Double_t*& >( t_exported[ 6 ] );
-    Double_t*& yhigh  = static_cast< Double_t*& >( t_exported[ 7 ] );
-    Int_t*&    nzbins = static_cast< Int_t*& >( t_exported[ 8 ] );
-    Double_t*& zlow   = static_cast< Double_t*& >( t_exported[ 9 ] );
-    Double_t*& zhigh  = static_cast< Double_t*& >( t_exported[ 10 ] );
+    TString*  title  = static_cast< TString* >( t_exported[ 1 ] );
+    Int_t*    nxbins = static_cast< Int_t* >( t_exported[ 2 ] );
+    Double_t* xlow   = static_cast< Double_t* >( t_exported[ 3 ] );
+    Double_t* xhigh  = static_cast< Double_t* >( t_exported[ 4 ] );
+    Int_t*    nybins = static_cast< Int_t* >( t_exported[ 5 ] );
+    Double_t* ylow   = static_cast< Double_t* >( t_exported[ 6 ] );
+    Double_t* yhigh  = static_cast< Double_t* >( t_exported[ 7 ] );
+    Int_t*    nzbins = static_cast< Int_t* >( t_exported[ 8 ] );
+    Double_t* zlow   = static_cast< Double_t* >( t_exported[ 9 ] );
+    Double_t* zhigh  = static_cast< Double_t* >( t_exported[ 10 ] );
 
     Int_t nxbins_val = *nxbins;
     Int_t nybins_val = *nybins;
