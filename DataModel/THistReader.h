@@ -870,6 +870,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
             delete temp;
             return;
         }
+        cout << "entry.second.Sizeof() = " << entry.second->GetSizeof() << endl;
 
         auto result = m_hists->insert( entry );
         if( ! result.second ) {
