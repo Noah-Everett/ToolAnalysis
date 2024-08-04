@@ -47,17 +47,17 @@ void DetectorResponsePredictor::reset_members()
     delete m_hist_dEdX_MRDiron                ;
 }
 
-bool DetectorResponsePredictor::load_hists_emission(       THistMap< int, TH2D >*& t_hists_energies      ,
-                                                           THistMap< int, TH2D >*& t_hists_counts        ,
-                                                     const vector  < string    > & t_hists_energies_paths, 
-                                                     const vector  < string    > & t_hists_counts_paths  , 
-                                                     const vector  < string    > & t_hists_energies_names,
-                                                     const vector  < string    > & t_hists_counts_names  ,
-                                                     const vector  < int       > & t_hists_IDs           ,
-                                                           double                & t_binWidth_s          ,
-                                                           double                & t_binWidth_theta      ,
-                                                           double                & t_binWidth_phi        ,
-                                                     const string                & t_hists_material       ) {
+bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap< int, TH2D > >   t_hists_energies      ,
+                                                           shared_ptr< THistMap< int, TH2D > >   t_hists_counts        ,
+                                                     const vector    < string                > & t_hists_energies_paths, 
+                                                     const vector    < string                > & t_hists_counts_paths  , 
+                                                     const vector    < string                > & t_hists_energies_names,
+                                                     const vector    < string                > & t_hists_counts_names  ,
+                                                     const vector    < int                   > & t_hists_IDs           ,
+                                                           double                              & t_binWidth_s          ,
+                                                           double                              & t_binWidth_theta      ,
+                                                           double                              & t_binWidth_phi        ,
+                                                     const string                              & t_hists_material       ) {
     LogD( "Loading emission histograms.", m_verbosity_debug );
     
     // Check IDs are strictly increasing
@@ -95,7 +95,6 @@ bool DetectorResponsePredictor::load_hists_emission(       THistMap< int, TH2D >
 
     // Load energy hist map
     THistReader< int, TH2D >* histReader{ new THistReader< int, TH2D >( t_hists_energies_paths, t_hists_IDs, t_hists_energies_names, t_hists_material+"_energies", m_verbosity_THistReader ) };
-    if( t_hists_energies ) delete t_hists_energies;
     t_hists_energies = histReader->get_histsMap();
     delete histReader;
     // If map wasnt returned
@@ -111,7 +110,6 @@ bool DetectorResponsePredictor::load_hists_emission(       THistMap< int, TH2D >
     
     // Load counts hist map
     histReader = new THistReader< int, TH2D >( t_hists_counts_paths, t_hists_IDs, t_hists_counts_names, t_hists_material+"_counts", m_verbosity_THistReader );
-    if( t_hists_counts ) delete t_hists_counts;
     t_hists_counts = histReader->get_histsMap();
     delete histReader;
     // If map wasnt returned
@@ -230,7 +228,7 @@ bool DetectorResponsePredictor::load_hists_emission_MRDsci( const vector< string
 }
 
 template< typename type_hist >
-bool DetectorResponsePredictor::load_hist(       type_hist*&  m_hist    ,
+bool DetectorResponsePredictor::load_hist(       type_hist*& m_hist     ,
                                            const string    & t_hist_path,
                                            const string    & t_hist_name ) {
     LogD( "    Loading histogram.", m_verbosity_debug );
@@ -290,7 +288,7 @@ pair< int, int > DetectorResponsePredictor::get_closestEmissionHists( const THis
     LogD( "    Finding histograms with initial primary energies just below and above `t_initialEnergy` with bisection.", m_verbosity_debug );
     while( index_upper - index_lower != 1 ) {
         LogD( "        [|]-Lower: index="  + to_string( index_lower ) + " && initEnergy=" + to_string( m_hists_emission_initialEnergies[ index_lower ] ) + "\n"
-                   "         \\--Upper: index=" + to_string( index_upper ) + " && initEnergy=" + to_string( m_hists_emission_initialEnergies[ index_upper ] ), m_verbosity_debug );
+              "         \\--Upper: index=" + to_string( index_upper ) + " && initEnergy=" + to_string( m_hists_emission_initialEnergies[ index_upper ] ), m_verbosity_debug );
         // LogD( m_temp_string + to_string( index_lower ) + " && initEnergy=", m_verbosity_debug );
         if( m_hists_emission_initialEnergies[ ( index_lower + index_upper ) / 2 ] < t_initialEnergy )
             index_lower = ( index_lower + index_upper ) / 2;

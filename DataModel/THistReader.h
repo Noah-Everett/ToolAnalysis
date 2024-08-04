@@ -41,7 +41,6 @@ using std::vector;
 
 template< typename type_ID, typename type_hist >
 class THistMap : public map< type_ID, type_hist* > {
-    public:
         THistMap( unsigned int t_verbosity = 1 );
         THistMap( const THistMap& t_THistMap );
 
@@ -53,7 +52,8 @@ class THistMap : public map< type_ID, type_hist* > {
         void operator=( const THistMap& t_THistMap );
 
     private:
-        unsigned int m_verbosity;
+        unsigned int         m_verbosity;
+        vector< THistMap*& > m_referecnes;
 };
 
 template< typename type_ID, typename type_hist >
@@ -67,12 +67,12 @@ class THistReader {
         ~THistReader();
 
         type_hist*                      get_hist( const type_ID& t_ID ) const;
-        THistMap< type_ID, type_hist >* get_histsMap() const;
+        shared_ptr< THistMap< type_ID, type_hist > > get_histsMap() const;
 
         void operator=( const THistReader& t_THistReader );
 
     private:
-        THistMap< type_ID, type_hist > m_hists;
+        shared_ptr< THistMap< type_ID, type_hist > > m_hists{ make_shared< THistMap< type_ID, type_hist > >() };
 
         unsigned int m_verbosity;
 
@@ -782,7 +782,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
                                                 const vector< string >& t_hists_names, const string& t_hists_class,
                                                 unsigned int t_verbosity )
     : m_verbosity{ t_verbosity } {
-    m_hists.set_verbosity( m_verbosity );
+    m_hists->set_verbosity( m_verbosity );
 
     if( m_verbosity >= m_verbosity_debug ) {
         cout << "THistReader: Loading histograms" << endl;
@@ -837,13 +837,13 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
             return;
         }
 
-        auto result = m_hists.insert( entry );
+        auto result = m_hists->insert( entry );
         if( ! result.second ) {
             cout << "Error: Could not insert histogram into map" << endl;
         }
     }
 
-    if( m_hists.size() != t_hists_paths.size() ) {
+    if( m_hists->size() != t_hists_paths.size() ) {
         cout << "Error: Not all histograms were loaded" << endl;
     }
 }
@@ -872,8 +872,8 @@ type_hist* THistReader< type_ID, type_hist >::get_hist( const type_ID& t_ID ) co
 }
 
 template< typename type_ID, typename type_hist >
-THistMap< type_ID, type_hist >* THistReader< type_ID, type_hist >::get_histsMap() const {
-    return new THistMap< type_ID, type_hist >( m_hists );
+shared_ptr< THistMap< type_ID, type_hist > > THistReader< type_ID, type_hist >::get_histsMap() const {
+    return m_hists;
 }
 
 template< typename type_ID, typename type_hist >
@@ -884,7 +884,7 @@ void THistReader< type_ID, type_hist >::operator=( const THistReader& t_THistRea
     }
 
     m_verbosity = t_THistReader.m_verbosity;
-    m_hists     = *( t_THistReader.get_histsMap() );
+    m_hists     = t_THistReader.get_histsMap()
 
     if( m_hists->size() != t_THistReader.get_histsMap()->size() ) {
         cout << "Error: Not all histograms were copied" << endl;

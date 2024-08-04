@@ -202,17 +202,17 @@ protected:
     /**////////////////////////////
     /**/
     /**/// Emission Histograms
-    /**/ vector  < int       >  m_hists_emission_initialEnergies;
-    /**/ THistMap< int, TH2D >* m_hists_emission_tankWater_energies{ nullptr };
-    /**/ THistMap< int, TH2D >* m_hists_emission_tankWater_counts  { nullptr };
-    /**/ THistMap< int, TH2D >* m_hists_emission_MRDsci_energies   { nullptr };
-    /**/ THistMap< int, TH2D >* m_hists_emission_MRDsci_counts     { nullptr };
-    /**/ double                 m_binWidth_s_tankWater;
-    /**/ double                 m_binWidth_s_MRDsci;
-    /**/ double                 m_binWidth_theta_tankWater;
-    /**/ double                 m_binWidth_theta_MRDsci;
-    /**/ double                 m_binWidth_phi_tankWater;
-    /**/ double                 m_binWidth_phi_MRDsci;
+    /**/ vector    < int                   > m_hists_emission_initialEnergies;
+    /**/ shared_ptr< THistMap< int, TH2D > > m_hists_emission_tankWater_energies{ nullptr };
+    /**/ shared_ptr< THistMap< int, TH2D > > m_hists_emission_tankWater_counts  { nullptr };
+    /**/ shared_ptr< THistMap< int, TH2D > > m_hists_emission_MRDsci_energies   { nullptr };
+    /**/ shared_ptr< THistMap< int, TH2D > > m_hists_emission_MRDsci_counts     { nullptr };
+    /**/ double                              m_binWidth_s_tankWater;
+    /**/ double                              m_binWidth_s_MRDsci;
+    /**/ double                              m_binWidth_theta_tankWater;
+    /**/ double                              m_binWidth_theta_MRDsci;
+    /**/ double                              m_binWidth_phi_tankWater;
+    /**/ double                              m_binWidth_phi_MRDsci;
     /**/
     /**/// Other Histograms
     /**/ TH1D* m_hist_transmission_tankWater{ nullptr };
@@ -236,21 +236,21 @@ protected:
     /**////////////////////////////
     /**/
     /**/// Load Histograms
-    /**/ bool load_hists_emission(       THistMap< int, TH2D >*& t_hists_energies      ,
-    /**/                                 THistMap< int, TH2D >*& t_hists_counts        ,
-    /**/                           const vector  < string    > & t_hists_energies_paths,
-    /**/                           const vector  < string    > & t_hists_counts_paths  ,
-    /**/                           const vector  < string    > & t_hists_energies_names,
-    /**/                           const vector  < string    > & t_hists_counts_names  ,
-    /**/                           const vector  < int       > & t_hists_IDs           ,
-    /**/                                 double                & t_binWidth_s          ,
-    /**/                                 double                & t_binWidth_theta      ,
-    /**/                                 double                & t_binWidth_phi        ,
-    /**/                           const string                & t_hists_material       );
+    /**/ bool load_hists_emission(       shared_ptr< THistMap< int, TH2D > >   t_hists_energies      ,
+    /**/                                 shared_ptr< THistMap< int, TH2D > >   t_hists_counts        ,
+    /**/                           const vector    < string                > & t_hists_energies_paths,
+    /**/                           const vector    < string                > & t_hists_counts_paths  ,
+    /**/                           const vector    < string                > & t_hists_energies_names,
+    /**/                           const vector    < string                > & t_hists_counts_names  ,
+    /**/                           const vector    < int                   > & t_hists_IDs           ,
+    /**/                                 double                              & t_binWidth_s          ,
+    /**/                                 double                              & t_binWidth_theta      ,
+    /**/                                 double                              & t_binWidth_phi        ,
+    /**/                           const string                              & t_hists_material       );
     /**/ template< typename type_hist >
-    /**/ bool load_hist          (       type_hist           *& t_hist                ,
-    /**/                           const string               & t_hist_path           ,
-    /**/                           const string               & t_hist_name            );
+    /**/ bool load_hist          (       type_hist*& t_hist     ,
+    /**/                           const string    & t_hist_path,
+    /**/                           const string    & t_hist_name );
     /**/
     /**/// Evaluate Histograms
     /**/ pair< int, int > get_closestEmissionHists     ( const THistMap< int, TH2D >* t_hists_emission  ,
