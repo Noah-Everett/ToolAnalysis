@@ -65,6 +65,11 @@ bool DetectorResponsePredictor::load_hists_emission(       THistMap< int, TH2D >
         for( int i{ 0 }; i + 1 < t_hists_IDs.size(); i++ ) 
             if( t_hists_IDs[ i ] >= t_hists_IDs[ i + 1 ] ) {
                 LogD( "`t_hists_IDs` does not have strictly increasing entries.", m_verbosity_error );
+                string = "t_hists_IDs = [ ";
+                for( int ID : t_hists_IDs )
+                    string += to_string( ID ) + ", ";
+                string += "]";
+                LogD( string, m_verbosity_debug );
                 return false;
             }
         m_hists_emission_initialEnergies = t_hists_IDs;
