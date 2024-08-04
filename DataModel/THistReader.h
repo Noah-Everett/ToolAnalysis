@@ -272,17 +272,13 @@ cleanup:
     delete xlow;
     delete xhigh;
 
-    name   = nullptr;
-    title  = nullptr;
-    nxbins = nullptr;
-    xlow   = nullptr;
-    xhigh  = nullptr;
+    for( int i{ 5 }; i < t_exported.size(); ++i ) {
+        Double_t* content = static_cast< Double_t* >( t_exported[ i ] );
+        delete content;
+    }
 
     for( void*& content : t_exported ) {
-        if( content ) {
-            delete( Double_t* )content;
-            content = nullptr;
-        }
+        content = nullptr;
     }
 
     t_exported.clear();
@@ -371,20 +367,13 @@ cleanup:
     delete ylow;
     delete yhigh;
 
-    name   = nullptr;
-    title  = nullptr;
-    nxbins = nullptr;
-    xlow   = nullptr;
-    xhigh  = nullptr;
-    nybins = nullptr;
-    ylow   = nullptr;
-    yhigh  = nullptr;
+    for( int i{ 8 }; i < t_exported.size(); ++i ) {
+        Double_t* content = static_cast< Double_t* >( t_exported[ i ] );
+        delete content;
+    }
 
     for( void*& content : t_exported ) {
-        if( content ) {
-            delete( Double_t* )content;
-            content = nullptr;
-        }
+        content = nullptr;
     }
 
     t_exported.clear();
@@ -485,23 +474,13 @@ cleanup:
     delete zlow;
     delete zhigh;
 
-    name   = nullptr;
-    title  = nullptr;
-    nxbins = nullptr;
-    xlow   = nullptr;
-    xhigh  = nullptr;
-    nybins = nullptr;
-    ylow   = nullptr;
-    yhigh  = nullptr;
-    nzbins = nullptr;
-    zlow   = nullptr;
-    zhigh  = nullptr;
+    for( int i{ 11 }; i < t_exported.size(); ++i ) {
+        Double_t* content = static_cast< Double_t* >( t_exported[ i ] );
+        delete content;
+    }
 
     for( void*& content : t_exported ) {
-        if( content ) {
-            delete( Double_t* )content;
-            content = nullptr;
-        }
+        content = nullptr;
     }
 
     t_exported.clear();
