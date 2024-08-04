@@ -851,14 +851,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
             continue;
         }
         type_hist*       temp2{ nullptr };
-        /* DELETE */ int max = 10;
-        /* DELETE */ for( int i{ 0 }; i < max; i++ )
-            /* DELETE */ cout << exported[ i ] << " ";
-        /* DELETE */ cout << endl;
-        import_TH( exported, temp2, "TEST", m_verbosity, true );
-        /* DELETE */ for( int i{ 0 }; i < max; i++ )
-            /* DELETE */ cout << exported[ i ] << " ";
-        /* DELETE */ cout << endl;
+        import_TH( exported, temp2, "TEST", m_verbosity, false );
         if( ! check_copy( temp, temp2, "NAME" ) ) {
             cout << "Error: Copied histogram does not match original" << endl;
             delete temp;
