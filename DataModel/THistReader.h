@@ -205,7 +205,7 @@ inline vector< void* > export_TH( const TH3D* t_original, unsigned int t_verbosi
     return exported;
 }
 
-inline void import_TH( vector< void* >& t_exported, TH1D*& t_copy, TString t_name = "", unsigned int t_verbosity = 0 ) {
+inline void import_TH( vector< void* >& t_exported, TH1D*& t_copy, TString t_name = "", unsigned int t_verbosity = 0, bool t_clear = true ) {
     if( t_verbosity >= 3 ) cout << "Importing TH1D";
 
     if( t_exported.empty() ) {
@@ -263,6 +263,8 @@ inline void import_TH( vector< void* >& t_exported, TH1D*& t_copy, TString t_nam
     }
 
 cleanup:
+    if( ! t_clear ) return;
+
     delete name;
     delete title;
     delete nxbins;
@@ -271,11 +273,12 @@ cleanup:
     for( void* content : t_exported ) {
         if( content ) delete( Double_t* )content;
     }
+    t_exported.clear();
 
     return;
 }
 
-inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_name = "", unsigned int t_verbosity = 0 ) {
+inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_name = "", unsigned int t_verbosity = 0, bool t_clear = true ) {
     if( t_verbosity >= 3 ) cout << "Importing TH2D";
 
     if( t_exported.empty() ) {
@@ -344,6 +347,8 @@ inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_nam
     return;
 
 cleanup:
+    if( ! t_clear ) return;
+
     delete name;
     delete title;
     delete nxbins;
@@ -355,11 +360,12 @@ cleanup:
     for( void* content : t_exported ) {
         if( content ) delete( Double_t* )content;
     }
+    t_exported.clear();
 
     return;
 }
 
-inline void import_TH( vector< void* >& t_exported, TH3D*& t_copy, TString t_name = "", unsigned int t_verbosity = 0 ) {
+inline void import_TH( vector< void* >& t_exported, TH3D*& t_copy, TString t_name = "", unsigned int t_verbosity = 0, bool t_clear = true ) {
     if( t_verbosity >= 3 ) cout << "Importing TH3D";
 
     if( t_exported.empty() ) {
@@ -437,6 +443,8 @@ inline void import_TH( vector< void* >& t_exported, TH3D*& t_copy, TString t_nam
     }
 
 cleanup:
+    if( ! t_clear ) return;
+
     delete name;
     delete title;
     delete nxbins;
@@ -451,6 +459,7 @@ cleanup:
     for( void* content : t_exported ) {
         if( content ) delete( Double_t* )content;
     }
+    t_exported.clear();
 
     return;
 }
@@ -818,7 +827,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
             continue;
         }
         type_hist* temp2{ nullptr };
-        import_TH( exported, temp2, "TEST", m_verbosity );
+        import_TH( exported, temp2, "TEST", m_verbosity, true );
         if( ! check_copy( temp, temp2, "NAME" ) ) {
             cout << "Error: Copied histogram does not match original" << endl;
             delete temp;
@@ -830,7 +839,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
         delete temp2;
         file.Close();
 
-        import_TH( exported, entry.second, t_hists_names[ i ] + "_" + to_string( t_hists_IDs[ i ] ) + "MeV_" + t_hists_class, m_verbosity );
+        import_TH( exported, entry.second, t_hists_names[ i ] + "_" + to_string( t_hists_IDs[ i ] ) + "MeV_" + t_hists_class, m_verbosity, true );
         if( ! entry.second ) {
             cout << "Error: Could not import histogram" << endl;
             delete temp;
