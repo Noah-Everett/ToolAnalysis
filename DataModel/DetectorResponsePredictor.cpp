@@ -99,7 +99,7 @@ bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap<
         return false;
     }
     // Rebin histograms
-    for( pair< int, TH2D* >& hist : *t_hists_energies ) {
+    for( pair< const int, TH2D* >& hist : *t_hists_energies ) {
         hist.second->Rebin2D( 2, 2 );
     }
     // Check that a hist with 0 energy exists
@@ -118,7 +118,7 @@ bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap<
         return false;
     }
     // Rebin histograms
-    for( pair< int, TH2D* >& hist : *t_hists_counts ) {
+    for( pair< const int, TH2D* >& hist : *t_hists_counts ) {
         hist.second->Rebin2D( 2, 2 );
     }
     // Check that a hist with 0 energy exists
