@@ -205,7 +205,8 @@ inline vector< void* > export_TH( const TH3D* t_original, unsigned int t_verbosi
     return exported;
 }
 
-inline void import_TH( vector< void* >& t_exported, TH1D*& t_copy, TString t_name = "", unsigned int t_verbosity = 0, bool t_clear = true ) {
+inline void import_TH( vector< void* >& t_exported, TH1D*& t_copy, TString t_name = "", unsigned int t_verbosity = 0,
+                       bool t_clear = true ) {
     if( t_verbosity >= 3 ) cout << "Importing TH1D";
 
     if( t_exported.empty() ) {
@@ -270,15 +271,27 @@ cleanup:
     delete nxbins;
     delete xlow;
     delete xhigh;
+
+    name   = nullptr;
+    title  = nullptr;
+    nxbins = nullptr;
+    xlow   = nullptr;
+    xhigh  = nullptr;
+
     for( void* content : t_exported ) {
-        if( content ) delete( Double_t* )content;
+        if( content ) {
+            delete( Double_t* )content;
+            content = nullptr;
+        }
     }
+
     t_exported.clear();
 
     return;
 }
 
-inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_name = "", unsigned int t_verbosity = 0, bool t_clear = true ) {
+inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_name = "", unsigned int t_verbosity = 0,
+                       bool t_clear = true ) {
     if( t_verbosity >= 3 ) cout << "Importing TH2D";
 
     if( t_exported.empty() ) {
@@ -357,15 +370,30 @@ cleanup:
     delete nybins;
     delete ylow;
     delete yhigh;
+
+    name   = nullptr;
+    title  = nullptr;
+    nxbins = nullptr;
+    xlow   = nullptr;
+    xhigh  = nullptr;
+    nybins = nullptr;
+    ylow   = nullptr;
+    yhigh  = nullptr;
+
     for( void* content : t_exported ) {
-        if( content ) delete( Double_t* )content;
+        if( content ) {
+            delete( Double_t* )content;
+            content = nullptr;
+        }
     }
+
     t_exported.clear();
 
     return;
 }
 
-inline void import_TH( vector< void* >& t_exported, TH3D*& t_copy, TString t_name = "", unsigned int t_verbosity = 0, bool t_clear = true ) {
+inline void import_TH( vector< void* >& t_exported, TH3D*& t_copy, TString t_name = "", unsigned int t_verbosity = 0,
+                       bool t_clear = true ) {
     if( t_verbosity >= 3 ) cout << "Importing TH3D";
 
     if( t_exported.empty() ) {
@@ -456,9 +484,23 @@ cleanup:
     delete nzbins;
     delete zlow;
     delete zhigh;
+
+    name   = nullptr;
+    title  = nullptr;
+    nxbins = nullptr;
+    xlow   = nullptr;
+    xhigh  = nullptr;
+    nybins = nullptr;
+    ylow   = nullptr;
+    yhigh  = nullptr;
+    nzbins = nullptr;
+    zlow   = nullptr;
+    zhigh  = nullptr;
+
     for( void* content : t_exported ) {
         if( content ) delete( Double_t* )content;
     }
+
     t_exported.clear();
 
     return;
@@ -826,14 +868,14 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
             delete temp;
             continue;
         }
-        type_hist* temp2{ nullptr };
+        type_hist*       temp2{ nullptr };
         /* DELETE */ int max = 10;
         /* DELETE */ for( int i{ 0 }; i < max; i++ )
-        /* DELETE */     cout << exported[ i ];
+            /* DELETE */ cout << exported[ i ] << " ";
         /* DELETE */ cout << endl;
         import_TH( exported, temp2, "TEST", m_verbosity, true );
         /* DELETE */ for( int i{ 0 }; i < max; i++ )
-        /* DELETE */     cout << exported[ i ];
+            /* DELETE */ cout << exported[ i ] << " ";
         /* DELETE */ cout << endl;
         if( ! check_copy( temp, temp2, "NAME" ) ) {
             cout << "Error: Copied histogram does not match original" << endl;
@@ -846,7 +888,8 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
         delete temp2;
         file.Close();
 
-        import_TH( exported, entry.second, t_hists_names[ i ] + "_" + to_string( t_hists_IDs[ i ] ) + "MeV_" + t_hists_class, m_verbosity, true );
+        import_TH( exported, entry.second, t_hists_names[ i ] + "_" + to_string( t_hists_IDs[ i ] ) + "MeV_" + t_hists_class, m_verbosity,
+                   true );
         if( ! entry.second ) {
             cout << "Error: Could not import histogram" << endl;
             delete temp;
