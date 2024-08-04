@@ -278,7 +278,7 @@ cleanup:
     xlow   = nullptr;
     xhigh  = nullptr;
 
-    for( void* content : t_exported ) {
+    for( void*& content : t_exported ) {
         if( content ) {
             delete( Double_t* )content;
             content = nullptr;
@@ -380,7 +380,7 @@ cleanup:
     ylow   = nullptr;
     yhigh  = nullptr;
 
-    for( void* content : t_exported ) {
+    for( void*& content : t_exported ) {
         if( content ) {
             delete( Double_t* )content;
             content = nullptr;
@@ -497,8 +497,9 @@ cleanup:
     zlow   = nullptr;
     zhigh  = nullptr;
 
-    for( void* content : t_exported ) {
-        if( content ) delete( Double_t* )content;
+    for( void*& content : t_exported ) {
+        if( content ) {
+            delete( Double_t* )content;
     }
 
     t_exported.clear();
