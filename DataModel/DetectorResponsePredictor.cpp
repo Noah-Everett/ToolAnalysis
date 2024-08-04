@@ -275,8 +275,8 @@ bool DetectorResponsePredictor::load_hist_dEdX_MRDiron( const string& t_hist_pat
     return load_hist< TH1D >( m_hist_dEdX_MRDiron, t_hist_path, t_hist_name );
 }
 
-pair< int, int > DetectorResponsePredictor::get_closestEmissionHists( const THistMap< int, TH2D >* t_hists_emission,
-                                                                      const double                  t_initialEnergy  ) const {
+pair< int, int > DetectorResponsePredictor::get_closestEmissionHists( const shared_ptr< THistMap< int, TH2D > > t_hists_emission,
+                                                                      const double                              t_initialEnergy  ) const {
     // Bisect histogram energies to find the histograms 
     // which have energies just lower and just higher 
     // than t_initialEnergy.
