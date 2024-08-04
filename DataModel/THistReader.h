@@ -247,7 +247,7 @@ inline void import_TH( vector< void* >& t_exported, TH1D*& t_copy, TString t_nam
     }
 
     // Check if object with the same name already exists
-    if( gROOT->FindObjectAny( *name ) ) {
+    while( gROOT->FindObjectAny( *name ) ) {
         if( t_verbosity >= 1 )
             cout << "Warning: Object with the name `" << *name << "` already exists. Setting name to `" << *name << "_copy`" << endl;
         *name += "_copy";
@@ -324,7 +324,7 @@ inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_nam
         goto cleanup;
     }
 
-    if( gROOT->FindObjectAny( *name ) ) {
+    while( gROOT->FindObjectAny( *name ) ) {
         if( t_verbosity >= 1 )
             cout << "Warning: Object with the name `" << *name << "` already exists. Setting name to `" << *name << "_copy`" << endl;
         *name += "_copy";
@@ -415,7 +415,7 @@ inline void import_TH( vector< void* >& t_exported, TH3D*& t_copy, TString t_nam
         goto cleanup;
     }
 
-    if( gROOT->FindObjectAny( *name ) ) {
+    while( gROOT->FindObjectAny( *name ) ) {
         if( t_verbosity >= 1 )
             cout << "Warning: Object with the name `" << *name << "` already exists. Setting name to `" << *name << "_copy`" << endl;
         *name += "_copy";
