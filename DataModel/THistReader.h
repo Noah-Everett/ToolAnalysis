@@ -500,6 +500,8 @@ cleanup:
     for( void*& content : t_exported ) {
         if( content ) {
             delete( Double_t* )content;
+            content = nullptr;
+        }
     }
 
     t_exported.clear();
