@@ -227,15 +227,15 @@ template< typename type_hist >
 bool DetectorResponsePredictor::load_hist(       type_hist*& m_hist     ,
                                            const string    & t_hist_path,
                                            const string    & t_hist_name ) {
-    LogD( "    Loading histogram.", m_verbosity_debug );
+    LogD( "Loading histogram.", m_verbosity_debug );
     THistReader< bool, type_hist >* histReader{ new THistReader< bool, type_hist >( { t_hist_path }, { 1 }, { t_hist_name }, "", m_verbosity_THistReader ) };
     m_hist = histReader->get_histsMap()->at( true );
     if( histReader ) {
         delete histReader;
-        LogD( "    Successfully loaded histogram.", m_verbosity_debug );
+        LogD( "Successfully loaded histogram.", m_verbosity_debug );
         return true;
     } else
-        LogD( "    Failed to load histogram.", m_verbosity_debug );
+        LogD( "Failed to load histogram.", m_verbosity_debug );
         return false;
 }
 
@@ -281,10 +281,10 @@ pair< int, int > DetectorResponsePredictor::get_closestEmissionHists( const shar
     // which have energies just lower and just higher 
     // than t_initialEnergy.
     int index_lower{ 0 }, index_upper{ int(m_hists_emission_initialEnergies.size()) - 1 }; // typecast to int to avoid warning
-    LogD( "    Finding histograms with initial primary energies just below and above `t_initialEnergy` with bisection.", m_verbosity_debug );
+    LogD( "Finding histograms with initial primary energies just below and above `t_initialEnergy` with bisection.", m_verbosity_debug );
     while( index_upper - index_lower != 1 ) {
-        LogD( "        [|]-Lower: index="  + to_string( index_lower ) + " && initEnergy=" + to_string( m_hists_emission_initialEnergies[ index_lower ] ) + "\n"
-              "         \\--Upper: index=" + to_string( index_upper ) + " && initEnergy=" + to_string( m_hists_emission_initialEnergies[ index_upper ] ), m_verbosity_debug );
+        LogD( "[|]-Lower: index="  + to_string( index_lower ) + " && initEnergy=" + to_string( m_hists_emission_initialEnergies[ index_lower ] ) + "\n"
+              " \\--Upper: index=" + to_string( index_upper ) + " && initEnergy=" + to_string( m_hists_emission_initialEnergies[ index_upper ] ), m_verbosity_debug );
         // LogD( m_temp_string + to_string( index_lower ) + " && initEnergy=", m_verbosity_debug );
         if( m_hists_emission_initialEnergies[ ( index_lower + index_upper ) / 2 ] < t_initialEnergy )
             index_lower = ( index_lower + index_upper ) / 2;
@@ -299,7 +299,7 @@ double DetectorResponsePredictor::eval_hists_emission_values( const shared_ptr< 
                                                               const double                              t_initialEnergy ,
                                                               const double                              t_trackLength   ,
                                                               const double                              t_photonAngle    ) const {
-    LogD( "    Evaluating emission histograms.", m_verbosity_debug );
+    LogD( "Evaluating emission histograms.", m_verbosity_debug );
     pair< int, int > closestHists{ get_closestEmissionHists( t_hists_emission, t_initialEnergy ) };
 
     // Use linear inerpolation between upper and lower histograms
@@ -318,7 +318,7 @@ double DetectorResponsePredictor::eval_hists_emission_indicies( const shared_ptr
                                                                 const double                              t_initialEnergy   ,
                                                                 const unsigned int                        t_trackLengthIndex, 
                                                                 const unsigned int                        t_photonAngleIndex ) const {
-    LogD( "    Evaluating emission histograms.", m_verbosity_debug );
+    LogD( "Evaluating emission histograms.", m_verbosity_debug );
     pair< int, int > closestHists{ get_closestEmissionHists( t_hists_emission, t_initialEnergy ) };
 
     // Use linear inerpolation between upper and lower histograms
@@ -363,13 +363,13 @@ double DetectorResponsePredictor::eval_hists_emission_MRDsci_counts( const doubl
 
 double DetectorResponsePredictor::eval_hist_value( const TH1D  * t_hist,
                                                    const double  t_x    ) const {
-    LogD( "    Evaluating histogram", m_verbosity_debug );
+    LogD( "Evaluating histogram", m_verbosity_debug );
     return t_hist->Interpolate( t_x );
 }
 
 double DetectorResponsePredictor::eval_hist_index( const TH1D       * t_hist  ,
                                                    const unsigned int t_xIndex ) const {
-    LogD( "    Evaluating histogram", m_verbosity_debug );
+    LogD( "Evaluating histogram", m_verbosity_debug );
     return t_hist->GetBinContent( t_xIndex );
 }
 
