@@ -884,7 +884,7 @@ void THistReader< type_ID, type_hist >::operator=( const THistReader& t_THistRea
     }
 
     m_verbosity = t_THistReader.m_verbosity;
-    m_hists     = t_THistReader.get_histsMap()
+    m_hists     = t_THistReader.get_histsMap();
 
     if( m_hists->size() != t_THistReader.get_histsMap()->size() ) {
         cout << "Error: Not all histograms were copied" << endl;

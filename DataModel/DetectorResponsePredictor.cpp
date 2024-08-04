@@ -35,10 +35,6 @@ void DetectorResponsePredictor::reset_members()
 {
     m_verbosity = m_verbosity_warning         ;
     m_hists_emission_initialEnergies.clear()  ;
-    delete m_hists_emission_tankWater_counts  ;
-    delete m_hists_emission_tankWater_energies;
-    delete m_hists_emission_MRDsci_counts     ;
-    delete m_hists_emission_MRDsci_energies   ;
     delete m_hist_transmission_tankWater      ;
     delete m_hist_transmission_MRDsci         ;
     delete m_hist_dEdX_tankWater              ;
