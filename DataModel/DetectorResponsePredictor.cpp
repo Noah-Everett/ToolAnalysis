@@ -98,6 +98,10 @@ bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap<
         LogD( "`t_hists_energies` wasn't set.", m_verbosity_error );
         return false;
     }
+    // Rebin histograms
+    for( pair< int, TH2D* >& hist : *t_hists_energies ) {
+        hist.second->Rebin2D( 2, 2 );
+    }
     // Check that a hist with 0 energy exists
     if( t_hists_energies->find( 0 ) == t_hists_energies->end() ) {
         LogD( "`t_hists_energies` doesnt contain a hist with zero energy.", m_verbosity_error );
@@ -112,6 +116,10 @@ bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap<
     if( !t_hists_counts ) {
         LogD( "`t_hists_counts` wasn't set.", m_verbosity_error );
         return false;
+    }
+    // Rebin histograms
+    for( pair< int, TH2D* >& hist : *t_hists_counts ) {
+        hist.second->Rebin2D( 2, 2 );
     }
     // Check that a hist with 0 energy exists
     if( t_hists_counts->find( 0 ) == t_hists_counts->end() ) {

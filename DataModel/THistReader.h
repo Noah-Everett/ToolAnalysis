@@ -870,7 +870,6 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
             delete temp;
             return;
         }
-        entry.second->Rebin(2);
 
         auto result = m_hists->insert( entry );
         if( ! result.second ) {
