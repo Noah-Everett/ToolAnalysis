@@ -53,7 +53,6 @@ class THistMap : public map< type_ID, type_hist* > {
 
     private:
         unsigned int         m_verbosity;
-        vector< THistMap*& > m_referecnes;
 };
 
 template< typename type_ID, typename type_hist >

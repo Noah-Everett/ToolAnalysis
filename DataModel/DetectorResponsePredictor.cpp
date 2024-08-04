@@ -503,8 +503,8 @@ double DetectorResponsePredictor::get_expected_height( Particle* t_particle, Det
     double ( DetectorResponsePredictor::*get_transmittance )( const double, const double ) const;
     double ( DetectorResponsePredictor::*get_acceptance    )( const double, const int ) const;
     double phiBinWidth;
-    THistMap< int, TH2D >* hists_emission_counts;
-    THistMap< int, TH2D >* hists_emission_energies;
+    shared_ptr< THistMap< int, TH2D > > hists_emission_counts;
+    shared_ptr< THistMap< int, TH2D > > hists_emission_energies;
     if( t_detector->GetDetectorElement() == "PMT" ) {
         hists_emission_energies = m_hists_emission_tankWater_energies;
         hists_emission_counts   = m_hists_emission_tankWater_counts;
