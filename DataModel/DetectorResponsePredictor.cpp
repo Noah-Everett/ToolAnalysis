@@ -99,9 +99,11 @@ bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap<
         return false;
     }
     // Rebin histograms
+    cout << t_hists_energies->at( 0 )->GetNbinsX() << endl;
     for( pair< const int, TH2D* >& hist : *t_hists_energies ) {
-        hist.second = (TH2D*) hist.second->Rebin2D( 2, 2 );
+        hist.second = ( TH2D* ) hist.second->Rebin2D( 2, 2 );
     }
+    cout << t_hists_energies->at( 0 )->GetNbinsX() << endl;
     // Check that a hist with 0 energy exists
     if( t_hists_energies->find( 0 ) == t_hists_energies->end() ) {
         LogD( "`t_hists_energies` doesnt contain a hist with zero energy.", m_verbosity_error );
@@ -119,7 +121,7 @@ bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap<
     }
     // Rebin histograms
     for( pair< const int, TH2D* >& hist : *t_hists_counts ) {
-        hist.second = (TH2D*) hist.second->Rebin2D( 2, 2 );
+        hist.second = ( TH2D* ) hist.second->Rebin2D( 2, 2 );
     }
     // Check that a hist with 0 energy exists
     if( t_hists_counts->find( 0 ) == t_hists_counts->end() ) {
