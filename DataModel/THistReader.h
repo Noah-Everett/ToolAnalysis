@@ -850,7 +850,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
             delete temp;
             continue;
         }
-        type_hist*       temp2{ nullptr };
+        type_hist* temp2{ nullptr };
         import_TH( exported, temp2, "TEST", m_verbosity, false );
         if( ! check_copy( temp, temp2, "NAME" ) ) {
             cout << "Error: Copied histogram does not match original" << endl;
@@ -870,7 +870,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
             delete temp;
             return;
         }
-        cout << "entry.second.Sizeof() = " << entry.second->Sizeof() << endl;
+        entry.second->Rebin(2);
 
         auto result = m_hists->insert( entry );
         if( ! result.second ) {
