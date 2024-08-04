@@ -125,11 +125,11 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
     for( unsigned int nMaterial{ 0 }; nMaterial < num_materials; nMaterial++ )
         for( unsigned int nParticle{ 0 }; nParticle < num_particles; nParticle++ ) {
             hists_emission_energy_cur = hists_emission_energy_mins[ nMaterial ][ nParticle ];
-            hists_emission_energies_paths_cur.empty();
-            hists_emission_counts_paths_cur  .empty();
-            hists_emission_energies_names_cur.empty();
-            hists_emission_counts_names_cur  .empty();
-            hists_emission_IDs_cur           .empty();
+            hists_emission_energies_paths_cur.clear();
+            hists_emission_counts_paths_cur  .clear();
+            hists_emission_energies_names_cur.clear();
+            hists_emission_counts_names_cur  .clear();
+            hists_emission_IDs_cur           .clear();
             for( unsigned int nEnergy{ 0 }; nEnergy < hists_emission_energy_nums[ nMaterial ][ nParticle ]; nEnergy++ ) {
                 hists_emission_energies_paths_cur.push_back( hists_emission_energies_paths[ nMaterial ][ nParticle ]                                );
                 hists_emission_counts_paths_cur  .push_back( hists_emission_counts_paths  [ nMaterial ][ nParticle ]                                );
