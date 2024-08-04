@@ -109,7 +109,9 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
                                                                                         const vector< int    >&                          );
     DetectorResponsePredictorFunctionPtr load_hists_emissions[ num_materials ]{ &DetectorResponsePredictor::load_hists_emission_tankWater, 
                                                                                 &DetectorResponsePredictor::load_hists_emission_MRDsci    };
+    string                     load_hists_emissions_names[ num_materials ]{ "tankWater", "MRDsci" };
     DetectorResponsePredictor* DetectorResponsePredictors[ num_particles ]{ m_DetectorResponsePredictor_mu, m_DetectorResponsePredictor_e };
+    string                     DetectorResponsePredictors_names[ num_particles ]{ "mu", "e" };
     for( unsigned int nParticle{ 0 }; nParticle < num_particles; nParticle++ ) {
         LogD( "Setting verbosity for DetectorResponsePredictor (nParticle=" + to_string( nParticle ) + ").", m_verbosity_debug );
         DetectorResponsePredictors[ nParticle ]->set_verbosity( m_verbosity_DetectorResponsePredictor );
@@ -138,6 +140,7 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
                 hists_emission_IDs_cur           .push_back( hists_emission_energy_cur                                                              );
                 hists_emission_energy_cur += hists_emission_energy_deltas[ nMaterial ][ nParticle ];
             }
+            LogD( "Loading emission histograms (Material=" + load_hists_emissions_names[ nMaterial ] + " and Particle=" + DetectorResponsePredictors_names[ nParticle ] + ").", m_verbosity_debug );
             if( !( DetectorResponsePredictors[ nParticle ]->*load_hists_emissions[ nMaterial ] )( hists_emission_energies_paths_cur, hists_emission_counts_paths_cur,
                                                                                                   hists_emission_energies_names_cur, hists_emission_counts_names_cur,
                                                                                                   hists_emission_IDs_cur                                             ) ) {
