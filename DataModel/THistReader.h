@@ -764,7 +764,7 @@ THistMap< type_ID, type_hist >::THistMap( const THistMap& t_THistMap ) {
 
 template< typename type_ID, typename type_hist >
 THistMap< type_ID, type_hist >::~THistMap() {
-    if( m_verbosity >= m_verbosity_debug ) {
+    if( m_verbosity >= 3 ) {
         cout << "THistMap: Deleting histograms" << endl;
     }
 
