@@ -109,6 +109,7 @@ bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap<
     }
     // Delete t_hists_energies
     t_hists_energies.reset();
+    cout << "T_HISTS_ENERGIES.RESET()" << endl;
     
     // Load counts hist map
     histReader = new THistReader< int, TH2D >( t_hists_counts_paths, t_hists_IDs, t_hists_counts_names, t_hists_material+"_counts", m_verbosity_THistReader );
