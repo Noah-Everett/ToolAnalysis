@@ -23,7 +23,6 @@
 
 #include "TROOT.h"
 #include "TFile.h"
-#include "TObject.h"
 #include "TH1.h"
 #include "TH2.h"
 #include "TH3.h"
@@ -773,7 +772,7 @@ THistMap< type_ID, type_hist >::~THistMap() {
         if( entry.second ) {
             cout << "Deleting histogram with ID " << entry.first << endl;
             delete entry.second;
-            cout << "ROOT::Detail::HasBeenDeleted(this) = " << ROOT::Detail::HasBeenDeleted(this) << endl;
+            cout << "gROOT->TestBit(kNotDeleted) = " << gROOT->TestBit( kNotDeleted ) << endl;
         }
     }
 
