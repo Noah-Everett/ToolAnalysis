@@ -770,7 +770,11 @@ THistMap< type_ID, type_hist >::~THistMap() {
     }
 
     // print all open root objects
-    gROOT->GetListOfCleanups()->Print();
+    auto list = gROOT->GetListOfCleanups();
+    cout << "THistMap: Number of open root objects: " << list->GetSize() << endl;
+    for( int i{ 0 }; i < list->GetSize(); i++ ) {
+        cout << "THistMap: Open root object: " << list->At( i )->GetName() << endl;
+    }
 
     for( pair< const type_ID, type_hist* >& entry : *this ) {
         if( entry.second ) {
