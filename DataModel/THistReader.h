@@ -772,8 +772,11 @@ THistMap< type_ID, type_hist >::~THistMap() {
         if( entry.second ) {
             cout << "Deleting histogram with ID " << entry.first << endl;
             delete entry.second;
+            cout << "ROOT::Detail::HasBeenDeleted(this) = " << ROOT::Detail::HasBeenDeleted(this) << endl;
         }
     }
+
+    gROOT->GetListOfCleanups()->Clear();
 }
 
 template< typename type_ID, typename type_hist >
