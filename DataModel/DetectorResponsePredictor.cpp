@@ -111,6 +111,8 @@ bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap<
     cout << "t_hists_energies.use_count() = " << t_hists_energies.use_count() << endl;
     t_hists_energies.reset();
     cout << "t_hists_energies.use_count() = " << t_hists_energies.use_count() << endl;
+    // pause program to check memory usage with cin
+    cin.get();
     
     // Load counts hist map
     histReader = new THistReader< int, TH2D >( t_hists_counts_paths, t_hists_IDs, t_hists_counts_names, t_hists_material+"_counts", m_verbosity_THistReader );
