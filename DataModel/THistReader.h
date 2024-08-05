@@ -771,7 +771,7 @@ THistMap< type_ID, type_hist >::~THistMap() {
     }
 
     // print all open root objects
-    auto list = ( TCollection* )( gROOT->GetRootFolder()->GetListOfFolders()->FindObject( "ROOT Memory" ) )->GetListOfFolders();
+    auto list = ( ( TCollection* )( gROOT->GetRootFolder()->GetListOfFolders()->FindObject( "ROOT Memory" ) ) )->GetListOfFolders();
     cout << "There are " << list->GetEntries() << " open root objects" << endl;
     for( auto l = list->begin(); l != list->end(); ++l ) {
         cout << "Object: " << ( *l )->GetName() << endl;
