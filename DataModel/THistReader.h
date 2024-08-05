@@ -768,8 +768,11 @@ THistMap< type_ID, type_hist >::~THistMap() {
         cout << "THistMap: Deleting histograms" << endl;
     }
 
-    for( pair< type_ID, type_hist* > entry : *this ) {
-        if( entry.second ) delete entry.second;
+    for( pair< type_ID, type_hist* >& entry : *this ) {
+        if( entry.second ) {
+            cout << "Deleting histogram with ID " << entry.first << endl;
+            delete entry.second;
+        }
     }
 }
 
