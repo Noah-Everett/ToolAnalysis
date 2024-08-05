@@ -774,6 +774,8 @@ THistMap< type_ID, type_hist >::~THistMap() {
             delete entry.second;
         }
     }
+
+    gROOT->GetListOfCleanups()->Delete();
 }
 
 template< typename type_ID, typename type_hist >
