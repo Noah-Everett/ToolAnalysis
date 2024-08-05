@@ -23,6 +23,7 @@
 
 #include "TROOT.h"
 #include "TFile.h"
+#include "TObject.h"
 #include "TH1.h"
 #include "TH2.h"
 #include "TH3.h"
