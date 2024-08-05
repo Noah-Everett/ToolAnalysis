@@ -102,13 +102,13 @@ bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap<
     for( pair< const int, TH2D* >& hist : *t_hists_energies ) {
         hist.second = ( TH2D* ) hist.second->Rebin2D( 2, 2 );
     }
-    // Delete t_hists_energies
-    t_hists_energies.reset();
     // Check that a hist with 0 energy exists
     if( t_hists_energies->find( 0 ) == t_hists_energies->end() ) {
         LogD( "`t_hists_energies` doesnt contain a hist with zero energy.", m_verbosity_error );
         return false;
     }
+    // Delete t_hists_energies
+    t_hists_energies.reset();
     
     // Load counts hist map
     histReader = new THistReader< int, TH2D >( t_hists_counts_paths, t_hists_IDs, t_hists_counts_names, t_hists_material+"_counts", m_verbosity_THistReader );
