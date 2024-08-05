@@ -769,6 +769,9 @@ THistMap< type_ID, type_hist >::~THistMap() {
         cout << "THistMap: Deleting histograms" << endl;
     }
 
+    // print all open root objects
+    gROOT->GetListOfCleanups()->Print();
+
     for( pair< const type_ID, type_hist* >& entry : *this ) {
         if( entry.second ) {
             cout << "Deleting histogram with ID " << entry.first << endl;
