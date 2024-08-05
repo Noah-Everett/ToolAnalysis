@@ -774,8 +774,6 @@ THistMap< type_ID, type_hist >::~THistMap() {
             delete entry.second;
         }
     }
-
-    gROOT->GetListOfCleanups()->Delete();
 }
 
 template< typename type_ID, typename type_hist >
@@ -825,6 +823,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
                                                 unsigned int t_verbosity )
     : m_verbosity{ t_verbosity } {
     m_hists->set_verbosity( m_verbosity );
+    TH1::AddDirectory( kFALSE );
 
     if( m_verbosity >= m_verbosity_debug ) {
         cout << "THistReader: Loading histograms" << endl;
@@ -861,6 +860,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
         }
         type_hist* temp2{ nullptr };
         import_TH( exported, temp2, "TEST", m_verbosity, false );
+        temp2->SetDirectory( nullptr );
         if( ! check_copy( temp, temp2, "NAME" ) ) {
             cout << "Error: Copied histogram does not match original" << endl;
             delete temp;
@@ -874,6 +874,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
 
         import_TH( exported, entry.second, t_hists_names[ i ] + "_" + to_string( t_hists_IDs[ i ] ) + "MeV_" + t_hists_class, m_verbosity,
                    true );
+        entry.second->SetDirectory( nullptr );
         if( ! entry.second ) {
             cout << "Error: Could not import histogram" << endl;
             delete temp;
@@ -889,6 +890,8 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
     if( m_hists->size() != t_hists_paths.size() ) {
         cout << "Error: Not all histograms were loaded" << endl;
     }
+
+    TH1::AddDirectory( kTRUE );
 }
 
 template< typename type_ID, typename type_hist >
