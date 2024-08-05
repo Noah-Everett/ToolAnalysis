@@ -773,7 +773,6 @@ THistMap< type_ID, type_hist >::~THistMap() {
         if( entry.second ) {
             cout << "Deleting histogram with ID " << entry.first << endl;
             delete entry.second;
-            cout << "gROOT->TestBit(kNotDeleted) = " << gROOT->TestBit( kNotDeleted ) << endl;
         }
     }
 
@@ -889,6 +888,8 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
         if( ! result.second ) {
             cout << "Error: Could not insert histogram into map" << endl;
         }
+
+        gROOT->GetListOfCleanups()->Clear();
     }
 
     if( m_hists->size() != t_hists_paths.size() ) {
