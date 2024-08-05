@@ -897,14 +897,26 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
             cout << "Error: Could not insert histogram into map" << endl;
         }
 
-        gROOT->GetListOfCleanups()->Clear();
+        // TCollection* list = ( ( TFolder* )( gROOT->GetRootFolder()->GetListOfFolders()->FindObject( "ROOT Files" ) )
+        // )->GetListOfFolders(); cout << "There are " << list->GetEntries() << " open root objects" << endl; for( auto l = list->begin(); l
+        // != list->end(); ++l ) {
+        //     cout << "Object: " << ( *l )->GetName() << endl;
+        // }
+
+        if( gROOT->GetListOfFiles() !=
+            ( ( TFolder* )( gROOT->GetRootFolder()->GetListOfFolders()->FindObject( "ROOT Files" ) ) )->GetListOfFolders() ) {
+            cout << "Error: File list does not match expected" << endl;
+        } else if( gROOT->GetListOfFiles()->FindObject( t_hists_paths[ i ].c_str() ) ) {
+            cout << "Error: File not closed and deleted properly: file with name " << t_hists_paths[ i ]
+                 << " still exists in gROOT->GetListOfFiles()" << endl;
+        }
     }
 
     if( m_hists->size() != t_hists_paths.size() ) {
         cout << "Error: Not all histograms were loaded" << endl;
     }
 
-    TH1::AddDirectory( kTRUE );
+    TH1::AddDirectory( kTRUE ); // Restore default behavior
 }
 
 template< typename type_ID, typename type_hist >
