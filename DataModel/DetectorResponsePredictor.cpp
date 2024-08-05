@@ -103,7 +103,7 @@ bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap<
         hist.second = ( TH2D* ) hist.second->Rebin2D( 2, 2 );
     }
     // Delete t_hists_energies
-    delete t_hists_energies.get();
+    t_hists_energies.reset();
     // Check that a hist with 0 energy exists
     if( t_hists_energies->find( 0 ) == t_hists_energies->end() ) {
         LogD( "`t_hists_energies` doesnt contain a hist with zero energy.", m_verbosity_error );
