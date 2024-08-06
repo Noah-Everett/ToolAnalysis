@@ -148,7 +148,7 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
             LogD( "Loading emission histograms (Material=" + load_hists_emissions_names[ nMaterial ] + " and Particle=" + DetectorResponsePredictors_particles[ nParticle ] + ").", m_verbosity_debug );
             if( !( DetectorResponsePredictors[ nParticle ]->*load_hists_emissions[ nMaterial ] )( hists_emission_energies_paths_cur, hists_emission_counts_paths_cur,
                                                                                                   hists_emission_energies_names_cur, hists_emission_counts_names_cur,
-                                                                                                  hists_emission_IDs_cur                                             ) {
+                                                                                                  hists_emission_IDs_cur                                             ) ) {
                 string temp_string{ "Cannot load emission histograms (nMaterial=" };
                 LogD( temp_string + to_string( nMaterial ) + " and nParticle=" + to_string( nParticle ) + ").", m_verbosity_error );
                 LogD( "hists_emission_energies_paths_cur[0]: " + hists_emission_energies_paths_cur[ 0 ]  , m_verbosity_debug );
