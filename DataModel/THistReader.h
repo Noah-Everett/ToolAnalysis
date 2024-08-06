@@ -62,7 +62,7 @@ template< typename type_ID, typename type_hist >
 class THistReader {
     public:
         THistReader( const vector< string >& t_hists_paths, const vector< type_ID >& t_hists_IDs, const vector< string >& t_hists_names,
-                     const string& t_hists_class, unsigned int t_verbosity = 1 );
+                     const string& t_hists_tag, unsigned int t_verbosity = 1 );
 
         THistReader( const THistReader& t_THistReader );
 
@@ -312,13 +312,13 @@ inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_nam
         name = new TString( t_name );
     }
 
-    TString*  title  = (TString* )( t_exported[ 1 ] );
-    Int_t*    nxbins = (Int_t* )( t_exported[ 2 ] );
-    Double_t* xlow   = (Double_t* )( t_exported[ 3 ] );
-    Double_t* xhigh  = (Double_t* )( t_exported[ 4 ] );
-    Int_t*    nybins = (Int_t* )( t_exported[ 5 ] );
-    Double_t* ylow   = (Double_t* )( t_exported[ 6 ] );
-    Double_t* yhigh  = (Double_t* )( t_exported[ 7 ] );
+    TString*  title  = ( TString* )( t_exported[ 1 ] );
+    Int_t*    nxbins = ( Int_t* )( t_exported[ 2 ] );
+    Double_t* xlow   = ( Double_t* )( t_exported[ 3 ] );
+    Double_t* xhigh  = ( Double_t* )( t_exported[ 4 ] );
+    Int_t*    nybins = ( Int_t* )( t_exported[ 5 ] );
+    Double_t* ylow   = ( Double_t* )( t_exported[ 6 ] );
+    Double_t* yhigh  = ( Double_t* )( t_exported[ 7 ] );
 
     Int_t nxbins_val = *nxbins;
     Int_t nybins_val = *nybins;
@@ -363,10 +363,9 @@ inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_nam
 cleanup:
     if( ! t_clear ) return;
 
-
     delete name;
     if( ! t_name.EqualTo( "" ) ) {
-        delete ( TString* )( t_exported[ 0 ] );
+        delete( TString* )( t_exported[ 0 ] );
     }
 
     delete title;
@@ -835,8 +834,7 @@ void THistMap< type_ID, type_hist >::operator=( const THistMap& t_THistMap ) {
 
 template< typename type_ID, typename type_hist >
 THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_paths, const vector< type_ID >& t_hists_IDs,
-                                                const vector< string >& t_hists_names, const string& t_hists_class,
-                                                unsigned int t_verbosity )
+                                                const vector< string >& t_hists_names, const string& t_hists_tag, unsigned int t_verbosity )
     : m_verbosity{ t_verbosity } {
     m_hists->set_verbosity( m_verbosity );
     TH1::AddDirectory( kFALSE );
@@ -874,8 +872,7 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
             delete temp;
             continue;
         }
-        type_hist*                   temp2{ nullptr };
-        /* DELETE */ vector< void* > exported2{ exported };
+        type_hist* temp2{ nullptr };
         import_TH( exported, temp2, "TEST", m_verbosity, false );
         temp2->SetDirectory( nullptr );
         if( ! check_copy( temp, temp2, "NAME" ) ) {
@@ -889,8 +886,11 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
         delete temp2;
         file.Close();
 
-        import_TH( exported, entry.second, t_hists_names[ i ] + "_" + to_string( t_hists_IDs[ i ] ) + "MeV_" + t_hists_class, m_verbosity,
-                   true );
+        if( t_hists_paths.size() != 1 )
+            import_TH( exported, entry.second, t_hists_names[ i ] + "_" + to_string( t_hists_IDs[ i ] ) + "MeV_" + t_hists_tag, m_verbosity,
+                       true );
+        else
+            import_TH( exported, entry.second, t_hists_names[ i ] + t_hists_tag, m_verbosity, true );
         entry.second->SetDirectory( nullptr );
         if( ! entry.second ) {
             cout << "Error: Could not import histogram" << endl;

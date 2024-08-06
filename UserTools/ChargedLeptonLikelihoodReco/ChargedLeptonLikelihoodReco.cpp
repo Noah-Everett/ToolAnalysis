@@ -111,7 +111,7 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
                                                                                 &DetectorResponsePredictor::load_hists_emission_MRDsci    };
     string                     load_hists_emissions_names[ num_materials ]{ "tankWater", "MRDsci" };
     DetectorResponsePredictor* DetectorResponsePredictors[ num_particles ]{ m_DetectorResponsePredictor_mu, m_DetectorResponsePredictor_e };
-    string                     DetectorResponsePredictors_names[ num_particles ]{ "mu", "e" };
+    string                     DetectorResponsePredictors_particles[ num_particles ]{ "mu", "e" };
     for( unsigned int nParticle{ 0 }; nParticle < num_particles; nParticle++ ) {
         LogD( "Setting verbosity for DetectorResponsePredictor (nParticle=" + to_string( nParticle ) + ").", m_verbosity_debug );
         DetectorResponsePredictors[ nParticle ]->set_verbosity( m_verbosity_DetectorResponsePredictor );
@@ -140,7 +140,7 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
                 hists_emission_IDs_cur           .push_back( hists_emission_energy_cur                                                              );
                 hists_emission_energy_cur += hists_emission_energy_deltas[ nMaterial ][ nParticle ];
             }
-            LogD( "Loading emission histograms (Material=" + load_hists_emissions_names[ nMaterial ] + " and Particle=" + DetectorResponsePredictors_names[ nParticle ] + ").", m_verbosity_debug );
+            LogD( "Loading emission histograms (Material=" + load_hists_emissions_names[ nMaterial ] + " and Particle=" + DetectorResponsePredictors_particles[ nParticle ] + ").", m_verbosity_debug );
             if( !( DetectorResponsePredictors[ nParticle ]->*load_hists_emissions[ nMaterial ] )( hists_emission_energies_paths_cur, hists_emission_counts_paths_cur,
                                                                                                   hists_emission_energies_names_cur, hists_emission_counts_names_cur,
                                                                                                   hists_emission_IDs_cur                                             ) ) {
@@ -170,13 +170,12 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
     const string hist_dEdX_MRDiron_names           [ num_particles ]{ m_hists_dEdX_mu_MRDiron_name           , m_hists_dEdX_e_MRDiron_name            };
 
     for( unsigned int nParticle{ 0 }; nParticle < num_particles; nParticle++ ) {
-        DetectorResponsePredictors[ nParticle ]->load_hist_transmission_tankWater( hist_transmittance_tankWater_paths[ nParticle ], hist_transmittance_tankWater_names[ nParticle ] );
-        DetectorResponsePredictors[ nParticle ]->load_hist_transmission_MRDsci   ( hist_transmittance_MRDsci_paths   [ nParticle ], hist_transmittance_MRDsci_names   [ nParticle ] );
-        DetectorResponsePredictors[ nParticle ]->load_hist_dEdX_tankWater        ( hist_dEdX_tankWater_paths         [ nParticle ], hist_dEdX_tankWater_names         [ nParticle ] );
-        DetectorResponsePredictors[ nParticle ]->load_hist_dEdX_tankSteel        ( hist_dEdX_tankSteel_paths         [ nParticle ], hist_dEdX_tankSteel_names         [ nParticle ] );
-        DetectorResponsePredictors[ nParticle ]->load_hist_dEdX_MRDsci           ( hist_dEdX_MRDsci_paths            [ nParticle ], hist_dEdX_MRDsci_names            [ nParticle ] );
-        DetectorResponsePredictors[ nParticle ]->load_hist_dEdX_MRDiron          ( hist_dEdX_MRDiron_paths           [ nParticle ], hist_dEdX_MRDiron_names           [ nParticle ] );
-        DetectorResponsePredictors[ nParticle ]->set_verbosity                   ( m_verbosity_DetectorResponsePredictor                                                            );
+        DetectorResponsePredictors[ nParticle ]->load_hist_transmission_tankWater( hist_transmittance_tankWater_paths[ nParticle ], hist_transmittance_tankWater_names[ nParticle ], DetectorResponsePredictors_particles[ nParticle ] );
+        DetectorResponsePredictors[ nParticle ]->load_hist_transmission_MRDsci   ( hist_transmittance_MRDsci_paths   [ nParticle ], hist_transmittance_MRDsci_names   [ nParticle ], DetectorResponsePredictors_particles[ nParticle ] );
+        DetectorResponsePredictors[ nParticle ]->load_hist_dEdX_tankWater        ( hist_dEdX_tankWater_paths         [ nParticle ], hist_dEdX_tankWater_names         [ nParticle ], DetectorResponsePredictors_particles[ nParticle ] );
+        DetectorResponsePredictors[ nParticle ]->load_hist_dEdX_tankSteel        ( hist_dEdX_tankSteel_paths         [ nParticle ], hist_dEdX_tankSteel_names         [ nParticle ], DetectorResponsePredictors_particles[ nParticle ] );
+        DetectorResponsePredictors[ nParticle ]->load_hist_dEdX_MRDsci           ( hist_dEdX_MRDsci_paths            [ nParticle ], hist_dEdX_MRDsci_names            [ nParticle ], DetectorResponsePredictors_particles[ nParticle ] );
+        DetectorResponsePredictors[ nParticle ]->load_hist_dEdX_MRDiron          ( hist_dEdX_MRDiron_paths           [ nParticle ], hist_dEdX_MRDiron_names           [ nParticle ], DetectorResponsePredictors_particles[ nParticle ] );
     }
 
     return true;

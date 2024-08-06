@@ -49,14 +49,14 @@ hists_dEdX_e_MRDsci_path                  /Data/MRDScintilator-e.root
 hists_dEdX_mu_MRDiron_path                /Data/MRDScintilator-mu.root
 hists_dEdX_e_MRDiron_path                 /Data/MRDScintilator-e.root
 
-hists_dEdX_mu_tankWater_name              hists_dEdX_dEdX
-hists_dEdX_e_tankWater_name               hists_dEdX_dEdX
-hists_dEdX_mu_tankSteel_name              hists_dEdX_dEdX
-hists_dEdX_e_tankSteel_name               hists_dEdX_dEdX
-hists_dEdX_mu_MRDsci_name                 hists_dEdX_dEdX
-hists_dEdX_e_MRDsci_name                  hists_dEdX_dEdX
-hists_dEdX_mu_MRDiron_name                hists_dEdX_dEdX
-hists_dEdX_e_MRDiron_name                 hists_dEdX_dEdX
+hists_dEdX_mu_tankWater_name              hist_dEdX_dEdX
+hists_dEdX_e_tankWater_name               hist_dEdX_dEdX
+hists_dEdX_mu_tankSteel_name              hist_dEdX_dEdX
+hists_dEdX_e_tankSteel_name               hist_dEdX_dEdX
+hists_dEdX_mu_MRDsci_name                 hist_dEdX_dEdX
+hists_dEdX_e_MRDsci_name                  hist_dEdX_dEdX
+hists_dEdX_mu_MRDiron_name                hist_dEdX_dEdX
+hists_dEdX_e_MRDiron_name                 hist_dEdX_dEdX
 
 # PHOTON TRANSMITTANCE DATA
 hists_transmittance_mu_tankWater_path     /Data/water_doped-mu.root
