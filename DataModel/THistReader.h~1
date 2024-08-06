@@ -284,7 +284,6 @@ cleanup:
     }
 
     t_exported.clear();
-    t_exported.resize( 0 );
 
     return;
 }
@@ -380,7 +379,6 @@ cleanup:
     }
 
     t_exported.clear();
-    t_exported.resize( 0 );
 
     return;
 }
@@ -488,7 +486,6 @@ cleanup:
     }
 
     t_exported.clear();
-    t_exported.resize( 0 );
 
     return;
 }

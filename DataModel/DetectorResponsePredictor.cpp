@@ -194,10 +194,6 @@ bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap<
     }
 
     // Set bin widths
-    auto one = t_hists_energies->begin();
-    auto two = one->second;
-    auto three = two->GetXaxis();
-    auto four = three->GetBinWidth( 0 );
     t_binWidth_s     = t_hists_energies->begin()->second->GetXaxis()->GetBinWidth( 0 );
     t_binWidth_theta = t_hists_energies->begin()->second->GetYaxis()->GetBinWidth( 0 );
     t_binWidth_phi   = t_hists_energies->begin()->second->GetYaxis()->GetBinWidth( 0 );
