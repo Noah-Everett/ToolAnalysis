@@ -236,17 +236,17 @@ protected:
     /**////////////////////////////
     /**/
     /**/// Load Histograms
-    /**/ bool load_hists_emission(       shared_ptr< THistMap< int, TH2D > >   t_hists_energies      ,
-    /**/                                 shared_ptr< THistMap< int, TH2D > >   t_hists_counts        ,
-    /**/                           const vector    < string                > & t_hists_energies_paths,
-    /**/                           const vector    < string                > & t_hists_counts_paths  ,
-    /**/                           const vector    < string                > & t_hists_energies_names,
-    /**/                           const vector    < string                > & t_hists_counts_names  ,
-    /**/                           const vector    < int                   > & t_hists_IDs           ,
-    /**/                                 double                              & t_binWidth_s          ,
-    /**/                                 double                              & t_binWidth_theta      ,
-    /**/                                 double                              & t_binWidth_phi        ,
-    /**/                           const string                              & t_hists_material       );
+    /**/ bool load_hists_emission(       shared_ptr< THistMap< int, TH2D > >& t_hists_energies      ,
+    /**/                                 shared_ptr< THistMap< int, TH2D > >& t_hists_counts        ,
+    /**/                           const vector    < string                >& t_hists_energies_paths,
+    /**/                           const vector    < string                >& t_hists_counts_paths  ,
+    /**/                           const vector    < string                >& t_hists_energies_names,
+    /**/                           const vector    < string                >& t_hists_counts_names  ,
+    /**/                           const vector    < int                   >& t_hists_IDs           ,
+    /**/                                 double                             & t_binWidth_s          ,
+    /**/                                 double                             & t_binWidth_theta      ,
+    /**/                                 double                             & t_binWidth_phi        ,
+    /**/                           const string                             & t_hists_material       );
     /**/ template< typename type_hist >
     /**/ bool load_hist          (       type_hist*& t_hist     ,
     /**/                           const string    & t_hist_path,
