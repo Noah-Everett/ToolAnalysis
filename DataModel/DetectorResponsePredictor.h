@@ -7,7 +7,7 @@
 //*//   Created Febuary 13, 2023                                                              //*//
 //*//                                                                                         //*//
 //*// About:                                                                                  //*//
-//*//   This file contains classes for generalized detector response predicction. All         //*//
+//*//   This file contains classes for generalized detector response prediction. All          //*//
 //*//   information (PDFs, histograms, etc.) needs to be set by the user.                     //*//
 //*//                                                                                         //*//
 //*// Classes:                                                                                //*//
@@ -167,9 +167,9 @@ protected:
     /**/// Output ///
     /**//////////////
     /**/
-    /**/ #define     LogD(                        t_message      ,                  t_verbosity ) Log_debug( t_message, t_verbosity, __FILE__, __FUNCTION__, __LINE__ )
-    /**/ inline void Log_debug   ( const string&  t_message      , unsigned int     t_verbosity, const string& t_file, const string& t_function, int t_line ) const;
-    /**/ inline void Log_debug   ( const string&& t_message      , unsigned int     t_verbosity, const string& t_file, const string& t_function, int t_line ) const;
+    /**/ #define     LogD     (                t_message,              t_verbosity ) Log_debug( t_message, t_verbosity, __FILE__, __FUNCTION__, __LINE__ )
+    /**/ inline void Log_debug( const string&  t_message, unsigned int t_verbosity, const string& t_file, const string& t_function, int t_line ) const;
+    /**/ inline void Log_debug( const string&& t_message, unsigned int t_verbosity, const string& t_file, const string& t_function, int t_line ) const;
     /**/
     /**/ enum m_verbosity_enum{ m_verbosity_error   = 0,
     /**/                        m_verbosity_warning = 1,
@@ -246,11 +246,12 @@ protected:
     /**/                                 double                             & t_binWidth_s          ,
     /**/                                 double                             & t_binWidth_theta      ,
     /**/                                 double                             & t_binWidth_phi        ,
-    /**/                           const string                             & t_hists_material       );
+    /**/                           const string                             & t_hists_tag            );
     /**/ template< typename type_hist >
-    /**/ bool load_hist          (       type_hist*& t_hist     ,
-    /**/                           const string    & t_hist_path,
-    /**/                           const string    & t_hist_name );
+    /**/ bool load_hist          (       type_hist*& t_hist         ,
+    /**/                           const string    & t_hist_path    ,
+    /**/                           const string    & t_hist_name    ,
+    /**/                           const string    & t_hist_particle );
     /**/
     /**/// Evaluate Histograms
     /**/ pair< int, int > get_closestEmissionHists     ( const shared_ptr< THistMap< int, TH2D > >  t_hists_emission,
