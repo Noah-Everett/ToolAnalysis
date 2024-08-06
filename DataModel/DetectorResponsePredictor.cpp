@@ -98,6 +98,11 @@ bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap<
         LogD( "`t_hists_energies` wasn't set.", m_verbosity_error );
         return false;
     }
+    // Check length of map
+    if( t_hists_energies->size() != t_hists_energies_paths.size() ) {
+        LogD( "All histograms in `t_hists_energies` were not loaded.", m_verbosity_error );
+        return false;
+    }
     // Rebin histograms
     for( pair< const int, TH2D* >& hist : *t_hists_energies ) {
         hist.second = ( TH2D* ) hist.second->Rebin2D( 2, 2 );
@@ -228,16 +233,23 @@ bool DetectorResponsePredictor::load_hist(       type_hist*& m_hist     ,
                                            const string    & t_hist_path,
                                            const string    & t_hist_name,
                                            const string    & t_hist_tag  ) {
-    LogD( "Loading histogram.", m_verbosity_debug );
+    LogD( "Loading histogram with path " + t_hist_path + " and name " + t_hist_name + ".", m_verbosity_debug );
+
     THistReader< bool, type_hist >* histReader{ new THistReader< bool, type_hist >( { t_hist_path }, { 1 }, { t_hist_name }, t_hist_tag, m_verbosity_THistReader ) };
-    m_hist = histReader->get_histsMap()->at( true );
-    if( histReader ) {
-        delete histReader;
-        LogD( "Successfully loaded histogram.", m_verbosity_debug );
-        return true;
-    } else
-        LogD( "Failed to load histogram.", m_verbosity_debug );
+    if( ! histReader ) {
+        LogD( "Failed to load histogram. THistReader failed to initialize.", m_verbosity_error );
         return false;
+    }
+    
+    if( histReader->get_histsMap()->size() != 1 ) {
+        LogD( "Failed to load histogram.", m_verbosity_debug );
+        delete histReader;
+        return false;
+    }
+    m_hist = copy_TH( histReader->get_histsMap()->at( 1 ), m_verbosity_THistReader );
+
+    delete histReader;
+    return true;
 }
 
 bool DetectorResponsePredictor::load_hist_transmission_tankWater( const string& t_hist_path,
