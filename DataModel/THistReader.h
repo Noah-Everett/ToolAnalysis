@@ -850,6 +850,10 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
     }
 
     for( int i{ 0 }; i < t_hists_paths.size(); i++ ) {
+        if( m_verbosity >= m_verbosity_debug ) {
+            cout << "THistReader: Loading histogram with ID " << t_hists_IDs[ i ] << " from file with path " << t_hists_paths[ i ]
+                 << " and name " << t_hists_names[ i ] << endl;
+        }
         TFile file{ t_hists_paths[ i ].c_str() };
         if( file.IsZombie() ) {
             cout << "Error: Could not open file with path " << t_hists_paths[ i ] << endl;

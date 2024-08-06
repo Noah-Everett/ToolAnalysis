@@ -183,6 +183,8 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
         DetectorResponsePredictors[ nParticle ]->load_hist_dEdX_MRDiron          ( hist_dEdX_MRDiron_paths           [ nParticle ], hist_dEdX_MRDiron_names           [ nParticle ] );
     }
 
+    // pause execution
+    std::cin.get();
     return true;
 }
 
