@@ -929,20 +929,13 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
         }
 
         /* DELETE */ int j = 0;
-        /* DELETE */ cout << "[" << j << "] = " << exported2[ j ] << endl;
-        /* DELETE */ cout << "[" << j << "] = " << *( ( TString* )( exported2[ j++ ] ) ) << endl;
-        /* DELETE */ cout << "[" << j << "] = " << exported2[ j ] << endl;
-        /* DELETE */ cout << "[" << j << "] = " << *( ( Int_t* )( exported2[ j++ ] ) ) << endl;
-        /* DELETE */ cout << "[" << j << "] = " << exported2[ j ] << endl;
-        /* DELETE */ cout << "[" << j << "] = " << *( ( Double_t* )( exported2[ j++ ] ) ) << endl;
-        /* DELETE */ cout << "[" << j << "] = " << exported2[ j ] << endl;
-        /* DELETE */ cout << "[" << j << "] = " << *( ( Double_t* )( exported2[ j++ ] ) ) << endl;
-        /* DELETE */ cout << "[" << j << "] = " << exported2[ j ] << endl;
-        /* DELETE */ cout << "[" << j << "] = " << *( ( Int_t* )( exported2[ j++ ] ) ) << endl;
-        /* DELETE */ cout << "[" << j << "] = " << exported2[ j ] << endl;
-        /* DELETE */ cout << "[" << j << "] = " << *( ( Double_t* )( exported2[ j++ ] ) ) << endl;
-        /* DELETE */ cout << "[" << j << "] = " << exported2[ j ] << endl;
-        /* DELETE */ cout << "[" << j << "] = " << *( ( Double_t* )( exported2[ j++ ] ) ) << endl;
+        /* DELETE */ cout << "[" << j << "] = " << exported2[ j ] << " || " << *( ( TString* )( exported2[ j++ ] ) ) << endl;
+        /* DELETE */ cout << "[" << j << "] = " << exported2[ j ] << " || " << *( ( Int_t* )( exported2[ j++ ] ) ) << endl;
+        /* DELETE */ cout << "[" << j << "] = " << exported2[ j ] << " || " << *( ( Double_t* )( exported2[ j++ ] ) ) << endl;
+        /* DELETE */ cout << "[" << j << "] = " << exported2[ j ] << " || " << *( ( Double_t* )( exported2[ j++ ] ) ) << endl;
+        /* DELETE */ cout << "[" << j << "] = " << exported2[ j ] << " || " << *( ( Int_t* )( exported2[ j++ ] ) ) << endl;
+        /* DELETE */ cout << "[" << j << "] = " << exported2[ j ] << " || " << *( ( Double_t* )( exported2[ j++ ] ) ) << endl;
+        /* DELETE */ cout << "[" << j << "] = " << exported2[ j ] << " || " << *( ( Double_t* )( exported2[ j++ ] ) ) << endl;
     }
 
     if( m_hists->size() != t_hists_paths.size() ) {
