@@ -108,18 +108,24 @@ public:
     /**/                                     const vector< int    >& t_hists_IDs           ,
     /**/                                     const string          & t_hists_particle       );
     /**/
-    /**/ bool load_hist_transmission_tankWater( const string& t_hist_path,
-    /**/                                        const string& t_hist_name );
-    /**/ bool load_hist_transmission_MRDsci   ( const string& t_hist_path,
-    /**/                                        const string& t_hist_name );
-    /**/ bool load_hist_dEdX_tankWater        ( const string& t_hist_path,
-    /**/                                        const string& t_hist_name );
-    /**/ bool load_hist_dEdX_tankSteel        ( const string& t_hist_path,
-    /**/                                        const string& t_hist_name );
-    /**/ bool load_hist_dEdX_MRDsci           ( const string& t_hist_path,
-    /**/                                        const string& t_hist_name );
-    /**/ bool load_hist_dEdX_MRDiron          ( const string& t_hist_path,
-    /**/                                        const string& t_hist_name );
+    /**/ bool load_hist_transmission_tankWater( const string& t_hist_path    ,
+    /**/                                        const string& t_hist_name    ,
+    /**/                                        const string& t_hist_particle );
+    /**/ bool load_hist_transmission_MRDsci   ( const string& t_hist_path    ,
+    /**/                                        const string& t_hist_name    ,
+    /**/                                        const string& t_hist_particle );
+    /**/ bool load_hist_dEdX_tankWater        ( const string& t_hist_path    ,
+    /**/                                        const string& t_hist_name    ,
+    /**/                                        const string& t_hist_particle );
+    /**/ bool load_hist_dEdX_tankSteel        ( const string& t_hist_path    ,
+    /**/                                        const string& t_hist_name    ,
+    /**/                                        const string& t_hist_particle );
+    /**/ bool load_hist_dEdX_MRDsci           ( const string& t_hist_path    ,
+    /**/                                        const string& t_hist_name    ,
+    /**/                                        const string& t_hist_particle );
+    /**/ bool load_hist_dEdX_MRDiron          ( const string& t_hist_path    ,
+    /**/                                        const string& t_hist_name    ,
+    /**/                                        const string& t_hist_particle );
     /**/
     /**/// Evaluate Histograms
     /**/ double eval_hists_emission_tankWater_energies( const double t_initialEnergy,
