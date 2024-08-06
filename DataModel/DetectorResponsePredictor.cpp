@@ -241,7 +241,7 @@ bool DetectorResponsePredictor::load_hist(       type_hist*& m_hist     ,
 }
 
 bool DetectorResponsePredictor::load_hist_transmission_tankWater( const string& t_hist_path,
-                                                                  const string& t_hist_name );
+                                                                  const string& t_hist_name ) {
     LogD( "Loading tank water transmission histogram.", m_verbosity_debug );
     return load_hist< TH1D >( m_hist_transmission_tankWater, t_hist_path, t_hist_name, m_particle_name );
 }
