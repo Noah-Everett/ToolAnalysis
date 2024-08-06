@@ -268,10 +268,8 @@ inline void import_TH( vector< void* >& t_exported, TH1D*& t_copy, TString t_nam
 cleanup:
     if( ! t_clear ) return;
 
-    if( t_name.EqualTo( "" ) ) {
-        delete name;
-    } else {
-        delete name;
+    delete name;
+    if( ! t_name.EqualTo( "" ) ) {
         delete static_cast< TString* >( t_exported[ 0 ] );
     }
 
@@ -309,18 +307,18 @@ inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_nam
 
     TString* name{ nullptr };
     if( t_name.EqualTo( "" ) ) {
-        name = static_cast< TString* >( t_exported[ 0 ] );
+        name = ( TString* )( t_exported[ 0 ] );
     } else {
         name = new TString( t_name );
     }
 
-    TString*  title  = static_cast< TString* >( t_exported[ 1 ] );
-    Int_t*    nxbins = static_cast< Int_t* >( t_exported[ 2 ] );
-    Double_t* xlow   = static_cast< Double_t* >( t_exported[ 3 ] );
-    Double_t* xhigh  = static_cast< Double_t* >( t_exported[ 4 ] );
-    Int_t*    nybins = static_cast< Int_t* >( t_exported[ 5 ] );
-    Double_t* ylow   = static_cast< Double_t* >( t_exported[ 6 ] );
-    Double_t* yhigh  = static_cast< Double_t* >( t_exported[ 7 ] );
+    TString*  title  = (TString* )( t_exported[ 1 ] );
+    Int_t*    nxbins = (Int_t* )( t_exported[ 2 ] );
+    Double_t* xlow   = (Double_t* )( t_exported[ 3 ] );
+    Double_t* xhigh  = (Double_t* )( t_exported[ 4 ] );
+    Int_t*    nybins = (Int_t* )( t_exported[ 5 ] );
+    Double_t* ylow   = (Double_t* )( t_exported[ 6 ] );
+    Double_t* yhigh  = (Double_t* )( t_exported[ 7 ] );
 
     Int_t nxbins_val = *nxbins;
     Int_t nybins_val = *nybins;
@@ -354,8 +352,8 @@ inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_nam
 
     for( Int_t i = 1; i <= nxbins_val; ++i ) {
         for( Int_t j = 1; j <= nybins_val; ++j ) {
-            Double_t* content = static_cast< Double_t* >( t_exported[ 8 + 2 * ( i - 1 ) * nybins_val + 2 * ( j - 1 ) ] );
-            Double_t* error   = static_cast< Double_t* >( t_exported[ 9 + 2 * ( i - 1 ) * nybins_val + 2 * ( j - 1 ) ] );
+            Double_t* content = ( Double_t* )( t_exported[ 8 + 2 * ( i - 1 ) * nybins_val + 2 * ( j - 1 ) ] );
+            Double_t* error   = ( Double_t* )( t_exported[ 9 + 2 * ( i - 1 ) * nybins_val + 2 * ( j - 1 ) ] );
 
             t_copy->SetBinContent( i, j, *content );
             t_copy->SetBinError( i, j, *error );
@@ -367,11 +365,9 @@ inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_nam
 cleanup:
     if( ! t_clear ) return;
 
-    if( t_name.EqualTo( "" ) ) {
-        delete name;
-    } else {
-        delete name;
-        delete static_cast< TString* >( t_exported[ 0 ] );
+    delete name;
+    if( ! t_name.EqualTo( "" ) ) {
+        delete ( TString* )( t_exported[ 0 ] );
     }
 
     delete title;
@@ -383,7 +379,7 @@ cleanup:
     delete yhigh;
 
     for( int i{ 8 }; i < t_exported.size(); ++i ) {
-        Double_t* content = static_cast< Double_t* >( t_exported[ i ] );
+        Double_t* content = ( Double_t* )( t_exported[ i ] );
         delete content;
     }
 
@@ -478,10 +474,8 @@ inline void import_TH( vector< void* >& t_exported, TH3D*& t_copy, TString t_nam
 cleanup:
     if( ! t_clear ) return;
 
-    if( t_name.EqualTo( "" ) ) {
-        delete name;
-    } else {
-        delete name;
+    delete name;
+    if( ! t_name.EqualTo( "" ) ) {
         delete static_cast< TString* >( t_exported[ 0 ] );
     }
 
