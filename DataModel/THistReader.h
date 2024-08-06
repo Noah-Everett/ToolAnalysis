@@ -928,9 +928,9 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
                  << " still exists in gROOT->GetListOfFiles()" << endl;
         }
 
-        /* DELETE */ int i = 0;
-        /* DELETE */ cout << "[" << i << "] = " << exported2[ i ] << endl;
-        /* DELETE */ cout << "[" << i << "] = " << ( TString* )( exported2[ i++ ] ) << endl;
+        /* DELETE */ int j = 0;
+        /* DELETE */ cout << "[" << j << "] = " << exported2[ j ] << endl;
+        /* DELETE */ cout << "[" << j << "] = " << ( TString* )( exported2[ j++ ] ) << endl;
     }
 
     if( m_hists->size() != t_hists_paths.size() ) {
