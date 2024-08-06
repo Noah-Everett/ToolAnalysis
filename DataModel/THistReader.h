@@ -269,6 +269,12 @@ cleanup:
     if( ! t_clear ) return;
 
     delete name;
+    name = nullptr;
+    if( t_exported[ 0 ] ) {
+        delete static_cast< TString* >( t_exported[ 0 ] );
+        t_exported[ 0 ] = nullptr;
+    }
+
     delete title;
     delete nxbins;
     delete xlow;
@@ -362,6 +368,12 @@ cleanup:
     if( ! t_clear ) return;
 
     delete name;
+    name = nullptr;
+    if( t_exported[ 0 ] ) {
+        delete static_cast< TString* >( t_exported[ 0 ] );
+        t_exported[ 0 ] = nullptr;
+    }
+
     delete title;
     delete nxbins;
     delete xlow;
@@ -467,6 +479,12 @@ cleanup:
     if( ! t_clear ) return;
 
     delete name;
+    name = nullptr;
+    if( t_exported[ 0 ] ) {
+        delete static_cast< TString* >( t_exported[ 0 ] );
+        t_exported[ 0 ] = nullptr;
+    }
+
     delete title;
     delete nxbins;
     delete xlow;
@@ -872,7 +890,8 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
             delete temp;
             continue;
         }
-        type_hist* temp2{ nullptr };
+        type_hist*                   temp2{ nullptr };
+        /* DELETE */ vector< void* > exported2{ exported };
         import_TH( exported, temp2, "TEST", m_verbosity, false );
         temp2->SetDirectory( nullptr );
         if( ! check_copy( temp, temp2, "NAME" ) ) {
@@ -908,6 +927,10 @@ THistReader< type_ID, type_hist >::THistReader( const vector< string >& t_hists_
             cout << "Warning: File not closed and deleted properly: file with name " << t_hists_paths[ i ]
                  << " still exists in gROOT->GetListOfFiles()" << endl;
         }
+
+        /* DELETE */ int i = 0;
+        /* DELETE */ cout << "[" << i << "] = " << exported2[ i ] << endl;
+        /* DELETE */ cout << "[" << i << "] = " << ( TString* )( exported2[ i++ ] ) << endl;
     }
 
     if( m_hists->size() != t_hists_paths.size() ) {
