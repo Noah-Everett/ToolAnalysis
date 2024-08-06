@@ -784,17 +784,8 @@ THistMap< type_ID, type_hist >::~THistMap() {
         cout << "THistMap: Deleting histograms" << endl;
     }
 
-    // print all open root objects
-    auto list = ( ( TFolder* )( gROOT->GetRootFolder()->GetListOfFolders()->FindObject( "ROOT Files" ) ) )->GetListOfFolders();
-    cout << "There are " << list->GetEntries() << " open root objects" << endl;
-    for( auto l = list->begin(); l != list->end(); ++l ) {
-        cout << "Object: " << ( *l )->GetName() << endl;
-    }
-
     for( pair< const type_ID, type_hist* >& entry : *this ) {
         if( entry.second ) {
-            cout << "Deleting histogram with ID " << entry.first << endl;
-            gROOT->RecursiveRemove( entry.second );
             delete entry.second;
             entry.second = nullptr;
         }
