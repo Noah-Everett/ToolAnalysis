@@ -99,12 +99,14 @@ public:
     /**/                                     const vector< string >& t_hists_counts_paths  ,
     /**/                                     const vector< string >& t_hists_energies_names,
     /**/                                     const vector< string >& t_hists_counts_names  ,
-    /**/                                     const vector< int    >& t_hists_IDs            );
+    /**/                                     const vector< int    >& t_hists_IDs           ,
+    /**/                                     const string          & t_hists_particle       );
     /**/ bool load_hists_emission_MRDsci   ( const vector< string >& t_hists_energies_paths,
     /**/                                     const vector< string >& t_hists_counts_paths  ,
     /**/                                     const vector< string >& t_hists_energies_names,
     /**/                                     const vector< string >& t_hists_counts_names  ,
-    /**/                                     const vector< int    >& t_hists_IDs            );
+    /**/                                     const vector< int    >& t_hists_IDs           ,
+    /**/                                     const string          & t_hists_particle       );
     /**/
     /**/ bool load_hist_transmission_tankWater( const string& t_hist_path,
     /**/                                        const string& t_hist_name );
