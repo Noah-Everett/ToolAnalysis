@@ -106,8 +106,7 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
                                                                                         { m_hists_emission_mu_MRDsci_num             , m_hists_emission_e_MRDsci_num              } };
     using DetectorResponsePredictorFunctionPtr = bool ( DetectorResponsePredictor::* )( const vector< string >&, const vector< string >&, 
                                                                                         const vector< string >&, const vector< string >&,
-                                                                                        const vector< int    >&                         ,
-                                                                                        const string&                                    );
+                                                                                        const vector< int    >&                          );
     DetectorResponsePredictorFunctionPtr load_hists_emissions[ num_materials ]{ &DetectorResponsePredictor::load_hists_emission_tankWater, 
                                                                                 &DetectorResponsePredictor::load_hists_emission_MRDsci    };
     string                     load_hists_emissions_names[ num_materials ]{ "tankWater", "MRDsci" };
