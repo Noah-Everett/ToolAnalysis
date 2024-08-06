@@ -199,32 +199,28 @@ bool DetectorResponsePredictor::load_hists_emission_tankWater( const vector< str
                                                                const vector< string >& t_hists_counts_paths  ,
                                                                const vector< string >& t_hists_energies_names,
                                                                const vector< string >& t_hists_counts_names  ,
-                                                               const vector< int    >& t_hists_IDs           ,
-                                                               const string          & t_hists_particle       ) {
+                                                               const vector< int    >& t_hists_IDs            ) {
     LogD( "Loading tank water emission energy and count histograms.", m_verbosity_debug );
-    string tag{ "tankWater" };
     return load_hists_emission( m_hists_emission_tankWater_energies, m_hists_emission_tankWater_counts,
                                 t_hists_energies_paths             , t_hists_counts_paths             ,
                                 t_hists_energies_names             , t_hists_counts_names             ,
                                 t_hists_IDs                        , m_binWidth_s_tankWater           , 
                                 m_binWidth_theta_tankWater         , m_binWidth_phi_tankWater         ,
-                                tag + "_" + t_hists_particle                                           );
+                                m_particle_name + "_tankWater"                                         );
 }
 
 bool DetectorResponsePredictor::load_hists_emission_MRDsci( const vector< string >& t_hists_energies_paths,
                                                             const vector< string >& t_hists_counts_paths  ,
                                                             const vector< string >& t_hists_energies_names,
                                                             const vector< string >& t_hists_counts_names  ,
-                                                            const vector< int    >& t_hists_IDs           ,
-                                                            const string          & t_hists_particle       ) {
+                                                            const vector< int    >& t_hists_IDs            ) {
     LogD( "Loading MRD scintilator emission energy and count histograms.", m_verbosity_debug );
-    string tag{ "MRDsci" };
     return load_hists_emission( m_hists_emission_MRDsci_energies, m_hists_emission_MRDsci_counts,
                                 t_hists_energies_paths          , t_hists_counts_paths          ,
                                 t_hists_energies_names          , t_hists_counts_names          ,
                                 t_hists_IDs                     , m_binWidth_s_MRDsci           , 
                                 m_binWidth_theta_MRDsci         , m_binWidth_phi_MRDsci         ,
-                                tag + "_" + t_hists_particle                                     );
+                                m_particle_name + "_MRDsci"                                      );
 }
 
 template< typename type_hist >
@@ -244,46 +240,40 @@ bool DetectorResponsePredictor::load_hist(       type_hist*& m_hist     ,
         return false;
 }
 
-bool DetectorResponsePredictor::load_hist_transmission_tankWater( const string& t_hist_path    ,
-                                                                  const string& t_hist_name    ,
-                                                                  const string& t_hist_particle ) {
+bool DetectorResponsePredictor::load_hist_transmission_tankWater( const string& t_hist_path,
+                                                                  const string& t_hist_name );
     LogD( "Loading tank water transmission histogram.", m_verbosity_debug );
-    return load_hist< TH1D >( m_hist_transmission_tankWater, t_hist_path, t_hist_name, t_hist_particle );
+    return load_hist< TH1D >( m_hist_transmission_tankWater, t_hist_path, t_hist_name, m_particle_name );
 }
 
-bool DetectorResponsePredictor::load_hist_transmission_MRDsci( const string& t_hist_path    ,
-                                                               const string& t_hist_name    ,
-                                                               const string& t_hist_particle ) {
+bool DetectorResponsePredictor::load_hist_transmission_MRDsci( const string& t_hist_path,
+                                                               const string& t_hist_name ) {
     LogD( "Loading MRD scintilator transmission histogram.", m_verbosity_debug );
-    return load_hist< TH1D >( m_hist_transmission_MRDsci, t_hist_path, t_hist_name, t_hist_particle );
+    return load_hist< TH1D >( m_hist_transmission_MRDsci, t_hist_path, t_hist_name, m_particle_name + "_MRDsci" );
 }
 
-bool DetectorResponsePredictor::load_hist_dEdX_tankWater( const string& t_hist_path    ,
-                                                          const string& t_hist_name    ,
-                                                          const string& t_hist_particle ) {
+bool DetectorResponsePredictor::load_hist_dEdX_tankWater( const string& t_hist_path,
+                                                          const string& t_hist_name ) {
     LogD( "Loading tank water dEdX histogram.", m_verbosity_debug );
-    return load_hist< TH1D >( m_hist_dEdX_tankWater, t_hist_path, t_hist_name, t_hist_particle );
+    return load_hist< TH1D >( m_hist_dEdX_tankWater, t_hist_path, t_hist_name, m_particle_name + "_tankWater" );
 }
 
-bool DetectorResponsePredictor::load_hist_dEdX_tankSteel( const string& t_hist_path    ,
-                                                          const string& t_hist_name    ,
-                                                          const string& t_hist_particle ) {
+bool DetectorResponsePredictor::load_hist_dEdX_tankSteel( const string& t_hist_path,
+                                                          const string& t_hist_name ) {
     LogD( "Loading tank steel dEdX histogram.", m_verbosity_debug );
-    return load_hist< TH1D >( m_hist_dEdX_tankSteel, t_hist_path, t_hist_name, t_hist_particle );
+    return load_hist< TH1D >( m_hist_dEdX_tankSteel, t_hist_path, t_hist_name, m_particle_name + "_tankSteel" );
 }
 
-bool DetectorResponsePredictor::load_hist_dEdX_MRDsci( const string& t_hist_path    ,
-                                                       const string& t_hist_name    ,
-                                                       const string& t_hist_particle ) {
+bool DetectorResponsePredictor::load_hist_dEdX_MRDsci( const string& t_hist_path,
+                                                       const string& t_hist_name ) {
     LogD( "Loading MRD scintilator dEdX histogram.", m_verbosity_debug );
-    return load_hist< TH1D >( m_hist_dEdX_MRDsci, t_hist_path, t_hist_name, t_hist_particle );
+    return load_hist< TH1D >( m_hist_dEdX_MRDsci, t_hist_path, t_hist_name, m_particle_name + "_MRDsci" );
 }
 
-bool DetectorResponsePredictor::load_hist_dEdX_MRDiron( const string& t_hist_path    ,
-                                                        const string& t_hist_name    ,
-                                                        const string& t_hist_particle ) {
+bool DetectorResponsePredictor::load_hist_dEdX_MRDiron( const string& t_hist_path,
+                                                        const string& t_hist_name ) {
     LogD( "Loading MRD iron dEdX histogram.", m_verbosity_debug );
-    return load_hist< TH1D >( m_hist_dEdX_MRDiron, t_hist_path, t_hist_name, t_hist_particle );
+    return load_hist< TH1D >( m_hist_dEdX_MRDiron, t_hist_path, t_hist_name, m_particle_name + "_MRDiron" );
 }
 
 pair< int, int > DetectorResponsePredictor::get_closestEmissionHists( const shared_ptr< THistMap< int, TH2D > > t_hists_emission,
