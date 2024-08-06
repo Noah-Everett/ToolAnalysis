@@ -363,7 +363,10 @@ inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_nam
     return;
 
 cleanup:
+    cout << __LINE__ << endl;
     if( ! t_clear ) return;
+
+    cout << __LINE__ << endl;
 
     delete name;
     if( ! t_name.EqualTo( "" ) ) {
@@ -389,6 +392,7 @@ cleanup:
 
     t_exported.clear();
     t_exported.resize( 0 );
+    cout << __LINE__ << endl;
 
     return;
 }
