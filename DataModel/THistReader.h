@@ -268,11 +268,11 @@ inline void import_TH( vector< void* >& t_exported, TH1D*& t_copy, TString t_nam
 cleanup:
     if( ! t_clear ) return;
 
-    delete name;
-    name = nullptr;
-    if( t_exported[ 0 ] ) {
+    if( t_name.EqualTo( "" ) ) {
+        delete name;
+    } else {
+        delete name;
         delete static_cast< TString* >( t_exported[ 0 ] );
-        t_exported[ 0 ] = nullptr;
     }
 
     delete title;
@@ -367,11 +367,11 @@ inline void import_TH( vector< void* >& t_exported, TH2D*& t_copy, TString t_nam
 cleanup:
     if( ! t_clear ) return;
 
-    delete name;
-    name = nullptr;
-    if( t_exported[ 0 ] ) {
+    if( t_name.EqualTo( "" ) ) {
+        delete name;
+    } else {
+        delete name;
         delete static_cast< TString* >( t_exported[ 0 ] );
-        t_exported[ 0 ] = nullptr;
     }
 
     delete title;
@@ -478,11 +478,11 @@ inline void import_TH( vector< void* >& t_exported, TH3D*& t_copy, TString t_nam
 cleanup:
     if( ! t_clear ) return;
 
-    delete name;
-    name = nullptr;
-    if( t_exported[ 0 ] ) {
+    if( t_name.EqualTo( "" ) ) {
+        delete name;
+    } else {
+        delete name;
         delete static_cast< TString* >( t_exported[ 0 ] );
-        t_exported[ 0 ] = nullptr;
     }
 
     delete title;
