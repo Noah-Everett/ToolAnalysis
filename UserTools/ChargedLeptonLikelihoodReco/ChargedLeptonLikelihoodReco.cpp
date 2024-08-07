@@ -216,24 +216,23 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
                 LogD( "hists_transmission_names_cur[0]: " + hists_transmission_names_cur[ 0 ]  , m_verbosity_debug );
                 LogD( "hists_transmission_IDs_cur  [0]: " + to_string( hists_transmission_IDs_cur[ 0 ] ), m_verbosity_debug );
                 return false;
+            }
         }
     }
 
-    const string hist_dEdX_tankWater_paths         [ num_particles ]{ m_hists_dEdX_mu_tankWater_path         , m_hists_dEdX_e_tankWater_path          };
-    const string hist_dEdX_tankSteel_paths         [ num_particles ]{ m_hists_dEdX_mu_tankSteel_path         , m_hists_dEdX_e_tankSteel_path          };
-    const string hist_dEdX_MRDsci_paths            [ num_particles ]{ m_hists_dEdX_mu_MRDsci_path            , m_hists_dEdX_e_MRDsci_path             };
-    const string hist_dEdX_MRDiron_paths           [ num_particles ]{ m_hists_dEdX_mu_MRDiron_path           , m_hists_dEdX_e_MRDiron_path            };
-    const string hist_dEdX_tankWater_names         [ num_particles ]{ m_hists_dEdX_mu_tankWater_name         , m_hists_dEdX_e_tankWater_name          };
-    const string hist_dEdX_tankSteel_names         [ num_particles ]{ m_hists_dEdX_mu_tankSteel_name         , m_hists_dEdX_e_tankSteel_name          };
-    const string hist_dEdX_MRDsci_names            [ num_particles ]{ m_hists_dEdX_mu_MRDsci_name            , m_hists_dEdX_e_MRDsci_name             };
-    const string hist_dEdX_MRDiron_names           [ num_particles ]{ m_hists_dEdX_mu_MRDiron_name           , m_hists_dEdX_e_MRDiron_name            };
+    const string hist_dEdX_tankWater_paths[ num_particles ]{ m_hists_dEdX_mu_tankWater_path, m_hists_dEdX_e_tankWater_path };
+    const string hist_dEdX_tankSteel_paths[ num_particles ]{ m_hists_dEdX_mu_tankSteel_path, m_hists_dEdX_e_tankSteel_path };
+    const string hist_dEdX_MRDsci_paths   [ num_particles ]{ m_hists_dEdX_mu_MRDsci_path   , m_hists_dEdX_e_MRDsci_path    };
+    const string hist_dEdX_MRDiron_paths  [ num_particles ]{ m_hists_dEdX_mu_MRDiron_path  , m_hists_dEdX_e_MRDiron_path   };
+    const string hist_dEdX_tankWater_names[ num_particles ]{ m_hists_dEdX_mu_tankWater_name, m_hists_dEdX_e_tankWater_name };
+    const string hist_dEdX_tankSteel_names[ num_particles ]{ m_hists_dEdX_mu_tankSteel_name, m_hists_dEdX_e_tankSteel_name };
+    const string hist_dEdX_MRDsci_names   [ num_particles ]{ m_hists_dEdX_mu_MRDsci_name   , m_hists_dEdX_e_MRDsci_name    };
+    const string hist_dEdX_MRDiron_names  [ num_particles ]{ m_hists_dEdX_mu_MRDiron_name  , m_hists_dEdX_e_MRDiron_name   };
     for( unsigned int nParticle{ 0 }; nParticle < num_particles; nParticle++ ) {
-        DetectorResponsePredictors[ nParticle ]->load_hist_transmission_tankWater( hist_transmission_tankWater_paths[ nParticle ], hist_transmission_tankWater_names[ nParticle ] );
-        DetectorResponsePredictors[ nParticle ]->load_hist_transmission_MRDsci   ( hist_transmission_MRDsci_paths   [ nParticle ], hist_transmission_MRDsci_names   [ nParticle ] );
-        DetectorResponsePredictors[ nParticle ]->load_hist_dEdX_tankWater        ( hist_dEdX_tankWater_paths         [ nParticle ], hist_dEdX_tankWater_names         [ nParticle ] );
-        DetectorResponsePredictors[ nParticle ]->load_hist_dEdX_tankSteel        ( hist_dEdX_tankSteel_paths         [ nParticle ], hist_dEdX_tankSteel_names         [ nParticle ] );
-        DetectorResponsePredictors[ nParticle ]->load_hist_dEdX_MRDsci           ( hist_dEdX_MRDsci_paths            [ nParticle ], hist_dEdX_MRDsci_names            [ nParticle ] );
-        DetectorResponsePredictors[ nParticle ]->load_hist_dEdX_MRDiron          ( hist_dEdX_MRDiron_paths           [ nParticle ], hist_dEdX_MRDiron_names           [ nParticle ] );
+        DetectorResponsePredictors[ nParticle ]->load_hist_dEdX_tankWater( hist_dEdX_tankWater_paths[ nParticle ], hist_dEdX_tankWater_names[ nParticle ] );
+        DetectorResponsePredictors[ nParticle ]->load_hist_dEdX_tankSteel( hist_dEdX_tankSteel_paths[ nParticle ], hist_dEdX_tankSteel_names[ nParticle ] );
+        DetectorResponsePredictors[ nParticle ]->load_hist_dEdX_MRDsci   ( hist_dEdX_MRDsci_paths   [ nParticle ], hist_dEdX_MRDsci_names   [ nParticle ] );
+        DetectorResponsePredictors[ nParticle ]->load_hist_dEdX_MRDiron  ( hist_dEdX_MRDiron_paths  [ nParticle ], hist_dEdX_MRDiron_names  [ nParticle ] );
     }
 
     // pause execution
