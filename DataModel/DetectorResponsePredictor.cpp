@@ -35,15 +35,13 @@ void DetectorResponsePredictor::reset_members()
 {
     m_verbosity = m_verbosity_warning         ;
     m_hists_emission_initialEnergies.clear()  ;
-    delete m_hist_transmission_tankWater      ;
-    delete m_hist_transmission_MRDsci         ;
     delete m_hist_dEdX_tankWater              ;
     delete m_hist_dEdX_tankSteel              ;
     delete m_hist_dEdX_MRDiron                ;
     delete m_hist_dEdX_MRDiron                ;
 }
 
-template< typename type_ID, type_hist >
+template< typename type_ID, typename type_hist >
 bool DetectorResponsePredictor::load_hists(       shared_ptr< THistMap< type_ID, type_hist > >& t_hists      ,
                                             const vector              < string               >& t_hists_paths,
                                             const vector              < string               >& t_hists_names,

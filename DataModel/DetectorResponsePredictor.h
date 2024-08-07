@@ -254,9 +254,14 @@ protected:
     /**/                                    double                             & t_binWidth_theta      ,
     /**/                                    double                             & t_binWidth_phi        ,
     /**/                              const string                             & t_hists_tag            );
-    /**/ bool load_hist_transmission(       shared_ptr< THistMap< int, TH1D > >& t_hist_transmission,
-    /**/                              const string                             & t_hist_path        ,
-    /**/                              const string                             & t_hist_name         );
+    /**/ bool load_hist_transmission(       shared_ptr< THistMap< int, TH1D > >& t_hist_transmission   ,
+    /**/                              const string                             & t_hist_path           ,
+    /**/                              const string                             & t_hist_name            );
+    /**/ template< typename type_ID, typename type_hist >
+    /**/ bool load_hists            (       shared_ptr< THistMap< type_ID, type_hist > >& t_hists      ,
+    /**/                              const vector              < string               >& t_hists_paths,
+    /**/                              const vector              < string               >& t_hists_names,
+    /**/                              const vector              < type_ID              >& t_hists_IDs   );
     /**/ template< typename type_hist >
     /**/ bool load_hist             (       type_hist*& t_hist         ,
     /**/                              const string    & t_hist_path    ,
