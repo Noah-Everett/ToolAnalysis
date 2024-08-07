@@ -504,7 +504,7 @@ cleanup:
 }
 
 inline TH1D* copy_TH( const TH1D* t_original, unsigned int t_verbosity = 0 ) {
-    if( t_verbosity >= 3 ) cout << "Copying TH1D...";
+    if( t_verbosity >= 3 ) cout << "Copying TH1D" << endl;
 
     if( ! t_original ) {
         cout << "Error: Original histogram is null" << endl;
@@ -530,7 +530,7 @@ inline TH1D* copy_TH( const TH1D* t_original, unsigned int t_verbosity = 0 ) {
 }
 
 inline TH2D* copy_TH( const TH2D* t_original, unsigned int t_verbosity = 0 ) {
-    if( t_verbosity >= 3 ) cout << "Copying TH2D...";
+    if( t_verbosity >= 3 ) cout << "Copying TH2D" << endl;
 
     if( ! t_original ) {
         cout << "Error: Original histogram is null" << endl;
@@ -556,7 +556,7 @@ inline TH2D* copy_TH( const TH2D* t_original, unsigned int t_verbosity = 0 ) {
 }
 
 inline TH3D* copy_TH( const TH3D* t_original, unsigned int t_verbosity = 0 ) {
-    if( t_verbosity >= 3 ) cout << "Copying TH3D...";
+    if( t_verbosity >= 3 ) cout << "Copying TH3D" << endl;
 
     if( ! t_original ) {
         cout << "Error: Original histogram is null" << endl;

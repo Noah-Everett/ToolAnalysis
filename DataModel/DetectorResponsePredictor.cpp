@@ -43,6 +43,113 @@ void DetectorResponsePredictor::reset_members()
     delete m_hist_dEdX_MRDiron                ;
 }
 
+template< typename type_ID, type_hist >
+bool DetectorResponsePredictor::load_hists(       shared_ptr< THistMap< type_ID, type_hist > >& t_hists      ,
+                                            const vector              < string               >& t_hists_paths,
+                                            const vector              < string               >& t_hists_names,
+                                            const vector              < type_ID              >& t_hists_IDs   ) {
+    LogD( "Loading histograms.", m_verbosity_debug );
+
+    // Check IDs are strictly increasing
+    for( int i{ 0 }; i + 1 < t_hists_IDs.size(); i++ ) {
+        if( t_hists_IDs[ i ] >= t_hists_IDs[ i + 1 ] ) {
+            LogD( "`t_hists_IDs` does not have strictly increasing entries.", m_verbosity_error );
+            string IDs = "t_hists_IDs = [ ";
+            for( type_ID ID : t_hists_IDs )
+                IDs += to_string( ID ) + ", ";
+            IDs += "]";
+            LogD( IDs, m_verbosity_debug );
+            return false;
+        }
+    }
+
+    // Check vectors size
+    if( t_hists_paths.empty() || t_hists_names.empty() || t_hists_IDs.empty() ) {
+        LogD( "Arguments `t_hists_paths`, `t_hists_names`, and `t_hists_IDs` should not be empty.", m_verbosity_error );
+        goto coutSizes;
+    } else if( ( t_hists_paths.size() != t_hists_names.size() )
+            || ( t_hists_paths.size() != t_hists_IDs  .size() )
+            || ( t_hists_names.size() != t_hists_IDs  .size() ) ) {
+        LogD( "Arguments `t_hists_paths`, `t_hists_names`, and `t_hists_IDs` should be the same size.", m_verbosity_error );
+        goto coutSizes;
+    }
+    if( false ) {
+        coutSizes:
+        LogD( "t_hists_paths.size() = " + to_string( t_hists_paths.size() ), m_verbosity_debug );
+        LogD( "t_hists_names.size() = " + to_string( t_hists_names.size() ), m_verbosity_debug );
+        LogD( "t_hists_IDs  .size() = " + to_string( t_hists_IDs  .size() ), m_verbosity_debug );
+        return false;
+    }
+
+    // Load hist map
+    THistReader< type_ID, type_hist >* histReader{ new THistReader< type_ID, type_hist >( t_hists_paths, t_hists_IDs, t_hists_names, m_particle_name, m_verbosity_THistReader ) };
+    if( ! histReader ) {
+        LogD( "Failed to load histograms. THistReader failed to initialize.", m_verbosity_error );
+        return false;
+    }
+
+    // Check that all histograms were loaded
+    auto histsMap = histReader->get_histsMap();
+    delete histReader;
+    if( ! histsMap ) {
+        LogD( "`histReader->get_histsMap()` returned a nullptr.", m_verbosity_error );
+        return false;
+    } else if( histsMap->size() != t_hists_paths.size() ) {
+        LogD( "All histograms in `t_hists` were not loaded.", m_verbosity_error );
+        return false;
+    } else if( ! histsMap->at( 0 ) ) {
+        LogD( "Histogram with ID 0 was not loaded.", m_verbosity_error );
+        return false;
+    }
+
+    // Check that all histograms have the same axes
+    double epsilon{ 1e-6 };
+    double min_x  { histsMap->begin()->second->GetXaxis()->GetXmin()  };
+    double max_x  { histsMap->begin()->second->GetXaxis()->GetXmax()  };
+    int    nBins_x{ histsMap->begin()->second->GetXaxis()->GetNbins() };
+    double min_y  { histsMap->begin()->second->GetYaxis()->GetXmin()  };
+    double max_y  { histsMap->begin()->second->GetYaxis()->GetXmax()  };
+    int    nBins_y{ histsMap->begin()->second->GetYaxis()->GetNbins() };
+    for( pair< type_ID, type_hist* > hist : *histsMap ) { // replaced structured binding to avoid warning
+        type_ID  const& i = hist.first;
+        type_hist* const& h = hist.second;
+        if( abs( h->GetXaxis()->GetXmin() - min_x   ) > epsilon ||
+            abs( h->GetXaxis()->GetXmax() - max_x   ) > epsilon ||
+            abs( h->GetYaxis()->GetXmin() - min_y   ) > epsilon ||
+            abs( h->GetYaxis()->GetXmax() - max_y   ) > epsilon ||
+            h->GetXaxis()->GetNbins() != nBins_x ||
+            h->GetYaxis()->GetNbins() != nBins_y   ) {
+            LogD( "All histograms in `t_hists` do not have the same axes (same min, max, and bin counts).", m_verbosity_error );
+            LogD( "Error encountered on histogram with ID " + to_string( i ) + ".", m_verbosity_debug );
+            LogD( "With threashold `epsilon` = " + to_string( epsilon ) + ", one of the following is true:", m_verbosity_debug );
+            LogD( "h->GetXaxis()->GetXmin() = "  + to_string( h->GetXaxis()->GetXmin () ) + " != " + to_string( min_x   ) + " = min_x"  , m_verbosity_debug );
+            LogD( "h->GetXaxis()->GetXmax() = "  + to_string( h->GetXaxis()->GetXmax () ) + " != " + to_string( max_x   ) + " = max_x"  , m_verbosity_debug );
+            LogD( "h->GetYaxis()->GetXmin() = "  + to_string( h->GetYaxis()->GetXmin () ) + " != " + to_string( min_y   ) + " = min_y"  , m_verbosity_debug );
+            LogD( "h->GetYaxis()->GetXmax() = "  + to_string( h->GetYaxis()->GetXmax () ) + " != " + to_string( max_y   ) + " = max_y"  , m_verbosity_debug );
+            LogD( "h->GetXaxis()->GetNbins() = " + to_string( h->GetXaxis()->GetNbins() ) + " != " + to_string( nBins_x ) + " = nBins_x", m_verbosity_debug );
+            LogD( "h->GetYaxis()->GetNbins() = " + to_string( h->GetYaxis()->GetNbins() ) + " != " + to_string( nBins_y ) + " = nBins_y", m_verbosity_debug );
+            return false;
+        }
+    }
+
+    t_hists = histsMap;
+    return true;
+}
+
+bool DetectorResponsePredictor::load_hists_transmittance_tankWater( const vector< string >& t_hists_paths,
+                                                                    const vector< string >& t_hists_names,
+                                                                    const vector< int    >& t_hists_IDs   ) {
+    LogD( "Loading tank water transmittance histograms.", m_verbosity_debug );
+    return load_hists< int, TH1D >( m_hists_transmittance_tankWater, t_hists_paths, t_hists_names, t_hists_IDs );
+}
+
+bool DetectorResponsePredictor::load_hists_transmittance_MRDsci( const vector< string >& t_hists_paths,
+                                                                 const vector< string >& t_hists_names,
+                                                                  const vector< int   >& t_hists_IDs   ) {
+    LogD( "Loading MRD scintilator transmittance histograms.", m_verbosity_debug );
+    return load_hists< int, TH1D >( m_hists_transmittance_MRDsci, t_hists_paths, t_hists_names, t_hists_IDs );
+}
+
 bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap< int, TH2D > >& t_hists_energies      ,
                                                            shared_ptr< THistMap< int, TH2D > >& t_hists_counts        ,
                                                      const vector    < string                >& t_hists_energies_paths, 
@@ -55,142 +162,25 @@ bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap<
                                                            double                             & t_binWidth_phi        ,
                                                      const string                             & t_hists_tag            ) {
     LogD( "Loading emission histograms.", m_verbosity_debug );
-    
-    // Check IDs are strictly increasing
-    if( m_hists_emission_initialEnergies.empty() ) {
-        for( int i{ 0 }; i + 1 < t_hists_IDs.size(); i++ ) 
-            if( t_hists_IDs[ i ] >= t_hists_IDs[ i + 1 ] ) {
-                LogD( "`t_hists_IDs` does not have strictly increasing entries.", m_verbosity_error );
-                string IDs = "t_hists_IDs = [ ";
-                for( int ID : t_hists_IDs )
-                    IDs += to_string( ID ) + ", ";
-                IDs += "]";
-                LogD( IDs, m_verbosity_debug );
-                return false;
-            }
-        m_hists_emission_initialEnergies = t_hists_IDs;
-    }
-    // Check IDs match existing IDs
-    else if( m_hists_emission_initialEnergies != t_hists_IDs ) {
+
+    if( !m_hists_emission_initialEnergies.empty() && m_hists_emission_initialEnergies != t_hists_IDs ) {
         LogD( "Argument `t_hists_IDs` for `load_hists_emission_tankWater()`" 
                    " and `load_hists_emission_MRDsci()` should match.", m_verbosity_error );
         return false;
     }
-    // Check path vectors are the same size
-    if( t_hists_energies_paths.size() != t_hists_counts_paths.size() ) {
-        LogD( "Argument `t_hists_energies_paths` and `t_hists_counts_paths`" 
-                   " should be the same size.", m_verbosity_error );
+
+    // Load histograms
+    if( ! load_hists< TH2D >( t_hists_energies, t_hists_energies_paths, t_hists_energies_names, t_hists_IDs ) ) {
+        LogD( "Failed to load emission energy histograms.", m_verbosity_error );
         return false;
     }
-    // Check name vectors are the same size
-    if( t_hists_energies_names.size() != t_hists_counts_names.size() ) {
-        LogD( "Argument `t_hists_energies_names` and `t_hists_counts_names`" 
-                   " should be the same size.", m_verbosity_error );
+    if( ! load_hists< TH2D >( t_hists_counts  , t_hists_counts_paths  , t_hists_counts_names  , t_hists_IDs ) ) {
+        LogD( "Failed to load emission count histograms.", m_verbosity_error );
         return false;
     }
 
-    // Load energy hist map
-    THistReader< int, TH2D >* histReader{ new THistReader< int, TH2D >( t_hists_energies_paths, t_hists_IDs, t_hists_energies_names, t_hists_tag+"_energies", m_verbosity_THistReader ) };
-    t_hists_energies = histReader->get_histsMap();
-    delete histReader;
-    // If map wasnt returned
-    if( !t_hists_energies ) {
-        LogD( "`t_hists_energies` wasn't set.", m_verbosity_error );
-        return false;
-    }
-    // Check length of map
-    if( t_hists_energies->size() != t_hists_energies_paths.size() ) {
-        LogD( "All histograms in `t_hists_energies` were not loaded.", m_verbosity_error );
-        return false;
-    }
-    // Rebin histograms
-    for( pair< const int, TH2D* >& hist : *t_hists_energies ) {
-        hist.second = ( TH2D* ) hist.second->Rebin2D( 2, 2 );
-    }
-    // Check that a hist with 0 energy exists
-    if( t_hists_energies->find( 0 ) == t_hists_energies->end() ) {
-        LogD( "`t_hists_energies` doesnt contain a hist with zero energy.", m_verbosity_error );
-        return false;
-    }
-    
-    // Load counts hist map
-    histReader = new THistReader< int, TH2D >( t_hists_counts_paths, t_hists_IDs, t_hists_counts_names, t_hists_tag+"_counts", m_verbosity_THistReader );
-    t_hists_counts = histReader->get_histsMap();
-    delete histReader;
-    // If map wasnt returned
-    if( !t_hists_counts ) {
-        LogD( "`t_hists_counts` wasn't set.", m_verbosity_error );
-        return false;
-    }
-    // Rebin histograms
-    for( pair< const int, TH2D* >& hist : *t_hists_counts ) {
-        hist.second = ( TH2D* ) hist.second->Rebin2D( 2, 2 );
-    }
-    // Check that a hist with 0 energy exists
-    if( t_hists_counts->find( 0 ) == t_hists_counts->end() ) {
-        LogD( "`t_hists_counts` doesnt contain a hist with zero energy.", m_verbosity_error );
-        return false;
-    }
-
-    // Check energy and count hist maps are the same size
-    if( t_hists_energies_paths.size() != t_hists_counts_paths.size() ) {
-        LogD( "Argument `t_hists_energies_paths` and `t_hists_counts_paths`"
-                   " should be the same size.", m_verbosity_error );
-        return false;
-    }
-    // Check all TH2D axis are the same
-    double epsilon{ 1e-6 };
-    double min_x  { t_hists_energies->at( 0 )->GetXaxis()->GetXmin()  };
-    double max_x  { t_hists_energies->at( 0 )->GetXaxis()->GetXmax()  };
-    int    nBins_x{ t_hists_energies->at( 0 )->GetXaxis()->GetNbins() };
-    double min_y  { t_hists_energies->at( 0 )->GetYaxis()->GetXmin()  };
-    double max_y  { t_hists_energies->at( 0 )->GetYaxis()->GetXmax()  };
-    int    nBins_y{ t_hists_energies->at( 0 )->GetYaxis()->GetNbins() };
-    int i{ 0 };
-    for( pair< int, TH2D* > hist : *t_hists_energies ) { // replaced structured binding to avoid warning
-        int   const& e = hist.first;
-        TH2D* const& h = hist.second;
-        if( abs( h->GetXaxis()->GetXmin() - min_x   ) > epsilon ||
-            abs( h->GetXaxis()->GetXmax() - max_x   ) > epsilon ||
-            abs( h->GetYaxis()->GetXmin() - min_y   ) > epsilon ||
-            abs( h->GetYaxis()->GetXmax() - max_y   ) > epsilon ||
-            h->GetXaxis()->GetNbins() != nBins_x ||
-            h->GetYaxis()->GetNbins() != nBins_y   ) {
-            LogD( "All histograms in `t_hists_energies` do not have the same axes (same min, max, and bin counts).", m_verbosity_error );
-            LogD( "Error encountered on histogram with ID " + to_string( e ) + ", in file " + t_hists_energies_paths[ i ] + ", with name " + t_hists_energies_names[ i ] + ".", m_verbosity_debug );
-            LogD( "With threashold `epsilon` = " + to_string( epsilon ) + ", one of the following is true:", m_verbosity_debug );
-            LogD( "h->GetXaxis()->GetXmin() = "  + to_string( h->GetXaxis()->GetXmin () ) + " != " + to_string( min_x   ) + " = min_x"  , m_verbosity_debug );
-            LogD( "h->GetXaxis()->GetXmax() = "  + to_string( h->GetXaxis()->GetXmax () ) + " != " + to_string( max_x   ) + " = max_x"  , m_verbosity_debug );
-            LogD( "h->GetYaxis()->GetXmin() = "  + to_string( h->GetYaxis()->GetXmin () ) + " != " + to_string( min_y   ) + " = min_y"  , m_verbosity_debug );
-            LogD( "h->GetYaxis()->GetXmax() = "  + to_string( h->GetYaxis()->GetXmax () ) + " != " + to_string( max_y   ) + " = max_y"  , m_verbosity_debug );
-            LogD( "h->GetXaxis()->GetNbins() = " + to_string( h->GetXaxis()->GetNbins() ) + " != " + to_string( nBins_x ) + " = nBins_x", m_verbosity_debug );
-            LogD( "h->GetYaxis()->GetNbins() = " + to_string( h->GetYaxis()->GetNbins() ) + " != " + to_string( nBins_y ) + " = nBins_y", m_verbosity_debug );
-            return false;
-        }
-        i++;
-    }
-
-    for( pair< int, TH2D* > hist : *t_hists_counts ) { // replaced structured binding to avoid warning
-        int   const& i = hist.first;
-        TH2D* const& h = hist.second;
-        if( abs( h->GetXaxis()->GetXmin() - min_x   ) > epsilon ||
-            abs( h->GetXaxis()->GetXmax() - max_x   ) > epsilon ||
-            abs( h->GetYaxis()->GetXmin() - min_y   ) > epsilon ||
-            abs( h->GetYaxis()->GetXmax() - max_y   ) > epsilon ||
-            h->GetXaxis()->GetNbins() != nBins_x ||
-            h->GetYaxis()->GetNbins() != nBins_y   ) {
-            LogD( "All histograms in `t_hists_counts` do not have the same axes (same min, max, and bin counts).", m_verbosity_error );
-            LogD( "Error encountered on histogram with ID " + to_string( i ) + ".", m_verbosity_debug );
-            LogD( "With threashold `epsilon` = " + to_string( epsilon ) + ", one of the following is true:", m_verbosity_debug );
-            LogD( "h->GetXaxis()->GetXmin() = "  + to_string( h->GetXaxis()->GetXmin () ) + " != " + to_string( min_x   ) + " = min_x"  , m_verbosity_debug );
-            LogD( "h->GetXaxis()->GetXmax() = "  + to_string( h->GetXaxis()->GetXmax () ) + " != " + to_string( max_x   ) + " = max_x"  , m_verbosity_debug );
-            LogD( "h->GetYaxis()->GetXmin() = "  + to_string( h->GetYaxis()->GetXmin () ) + " != " + to_string( min_y   ) + " = min_y"  , m_verbosity_debug );
-            LogD( "h->GetYaxis()->GetXmax() = "  + to_string( h->GetYaxis()->GetXmax () ) + " != " + to_string( max_y   ) + " = max_y"  , m_verbosity_debug );
-            LogD( "h->GetXaxis()->GetNbins() = " + to_string( h->GetXaxis()->GetNbins() ) + " != " + to_string( nBins_x ) + " = nBins_x", m_verbosity_debug );
-            LogD( "h->GetYaxis()->GetNbins() = " + to_string( h->GetYaxis()->GetNbins() ) + " != " + to_string( nBins_y ) + " = nBins_y", m_verbosity_debug );
-            return false;
-        }
-    }
+    // Set initial energies
+    m_hists_emission_initialEnergies = t_hists_IDs;
 
     // Set bin widths
     t_binWidth_s     = t_hists_energies->begin()->second->GetXaxis()->GetBinWidth( 0 );
@@ -235,20 +225,15 @@ bool DetectorResponsePredictor::load_hist(       type_hist*& m_hist     ,
                                            const string    & t_hist_tag  ) {
     LogD( "Loading histogram with path " + t_hist_path + " and name " + t_hist_name + ".", m_verbosity_debug );
 
-    THistReader< bool, type_hist >* histReader{ new THistReader< bool, type_hist >( { t_hist_path }, { 1 }, { t_hist_name }, t_hist_tag, m_verbosity_THistReader ) };
-    if( ! histReader ) {
-        LogD( "Failed to load histogram. THistReader failed to initialize.", m_verbosity_error );
+    // Load histogram
+    shared_ptr< THistMap< bool, type_hist > > temp;
+    if( ! load_hists< type_hist >( temp, { t_hist_path }, { t_hist_name }, { 0 } ) ) {
+        LogD( "Failed to load histogram.", m_verbosity_error );
         return false;
     }
-    
-    if( histReader->get_histsMap()->size() != 1 ) {
-        LogD( "Failed to load histogram.", m_verbosity_debug );
-        delete histReader;
-        return false;
-    }
-    m_hist = copy_TH( histReader->get_histsMap()->at( 1 ), m_verbosity_THistReader );
 
-    delete histReader;
+    m_hist = copy_TH( temp->at( 0 ), m_verbosity_THistReader );
+
     return true;
 }
 
