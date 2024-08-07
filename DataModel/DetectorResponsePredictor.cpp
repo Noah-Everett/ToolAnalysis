@@ -134,16 +134,16 @@ bool DetectorResponsePredictor::load_hists(       shared_ptr< THistMap< type_ID,
     return true;
 }
 
-bool DetectorResponsePredictor::load_hists_transmittance_tankWater( const vector< string >& t_hists_paths,
-                                                                    const vector< string >& t_hists_names,
-                                                                    const vector< int    >& t_hists_IDs   ) {
+bool DetectorResponsePredictor::load_hist_transmission_tankWater( const vector< string >& t_hists_paths,
+                                                                  const vector< string >& t_hists_names,
+                                                                  const vector< int    >& t_hists_IDs   ) {
     LogD( "Loading tank water transmittance histograms.", m_verbosity_debug );
     return load_hists< int, TH1D >( m_hists_transmittance_tankWater, t_hists_paths, t_hists_names, t_hists_IDs );
 }
 
-bool DetectorResponsePredictor::load_hists_transmittance_MRDsci( const vector< string >& t_hists_paths,
-                                                                 const vector< string >& t_hists_names,
-                                                                  const vector< int   >& t_hists_IDs   ) {
+bool DetectorResponsePredictor::load_hist_transmission_MRDsci( const vector< string >& t_hists_paths,
+                                                               const vector< string >& t_hists_names,
+                                                               const vector< int    >& t_hists_IDs   ) {
     LogD( "Loading MRD scintilator transmittance histograms.", m_verbosity_debug );
     return load_hists< int, TH1D >( m_hists_transmittance_MRDsci, t_hists_paths, t_hists_names, t_hists_IDs );
 }
