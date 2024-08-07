@@ -228,10 +228,10 @@ protected:
     /**/ shared_ptr< TH1D >                  m_hist_transmission_MRDsci    { nullptr };
     /**/
     /**/// Stopping Power Histograms
-    /**/ TH1D* m_hist_dEdX_tankWater        { nullptr };
-    /**/ TH1D* m_hist_dEdX_tankSteel        { nullptr };
-    /**/ TH1D* m_hist_dEdX_MRDsci           { nullptr };
-    /**/ TH1D* m_hist_dEdX_MRDiron          { nullptr };
+    /**/ shared_ptr< TH1D > m_hist_dEdX_tankWater{ nullptr };
+    /**/ shared_ptr< TH1D > m_hist_dEdX_tankSteel{ nullptr };
+    /**/ shared_ptr< TH1D > m_hist_dEdX_MRDsci   { nullptr };
+    /**/ shared_ptr< TH1D > m_hist_dEdX_MRDiron  { nullptr };
     /**/
     /**/// Misc.
     /**/ map< int, double >* m_map_particleMasses{ new map< int, double >{ { 11, 0.5109989461 }, { -11, 0.5109989461 }, 
