@@ -138,14 +138,14 @@ bool DetectorResponsePredictor::load_hist_transmission_tankWater( const vector< 
                                                                   const vector< string >& t_hists_names,
                                                                   const vector< int    >& t_hists_IDs   ) {
     LogD( "Loading tank water transmission histograms.", m_verbosity_debug );
-    return load_hists< int, TH1D >( m_hists_transmission_tankWater, t_hists_paths, t_hists_names, t_hists_IDs );
+    return load_hists( m_hists_transmission_tankWater, t_hists_paths, t_hists_names, t_hists_IDs );
 }
 
 bool DetectorResponsePredictor::load_hist_transmission_MRDsci( const vector< string >& t_hists_paths,
                                                                const vector< string >& t_hists_names,
                                                                const vector< int    >& t_hists_IDs   ) {
     LogD( "Loading MRD scintilator transmission histograms.", m_verbosity_debug );
-    return load_hists< int, TH1D >( m_hists_transmission_MRDsci, t_hists_paths, t_hists_names, t_hists_IDs );
+    return load_hists( m_hists_transmission_MRDsci, t_hists_paths, t_hists_names, t_hists_IDs );
 }
 
 bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap< int, TH2D > >& t_hists_energies      ,
@@ -168,11 +168,11 @@ bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap<
     }
 
     // Load histograms
-    if( ! load_hists< TH2D >( t_hists_energies, t_hists_energies_paths, t_hists_energies_names, t_hists_IDs ) ) {
+    if( ! load_hists( t_hists_energies, t_hists_energies_paths, t_hists_energies_names, t_hists_IDs ) ) {
         LogD( "Failed to load emission energy histograms.", m_verbosity_error );
         return false;
     }
-    if( ! load_hists< TH2D >( t_hists_counts  , t_hists_counts_paths  , t_hists_counts_names  , t_hists_IDs ) ) {
+    if( ! load_hists( t_hists_counts  , t_hists_counts_paths  , t_hists_counts_names  , t_hists_IDs ) ) {
         LogD( "Failed to load emission count histograms.", m_verbosity_error );
         return false;
     }
@@ -225,7 +225,7 @@ bool DetectorResponsePredictor::load_hist(       type_hist*& m_hist     ,
 
     // Load histogram
     shared_ptr< THistMap< bool, type_hist > > temp;
-    if( ! load_hists< type_hist >( temp, { t_hist_path }, { t_hist_name }, { 0 } ) ) {
+    if( ! load_hists( temp, { t_hist_path }, { t_hist_name }, { 0 } ) ) {
         LogD( "Failed to load histogram.", m_verbosity_error );
         return false;
     }
