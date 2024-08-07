@@ -307,10 +307,10 @@ bool DetectorResponsePredictor::load_hists_emission_MRDsci( const vector< string
 }
 
 template< typename type_hist >
-bool DetectorResponsePredictor::load_hist(       type_hist*& m_hist     ,
-                                           const string    & t_hist_path,
-                                           const string    & t_hist_name,
-                                           const string    & t_hist_tag  ) {
+bool DetectorResponsePredictor::load_hist( const shared_ptr< type_hist >& t_hist     ,
+                                           const string                 & t_hist_path,
+                                           const string                 & t_hist_name,
+                                           const string                 & t_hist_tag  ) {
     LogD( "Loading histogram with path " + t_hist_path + " and name " + t_hist_name + ".", m_verbosity_debug );
 
     // Load histogram
@@ -320,7 +320,7 @@ bool DetectorResponsePredictor::load_hist(       type_hist*& m_hist     ,
         return false;
     }
 
-    m_hist = copy_TH( temp->at( 0 ), m_verbosity_THistReader );
+    m_hist = shared_ptr< type_hist >( copy_TH( temp->at( 0 ), m_verbosity_THistReader ) );
 
     return true;
 }
