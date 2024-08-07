@@ -449,12 +449,12 @@ double DetectorResponsePredictor::eval_hist_index( const TH1D       * t_hist  ,
 
 double DetectorResponsePredictor::eval_hist_transmission_tankWater( const double t_photonEnergy ) const {
     LogD( "Evaluating tank water transmission histogram.", m_verbosity_debug );
-    return eval_hist_value( m_hists_transmission_tankWater, t_photonEnergy );
+    return eval_hist_value( m_hist_transmission_tankWater, t_photonEnergy );
 }
 
 double DetectorResponsePredictor::eval_hist_transmission_MRDsci( const double t_photonEnergy ) const {
     LogD( "Evaluating MRD scintilator transmission histogram.", m_verbosity_debug );
-    return eval_hist_value( m_hists_transmission_MRDsci, t_photonEnergy );
+    return eval_hist_value( m_hist_transmission_MRDsci, t_photonEnergy );
 }
 
 double DetectorResponsePredictor::eval_hist_dEdX_tankWater( const double t_primaryEnergy ) const {
