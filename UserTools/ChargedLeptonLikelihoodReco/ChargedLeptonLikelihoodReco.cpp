@@ -100,7 +100,7 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
     // Initialize DetectorResponsePredictor
     const unsigned int num_materials{ 2 };
     const unsigned int num_particles{ 2 };
-    string load_hists_emissions_names[ num_materials ]{ "tankWater", "MRDsci" };
+    string materialNames[ num_materials ]{ "tankWater", "MRDsci" };
     string DetectorResponsePredictors_particles[ num_particles ]{ "mu", "e" };
     DetectorResponsePredictor* DetectorResponsePredictors[ num_particles ]{ m_DetectorResponsePredictor_mu, m_DetectorResponsePredictor_e };
 
@@ -172,7 +172,7 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
                 hists_emission_IDs_cur           .push_back( hists_emission_energy_cur                                                              );
                 hists_emission_energy_cur += hists_emission_energy_deltas[ nMaterial ][ nParticle ];
             }
-            LogD( "Loading emission histograms (Material=" + load_hists_emissions_names[ nMaterial ] + " and Particle=" + DetectorResponsePredictors_particles[ nParticle ] + ").", m_verbosity_debug );
+            LogD( "Loading emission histograms (Material=" + materialNames[ nMaterial ] + " and Particle=" + DetectorResponsePredictors_particles[ nParticle ] + ").", m_verbosity_debug );
             if( !( DetectorResponsePredictors[ nParticle ]->*load_hists_emissions[ nMaterial ] )( hists_emission_energies_paths_cur, hists_emission_counts_paths_cur,
                                                                                                   hists_emission_energies_names_cur, hists_emission_counts_names_cur,
                                                                                                   hists_emission_IDs_cur                                             ) ) {
@@ -187,11 +187,13 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
             }
 
             if( nParticle != 0 ) {
-                LogD( "Copying emission histograms (Material=" + load_hists_emissions_names[ nMaterial ] + " and Particle=" + DetectorResponsePredictors_particles[ nParticle ] + ").", m_verbosity_debug );
-                DetectorResponsePredictors[ nParticle ]->set_hists_emission_tankWater( DetectorResponsePredictors[ 0 ]->get_hists_emission_tankWater() );
-                DetectorResponsePredictors[ nParticle ]->set_hists_emission_MRDsci   ( DetectorResponsePredictors[ 0 ]->get_hists_emission_MRDsci   () );
-                DetectorResponsePredictors[ nParticle ]->set_hist_emission_tankWater ( DetectorResponsePredictors[ 0 ]->get_hist_emission_tankWater () );
-                DetectorResponsePredictors[ nParticle ]->set_hist_emission_MRDsci    ( DetectorResponsePredictors[ 0 ]->get_hist_emission_MRDsci    () );
+                LogD( "Copying transmission histograms (Material=" + materialNames[ nMaterial ] + " and Particle=" + DetectorResponsePredictors_particles[ nParticle ] + ").", m_verbosity_debug );
+                DetectorResponsePredictors[ nParticle ]->set_hist_transmission_tankWater( DetectorResponsePredictors[ 0 ]->get_hist_transmission_tankWater() );
+                DetectorResponsePredictors[ nParticle ]->set_hist_transmission_MRDsci   ( DetectorResponsePredictors[ 0 ]->get_hist_transmission_MRDsci   () );
+                if( !m_useSingleTH1forPhotonTransmission_tankWater )
+                    DetectorResponsePredictors[ nParticle ]->set_hists_transmission_tankWater( DetectorResponsePredict[ 0 ]->get_hists_transmission_tankWater() );
+                if( !m_useSingleTH1forPhotonTransmission_MRDsci )
+                    DetectorResponsePredictors[ nParticle ]->set_hists_transmission_MRDsci   ( DetectorResponsePredict[ 0 ]->get_hists_transmission_MRDsci   () );
                 continue;
             }
             hists_transmission_energy_cur = hists_transmission_energy_mins[ nMaterial ];
@@ -204,7 +206,7 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
                 hists_transmission_IDs_cur  .push_back( hists_transmission_energy_cur                                      );
                 hists_transmission_energy_cur += hists_transmission_energy_deltas[ nMaterial ];
             }
-            LogD( "Loading transmission histograms (Material=" + load_hists_emissions_names[ nMaterial ] + ").", m_verbosity_debug );
+            LogD( "Loading transmission histograms (Material=" + materialNames[ nMaterial ] + ").", m_verbosity_debug );
             if( !( DetectorResponsePredictors[ nParticle ]->*load_hists_transmission[ nMaterial ] )( hists_transmission_paths_cur,
                                                                                                       hists_transmission_names_cur,
                                                                                                       hists_transmission_IDs_cur   ) ) {
