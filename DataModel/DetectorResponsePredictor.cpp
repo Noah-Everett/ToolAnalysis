@@ -61,7 +61,7 @@ bool DetectorResponsePredictor::check_axis( const TAxis* t_axis ) const {
     return true;
 }
 
-bool DetectorResponsePredictor::check_axes( const vector< TAxis* >& t_axes, double t_min = 0, double t_max = 0, int t_nBins = 0, double t_epsilon = 1e-6 ) const {
+bool DetectorResponsePredictor::check_axes( const vector< TAxis* >& t_axes, double t_min, double t_max, int t_nBins, double t_epsilon ) const {
     LogD( "Checking axes.", m_verbosity_debug );
 
     for( TAxis* axis : t_axes ) {
@@ -167,7 +167,7 @@ bool DetectorResponsePredictor::load_hists(       shared_ptr< THistMap< type_ID,
 }
 
 template< typename type_hist >
-bool DetectorResponsePredictor::make_averageTH1( shared_ptr< THistMap< int, type_hist > > t_hists, shared_ptr< type_hist >& t_hist, TString t_name = "", TString t_title = "" ) {
+bool DetectorResponsePredictor::make_averageTH1( shared_ptr< THistMap< int, type_hist > > t_hists, shared_ptr< type_hist >& t_hist, TString t_name, TString t_title ) {
     LogD( "Making average histogram.", m_verbosity_debug );
 
     // Check that all histograms have the same axes
