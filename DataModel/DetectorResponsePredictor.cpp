@@ -35,10 +35,6 @@ void DetectorResponsePredictor::reset_members()
 {
     m_verbosity = m_verbosity_warning         ;
     m_hists_emission_initialEnergies.clear()  ;
-    delete m_hist_dEdX_tankWater              ;
-    delete m_hist_dEdX_tankSteel              ;
-    delete m_hist_dEdX_MRDiron                ;
-    delete m_hist_dEdX_MRDiron                ;
 }
 
 bool DetectorResponsePredictor::check_axis( const TAxis* t_axis ) const {
