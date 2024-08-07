@@ -435,14 +435,14 @@ double DetectorResponsePredictor::eval_hists_emission_MRDsci_counts( const doubl
     return eval_hists_emission_values( m_hists_emission_MRDsci_counts, t_initialEnergy, t_trackLength, t_photonAngle );
 }
 
-double DetectorResponsePredictor::eval_hist_value( const TH1D  * t_hist,
-                                                   const double  t_x    ) const {
+double DetectorResponsePredictor::eval_hist_value( const shared_ptr< TH1D >& t_hist,
+                                                   const double              t_x    ) const {
     LogD( "Evaluating histogram", m_verbosity_debug );
     return t_hist->Interpolate( t_x );
 }
 
-double DetectorResponsePredictor::eval_hist_index( const TH1D       * t_hist  ,
-                                                   const unsigned int t_xIndex ) const {
+double DetectorResponsePredictor::eval_hist_index( const shared_ptr< TH1D >& t_hist,
+                                                   const unsigned int        t_xIndex ) const {
     LogD( "Evaluating histogram", m_verbosity_debug );
     return t_hist->GetBinContent( t_xIndex );
 }
