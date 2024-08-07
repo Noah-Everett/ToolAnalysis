@@ -191,9 +191,9 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
                 DetectorResponsePredictors[ nParticle ]->set_hist_transmission_tankWater( DetectorResponsePredictors[ 0 ]->get_hist_transmission_tankWater() );
                 DetectorResponsePredictors[ nParticle ]->set_hist_transmission_MRDsci   ( DetectorResponsePredictors[ 0 ]->get_hist_transmission_MRDsci   () );
                 if( !m_useSingleTH1forPhotonTransmission_tankWater )
-                    DetectorResponsePredictors[ nParticle ]->set_hists_transmission_tankWater( DetectorResponsePredict[ 0 ]->get_hists_transmission_tankWater() );
+                    DetectorResponsePredictors[ nParticle ]->set_hists_transmission_tankWater( DetectorResponsePredictors[ 0 ]->get_hists_transmission_tankWater() );
                 if( !m_useSingleTH1forPhotonTransmission_MRDsci )
-                    DetectorResponsePredictors[ nParticle ]->set_hists_transmission_MRDsci   ( DetectorResponsePredict[ 0 ]->get_hists_transmission_MRDsci   () );
+                    DetectorResponsePredictors[ nParticle ]->set_hists_transmission_MRDsci   ( DetectorResponsePredictors[ 0 ]->get_hists_transmission_MRDsci   () );
                 continue;
             }
             hists_transmission_energy_cur = hists_transmission_energy_mins[ nMaterial ];
