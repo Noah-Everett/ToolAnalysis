@@ -316,7 +316,7 @@ bool DetectorResponsePredictor::load_hist(       shared_ptr< type_hist >& t_hist
         return false;
     }
 
-    m_hist = shared_ptr< type_hist >( copy_TH( temp->at( 0 ), m_verbosity_THistReader ) );
+    t_hist = shared_ptr< type_hist >( copy_TH( temp->at( 0 ), m_verbosity_THistReader ) );
 
     return true;
 }
