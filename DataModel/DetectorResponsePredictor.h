@@ -271,10 +271,10 @@ protected:
     /**/                              const vector              < string               >& t_hists_names,
     /**/                              const vector              < type_ID              >& t_hists_IDs   );
     /**/ template< typename type_hist >
-    /**/ bool load_hist             (       type_hist*& t_hist         ,
-    /**/                              const string    & t_hist_path    ,
-    /**/                              const string    & t_hist_name    ,
-    /**/                              const string    & t_hist_particle );
+    /**/ bool load_hist             (       share_ptr< type_hist >& t_hist         ,
+    /**/                              const string                & t_hist_path    ,
+    /**/                              const string                & t_hist_name    ,
+    /**/                              const string                & t_hist_particle );
     /**/
     /**/// Evaluate Histograms
     /**/ pair< int, int > get_closestEmissionHists     ( const shared_ptr< THistMap< int, TH2D > >  t_hists_emission,

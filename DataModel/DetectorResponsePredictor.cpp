@@ -303,7 +303,7 @@ bool DetectorResponsePredictor::load_hists_emission_MRDsci( const vector< string
 }
 
 template< typename type_hist >
-bool DetectorResponsePredictor::load_hist( const shared_ptr< type_hist >& t_hist     ,
+bool DetectorResponsePredictor::load_hist(       shared_ptr< type_hist >& t_hist     ,
                                            const string                 & t_hist_path,
                                            const string                 & t_hist_name,
                                            const string                 & t_hist_tag  ) {
