@@ -125,6 +125,38 @@ public:
     /**/ bool load_hist_dEdX_MRDiron           ( const string& t_hist_path,
     /**/                                         const string& t_hist_name );
     /**/
+    /**/// Get Histograms
+    /**/ shared_ptr< THistMap< int, TH2D > > get_hists_emission_tankWater_energies() const { return m_hists_emission_tankWater_energies; }
+    /**/ shared_ptr< THistMap< int, TH2D > > get_hists_emission_tankWater_counts  () const { return m_hists_emission_tankWater_counts;   }
+    /**/ shared_ptr< THistMap< int, TH2D > > get_hists_emission_MRDsci_energies   () const { return m_hists_emission_MRDsci_energies;    }
+    /**/ shared_ptr< THistMap< int, TH2D > > get_hists_emission_MRDsci_counts     () const { return m_hists_emission_MRDsci_counts;      }
+    /**/
+    /**/ shared_ptr< THistMap< int, TH1D > > get_hists_transmission_tankWater() const { return m_hists_transmission_tankWater; }
+    /**/ shared_ptr< THistMap< int, TH1D > > get_hists_transmission_MRDsci   () const { return m_hists_transmission_MRDsci;    }
+    /**/ shared_ptr< TH1D >                  get_hist_transmission_tankWater () const { return m_hist_transmission_tankWater;  }
+    /**/ shared_ptr< TH1D >                  get_hist_transmission_MRDsci    () const { return m_hist_transmission_MRDsci;     }
+    /**/
+    /**/ shared_ptr< TH1D > get_hist_dEdX_tankWater() const { return m_hist_dEdX_tankWater; }
+    /**/ shared_ptr< TH1D > get_hist_dEdX_tankSteel() const { return m_hist_dEdX_tankSteel; }
+    /**/ shared_ptr< TH1D > get_hist_dEdX_MRDsci   () const { return m_hist_dEdX_MRDsci;    }
+    /**/ shared_ptr< TH1D > get_hist_dEdX_MRDiron  () const { return m_hist_dEdX_MRDiron;   }
+    /**/
+    /**/// Set Histograms
+    /**/ void set_hists_emission_tankWater_energies( shared_ptr< THistMap< int, TH2D > > t_hists_emission_tankWater_energies ) { m_hists_emission_tankWater_energies = t_hists_emission_tankWater_energies; }
+    /**/ void set_hists_emission_tankWater_counts  ( shared_ptr< THistMap< int, TH2D > > t_hists_emission_tankWater_counts   ) { m_hists_emission_tankWater_counts   = t_hists_emission_tankWater_counts;   }
+    /**/ void set_hists_emission_MRDsci_energies   ( shared_ptr< THistMap< int, TH2D > > t_hists_emission_MRDsci_energies    ) { m_hists_emission_MRDsci_energies    = t_hists_emission_MRDsci_energies;    }
+    /**/ void set_hists_emission_MRDsci_counts     ( shared_ptr< THistMap< int, TH2D > > t_hists_emission_MRDsci_counts      ) { m_hists_emission_MRDsci_counts      = t_hists_emission_MRDsci_counts;      }
+    /**/
+    /**/ void set_hists_transmission_tankWater( shared_ptr< THistMap< int, TH1D > > t_hists_transmission_tankWater ) { m_hists_transmission_tankWater = t_hists_transmission_tankWater; }
+    /**/ void set_hists_transmission_MRDsci   ( shared_ptr< THistMap< int, TH1D > > t_hists_transmission_MRDsci    ) { m_hists_transmission_MRDsci    = t_hists_transmission_MRDsci;    }
+    /**/ void set_hist_transmission_tankWater ( shared_ptr          < TH1D        > t_hist_transmission_tankWater  ) { m_hist_transmission_tankWater = t_hist_transmission_tankWater;   }
+    /**/ void set_hist_transmission_MRDsci    ( shared_ptr          < TH1D        > t_hist_transmission_MRDsci     ) { m_hist_transmission_MRDsci    = t_hist_transmission_MRDsci;      }
+    /**/
+    /**/ void set_hist_dEdX_tankWater( shared_ptr< TH1D > t_hist_dEdX_tankWater ) { m_hist_dEdX_tankWater = t_hist_dEdX_tankWater; }
+    /**/ void set_hist_dEdX_tankSteel( shared_ptr< TH1D > t_hist_dEdX_tankSteel ) { m_hist_dEdX_tankSteel = t_hist_dEdX_tankSteel; }
+    /**/ void set_hist_dEdX_MRDsci   ( shared_ptr< TH1D > t_hist_dEdX_MRDsci    ) { m_hist_dEdX_MRDsci    = t_hist_dEdX_MRDsci;    }
+    /**/ void set_hist_dEdX_MRDiron  ( shared_ptr< TH1D > t_hist_dEdX_MRDiron   ) { m_hist_dEdX_MRDiron   = t_hist_dEdX_MRDiron;   }
+    /**/
     /**/// Evaluate Histograms
     /**/ double eval_hists_emission_tankWater_energies( const double t_initialEnergy,
     /**/                                                const double t_trackLength  , 
@@ -292,6 +324,7 @@ protected:
     /**/ double           eval_hist_index              ( const shared_ptr< TH1D >                 & t_hist            ,
     /**/                                                 const unsigned int                         t_xIndex           ) const;
     /**/
+    /**/// Misc.
     /**/ template< typename type_hist >
     /**/ bool make_averageTH1( shared_ptr< THistMap< int, type_hist > > t_hists, shared_ptr< type_hist >& t_hist, TString t_name = "", TString t_title = "" );
     /**/

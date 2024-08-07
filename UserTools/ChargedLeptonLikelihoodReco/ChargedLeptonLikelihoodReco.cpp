@@ -190,6 +190,8 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
                 LogD( "Copying emission histograms (Material=" + load_hists_emissions_names[ nMaterial ] + " and Particle=" + DetectorResponsePredictors_particles[ nParticle ] + ").", m_verbosity_debug );
                 DetectorResponsePredictors[ nParticle ]->set_hists_emission_tankWater( DetectorResponsePredictors[ 0 ]->get_hists_emission_tankWater() );
                 DetectorResponsePredictors[ nParticle ]->set_hists_emission_MRDsci   ( DetectorResponsePredictors[ 0 ]->get_hists_emission_MRDsci   () );
+                DetectorResponsePredictors[ nParticle ]->set_hist_emission_tankWater ( DetectorResponsePredictors[ 0 ]->get_hist_emission_tankWater () );
+                DetectorResponsePredictors[ nParticle ]->set_hist_emission_MRDsci    ( DetectorResponsePredictors[ 0 ]->get_hist_emission_MRDsci    () );
                 continue;
             }
             hists_transmission_energy_cur = hists_transmission_energy_mins[ nMaterial ];
