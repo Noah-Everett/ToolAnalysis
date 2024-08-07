@@ -246,6 +246,10 @@ protected:
     /**/// Load/Eval Histograms ///
     /**////////////////////////////
     /**/
+    /**/// Check Histogram Ax(is/es)
+    /**/ bool check_axis( const TAxis* t_axis ) const;
+    /**/ bool check_axes( const vector< TAxis* >& t_axes, double t_min = 0, double t_max = 0, int t_nBins = 0, double t_epsilon = 1e-6 ) const;
+    /**/
     /**/// Load Histograms
     /**/ bool load_hists_emission   (       shared_ptr< THistMap< int, TH2D > >& t_hists_energies      ,
     /**/                                    shared_ptr< THistMap< int, TH2D > >& t_hists_counts        ,

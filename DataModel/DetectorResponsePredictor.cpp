@@ -61,7 +61,7 @@ bool DetectorResponsePredictor::check_axis( const TAxis* t_axis ) const {
     return true;
 }
 
-bool DetectorResponsePredictor::check_axes( const vector< TAxis* >& t_axes, double t_min = 0, double t_max = 0, int t_nBins = 0, double t_epsilon = 1e-6 ) {
+bool DetectorResponsePredictor::check_axes( const vector< TAxis* >& t_axes, double t_min = 0, double t_max = 0, int t_nBins = 0, double t_epsilon = 1e-6 ) const {
     LogD( "Checking axes.", m_verbosity_debug );
 
     for( TAxis* axis : t_axes ) {
