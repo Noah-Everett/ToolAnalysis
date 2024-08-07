@@ -292,6 +292,9 @@ protected:
     /**/ double           eval_hist_index              ( const TH1D                               * t_hist            ,
     /**/                                                 const unsigned int                         t_xIndex           ) const;
     /**/
+    /**/ template< typename type_hist >
+    /**/ bool make_averageTH1( shared_ptr< THistMap< int, type_hist > > t_hists, shared_ptr< type_hist >& t_hist, TString t_name = "", TString t_title = "" );
+    /**/
     /**////////////////////////////
     
     
