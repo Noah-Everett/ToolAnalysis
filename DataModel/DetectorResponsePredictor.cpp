@@ -41,6 +41,59 @@ void DetectorResponsePredictor::reset_members()
     delete m_hist_dEdX_MRDiron                ;
 }
 
+bool DetectorResponsePredictor::check_axis( const TAxis* t_axis ) const {
+    LogD( "Checking axis.", m_verbosity_debug );
+
+    if( ! t_axis ) {
+        LogD( "Axis is a nullptr.", m_verbosity_error );
+        return false;
+    }
+
+    if( t_axis->GetXmin() >= t_axis->GetXmax() ) {
+        LogD( "Axis min is greater than or equal to axis max.", m_verbosity_error );
+        return false;
+    }
+    if( t_axis->GetNbins() <= 0 ) {
+        LogD( "Axis has less than or equal to 0 bins.", m_verbosity_error );
+        return false;
+    }
+
+    return true;
+}
+
+bool DetectorResponsePredictor::check_axes( const vector< TAxis* >& t_axes, double t_min = 0, double t_max = 0, int t_nBins = 0, double t_epsilon = 1e-6 ) {
+    LogD( "Checking axes.", m_verbosity_debug );
+
+    for( TAxis* axis : t_axes ) {
+        if( ! check_axis( axis ) ) {
+            LogD( "One of the axes is invalid.", m_verbosity_error );
+            return false;
+        }
+    }
+
+    if( t_min == 0 && t_max == 0 && t_nBins == 0 ) {
+        LogD( "Setting `t_min`, `t_max`, and `t_nBins` to the values of the first axis.", m_verbosity_debug );
+        t_min   = t_axes[ 0 ]->GetXmin();
+        t_max   = t_axes[ 0 ]->GetXmax();
+        t_nBins = t_axes[ 0 ]->GetNbins();
+    }
+
+    for( TAxis* axis : t_axes ) {
+        if( abs( axis->GetXmin() - t_min ) > t_epsilon ||
+            abs( axis->GetXmax() - t_max ) > t_epsilon ||
+            axis->GetNbins() != t_nBins ) {
+            LogD( "All axes do not have the same min, max, and bin counts.", m_verbosity_error );
+            LogD( "With threashold `epsilon` = " + to_string( t_epsilon ) + ", one of the following is true:", m_verbosity_debug );
+            LogD( "(axis->GetXmin() = "  + to_string( axis->GetXmin () ) + ") != (t_min = "   + to_string( t_min   ) + ")", m_verbosity_debug );
+            LogD( "(axis->GetXmax() = "  + to_string( axis->GetXmax () ) + ") != (t_max = "   + to_string( t_max   ) + ")", m_verbosity_debug );
+            LogD( "(axis->GetNbins() = " + to_string( axis->GetNbins() ) + ") != (t_nBins = " + to_string( t_nBins ) + ")", m_verbosity_debug );
+            return false;
+        }
+    }
+
+    return true;
+}
+
 template< typename type_ID, typename type_hist >
 bool DetectorResponsePredictor::load_hists(       shared_ptr< THistMap< type_ID, type_hist > >& t_hists      ,
                                             const vector              < string               >& t_hists_paths,
@@ -101,36 +154,60 @@ bool DetectorResponsePredictor::load_hists(       shared_ptr< THistMap< type_ID,
     }
 
     // Check that all histograms have the same axes
-    double epsilon{ 1e-6 };
-    double min_x  { histsMap->begin()->second->GetXaxis()->GetXmin()  };
-    double max_x  { histsMap->begin()->second->GetXaxis()->GetXmax()  };
-    int    nBins_x{ histsMap->begin()->second->GetXaxis()->GetNbins() };
-    double min_y  { histsMap->begin()->second->GetYaxis()->GetXmin()  };
-    double max_y  { histsMap->begin()->second->GetYaxis()->GetXmax()  };
-    int    nBins_y{ histsMap->begin()->second->GetYaxis()->GetNbins() };
+    vector< TAxis* > axes_x;
+    vector< TAxis* > axes_y;
     for( pair< type_ID, type_hist* > hist : *histsMap ) { // replaced structured binding to avoid warning
-        type_ID  const& i = hist.first;
         type_hist* const& h = hist.second;
-        if( abs( h->GetXaxis()->GetXmin() - min_x   ) > epsilon ||
-            abs( h->GetXaxis()->GetXmax() - max_x   ) > epsilon ||
-            abs( h->GetYaxis()->GetXmin() - min_y   ) > epsilon ||
-            abs( h->GetYaxis()->GetXmax() - max_y   ) > epsilon ||
-            h->GetXaxis()->GetNbins() != nBins_x ||
-            h->GetYaxis()->GetNbins() != nBins_y   ) {
-            LogD( "All histograms in `t_hists` do not have the same axes (same min, max, and bin counts).", m_verbosity_error );
-            LogD( "Error encountered on histogram with ID " + to_string( i ) + ".", m_verbosity_debug );
-            LogD( "With threashold `epsilon` = " + to_string( epsilon ) + ", one of the following is true:", m_verbosity_debug );
-            LogD( "h->GetXaxis()->GetXmin() = "  + to_string( h->GetXaxis()->GetXmin () ) + " != " + to_string( min_x   ) + " = min_x"  , m_verbosity_debug );
-            LogD( "h->GetXaxis()->GetXmax() = "  + to_string( h->GetXaxis()->GetXmax () ) + " != " + to_string( max_x   ) + " = max_x"  , m_verbosity_debug );
-            LogD( "h->GetYaxis()->GetXmin() = "  + to_string( h->GetYaxis()->GetXmin () ) + " != " + to_string( min_y   ) + " = min_y"  , m_verbosity_debug );
-            LogD( "h->GetYaxis()->GetXmax() = "  + to_string( h->GetYaxis()->GetXmax () ) + " != " + to_string( max_y   ) + " = max_y"  , m_verbosity_debug );
-            LogD( "h->GetXaxis()->GetNbins() = " + to_string( h->GetXaxis()->GetNbins() ) + " != " + to_string( nBins_x ) + " = nBins_x", m_verbosity_debug );
-            LogD( "h->GetYaxis()->GetNbins() = " + to_string( h->GetYaxis()->GetNbins() ) + " != " + to_string( nBins_y ) + " = nBins_y", m_verbosity_debug );
-            return false;
-        }
+        axes_x.push_back( h->GetXaxis() );
+        axes_y.push_back( h->GetYaxis() );
     }
 
     t_hists = histsMap;
+    return true;
+}
+
+template< typename type_hist >
+bool DetectorResponsePredictor::make_averageTH1( shared_ptr< THistMap< int, type_hist > > t_hists, shared_ptr< type_hist >& t_hist, TString t_name = "", TString t_title = "" ) {
+    LogD( "Making average histogram.", m_verbosity_debug );
+
+    // Check that all histograms have the same axes
+    vector< TAxis* > axes;
+    for( pair< int, type_hist* > hist : *t_hists ) { // replaced structured binding to avoid warning
+        type_hist* const& h = hist.second;
+        axes.push_back( h->GetXaxis() );
+    }
+    if( ! check_axes( axes ) ) {
+        LogD( "All histograms do not have the same axes.", m_verbosity_error );
+        return false;
+    }
+
+    // Make average histogram
+    if( t_name.EqualTo( "" ) )
+        t_name = t_hists->at( 0 )->GetName();
+    if( t_title.EqualTo( "" ) )
+        t_title = t_hists->at( 0 )->GetTitle();
+    vector< int > keys;
+    for( pair< int, type_hist* > hist : *t_hists ) // replaced structured binding to avoid warning
+        keys.push_back( hist.first );
+    int nBins = keys.size();
+    double min = keys[ 0 ];
+    double max = keys[ 0 ];
+    for( int key : keys ) {
+        if( key < min )
+            min = key;
+        if( key > max )
+            max = key;
+    }
+
+    t_hist = make_shared< type_hist >( new type_hist( t_name, t_title, nBins, min, max ) );
+    for( int key : keys ) {
+        type_hist* hist = t_hists->at( key );
+        double avg = hist->GetMean();
+        int    bin = t_hist->FindBin( key );
+        t_hist->SetBinContent( bin, avg );
+        t_hist->SetBinError  ( bin, 0   ); // Can change later if needed
+    }
+
     return true;
 }
 
@@ -138,14 +215,27 @@ bool DetectorResponsePredictor::load_hists_transmission_tankWater( const vector<
                                                                    const vector< string >& t_hists_names,
                                                                    const vector< int    >& t_hists_IDs   ) {
     LogD( "Loading tank water transmission histograms.", m_verbosity_debug );
-    return load_hists( m_hists_transmission_tankWater, t_hists_paths, t_hists_names, t_hists_IDs );
+
+    if( ! load_hists( m_hists_transmission_tankWater, t_hists_paths, t_hists_names, t_hists_IDs ) ) {
+        LogD( "Failed to load tank water transmission histograms.", m_verbosity_error );
+        return false;
+    }
+
+    return make_averageTH1( m_hists_transmission_tankWater, m_hist_transmission_tankWater );
+
 }
 
 bool DetectorResponsePredictor::load_hists_transmission_MRDsci( const vector< string >& t_hists_paths,
                                                                 const vector< string >& t_hists_names,
                                                                 const vector< int    >& t_hists_IDs   ) {
     LogD( "Loading MRD scintilator transmission histograms.", m_verbosity_debug );
-    return load_hists( m_hists_transmission_MRDsci, t_hists_paths, t_hists_names, t_hists_IDs );
+
+    if( ! load_hists( m_hists_transmission_MRDsci, t_hists_paths, t_hists_names, t_hists_IDs ) ) {
+        LogD( "Failed to load MRD scintilator transmission histograms.", m_verbosity_error );
+        return false;
+    }
+
+    return make_averageTH1( m_hists_transmission_MRDsci, m_hist_transmission_MRDsci );
 }
 
 bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap< int, TH2D > >& t_hists_energies      ,

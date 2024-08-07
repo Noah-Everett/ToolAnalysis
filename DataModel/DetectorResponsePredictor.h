@@ -224,6 +224,8 @@ protected:
     /**/// Transmission Histograms
     /**/ shared_ptr< THistMap< int, TH1D > > m_hists_transmission_tankWater{ nullptr };
     /**/ shared_ptr< THistMap< int, TH1D > > m_hists_transmission_MRDsci   { nullptr };
+    /**/ shared_ptr< TH1D >                  m_hist_transmission_tankWater { nullptr };
+    /**/ shared_ptr< TH1D >                  m_hist_transmission_MRDsci    { nullptr };
     /**/
     /**/// Stopping Power Histograms
     /**/ TH1D* m_hist_dEdX_tankWater        { nullptr };
