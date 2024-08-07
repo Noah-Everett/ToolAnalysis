@@ -20,77 +20,80 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
     m_data = &data; //assigning transient data pointer
 
     // Load variables from config file
-    if( !get_config_verbosity  ( "verbosity_ChargedLeptonLikelihoodReco"     , m_verbosity_ChargedLeptonLikelihoodReco      ) ) return false;
-    if( !get_config_verbosity  ( "verbosity_DetectorResponsePredictor"       , m_verbosity_DetectorResponsePredictor        ) ) return false;
-    if( !get_config_verbosity  ( "verbosity_THistReader"                     , m_verbosity_THistReader                      ) ) return false;
+    if( !get_config_verbosity  ( "verbosity_ChargedLeptonLikelihoodReco"      , m_verbosity_ChargedLeptonLikelihoodReco       ) ) return false;
+    if( !get_config_verbosity  ( "verbosity_DetectorResponsePredictor"        , m_verbosity_DetectorResponsePredictor         ) ) return false;
+    if( !get_config_verbosity  ( "verbosity_THistReader"                      , m_verbosity_THistReader                       ) ) return false;
                                                                                                                                              
-    if( !get_config_path       ( "hists_emission_mu_tankWater_energies_path" , m_hists_emission_mu_tankWater_energies_path  ) ) return false;
-    if( !get_config_path       ( "hists_emission_e_tankWater_energies_path"  , m_hists_emission_e_tankWater_energies_path   ) ) return false;
-    if( !get_config_path       ( "hists_emission_mu_MRDsci_energies_path"    , m_hists_emission_mu_MRDsci_energies_path     ) ) return false;
-    if( !get_config_path       ( "hists_emission_e_MRDsci_energies_path"     , m_hists_emission_e_MRDsci_energies_path      ) ) return false;
+    if( !get_config_path       ( "hists_emission_mu_tankWater_energies_path"  , m_hists_emission_mu_tankWater_energies_path   ) ) return false;
+    if( !get_config_path       ( "hists_emission_e_tankWater_energies_path"   , m_hists_emission_e_tankWater_energies_path    ) ) return false;
+    if( !get_config_path       ( "hists_emission_mu_MRDsci_energies_path"     , m_hists_emission_mu_MRDsci_energies_path      ) ) return false;
+    if( !get_config_path       ( "hists_emission_e_MRDsci_energies_path"      , m_hists_emission_e_MRDsci_energies_path       ) ) return false;
                                                                                                                                              
-    if( !get_config_path       ( "hists_emission_mu_tankWater_counts_path"   , m_hists_emission_mu_tankWater_counts_path    ) ) return false;
-    if( !get_config_path       ( "hists_emission_e_tankWater_counts_path"    , m_hists_emission_e_tankWater_counts_path     ) ) return false;
-    if( !get_config_path       ( "hists_emission_mu_MRDsci_counts_path"      , m_hists_emission_mu_MRDsci_counts_path       ) ) return false;
-    if( !get_config_path       ( "hists_emission_e_MRDsci_counts_path"       , m_hists_emission_e_MRDsci_counts_path        ) ) return false;
+    if( !get_config_path       ( "hists_emission_mu_tankWater_counts_path"    , m_hists_emission_mu_tankWater_counts_path     ) ) return false;
+    if( !get_config_path       ( "hists_emission_e_tankWater_counts_path"     , m_hists_emission_e_tankWater_counts_path      ) ) return false;
+    if( !get_config_path       ( "hists_emission_mu_MRDsci_counts_path"       , m_hists_emission_mu_MRDsci_counts_path        ) ) return false;
+    if( !get_config_path       ( "hists_emission_e_MRDsci_counts_path"        , m_hists_emission_e_MRDsci_counts_path         ) ) return false;
                                                                                                                                              
-    if( !get_config_histName   ( "hists_emission_mu_tankWater_energies_name" , m_hists_emission_mu_tankWater_energies_name  ) ) return false;
-    if( !get_config_histName   ( "hists_emission_e_tankWater_energies_name"  , m_hists_emission_e_tankWater_energies_name   ) ) return false;
-    if( !get_config_histName   ( "hists_emission_mu_MRDsci_energies_name"    , m_hists_emission_mu_MRDsci_energies_name     ) ) return false;
-    if( !get_config_histName   ( "hists_emission_e_MRDsci_energies_name"     , m_hists_emission_e_MRDsci_energies_name      ) ) return false;
+    if( !get_config_histName   ( "hists_emission_mu_tankWater_energies_name"  , m_hists_emission_mu_tankWater_energies_name   ) ) return false;
+    if( !get_config_histName   ( "hists_emission_e_tankWater_energies_name"   , m_hists_emission_e_tankWater_energies_name    ) ) return false;
+    if( !get_config_histName   ( "hists_emission_mu_MRDsci_energies_name"     , m_hists_emission_mu_MRDsci_energies_name      ) ) return false;
+    if( !get_config_histName   ( "hists_emission_e_MRDsci_energies_name"      , m_hists_emission_e_MRDsci_energies_name       ) ) return false;
                                                                                                                                              
-    if( !get_config_histName   ( "hists_emission_mu_tankWater_counts_name"   , m_hists_emission_mu_tankWater_counts_name    ) ) return false;
-    if( !get_config_histName   ( "hists_emission_e_tankWater_counts_name"    , m_hists_emission_e_tankWater_counts_name     ) ) return false;
-    if( !get_config_histName   ( "hists_emission_mu_MRDsci_counts_name"      , m_hists_emission_mu_MRDsci_counts_name       ) ) return false;
-    if( !get_config_histName   ( "hists_emission_e_MRDsci_counts_name"       , m_hists_emission_e_MRDsci_counts_name        ) ) return false;
+    if( !get_config_histName   ( "hists_emission_mu_tankWater_counts_name"    , m_hists_emission_mu_tankWater_counts_name     ) ) return false;
+    if( !get_config_histName   ( "hists_emission_e_tankWater_counts_name"     , m_hists_emission_e_tankWater_counts_name      ) ) return false;
+    if( !get_config_histName   ( "hists_emission_mu_MRDsci_counts_name"       , m_hists_emission_mu_MRDsci_counts_name        ) ) return false;
+    if( !get_config_histName   ( "hists_emission_e_MRDsci_counts_name"        , m_hists_emission_e_MRDsci_counts_name         ) ) return false;
                                                                                                                                              
-    if( !get_config_unsignedInt( "hists_emission_mu_tankWater_energy_min"    , m_hists_emission_mu_tankWater_energy_min     ) ) return false; 
-    if( !get_config_unsignedInt( "hists_emission_e_tankWater_energy_min"     , m_hists_emission_e_tankWater_energy_min      ) ) return false; 
-    if( !get_config_unsignedInt( "hists_emission_mu_MRDsci_energy_min"       , m_hists_emission_mu_MRDsci_energy_min        ) ) return false; 
-    if( !get_config_unsignedInt( "hists_emission_e_MRDsci_energy_min"        , m_hists_emission_e_MRDsci_energy_min         ) ) return false; 
+    if( !get_config_unsignedInt( "hists_emission_mu_tankWater_energy_min"     , m_hists_emission_mu_tankWater_energy_min      ) ) return false; 
+    if( !get_config_unsignedInt( "hists_emission_e_tankWater_energy_min"      , m_hists_emission_e_tankWater_energy_min       ) ) return false; 
+    if( !get_config_unsignedInt( "hists_emission_mu_MRDsci_energy_min"        , m_hists_emission_mu_MRDsci_energy_min         ) ) return false; 
+    if( !get_config_unsignedInt( "hists_emission_e_MRDsci_energy_min"         , m_hists_emission_e_MRDsci_energy_min          ) ) return false; 
                                                                                                                                               
-    if( !get_config_unsignedInt( "hists_emission_mu_tankWater_energy_delta"  , m_hists_emission_mu_tankWater_energy_delta   ) ) return false; 
-    if( !get_config_unsignedInt( "hists_emission_e_tankWater_energy_delta"   , m_hists_emission_e_tankWater_energy_delta    ) ) return false; 
-    if( !get_config_unsignedInt( "hists_emission_mu_MRDsci_energy_delta"     , m_hists_emission_mu_MRDsci_energy_delta      ) ) return false; 
-    if( !get_config_unsignedInt( "hists_emission_e_MRDsci_energy_delta"      , m_hists_emission_e_MRDsci_energy_delta       ) ) return false; 
+    if( !get_config_unsignedInt( "hists_emission_mu_tankWater_energy_delta"   , m_hists_emission_mu_tankWater_energy_delta    ) ) return false; 
+    if( !get_config_unsignedInt( "hists_emission_e_tankWater_energy_delta"    , m_hists_emission_e_tankWater_energy_delta     ) ) return false; 
+    if( !get_config_unsignedInt( "hists_emission_mu_MRDsci_energy_delta"      , m_hists_emission_mu_MRDsci_energy_delta       ) ) return false; 
+    if( !get_config_unsignedInt( "hists_emission_e_MRDsci_energy_delta"       , m_hists_emission_e_MRDsci_energy_delta        ) ) return false; 
                                                                                                                                               
-    if( !get_config_unsignedInt( "hists_emission_mu_tankWater_num"           , m_hists_emission_mu_tankWater_num            ) ) return false; 
-    if( !get_config_unsignedInt( "hists_emission_e_tankWater_num"            , m_hists_emission_e_tankWater_num             ) ) return false; 
-    if( !get_config_unsignedInt( "hists_emission_mu_MRDsci_num"              , m_hists_emission_mu_MRDsci_num               ) ) return false; 
-    if( !get_config_unsignedInt( "hists_emission_e_MRDsci_num"               , m_hists_emission_e_MRDsci_num                ) ) return false; 
+    if( !get_config_unsignedInt( "hists_emission_mu_tankWater_num"            , m_hists_emission_mu_tankWater_num             ) ) return false; 
+    if( !get_config_unsignedInt( "hists_emission_e_tankWater_num"             , m_hists_emission_e_tankWater_num              ) ) return false; 
+    if( !get_config_unsignedInt( "hists_emission_mu_MRDsci_num"               , m_hists_emission_mu_MRDsci_num                ) ) return false; 
+    if( !get_config_unsignedInt( "hists_emission_e_MRDsci_num"                , m_hists_emission_e_MRDsci_num                 ) ) return false; 
                                                                                                                                               
-    if( !get_config_path       ( "hists_dEdX_mu_tankWater_path"              , m_hists_dEdX_mu_tankWater_path               ) ) return false; 
-    if( !get_config_path       ( "hists_dEdX_e_tankWater_path"               , m_hists_dEdX_e_tankWater_path                ) ) return false; 
-    if( !get_config_path       ( "hists_dEdX_mu_tankSteel_path"              , m_hists_dEdX_mu_tankSteel_path               ) ) return false; 
-    if( !get_config_path       ( "hists_dEdX_e_tankSteel_path"               , m_hists_dEdX_e_tankSteel_path                ) ) return false; 
-    if( !get_config_path       ( "hists_dEdX_mu_MRDsci_path"                 , m_hists_dEdX_mu_MRDsci_path                  ) ) return false; 
-    if( !get_config_path       ( "hists_dEdX_e_MRDsci_path"                  , m_hists_dEdX_e_MRDsci_path                   ) ) return false; 
-    if( !get_config_path       ( "hists_dEdX_mu_MRDiron_path"                , m_hists_dEdX_mu_MRDiron_path                 ) ) return false; 
-    if( !get_config_path       ( "hists_dEdX_e_MRDiron_path"                 , m_hists_dEdX_e_MRDiron_path                  ) ) return false; 
+    if( !get_config_path       ( "hists_dEdX_mu_tankWater_path"               , m_hists_dEdX_mu_tankWater_path                ) ) return false; 
+    if( !get_config_path       ( "hists_dEdX_e_tankWater_path"                , m_hists_dEdX_e_tankWater_path                 ) ) return false; 
+    if( !get_config_path       ( "hists_dEdX_mu_tankSteel_path"               , m_hists_dEdX_mu_tankSteel_path                ) ) return false; 
+    if( !get_config_path       ( "hists_dEdX_e_tankSteel_path"                , m_hists_dEdX_e_tankSteel_path                 ) ) return false; 
+    if( !get_config_path       ( "hists_dEdX_mu_MRDsci_path"                  , m_hists_dEdX_mu_MRDsci_path                   ) ) return false; 
+    if( !get_config_path       ( "hists_dEdX_e_MRDsci_path"                   , m_hists_dEdX_e_MRDsci_path                    ) ) return false; 
+    if( !get_config_path       ( "hists_dEdX_mu_MRDiron_path"                 , m_hists_dEdX_mu_MRDiron_path                  ) ) return false; 
+    if( !get_config_path       ( "hists_dEdX_e_MRDiron_path"                  , m_hists_dEdX_e_MRDiron_path                   ) ) return false; 
                                                                                                                                               
-    if( !get_config_histName   ( "hists_dEdX_mu_tankWater_name"              , m_hists_dEdX_mu_tankWater_name               ) ) return false; 
-    if( !get_config_histName   ( "hists_dEdX_e_tankWater_name"               , m_hists_dEdX_e_tankWater_name                ) ) return false; 
-    if( !get_config_histName   ( "hists_dEdX_mu_tankSteel_name"              , m_hists_dEdX_mu_tankWater_name               ) ) return false; 
-    if( !get_config_histName   ( "hists_dEdX_e_tankSteel_name"               , m_hists_dEdX_e_tankWater_name                ) ) return false; 
-    if( !get_config_histName   ( "hists_dEdX_mu_MRDsci_name"                 , m_hists_dEdX_mu_MRDsci_name                  ) ) return false; 
-    if( !get_config_histName   ( "hists_dEdX_e_MRDsci_name"                  , m_hists_dEdX_e_MRDsci_name                   ) ) return false; 
-    if( !get_config_histName   ( "hists_dEdX_mu_MRDiron_name"                , m_hists_dEdX_mu_MRDiron_name                 ) ) return false; 
-    if( !get_config_histName   ( "hists_dEdX_e_MRDiron_name"                 , m_hists_dEdX_e_MRDiron_name                  ) ) return false; 
+    if( !get_config_histName   ( "hists_dEdX_mu_tankWater_name"               , m_hists_dEdX_mu_tankWater_name                ) ) return false; 
+    if( !get_config_histName   ( "hists_dEdX_e_tankWater_name"                , m_hists_dEdX_e_tankWater_name                 ) ) return false; 
+    if( !get_config_histName   ( "hists_dEdX_mu_tankSteel_name"               , m_hists_dEdX_mu_tankWater_name                ) ) return false; 
+    if( !get_config_histName   ( "hists_dEdX_e_tankSteel_name"                , m_hists_dEdX_e_tankWater_name                 ) ) return false; 
+    if( !get_config_histName   ( "hists_dEdX_mu_MRDsci_name"                  , m_hists_dEdX_mu_MRDsci_name                   ) ) return false; 
+    if( !get_config_histName   ( "hists_dEdX_e_MRDsci_name"                   , m_hists_dEdX_e_MRDsci_name                    ) ) return false; 
+    if( !get_config_histName   ( "hists_dEdX_mu_MRDiron_name"                 , m_hists_dEdX_mu_MRDiron_name                  ) ) return false; 
+    if( !get_config_histName   ( "hists_dEdX_e_MRDiron_name"                  , m_hists_dEdX_e_MRDiron_name                   ) ) return false; 
+
+    if( !get_config_bool       ( "useSingleTH1forPhotonTransmission_tankWater", m_useSingleTH1forPhotonTransmission_tankWater ) ) return false;
+    if( !get_config_bool       ( "useSingleTH1forPhotonTransmission_MRDsci"   , m_useSingleTH1forPhotonTransmission_MRDsci    ) ) return false;
                                                                                                                                                     
-    if( !get_config_path       ( "hists_transmission_tankWater_path"        , m_hists_transmission_tankWater_path         ) ) return false; 
-    if( !get_config_path       ( "hists_transmission_MRDsci_path"           , m_hists_transmission_MRDsci_path            ) ) return false; 
-                                                                                                                                              
-    if( !get_config_histName   ( "hists_transmission_tankWater_name"        , m_hists_transmission_tankWater_name         ) ) return false; 
-    if( !get_config_histName   ( "hists_transmission_MRDsci_name"           , m_hists_transmission_MRDsci_name            ) ) return false; 
-
-    if( !get_config_unsignedInt( "hists_transmission_tankWater_energy_min"  , m_hists_transmission_tankWater_energy_min   ) ) return false;
-    if( !get_config_unsignedInt( "hists_transmission_MRDsci_energy_min"     , m_hists_transmission_MRDsci_energy_min      ) ) return false;
-
-    if( !get_config_unsignedInt( "hists_transmission_tankWater_energy_delta", m_hists_transmission_tankWater_energy_delta ) ) return false;
-    if( !get_config_unsignedInt( "hists_transmission_MRDsci_energy_delta"   , m_hists_transmission_MRDsci_energy_delta    ) ) return false;
-
-    if( !get_config_unsignedInt( "hists_transmission_tankWater_energy_num"  , m_hists_transmission_tankWater_num          ) ) return false;
-    if( !get_config_unsignedInt( "hists_transmission_MRDsci_energy_num"     , m_hists_transmission_MRDsci_num             ) ) return false;
+    if( !get_config_path       ( "hists_transmission_tankWater_path"          , m_hists_transmission_tankWater_path           ) ) return false; 
+    if( !get_config_path       ( "hists_transmission_MRDsci_path"             , m_hists_transmission_MRDsci_path              ) ) return false; 
+                                                                                                                                                  
+    if( !get_config_histName   ( "hists_transmission_tankWater_name"          , m_hists_transmission_tankWater_name           ) ) return false; 
+    if( !get_config_histName   ( "hists_transmission_MRDsci_name"             , m_hists_transmission_MRDsci_name              ) ) return false; 
+                                                                                                                              
+    if( !get_config_unsignedInt( "hists_transmission_tankWater_energy_min"    , m_hists_transmission_tankWater_energy_min     ) ) return false;
+    if( !get_config_unsignedInt( "hists_transmission_MRDsci_energy_min"       , m_hists_transmission_MRDsci_energy_min        ) ) return false;
+                                                                                                                              
+    if( !get_config_unsignedInt( "hists_transmission_tankWater_energy_delta"  , m_hists_transmission_tankWater_energy_delta   ) ) return false;
+    if( !get_config_unsignedInt( "hists_transmission_MRDsci_energy_delta"     , m_hists_transmission_MRDsci_energy_delta      ) ) return false;
+                                                                                                                              
+    if( !get_config_unsignedInt( "hists_transmission_tankWater_energy_num"    , m_hists_transmission_tankWater_num            ) ) return false;
+    if( !get_config_unsignedInt( "hists_transmission_MRDsci_energy_num"       , m_hists_transmission_MRDsci_num               ) ) return false;
 
 
 
@@ -101,25 +104,25 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
     string DetectorResponsePredictors_particles[ num_particles ]{ "mu", "e" };
     DetectorResponsePredictor* DetectorResponsePredictors[ num_particles ]{ m_DetectorResponsePredictor_mu, m_DetectorResponsePredictor_e };
 
-    const string       hists_emission_energies_paths[ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_energies_path , m_hists_emission_e_tankWater_energies_path }, 
-                                                                                        { m_hists_emission_mu_MRDsci_energies_path    , m_hists_emission_e_MRDsci_energies_path    } };
-    const string       hists_emission_counts_paths  [ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_counts_path   , m_hists_emission_e_tankWater_counts_path   }, 
-                                                                                        { m_hists_emission_mu_MRDsci_counts_path      , m_hists_emission_e_MRDsci_counts_path      } };
-    const string       hists_emission_energies_names[ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_energies_name , m_hists_emission_e_tankWater_energies_name }, 
-                                                                                        { m_hists_emission_mu_MRDsci_energies_name    , m_hists_emission_e_MRDsci_energies_name    } };
-    const string       hists_emission_counts_names  [ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_counts_name   , m_hists_emission_e_tankWater_counts_name   }, 
-                                                                                        { m_hists_emission_mu_MRDsci_counts_name      , m_hists_emission_e_MRDsci_counts_name      } };
-    const unsigned int hists_emission_energy_mins   [ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_energy_min    , m_hists_emission_e_tankWater_energy_min    }, 
-                                                                                        { m_hists_emission_mu_MRDsci_energy_min       , m_hists_emission_e_MRDsci_energy_min       } };
-    const unsigned int hists_emission_energy_deltas [ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_energy_delta  , m_hists_emission_e_tankWater_energy_delta  }, 
-                                                                                        { m_hists_emission_mu_MRDsci_energy_delta     , m_hists_emission_e_MRDsci_energy_delta     } };
-    const unsigned int hists_emission_energy_nums   [ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_num           , m_hists_emission_e_tankWater_num           }, 
-                                                                                        { m_hists_emission_mu_MRDsci_num              , m_hists_emission_e_MRDsci_num              } };
-    const string       hists_transmission_paths        [ num_materials ]             {   m_hists_transmission_tankWater_path        , m_hists_transmission_MRDsci_path            };
-    const string       hists_transmission_names        [ num_materials ]             {   m_hists_transmission_tankWater_name        , m_hists_transmission_MRDsci_name            };
-    const unsigned int hists_transmission_energy_mins  [ num_materials ]             {   m_hists_transmission_tankWater_energy_min  , m_hists_transmission_MRDsci_energy_min      };
-    const unsigned int hists_transmission_energy_deltas[ num_materials ]             {   m_hists_transmission_tankWater_energy_delta, m_hists_transmission_MRDsci_energy_delta    };
-    const unsigned int hists_transmission_energy_nums  [ num_materials ]             {   m_hists_transmission_tankWater_num         , m_hists_transmission_MRDsci_num             };
+    const string       hists_emission_energies_paths[ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_energies_path, m_hists_emission_e_tankWater_energies_path }, 
+                                                                                        { m_hists_emission_mu_MRDsci_energies_path   , m_hists_emission_e_MRDsci_energies_path    } };
+    const string       hists_emission_counts_paths  [ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_counts_path  , m_hists_emission_e_tankWater_counts_path   }, 
+                                                                                        { m_hists_emission_mu_MRDsci_counts_path     , m_hists_emission_e_MRDsci_counts_path      } };
+    const string       hists_emission_energies_names[ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_energies_name, m_hists_emission_e_tankWater_energies_name }, 
+                                                                                        { m_hists_emission_mu_MRDsci_energies_name   , m_hists_emission_e_MRDsci_energies_name    } };
+    const string       hists_emission_counts_names  [ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_counts_name  , m_hists_emission_e_tankWater_counts_name   }, 
+                                                                                        { m_hists_emission_mu_MRDsci_counts_name     , m_hists_emission_e_MRDsci_counts_name      } };
+    const unsigned int hists_emission_energy_mins   [ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_energy_min   , m_hists_emission_e_tankWater_energy_min    }, 
+                                                                                        { m_hists_emission_mu_MRDsci_energy_min      , m_hists_emission_e_MRDsci_energy_min       } };
+    const unsigned int hists_emission_energy_deltas [ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_energy_delta , m_hists_emission_e_tankWater_energy_delta  }, 
+                                                                                        { m_hists_emission_mu_MRDsci_energy_delta    , m_hists_emission_e_MRDsci_energy_delta     } };
+    const unsigned int hists_emission_energy_nums   [ num_materials ][ num_particles ]{ { m_hists_emission_mu_tankWater_num          , m_hists_emission_e_tankWater_num           }, 
+                                                                                        { m_hists_emission_mu_MRDsci_num             , m_hists_emission_e_MRDsci_num              } };
+    const string       hists_transmission_paths        [ num_materials ]             {   m_hists_transmission_tankWater_path         , m_hists_transmission_MRDsci_path             };
+    const string       hists_transmission_names        [ num_materials ]             {   m_hists_transmission_tankWater_name         , m_hists_transmission_MRDsci_name             };
+    const unsigned int hists_transmission_energy_mins  [ num_materials ]             {   m_hists_transmission_tankWater_energy_min   , m_hists_transmission_MRDsci_energy_min       };
+    const unsigned int hists_transmission_energy_deltas[ num_materials ]             {   m_hists_transmission_tankWater_energy_delta , m_hists_transmission_MRDsci_energy_delta     };
+    const unsigned int hists_transmission_energy_nums  [ num_materials ]             {   m_hists_transmission_tankWater_num          , m_hists_transmission_MRDsci_num              };
 
     using DetectorResponsePredictorLoadEmissionPtr      = bool ( DetectorResponsePredictor::* )( const vector< string >&, const vector< string >&, 
                                                                                                  const vector< string >&, const vector< string >&,
@@ -342,5 +345,16 @@ inline bool ChargedLeptonLikelihoodReco::get_config_double( const string& t_vari
     }
 
     LogD( "Loaded double `" + t_variable_name + "`: " + to_string( t_variable ) + ".", m_verbosity_debug );
+    return true;
+}
+
+inline bool ChargedLeptonLikelihoodReco::get_config_bool( const string& t_variable_name, bool& t_variable ) {
+    if( !m_variables.Get( t_variable_name, t_variable ) ) {
+        string temp_string{ "Unable to load bool `" };
+        LogD( temp_string + t_variable_name + "`.", m_verbosity_error );
+        return false;
+    }
+
+    LogD( "Loaded bool `" + t_variable_name + "`: " + to_string( t_variable ) + ".", m_verbosity_debug );
     return true;
 }

@@ -136,6 +136,7 @@ private:
     /**/ inline bool get_config_histName   ( const string& t_variable_name, string      & t_variable );
     /**/ inline bool get_config_unsignedInt( const string& t_variable_name, unsigned int& t_variable );
     /**/ inline bool get_config_double     ( const string& t_variable_name, double      & t_variable );
+    /**/ inline bool get_config_bool       ( const string& t_variable_name, bool        & t_variable );
     /**/
     /**///////////////////////////////
 
