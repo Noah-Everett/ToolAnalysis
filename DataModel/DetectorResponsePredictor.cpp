@@ -195,7 +195,7 @@ bool DetectorResponsePredictor::make_averageTH1( shared_ptr< THistMap< int, type
             max = key;
     }
 
-    t_hist = make_shared< type_hist >( new type_hist( t_name, t_title, nBins, min, max ) );
+    t_hist = make_shared< type_hist >( type_hist( t_name, t_title, nBins, min, max ) );
     for( int key : keys ) {
         type_hist* hist = t_hists->at( key );
         double avg = hist->GetMean();
