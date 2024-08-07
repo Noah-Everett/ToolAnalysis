@@ -26,7 +26,7 @@
 //*//   Distance      [m]                                                                     //*//
 //*//   Angle         [rad]                                                                   //*//
 //*//   Time          [s]                                                                     //*//
-//*//   Transmittance [1/m] (%/m)                                                             //*//
+//*//   transmission [1/m] (%/m)                                                             //*//
 //*//                                                                                         //*//
 //*/////////////////////////////////////////////////////////////////////////////////////////////*//
 //*//                                                                                         //*//
@@ -222,8 +222,8 @@ protected:
     /**/ double                              m_binWidth_phi_MRDsci;
     /**/
     /**/// Transmission Histograms
-    /**/ shared_ptr< THistMap< int, TH1D > > m_hist_transmission_tankWater{ nullptr };
-    /**/ shared_ptr< THistMap< int, TH1D > > m_hist_transmission_MRDsci   { nullptr };
+    /**/ shared_ptr< THistMap< int, TH1D > > m_hists_transmission_tankWater{ nullptr };
+    /**/ shared_ptr< THistMap< int, TH1D > > m_hists_transmission_MRDsci   { nullptr };
     /**/
     /**/// Stopping Power Histograms
     /**/ TH1D* m_hist_dEdX_tankWater        { nullptr };
@@ -359,12 +359,12 @@ protected:
 
 
 
-    /**///////////////////////////////
-    /**/// Transmittance Functions ///
-    /**///////////////////////////////
+    /**//////////////////////////////
+    /**/// transmission Functions ///
+    /**//////////////////////////////
     /**/
-    /**/ double get_transmittance_tankWater( const double t_distance, const double t_photonEnergy ) const;
-    /**/ double get_transmittance_MRDsci   ( const double t_distance, const double t_photonEnergy ) const;
+    /**/ double get_transmission_tankWater( const double t_distance, const double t_photonEnergy ) const;
+    /**/ double get_transmission_MRDsci   ( const double t_distance, const double t_photonEnergy ) const;
     /**/
     /**///////////////////////////////
     

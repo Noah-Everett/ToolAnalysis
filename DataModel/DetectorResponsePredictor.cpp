@@ -20,7 +20,7 @@
 //*//   Distance      [m]                                                                     //*//
 //*//   Angle         [rad]                                                                   //*//
 //*//   Time          [s]                                                                     //*//
-//*//   Transmittance [1/m] (%/m)                                                             //*//
+//*//   transmission [1/m] (%/m)                                                             //*//
 //*//                                                                                         //*//
 //*/////////////////////////////////////////////////////////////////////////////////////////////*//
 //*//                                                                                         //*//
@@ -137,15 +137,15 @@ bool DetectorResponsePredictor::load_hists(       shared_ptr< THistMap< type_ID,
 bool DetectorResponsePredictor::load_hist_transmission_tankWater( const vector< string >& t_hists_paths,
                                                                   const vector< string >& t_hists_names,
                                                                   const vector< int    >& t_hists_IDs   ) {
-    LogD( "Loading tank water transmittance histograms.", m_verbosity_debug );
-    return load_hists< int, TH1D >( m_hists_transmittance_tankWater, t_hists_paths, t_hists_names, t_hists_IDs );
+    LogD( "Loading tank water transmission histograms.", m_verbosity_debug );
+    return load_hists< int, TH1D >( m_hists_transmission_tankWater, t_hists_paths, t_hists_names, t_hists_IDs );
 }
 
 bool DetectorResponsePredictor::load_hist_transmission_MRDsci( const vector< string >& t_hists_paths,
                                                                const vector< string >& t_hists_names,
                                                                const vector< int    >& t_hists_IDs   ) {
-    LogD( "Loading MRD scintilator transmittance histograms.", m_verbosity_debug );
-    return load_hists< int, TH1D >( m_hists_transmittance_MRDsci, t_hists_paths, t_hists_names, t_hists_IDs );
+    LogD( "Loading MRD scintilator transmission histograms.", m_verbosity_debug );
+    return load_hists< int, TH1D >( m_hists_transmission_MRDsci, t_hists_paths, t_hists_names, t_hists_IDs );
 }
 
 bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap< int, TH2D > >& t_hists_energies      ,
@@ -496,7 +496,7 @@ double DetectorResponsePredictor::get_expected_height( Particle* t_particle, Det
     const double particle_energy_init{ t_particle->GetStartEnergy() * 1000 }; // Convert from GeV to MeV
 
     bool   ( DetectorResponsePredictor::*get_isDetector    )( const TVector3&, const TVector3&, const TVector3&, const TVector3&, const TH2D*, const index_3 ) const;
-    double ( DetectorResponsePredictor::*get_transmittance )( const double, const double ) const;
+    double ( DetectorResponsePredictor::*get_transmission )( const double, const double ) const;
     double ( DetectorResponsePredictor::*get_acceptance    )( const double, const int ) const;
     double phiBinWidth;
     shared_ptr< THistMap< int, TH2D > > hists_emission_counts;
@@ -506,14 +506,14 @@ double DetectorResponsePredictor::get_expected_height( Particle* t_particle, Det
         hists_emission_counts   = m_hists_emission_tankWater_counts;
         phiBinWidth = m_binWidth_phi_tankWater;
         get_isDetector = &DetectorResponsePredictor::get_isDetector_tankPMT;
-        get_transmittance = &DetectorResponsePredictor::get_transmittance_tankWater;
+        get_transmission = &DetectorResponsePredictor::get_transmission_tankWater;
         get_acceptance = &DetectorResponsePredictor::get_acceptance_tankPMT;
     } else if( t_detector->GetDetectorElement() == "LAPPD" ) {
         hists_emission_energies = m_hists_emission_tankWater_energies;
         hists_emission_counts = m_hists_emission_tankWater_counts;
         phiBinWidth = m_binWidth_phi_tankWater;
         get_isDetector = &DetectorResponsePredictor::get_isDetector_LAPPD;
-        get_transmittance = &DetectorResponsePredictor::get_transmittance_tankWater;
+        get_transmission = &DetectorResponsePredictor::get_transmission_tankWater;
         get_acceptance = &DetectorResponsePredictor::get_acceptance_LAPPD;
     } else if( t_detector->GetDetectorElement() == "MRD" ) {
         hists_emission_energies = m_hists_emission_MRDsci_energies;
@@ -521,7 +521,7 @@ double DetectorResponsePredictor::get_expected_height( Particle* t_particle, Det
         phiBinWidth = m_binWidth_phi_MRDsci;
         hists_emission_energies = m_hists_emission_MRDsci_energies;
         get_isDetector = &DetectorResponsePredictor::get_isDetector_MRD;
-        get_transmittance = &DetectorResponsePredictor::get_transmittance_MRDsci;
+        get_transmission = &DetectorResponsePredictor::get_transmission_MRDsci;
         get_acceptance = &DetectorResponsePredictor::get_acceptance_MRD;
     } else {
         LogD( "Detector::DetectorElement is not \"PMT\", \"LAPPD\", or \"MRD\", it is \"" + t_detector->GetDetectorElement() + "\". Returning 0.", m_verbosity_debug );
@@ -555,7 +555,7 @@ double DetectorResponsePredictor::get_expected_height( Particle* t_particle, Det
         if( ( this->*get_isDetector )( particle_position_init, particle_direction, detector_position, detector_direction, referenceHist, index_searching ) ) {
             particleToDetector = detector_position - particle_position_init + particle_direction * get_bin_value( index_searching.x, referenceHist->GetXaxis() );
             height += eval_hists_emission_indicies( hists_emission_counts, particle_energy_init, index_searching.x, index_searching.y ) 
-                    * ( this->*get_transmittance )( particleToDetector.Mag(), eval_hists_emission_indicies( hists_emission_energies, particle_energy_init, index_searching.x, index_searching.y ) )
+                    * ( this->*get_transmission )( particleToDetector.Mag(), eval_hists_emission_indicies( hists_emission_energies, particle_energy_init, index_searching.x, index_searching.y ) )
                     * ( this->*get_acceptance )( get_angle( particleToDetector, detector_direction ), t_detector->GetDetectorID() );
 
             for( int dx{ -1 }; dx <= 1; dx++ )
@@ -609,11 +609,11 @@ double DetectorResponsePredictor::get_acceptance_MRD( const double t_incidenceAn
     return 1;
 }
 
-double DetectorResponsePredictor::get_transmittance_tankWater( const double t_distance, const double t_photonEnergy ) const {
+double DetectorResponsePredictor::get_transmission_tankWater( const double t_distance, const double t_photonEnergy ) const {
     return pow( eval_hist_transmission_tankWater( t_photonEnergy ), t_distance );
 }
 
-double DetectorResponsePredictor::get_transmittance_MRDsci( const double t_distance, const double t_photonEnergy ) const {
+double DetectorResponsePredictor::get_transmission_MRDsci( const double t_distance, const double t_photonEnergy ) const {
     return pow( eval_hist_transmission_MRDsci( t_photonEnergy ), t_distance );
 }
 
