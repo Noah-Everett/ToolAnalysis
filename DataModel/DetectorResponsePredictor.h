@@ -287,9 +287,9 @@ protected:
     /**/                                                 const double                               t_initialEnergy   ,
     /**/                                                 const unsigned int                         t_trackLengthIndex,
     /**/                                                 const unsigned int                         t_photonAngleIndex ) const;
-    /**/ double           eval_hist_value              ( const shared_ptr< TH1D >                   t_hist            ,
+    /**/ double           eval_hist_value              ( const shared_ptr< TH1D >                 & t_hist            ,
     /**/                                                 const double                               t_x                ) const;
-    /**/ double           eval_hist_index              ( const shared_ptr< TH1D >                   t_hist            ,
+    /**/ double           eval_hist_index              ( const shared_ptr< TH1D >                 & t_hist            ,
     /**/                                                 const unsigned int                         t_xIndex           ) const;
     /**/
     /**/ template< typename type_hist >
