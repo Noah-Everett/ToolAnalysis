@@ -235,18 +235,6 @@ bool DetectorResponsePredictor::load_hist(       type_hist*& m_hist     ,
     return true;
 }
 
-bool DetectorResponsePredictor::load_hist_transmission_tankWater( const string& t_hist_path,
-                                                                  const string& t_hist_name ) {
-    LogD( "Loading tank water transmission histogram.", m_verbosity_debug );
-    return load_hist< TH1D >( m_hist_transmission_tankWater, t_hist_path, t_hist_name, m_particle_name );
-}
-
-bool DetectorResponsePredictor::load_hist_transmission_MRDsci( const string& t_hist_path,
-                                                               const string& t_hist_name ) {
-    LogD( "Loading MRD scintilator transmission histogram.", m_verbosity_debug );
-    return load_hist< TH1D >( m_hist_transmission_MRDsci, t_hist_path, t_hist_name, m_particle_name + "_MRDsci" );
-}
-
 bool DetectorResponsePredictor::load_hist_dEdX_tankWater( const string& t_hist_path,
                                                           const string& t_hist_name ) {
     LogD( "Loading tank water dEdX histogram.", m_verbosity_debug );
