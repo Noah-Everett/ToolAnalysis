@@ -46,18 +46,18 @@ public:
                  double t_error=0, const string& t_error_unit_given="DEFAULT", const string& t_error_unit_use="DEFAULT" );
    ~Measurement() {};
 
-    Measurement& set_value           ( double t_value, const string& t_value_unit="DEFAULT" ) { return ( *this ).update_value( t_value      , t_value_unit   ); }
-    Measurement& set_value           ( const pair< double, string >& t_value                ) { return ( *this ).update_value( t_value.first, t_value.second ); }
-    Measurement& set_value_unit      ( const string& t_value_unit="DEFAULT"                 ) { return ( *this ).update_value(                t_value_unit   ); }
-    Measurement& set_value_unit_smart( unsigned int t_nMaxDigitsIntegerPart=2               ) { return ( *this ).update_value_smart( t_nMaxDigitsIntegerPart ); }
-    Measurement& set_error           ( double t_error, const string& t_error_unit="DEFAULT" ) { return ( *this ).update_error( t_error      , t_error_unit   ); }
-    Measurement& set_error           ( const pair< double, string >& t_error                ) { return ( *this ).update_error( t_error.first, t_error.second ); }
-    Measurement& set_error_unit      ( const string& t_error_unit="DEFAULT"                 ) { return ( *this ).update_error(                t_error_unit   ); }
-    Measurement& set_error_unit_smart( unsigned int t_nMaxDigitsIntegerPart=2               ) { return ( *this ).update_error_smart( t_nMaxDigitsIntegerPart ); }
-    Measurement& set_units           ( const string& t_unit="DEFAULT"                       ) { return ( *this ).update_value(                t_unit         )
-                                                                                                                .update_error(                t_unit         ); }
-    Measurement& set_units_smart     ( unsigned int t_nMaxDigitsIntegerPart=2               ) { return ( *this ).update_value_smart( t_nMaxDigitsIntegerPart )
-                                                                                                                .update_error_smart( t_nMaxDigitsIntegerPart ); }
+    MeasurementType& set_value           ( double t_value, const string& t_value_unit="DEFAULT" ) { return ( *this ).update_value( t_value      , t_value_unit   ); }
+    MeasurementType& set_value           ( const pair< double, string >& t_value                ) { return ( *this ).update_value( t_value.first, t_value.second ); }
+    MeasurementType& set_value_unit      ( const string& t_value_unit="DEFAULT"                 ) { return ( *this ).update_value(                t_value_unit   ); }
+    MeasurementType& set_value_unit_smart( unsigned int t_nMaxDigitsIntegerPart=2               ) { return ( *this ).update_value_smart( t_nMaxDigitsIntegerPart ); }
+    MeasurementType& set_error           ( double t_error, const string& t_error_unit="DEFAULT" ) { return ( *this ).update_error( t_error      , t_error_unit   ); }
+    MeasurementType& set_error           ( const pair< double, string >& t_error                ) { return ( *this ).update_error( t_error.first, t_error.second ); }
+    MeasurementType& set_error_unit      ( const string& t_error_unit="DEFAULT"                 ) { return ( *this ).update_error(                t_error_unit   ); }
+    MeasurementType& set_error_unit_smart( unsigned int t_nMaxDigitsIntegerPart=2               ) { return ( *this ).update_error_smart( t_nMaxDigitsIntegerPart ); }
+    MeasurementType& set_units           ( const string& t_unit="DEFAULT"                       ) { return ( *this ).update_value(                t_unit         )
+                                                                                                                    .update_error(                t_unit         ); }
+    MeasurementType& set_units_smart     ( unsigned int t_nMaxDigitsIntegerPart=2               ) { return ( *this ).update_value_smart( t_nMaxDigitsIntegerPart )
+                                                                                                                    .update_error_smart( t_nMaxDigitsIntegerPart ); }
 
     double get_value              ( const string& t_unit=""                ) const { return get_updated_value( t_unit.compare( "" ) ? t_unit : m_value_unit_name ); }
     string get_value_unit         (                                        ) const { return m_value_unit_name;                                                      }
@@ -68,47 +68,47 @@ public:
     double get_error_unit_relative( const string& t_unit="DEFAULT"         ) const { return m_error_unit / MeasurementType::m_unitMap.at( t_unit );                 }
     double get_error_unit_smart   ( unsigned int t_nMaxDigitsIntegerPart=2 ) const { return get_updated_error_smart( t_nMaxDigitsIntegerPart );                     }
 
-    Measurement& operator+( const Measurement& t_measurement ) const { return Measurement( t_measurement ).set_value( m_value_unit ).set_value( m_value + t_measurement.get_value() ); }
-    Measurement& operator-( const Measurement& t_measurement ) const { return Measurement( t_measurement ).set_value( m_value_unit ).set_value( m_value - t_measurement.get_value() ); }
-    Measurement& operator*( const Measurement& t_measurement ) const { return Measurement( t_measurement ).set_value( m_value_unit ).set_value( m_value * t_measurement.get_value() ); }
-    Measurement& operator/( const Measurement& t_measurement ) const { return Measurement( t_measurement ).set_value( m_value_unit ).set_value( m_value / t_measurement.get_value() ); }
-    Measurement& operator+( const double       t_value       ) const { return Measurement( *this ).set_value( m_value + t_value ); }
-    Measurement& operator-( const double       t_value       ) const { return Measurement( *this ).set_value( m_value - t_value ); }
-    Measurement& operator*( const double       t_value       ) const { return Measurement( *this ).set_value( m_value * t_value ); }
-    Measurement& operator/( const double       t_value       ) const { return Measurement( *this ).set_value( m_value / t_value ); }
+    MeasurementType& operator+( const Measurement& t_measurement ) const { return Measurement( t_measurement ).set_value( m_value_unit ).set_value( m_value + t_measurement.get_value() ); }
+    MeasurementType& operator-( const Measurement& t_measurement ) const { return Measurement( t_measurement ).set_value( m_value_unit ).set_value( m_value - t_measurement.get_value() ); }
+    MeasurementType& operator*( const Measurement& t_measurement ) const { return Measurement( t_measurement ).set_value( m_value_unit ).set_value( m_value * t_measurement.get_value() ); }
+    MeasurementType& operator/( const Measurement& t_measurement ) const { return Measurement( t_measurement ).set_value( m_value_unit ).set_value( m_value / t_measurement.get_value() ); }
+    MeasurementType& operator+( const double       t_value       ) const { return Measurement( *this ).set_value( m_value + t_value ); }
+    MeasurementType& operator-( const double       t_value       ) const { return Measurement( *this ).set_value( m_value - t_value ); }
+    MeasurementType& operator*( const double       t_value       ) const { return Measurement( *this ).set_value( m_value * t_value ); }
+    MeasurementType& operator/( const double       t_value       ) const { return Measurement( *this ).set_value( m_value / t_value ); }
 
-    Measurement& operator+=( const Measurement& t_measurement ) { m_value += t_measurement.get_value(); return *this; }
-    Measurement& operator-=( const Measurement& t_measurement ) { m_value -= t_measurement.get_value(); return *this; }
-    Measurement& operator*=( const Measurement& t_measurement ) { m_value *= t_measurement.get_value(); return *this; }
-    Measurement& operator/=( const Measurement& t_measurement ) { m_value /= t_measurement.get_value(); return *this; }
-    Measurement& operator+=( const double       t_value       ) { m_value += t_value; return *this; }
-    Measurement& operator-=( const double       t_value       ) { m_value -= t_value; return *this; }
-    Measurement& operator*=( const double       t_value       ) { m_value *= t_value; return *this; }
-    Measurement& operator/=( const double       t_value       ) { m_value /= t_value; return *this; }
+    MeasurementType& operator+=( const Measurement& t_measurement ) { m_value += t_measurement.get_value(); return *this; }
+    MeasurementType& operator-=( const Measurement& t_measurement ) { m_value -= t_measurement.get_value(); return *this; }
+    MeasurementType& operator*=( const Measurement& t_measurement ) { m_value *= t_measurement.get_value(); return *this; }
+    MeasurementType& operator/=( const Measurement& t_measurement ) { m_value /= t_measurement.get_value(); return *this; }
+    MeasurementType& operator+=( const double       t_value       ) { m_value += t_value; return *this; }
+    MeasurementType& operator-=( const double       t_value       ) { m_value -= t_value; return *this; }
+    MeasurementType& operator*=( const double       t_value       ) { m_value *= t_value; return *this; }
+    MeasurementType& operator/=( const double       t_value       ) { m_value /= t_value; return *this; }
 
-    Measurement& operator=( const Measurement           & t_measurement ) { return ( *this ).update_value( t_measurement.get_value(), t_measurement.get_value_unit() )
-                                                                                            .update_error( t_measurement.get_error(), t_measurement.get_error_unit() ); }
-    Measurement& operator=( const double                  t_value       ) { return ( *this ).update_value( t_value                       ); }
-    Measurement& operator=( const pair< double, string >  t_value       ) { return ( *this ).update_value( t_value.first, t_value.second ); }
+    MeasurementType& operator=( const MeasurementType       & t_measurement ) { return ( *this ).update_value( t_measurement.get_value(), t_measurement.get_value_unit() )
+               Type                                                                             .update_error( t_measurement.get_error(), t_measurement.get_error_unit() ); }
+    MeasurementType& operator=( const double                  t_value       ) { return ( *this ).update_value( t_value                       ); }
+    MeasurementType& operator=( const pair< double, string >  t_value       ) { return ( *this ).update_value( t_value.first, t_value.second ); }
 
-    bool operator==( const Measurement& t_measurement ) const { return m_value == t_measurement.get_value( m_value_unit_name ) && m_error == t_measurement.get_error( m_error_unit_name ); }
-    bool operator!=( const Measurement& t_measurement ) const { return m_value != t_measurement.get_value( m_value_unit_name ) || m_error != t_measurement.get_error( m_error_unit_name ); }
-    bool operator< ( const Measurement& t_measurement ) const { return m_value <  t_measurement.get_value( m_value_unit_name ); }
-    bool operator<=( const Measurement& t_measurement ) const { return m_value <= t_measurement.get_value( m_value_unit_name ); }
-    bool operator> ( const Measurement& t_measurement ) const { return m_value >  t_measurement.get_value( m_value_unit_name ); }
-    bool operator>=( const Measurement& t_measurement ) const { return m_value >= t_measurement.get_value( m_value_unit_name ); }
-    bool operator==( const double       t_value       ) const { return m_value == t_value; }
-    bool operator!=( const double       t_value       ) const { return m_value != t_value; }
-    bool operator< ( const double       t_value       ) const { return m_value <  t_value; }
-    bool operator<=( const double       t_value       ) const { return m_value <= t_value; }
-    bool operator> ( const double       t_value       ) const { return m_value >  t_value; }
-    bool operator>=( const double       t_value       ) const { return m_value >= t_value; }
+    bool operator==( const MeasurementType& t_measurement ) const { return m_value == t_measurement.get_value( m_value_unit_name ) && m_error == t_measurement.get_error( m_error_unit_name ); }
+    bool operator!=( const MeasurementType& t_measurement ) const { return m_value != t_measurement.get_value( m_value_unit_name ) || m_error != t_measurement.get_error( m_error_unit_name ); }
+    bool operator< ( const MeasurementType& t_measurement ) const { return m_value <  t_measurement.get_value( m_value_unit_name ); }
+    bool operator<=( const MeasurementType& t_measurement ) const { return m_value <= t_measurement.get_value( m_value_unit_name ); }
+    bool operator> ( const MeasurementType& t_measurement ) const { return m_value >  t_measurement.get_value( m_value_unit_name ); }
+    bool operator>=( const MeasurementType& t_measurement ) const { return m_value >= t_measurement.get_value( m_value_unit_name ); }
+    bool operator==( const double           t_value       ) const { return m_value == t_value; }
+    bool operator!=( const double           t_value       ) const { return m_value != t_value; }
+    bool operator< ( const double           t_value       ) const { return m_value <  t_value; }
+    bool operator<=( const double           t_value       ) const { return m_value <= t_value; }
+    bool operator> ( const double           t_value       ) const { return m_value >  t_value; }
+    bool operator>=( const double           t_value       ) const { return m_value >= t_value; }
     
-    bool operator()( const Measurement& t_measurement_0, const Measurement& t_measurement_1, double t_epsilon=1e-6 ) const; // For use in std::sort or std::map
+    bool operator()( const MeasurementType& t_measurement_0, const MeasurementType& t_measurement_1, double t_epsilon=1e-6 ) const; // For use in std::sort or std::map
 
     operator double() const { return m_value; }
 
-    friend ostream& operator<<( ostream& t_os, const Measurement& t_measurement ) { t_os << t_measurement.get_value(); return t_os; }
+    friend ostream& operator<<( ostream& t_os, const MeasurementType& t_measurement ) { t_os << t_measurement.get_value(); return t_os; }
     ostream& print( ostream& t_os ) const { t_os << m_value << " " << m_value_unit_name << " +/- " << m_error << " " << m_error_unit_name; return t_os; }
 
 protected:
@@ -134,15 +134,15 @@ private:
     string get_updated_value_unit_smart( unsigned int t_nMaxDigitsIntegerPart=2 ) const { return get_updated_value_smart( m_value, m_value_unit_name, t_nMaxDigitsIntegerPart ).second; }
     string get_updated_error_unit_smart( unsigned int t_nMaxDigitsIntegerPart=2 ) const { return get_updated_value_smart( m_error, m_error_unit_name, t_nMaxDigitsIntegerPart ).second; }
 
-    Measurement& update_value( double t_value, const string& t_value_unit );
-    Measurement& update_error( double t_error, const string& t_error_unit );
-    Measurement& update_value( const string& t_value_unit ) { return ( *this ).update_value( m_value, t_value_unit ); }
-    Measurement& update_error( const string& t_error_unit ) { return ( *this ).update_error( m_error, t_error_unit ); }
-    Measurement& update_value( double t_value ) { m_value = t_value; return *this; }
-    Measurement& update_error( double t_error ) { m_error = t_error; return *this; }
+    MeasurementType& update_value( double t_value, const string& t_value_unit );
+    MeasurementType& update_error( double t_error, const string& t_error_unit );
+    MeasurementType& update_value( const string& t_value_unit ) { return ( *this ).update_value( m_value, t_value_unit ); }
+    MeasurementType& update_error( const string& t_error_unit ) { return ( *this ).update_error( m_error, t_error_unit ); }
+    MeasurementType& update_value( double t_value ) { m_value = t_value; return *this; }
+    MeasurementType& update_error( double t_error ) { m_error = t_error; return *this; }
 
-    Measurement& update_value_smart( unsigned int t_nMaxDigitsIntegerPart=2 ) { return ( *this ).update_value( get_updated_value_smart( t_nMaxDigitsIntegerPart ) ); }
-    Measurement& update_error_smart( unsigned int t_nMaxDigitsIntegerPart=2 ) { return ( *this ).update_error( get_updated_error_smart( t_nMaxDigitsIntegerPart ) ); }
+    MeasurementType& update_value_smart( unsigned int t_nMaxDigitsIntegerPart=2 ) { return ( *this ).update_value( get_updated_value_smart( t_nMaxDigitsIntegerPart ) ); }
+    MeasurementType& update_error_smart( unsigned int t_nMaxDigitsIntegerPart=2 ) { return ( *this ).update_error( get_updated_error_smart( t_nMaxDigitsIntegerPart ) ); }
 };
 
 class Energy : public Measurement< Energy >
@@ -300,7 +300,7 @@ protected:
 };
 
 template< typename MeasurementType >
-Measurement::Measurement( const Measurement& t_measurement ) :
+Measurement< MeasurementType >::Measurement( const Measurement& t_measurement ) :
     m_value          { t_measurement.m_value           },
     m_value_unit     { t_measurement.m_value_unit      },
     m_value_unit_name{ t_measurement.m_value_unit_name },
@@ -310,8 +310,8 @@ Measurement::Measurement( const Measurement& t_measurement ) :
 {}
 
 template< typename MeasurementType >
-Measurement::Measurement( double t_value, const string& t_value_unit_given, const string& t_value_unit_use,
-                          double t_error, const string& t_error_unit_given, const string& t_error_unit_use ) :
+Measurement< MeasurementType >::Measurement( double t_value, const string& t_value_unit_given, const string& t_value_unit_use,
+                                             double t_error, const string& t_error_unit_given, const string& t_error_unit_use ) :
     m_value          { t_value },
     m_error          { t_error },
     m_value_unit_name{ t_value_unit_given },
@@ -325,7 +325,7 @@ Measurement::Measurement( double t_value, const string& t_value_unit_given, cons
 }
 
 template< typename MeasurementType >
-double Measurement::get_updated_value( double t_value, const string& t_unit_given, const string& t_unit_use ) const
+double Measurement< MeasurementType >::get_updated_value( double t_value, const string& t_unit_given, const string& t_unit_use ) const
 {
     if( t_value_unit_given == t_value_unit_use ) return t_value;
 
@@ -333,7 +333,7 @@ double Measurement::get_updated_value( double t_value, const string& t_unit_give
 }
 
 template< typename MeasurementType >
-pair< double, string >& Measurement::get_updated_value_smart( double t_value, const string& t_unit_given, unsigned int t_nMaxDigitsIntegerPart ) const
+pair< double, string >& Measurement< MeasurementType >::get_updated_value_smart( double t_value, const string& t_unit_given, unsigned int t_nMaxDigitsIntegerPart ) const
 {
     if( ! t_doUpdate || t_nMaxDigitsIntegerPart == 0 ) return { t_value, t_unit_given };
 
@@ -352,7 +352,7 @@ pair< double, string >& Measurement::get_updated_value_smart( double t_value, co
 }
 
 template< typename MeasurementType >
-Measurement& Measurement::update_value( double t_value, const string& t_value_unit )
+Measurement& Measurement< MeasurementType >::update_value( double t_value, const string& t_value_unit )
 {
     if( m_value_unit_name == t_value_unit ) {
         m_value = t_value;
@@ -367,7 +367,7 @@ Measurement& Measurement::update_value( double t_value, const string& t_value_un
 }
 
 template< typename MeasurementType >
-Measurement& Measurement::update_error( double t_error, const string& t_error_unit )
+Measurement< MeasurementType >& Measurement< MeasurementType >::update_error( double t_error, const string& t_error_unit )
 {
     if( m_error_unit_name == t_error_unit ) {
         m_error = t_error;
@@ -382,7 +382,7 @@ Measurement& Measurement::update_error( double t_error, const string& t_error_un
 }
 
 template< typename MeasurementType >
-bool Measurement::operator()( const Measurement& t_measurement_0, const Measurement& t_measurement_1, double t_epsilon ) const
+bool Measurement< MeasurementType >::operator()( const Measurement& t_measurement_0, const Measurement& t_measurement_1, double t_epsilon ) const
 {
     return abs( t_measurement_0.get_value() - t_measurement_1.get_value() ) < t_epsilon ? t_measurement_0.get_value( "DEFAULT" )
 }
