@@ -284,20 +284,20 @@ protected:
     /**/ bool check_axes( const vector< TAxis* >& t_axes, double t_min = 0, double t_max = 0, int t_nBins = 0, double t_epsilon = 1e-6 ) const;
     /**/
     /**/// Load Histograms
-    /**/ bool load_hists_emission   (       shared_ptr< THistMap< int, TH2D > >& t_hists_energies      ,
-    /**/                                    shared_ptr< THistMap< int, TH2D > >& t_hists_counts        ,
-    /**/                              const vector    < string                >& t_hists_energies_paths,
-    /**/                              const vector    < string                >& t_hists_counts_paths  ,
-    /**/                              const vector    < string                >& t_hists_energies_names,
-    /**/                              const vector    < string                >& t_hists_counts_names  ,
-    /**/                              const vector    < int                   >& t_hists_IDs           ,
-    /**/                                    double                             & t_binWidth_s          ,
-    /**/                                    double                             & t_binWidth_theta      ,
-    /**/                                    double                             & t_binWidth_phi        ,
-    /**/                              const string                             & t_hists_tag            );
-    /**/ bool load_hist_transmission(       shared_ptr< THistMap< int, TH1D > >& t_hist_transmission   ,
-    /**/                              const string                             & t_hist_path           ,
-    /**/                              const string                             & t_hist_name            );
+    /**/ bool load_hists_emission   (       shared_ptr< THistMap< Energy, TH2D > >& t_hists_energies      ,
+    /**/                                    shared_ptr< THistMap< Energy, TH2D > >& t_hists_counts        ,
+    /**/                              const vector    < string                   >& t_hists_energies_paths,
+    /**/                              const vector    < string                   >& t_hists_counts_paths  ,
+    /**/                              const vector    < string                   >& t_hists_energies_names,
+    /**/                              const vector    < string                   >& t_hists_counts_names  ,
+    /**/                              const vector    < Energy                   >& t_hists_IDs           ,
+    /**/                                    double                                & t_binWidth_s          ,
+    /**/                                    double                                & t_binWidth_theta      ,
+    /**/                                    double                                & t_binWidth_phi        ,
+    /**/                              const string                                & t_hists_tag            );
+    /**/ bool load_hist_transmission(       shared_ptr< THistMap< Energy, TH1D > >& t_hist_transmission   ,
+    /**/                              const string                                & t_hist_path           ,
+    /**/                              const string                                & t_hist_name            );
     /**/ template< typename type_ID, typename type_hist >
     /**/ bool load_hists            (       shared_ptr< THistMap< type_ID, type_hist > >& t_hists      ,
     /**/                              const vector              < string               >& t_hists_paths,
@@ -310,24 +310,24 @@ protected:
     /**/                              const string                 & t_hist_particle );
     /**/
     /**/// Evaluate Histograms
-    /**/ pair< int, int > get_closestEmissionHists     ( const shared_ptr< THistMap< int, TH2D > >  t_hists_emission,
-    /**/                                                 const double                               t_initialEnergy    ) const;
-    /**/ double           eval_hists_emission_values   ( const shared_ptr< THistMap< int, TH2D > >  t_hists_emission,
-    /**/                                                 const double                               t_initialEnergy   ,
-    /**/                                                 const double                               t_trackLength     ,
-    /**/                                                 const double                               t_photonAngle      ) const;
-    /**/ double           eval_hists_emission_indicies ( const shared_ptr< THistMap< int, TH2D > >  t_hists_emission,
-    /**/                                                 const double                               t_initialEnergy   ,
-    /**/                                                 const unsigned int                         t_trackLengthIndex,
-    /**/                                                 const unsigned int                         t_photonAngleIndex ) const;
-    /**/ double           eval_hist_value              ( const shared_ptr< TH1D >                 & t_hist            ,
-    /**/                                                 const double                               t_x                ) const;
-    /**/ double           eval_hist_index              ( const shared_ptr< TH1D >                 & t_hist            ,
-    /**/                                                 const unsigned int                         t_xIndex           ) const;
+    /**/ pair< int, int > get_closestEmissionHists     ( const shared_ptr< THistMap< Energy, TH2D > >  t_hists_emission,
+    /**/                                                 const double                                  t_initialEnergy    ) const;
+    /**/ double           eval_hists_emission_values   ( const shared_ptr< THistMap< Energy, TH2D > >  t_hists_emission,
+    /**/                                                 const double                                  t_initialEnergy   ,
+    /**/                                                 const double                                  t_trackLength     ,
+    /**/                                                 const double                                  t_photonAngle      ) const;
+    /**/ double           eval_hists_emission_indicies ( const shared_ptr< THistMap< Energy, TH2D > >  t_hists_emission,
+    /**/                                                 const double                                  t_initialEnergy   ,
+    /**/                                                 const unsigned int                            t_trackLengthIndex,
+    /**/                                                 const unsigned int                            t_photonAngleIndex ) const;
+    /**/ double           eval_hist_value              ( const shared_ptr< TH1D >                    & t_hist            ,
+    /**/                                                 const double                                  t_x                ) const;
+    /**/ double           eval_hist_index              ( const shared_ptr< TH1D >                    & t_hist            ,
+    /**/                                                 const unsigned int                            t_xIndex           ) const;
     /**/
     /**/// Misc.
     /**/ template< typename type_hist >
-    /**/ bool make_averageTH1( shared_ptr< THistMap< int, type_hist > > t_hists, shared_ptr< type_hist >& t_hist, TString t_name = "", TString t_title = "" );
+    /**/ bool make_averageTH1( shared_ptr< THistMap< Energy, type_hist > > t_hists, shared_ptr< type_hist >& t_hist, TString t_name = "", TString t_title = "" );
     /**/
     /**////////////////////////////
     
