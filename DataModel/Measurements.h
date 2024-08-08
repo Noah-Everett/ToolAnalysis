@@ -87,7 +87,7 @@ public:
     MeasurementType& operator/=( const double       t_value       ) { m_value /= t_value; return *this; }
 
     MeasurementType& operator=( const MeasurementType       & t_measurement ) { return ( *this ).update_value( t_measurement.get_value(), t_measurement.get_value_unit() )
-               Type                                                                             .update_error( t_measurement.get_error(), t_measurement.get_error_unit() ); }
+                                                                                                .update_error( t_measurement.get_error(), t_measurement.get_error_unit() ); }
     MeasurementType& operator=( const double                  t_value       ) { return ( *this ).update_value( t_value                       ); }
     MeasurementType& operator=( const pair< double, string >  t_value       ) { return ( *this ).update_value( t_value.first, t_value.second ); }
 
