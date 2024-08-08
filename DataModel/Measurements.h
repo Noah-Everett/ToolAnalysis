@@ -115,6 +115,7 @@ public:
     
     static double get_unit_value( const string& t_unit      ) { return MeasurementType::get_unit_map().at( t_unit ); }
     static string get_unit_name (       double  t_unitValue ) { return get_unitValue_map().at( t_unitValue );        }
+    static const map< string, double >& get_unit_map     () { return m_unitMap; }
     static const map< double, string >& get_unitValue_map();
 
 protected:
@@ -125,7 +126,8 @@ protected:
     double m_error_unit     { 1         };
     string m_error_unit_name{ "DEFAULT" };
 
-    const double pi = 3.14159265358979;
+    static const double pi;
+    static const map< string, double > m_unitMap;
 
 private:
     double get_updated_value( double t_value, const string& t_unit_given, const string& t_unit_use ) const;
@@ -160,11 +162,6 @@ public:
             double t_error=0, const string& t_error_unit_given="DEFAULT", const string& t_error_unit_use="DEFAULT" ) :
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Energy() {}
-
-    static const map< string, double >& get_unit_map() { return m_unitMap; }
-
-protected:
-    static const map< string, double > m_unitMap;
 };
 
 class Length : public Measurement< Length >
@@ -176,11 +173,6 @@ public:
             double t_error=0, const string& t_error_unit_given="DEFAULT", const string& t_error_unit_use="DEFAULT" ) :
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Length() {}
-
-    static const map< string, double >& get_unit_map() { return m_unitMap; }
-
-protected:
-    static const map< string, double > m_unitMap;
 };
 
 class Time : public Measurement< Time >
@@ -192,11 +184,6 @@ public:
           double t_error=0, const string& t_error_unit_given="DEFAULT", const string& t_error_unit_use="DEFAULT" ) :
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Time() {}
-
-    static const map< string, double >& get_unit_map() { return m_unitMap; }
-
-protected:
-    static const map< string, double > m_unitMap;
 };
 
 class Mass : public Measurement< Mass >
@@ -208,11 +195,6 @@ public:
           double t_error=0, const string& t_error_unit_given="DEFAULT", const string& t_error_unit_use="DEFAULT" ) :
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Mass() {}
-
-    static const map< string, double >& get_unit_map() { return m_unitMap; }
-
-protected:
-    static const map< string, double > m_unitMap;
 };
 
 class Angle : public Measurement< Angle >
@@ -224,11 +206,6 @@ public:
            double t_error=0, const string& t_error_unit_given="DEFAULT", const string& t_error_unit_use="DEFAULT" ) :
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Angle() {}
-
-    static const map< string, double >& get_unit_map() { return m_unitMap; }
-
-protected:
-    static const map< string, double > m_unitMap;
 };
 
 template< typename MeasurementType >
@@ -340,7 +317,10 @@ const map< double, string >& Measurement< MeasurementType >::get_unitValue_map()
     return unitValueMap;
 }
 
-const map< string, double > Energy::m_unitMap = {
+template< typename MeasurementType >
+const double Measurement< MeasurementType >::pi = 3.14159265358979;
+
+const map< string, double > Measurement< Energy >::m_unitMap = {
     { "DEFAULT", 1e+0      },
 
     { "peV"    , 1e-12     },
@@ -357,7 +337,7 @@ const map< string, double > Energy::m_unitMap = {
     { "J"      , 6.242e+12 }
 };
 
-const map< string, double > Length::m_unitMap = {
+const map< string, double > Measurement< Length >::m_unitMap = {
     { "DEFAULT", 1e+0    },
 
     { "pm"     , 1e-12   },
@@ -379,7 +359,7 @@ const map< string, double > Length::m_unitMap = {
     { "mi"     , 1609.34 }
 };
 
-const map< string, double > Time::m_unitMap = {
+const map< string, double > Measurement< Time >::m_unitMap = {
     { "DEFAULT", 1e+0  },
 
     { "ps"     , 1e-12 },
@@ -394,7 +374,7 @@ const map< string, double > Time::m_unitMap = {
     { "Ps"     , 1e+15 }
 };
 
-const map< string, double > Mass::m_unitMap = {
+const map< string, double > Measurement< Mass >::m_unitMap = {
     { "DEFAULT", 1e+0  },
 
     { "pg"     , 1e-12 },
@@ -407,15 +387,16 @@ const map< string, double > Mass::m_unitMap = {
     { "Gg"     , 1e+9  },
     { "Tg"     , 1e+12 },
     { "Pg"     , 1e+15 },
+    { "tonne"  , 1000  },
 
-    { "oz"     , 0.0283495 },
+    // Not mass but going to assume we're 
+    // staying on earth with normal gravity (;
+    { "oz"     , 0.0283495 }, 
     { "lb"     , 0.453592  },
-
-    { "ton"    , 907.185   },
-    { "tonne"  , 1000      }
+    { "ton"    , 907.185   }
 };
 
-const map< string, double > Angle::m_unitMap = {
+const map< string, double > Measurement< Angle >::m_unitMap = {
     { "DEFAULT", 1e+0  },
 
     { "prad"   , 1e-12 },
