@@ -168,7 +168,7 @@ bool DetectorResponsePredictor::make_averageTH1( shared_ptr< THistMap< Energy, t
 
     // Check that all histograms have the same axes
     vector< TAxis* > axes;
-    for( pair< int, type_hist* > hist : *t_hists ) { // replaced structured binding to avoid warning
+    for( pair< Energy, type_hist* > hist : *t_hists ) { // replaced structured binding to avoid warning
         type_hist* const& h = hist.second;
         axes.push_back( h->GetXaxis() );
     }
@@ -182,8 +182,8 @@ bool DetectorResponsePredictor::make_averageTH1( shared_ptr< THistMap< Energy, t
         t_name = t_hists->at( 0 )->GetName();
     if( t_title.EqualTo( "" ) )
         t_title = t_hists->at( 0 )->GetTitle();
-    vector< int > keys;
-    for( pair< int, type_hist* > hist : *t_hists ) // replaced structured binding to avoid warning
+    vector< Energy > keys;
+    for( pair< Energy, type_hist* > hist : *t_hists ) // replaced structured binding to avoid warning
         keys.push_back( hist.first );
     int nBins = keys.size();
     double min = keys[ 0 ];
@@ -572,8 +572,8 @@ double DetectorResponsePredictor::get_expected_height( Particle* t_particle, Det
     double ( DetectorResponsePredictor::*get_transmission )( const double, const double ) const;
     double ( DetectorResponsePredictor::*get_acceptance    )( const double, const int ) const;
     double phiBinWidth;
-    shared_ptr< THistMap< int, TH2D > > hists_emission_counts;
-    shared_ptr< THistMap< int, TH2D > > hists_emission_energies;
+    shared_ptr< THistMap< Energy, TH2D > > hists_emission_counts;
+    shared_ptr< THistMap< Energy, TH2D > > hists_emission_energies;
     if( t_detector->GetDetectorElement() == "PMT" ) {
         hists_emission_energies = m_hists_emission_tankWater_energies;
         hists_emission_counts   = m_hists_emission_tankWater_counts;
