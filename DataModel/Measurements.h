@@ -153,7 +153,7 @@ private:
     MeasurementType& update_value_smart( unsigned int t_nMaxDigitsIntegerPart=2 ) { return ( *this ).update_value( get_updated_value_smart( t_nMaxDigitsIntegerPart ) ); }
     MeasurementType& update_error_smart( unsigned int t_nMaxDigitsIntegerPart=2 ) { return ( *this ).update_error( get_updated_error_smart( t_nMaxDigitsIntegerPart ) ); }
 
-    map< double, string > make_unitMap_value( const map< string, double > t_unitMap );
+    static map< double, string > make_unitMap_value( const map< string, double > t_unitMap );
 };
 
 class Energy : public Measurement< Energy >
@@ -311,7 +311,7 @@ bool Measurement< MeasurementType >::operator()( const MeasurementType& t_measur
 }
 
 template< typename MeasurementType >
-map< double, string > Measurement< MeasurementType >::make_unitMap_value( const map< string, double > t_unitMap )
+static map< double, string > Measurement< MeasurementType >::make_unitMap_value( const map< string, double > t_unitMap )
 {
     map< double, string > unitValueMap;
     for( const auto& unit : t_unitMap )
