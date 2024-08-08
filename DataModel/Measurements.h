@@ -128,7 +128,7 @@ private:
     double get_updated_value( const string& t_value_unit ) const { return get_updated_value( m_value, t_value_unit ); }
     double get_updated_error( const string& t_error_unit ) const { return get_updated_error( m_error, t_error_unit ); }
 
-    pair< double, string >& get_updated_value_smart( double t_value, const string& t_unit_given, unsigned int t_nMaxDigitsIntegerPart=2 ) const;
+    pair< double, string > get_updated_value_smart( double t_value, const string& t_unit_given, unsigned int t_nMaxDigitsIntegerPart=2 ) const;
     double get_updated_value_smart     ( unsigned int t_nMaxDigitsIntegerPart=2 ) const { return get_updated_value_smart( m_value, m_value_unit_name, t_nMaxDigitsIntegerPart ).first;  }
     double get_updated_error_smart     ( unsigned int t_nMaxDigitsIntegerPart=2 ) const { return get_updated_value_smart( m_error, m_error_unit_name, t_nMaxDigitsIntegerPart ).first;  }
     string get_updated_value_unit_smart( unsigned int t_nMaxDigitsIntegerPart=2 ) const { return get_updated_value_smart( m_value, m_value_unit_name, t_nMaxDigitsIntegerPart ).second; }
@@ -333,7 +333,7 @@ double Measurement< MeasurementType >::get_updated_value( double t_value, const 
 }
 
 template< typename MeasurementType >
-pair< double, string >& Measurement< MeasurementType >::get_updated_value_smart( double t_value, const string& t_unit_given, unsigned int t_nMaxDigitsIntegerPart ) const
+pair< double, string > Measurement< MeasurementType >::get_updated_value_smart( double t_value, const string& t_unit_given, unsigned int t_nMaxDigitsIntegerPart ) const
 {
     if( t_nMaxDigitsIntegerPart == 0 ) return pair< double, string >( { t_value, t_unit_given } );
 
