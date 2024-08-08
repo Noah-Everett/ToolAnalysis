@@ -160,26 +160,11 @@ public:
             double t_error=0, const string& t_error_unit_given="DEFAULT", const string& t_error_unit_use="DEFAULT" ) :
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Energy() {}
-    
-    static const map< string, double >& get_unit_map() const { return m_unitMap; }
+
+    static const map< string, double >& get_unit_map() { return m_unitMap; }
 
 protected:
-    static const map< string, double > m_unitMap = {
-        { "DEFAULT", 1e+0      },
-
-        { "peV"    , 1e-12     },
-        { "meV"    , 1e-3      },
-        { "ceV"    , 1e-2      },
-        { "deV"    , 1e-1      },
-        { "eV"     , 1e+0      },
-        { "keV"    , 1e+3      },
-        { "MeV"    , 1e+6      },
-        { "GeV"    , 1e+9      },
-        { "TeV"    , 1e+12     },
-        { "PeV"    , 1e+15     },
-
-        { "J"      , 6.242e+12 }
-    };
+    static const map< string, double > m_unitMap;
 };
 
 class Length : public Measurement< Length >
@@ -192,30 +177,10 @@ public:
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Length() {}
 
-    static const map< string, double >& get_unit_map() const { return m_unitMap; }
+    static const map< string, double >& get_unit_map() { return m_unitMap; }
 
 protected:
-    static const map< string, double > m_unitMap =
-        { "DEFAULT", 1e+0    },
-
-        { "pm"     , 1e-12   },
-        { "nm"     , 1e-9    },
-        { "um"     , 1e-6    },
-        { "mm"     , 1e-3    },
-        { "cm"     , 1e-2    },
-        { "dm"     , 1e-1    },
-        { "m"      , 1e+0    },
-        { "km"     , 1e+3    },
-        { "Mm"     , 1e+6    },
-        { "Gm"     , 1e+9    },
-        { "Tm"     , 1e+12   },
-        { "Pm"     , 1e+15   },
-
-        { "in"     , 0.0254  },
-        { "ft"     , 0.3048  },
-        { "yd"     , 0.9144  },
-        { "mi"     , 1609.34 }
-    };
+    static const map< string, double > m_unitMap;
 };
 
 class Time : public Measurement< Time >
@@ -228,23 +193,10 @@ public:
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Time() {}
 
-    static const map< string, double >& get_unit_map() const { return m_unitMap; }
+    static const map< string, double >& get_unit_map() { return m_unitMap; }
 
 protected:
-    const map< string, double > m_unitMap = {
-        { "DEFAULT", 1e+0  },
-
-        { "ps"     , 1e-12 },
-        { "ns"     , 1e-9  },
-        { "us"     , 1e-6  },
-        { "ms"     , 1e-3  },
-        { "s"      , 1e+0  },
-        { "ks"     , 1e+3  },
-        { "Ms"     , 1e+6  },
-        { "Gs"     , 1e+9  },
-        { "Ts"     , 1e+12 },
-        { "Ps"     , 1e+15 }
-    };
+    static const map< string, double > m_unitMap;
 };
 
 class Mass : public Measurement< Mass >
@@ -257,29 +209,10 @@ public:
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Mass() {}
 
-    static const map< string, double >& get_unit_map() const { return m_unitMap; }
+    static const map< string, double >& get_unit_map() { return m_unitMap; }
 
 protected:
-    static const map< string, double > m_unitMap =
-        { "DEFAULT", 1e+0  },
-
-        { "pg"     , 1e-12 },
-        { "ng"     , 1e-9  },
-        { "ug"     , 1e-6  },
-        { "mg"     , 1e-3  },
-        { "g"      , 1e+0  },
-        { "kg"     , 1e+3  },
-        { "Mg"     , 1e+6  },
-        { "Gg"     , 1e+9  },
-        { "Tg"     , 1e+12 },
-        { "Pg"     , 1e+15 },
-
-        { "oz"     , 0.0283495 },
-        { "lb"     , 0.453592  },
-
-        { "ton"    , 907.185   },
-        { "tonne"  , 1000      }
-    };
+    static const map< string, double > m_unitMap;
 };
 
 class Angle : public Measurement< Angle >
@@ -292,27 +225,10 @@ public:
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Angle() {}
 
-    static const map< string, double >& get_unit_map() const { return m_unitMap; }
+    static const map< string, double >& get_unit_map() { return m_unitMap; }
 
 protected:
-    static const map< string, double > m_unitMap = {
-        { "DEFAULT", 1e+0  },
-
-        { "prad"   , 1e-12 },
-        { "nrad"   , 1e-9  },
-        { "urad"   , 1e-6  },
-        { "mrad"   , 1e-3  },
-        { "rad"    , 1e+0  },
-        { "krad"   , 1e+3  },
-        { "Mrad"   , 1e+6  },
-        { "Grad"   , 1e+9  },
-        { "Trad"   , 1e+12 },
-        { "Prad"   , 1e+15 },
-
-        { "deg"    , pi / 180 },
-        { "arcmin" , pi / 10800 },
-        { "arcsec" , pi / 648000 }
-    };
+    static const map< string, double > m_unitMap;
 };
 
 template< typename MeasurementType >
@@ -423,5 +339,99 @@ const map< double, string >& Measurement< MeasurementType >::get_unitValue_map()
 
     return unitValueMap;
 }
+
+const map< string, double > Energy::m_unitMap = {
+    { "DEFAULT", 1e+0      },
+
+    { "peV"    , 1e-12     },
+    { "meV"    , 1e-3      },
+    { "ceV"    , 1e-2      },
+    { "deV"    , 1e-1      },
+    { "eV"     , 1e+0      },
+    { "keV"    , 1e+3      },
+    { "MeV"    , 1e+6      },
+    { "GeV"    , 1e+9      },
+    { "TeV"    , 1e+12     },
+    { "PeV"    , 1e+15     },
+
+    { "J"      , 6.242e+12 }
+};
+
+const map< string, double > Length::m_unitMap = {
+    { "DEFAULT", 1e+0    },
+
+    { "pm"     , 1e-12   },
+    { "nm"     , 1e-9    },
+    { "um"     , 1e-6    },
+    { "mm"     , 1e-3    },
+    { "cm"     , 1e-2    },
+    { "dm"     , 1e-1    },
+    { "m"      , 1e+0    },
+    { "km"     , 1e+3    },
+    { "Mm"     , 1e+6    },
+    { "Gm"     , 1e+9    },
+    { "Tm"     , 1e+12   },
+    { "Pm"     , 1e+15   },
+
+    { "in"     , 0.0254  },
+    { "ft"     , 0.3048  },
+    { "yd"     , 0.9144  },
+    { "mi"     , 1609.34 }
+};
+
+const map< string, double > Time::m_unitMap = {
+    { "DEFAULT", 1e+0  },
+
+    { "ps"     , 1e-12 },
+    { "ns"     , 1e-9  },
+    { "us"     , 1e-6  },
+    { "ms"     , 1e-3  },
+    { "s"      , 1e+0  },
+    { "ks"     , 1e+3  },
+    { "Ms"     , 1e+6  },
+    { "Gs"     , 1e+9  },
+    { "Ts"     , 1e+12 },
+    { "Ps"     , 1e+15 }
+};
+
+const map< string, double > Mass::m_unitMap = {
+    { "DEFAULT", 1e+0  },
+
+    { "pg"     , 1e-12 },
+    { "ng"     , 1e-9  },
+    { "ug"     , 1e-6  },
+    { "mg"     , 1e-3  },
+    { "g"      , 1e+0  },
+    { "kg"     , 1e+3  },
+    { "Mg"     , 1e+6  },
+    { "Gg"     , 1e+9  },
+    { "Tg"     , 1e+12 },
+    { "Pg"     , 1e+15 },
+
+    { "oz"     , 0.0283495 },
+    { "lb"     , 0.453592  },
+
+    { "ton"    , 907.185   },
+    { "tonne"  , 1000      }
+};
+
+const map< string, double > Angle::m_unitMap = {
+    { "DEFAULT", 1e+0  },
+
+    { "prad"   , 1e-12 },
+    { "nrad"   , 1e-9  },
+    { "urad"   , 1e-6  },
+    { "mrad"   , 1e-3  },
+    { "rad"    , 1e+0  },
+    { "krad"   , 1e+3  },
+    { "Mrad"   , 1e+6  },
+    { "Grad"   , 1e+9  },
+    { "Trad"   , 1e+12 },
+    { "Prad"   , 1e+15 },
+
+    { "deg"    , pi / 180 },
+    { "arcmin" , pi / 10800 },
+    { "arcsec" , pi / 648000 }
+};
 
 #endif // MEASUREMENTS_H
