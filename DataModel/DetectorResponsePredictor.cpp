@@ -235,23 +235,25 @@ bool DetectorResponsePredictor::load_hists_transmission_MRDsci( const vector< st
 
 bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap< Energy, TH2D > >& t_hists_energies       ,
                                                            shared_ptr< THistMap< Energy, TH2D > >& t_hists_counts         ,
-                                                     const vector    < string                   >& t_hists_energies_paths , 
-                                                     const vector    < string                   >& t_hists_counts_paths   ,
-                                                     const vector    < string                   >& t_hists_energies_names ,
-                                                     const vector    < string                   >& t_hists_counts_names   ,
-                                                     const vector    < Energy                   >& t_hists_initialEnergies,
+                                                     const vector    <           Energy         >& t_hists_energies_paths , 
+                                                     const vector    <           Energy         >& t_hists_counts_paths   ,
+                                                     const vector    <           Energy         >& t_hists_energies_names ,
+                                                     const vector    <           Energy         >& t_hists_counts_names   ,
+                                                     const vector    <           Energy         >& t_hists_initialEnergies,
                                                            double                                & t_binWidth_s           ,
                                                            double                                & t_binWidth_theta       ,
                                                            double                                & t_binWidth_phi         ,
                                                      const string                                & t_hists_tag             ) {
     LogD( "Loading emission histograms.", m_verbosity_debug );
 
-    if( !m_hists_emission_initialEnergies.empty() && 
-    if( m_hists_emission_initialEnergies != t_hists_initialEnergies ) {
+    if( !m_hists_emission_initialEnergies.empty() && m_hists_emission_initialEnergies != t_hists_initialEnergies ) {
         LogD( "Argument `t_hists_initialEnergies` for `load_hists_emission_tankWater()`" 
                    " and `load_hists_emission_MRDsci()` should match.", m_verbosity_error );
         return false;
     }
+
+    if( m_hists_emission_initialEnergies.empty() )
+        m_hists_emission_initialEnergies = t_hists_initialEnergies;
 
     // Load histograms
     if( ! load_hists( t_hists_energies, t_hists_energies_paths, t_hists_energies_names, t_hists_IDs ) ) {
