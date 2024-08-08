@@ -284,20 +284,20 @@ protected:
     /**/ bool check_axes( const vector< TAxis* >& t_axes, double t_min = 0, double t_max = 0, int t_nBins = 0, double t_epsilon = 1e-6 ) const;
     /**/
     /**/// Load Histograms
-    /**/ bool load_hists_emission   (       shared_ptr< THistMap< Energy, TH2D > >& t_hists_energies      ,
-    /**/                                    shared_ptr< THistMap< Energy, TH2D > >& t_hists_counts        ,
-    /**/                              const vector    < string                   >& t_hists_energies_paths,
-    /**/                              const vector    < string                   >& t_hists_counts_paths  ,
-    /**/                              const vector    < string                   >& t_hists_energies_names,
-    /**/                              const vector    < string                   >& t_hists_counts_names  ,
-    /**/                              const vector    < Energy                   >& t_hists_energies      ,
-    /**/                                    double                                & t_binWidth_s          ,
-    /**/                                    double                                & t_binWidth_theta      ,
-    /**/                                    double                                & t_binWidth_phi        ,
-    /**/                              const string                                & t_hists_tag            );
-    /**/ bool load_hist_transmission(       shared_ptr< THistMap< Energy, TH1D > >& t_hist_transmission   ,
-    /**/                              const string                                & t_hist_path           ,
-    /**/                              const string                                & t_hist_name            );
+    /**/ bool load_hists_emission    (       shared_ptr< THistMap< Energy, TH2D > >& t_hists_energies       ,
+    /**/                                     shared_ptr< THistMap< Energy, TH2D > >& t_hists_counts         ,
+    /**/                               const vector    < string                   >& t_hists_energies_paths ,
+    /**/                               const vector    < string                   >& t_hists_counts_paths   ,
+    /**/                               const vector    < string                   >& t_hists_energies_names ,
+    /**/                               const vector    < string                   >& t_hists_counts_names   ,
+    /**/                               const vector    < Energy                   >& t_hists_initialEnergies,
+    /**/                                     double                                & t_binWidth_s           ,
+    /**/                                     double                                & t_binWidth_theta       ,
+    /**/                                     double                                & t_binWidth_phi         ,
+    /**/                               const string                                & t_hists_tag             );
+    /**/ bool load_hists_transmission(       shared_ptr< THistMap< Energy, TH1D > >& t_hist_transmission    ,
+    /**/                               const string                                & t_hist_path            ,
+    /**/                               const string                                & t_hist_name             );
     /**/
     /**/ template< typename type_ID, typename type_hist >
     /**/ bool load_hists            (       shared_ptr< THistMap< type_ID, type_hist > >& t_hists         ,

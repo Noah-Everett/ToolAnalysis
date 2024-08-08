@@ -109,7 +109,7 @@ public:
     
     bool operator()( const MeasurementType& t_measurement_0, const MeasurementType& t_measurement_1, double t_epsilon=1e-6 ) const; // For use in std::sort or std::map
 
-    operaotr int   () const { return static_cast< int >( m_value );                                        }
+    operator int   () const { return static_cast< int >( m_value );                                        }
     operator float () const { return m_value;                                                              }
     operator double() const { return m_value;                                                              }
     operator string() const { return to_string( m_value ) + " " + m_value_unit_name;                       }
