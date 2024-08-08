@@ -372,14 +372,14 @@ MeasurementType& Measurement< MeasurementType >::update_value( double t_value, c
 {
     if( m_value_unit_name == t_value_unit ) {
         m_value = t_value;
-        return *this;
+        return ( MeasurementType& )( *this );
     }
 
     m_value = get_updated_value( t_value, t_value_unit );
     m_value_unit = get_unit_value( t_value_unit );
     m_value_unit_name = t_value_unit;
 
-    return *this;
+    return ( MeasurementType& )( *this );
 }
 
 template< typename MeasurementType >
@@ -387,14 +387,14 @@ MeasurementType& Measurement< MeasurementType >::update_error( double t_error, c
 {
     if( m_error_unit_name == t_error_unit ) {
         m_error = t_error;
-        return *this;
+        return ( MeasurementType& )( *this );
     }
 
     m_error = get_updated_error( t_error, t_error_unit );
     m_error_unit = get_unit_value( t_error_unit );
     m_error_unit_name = t_error_unit;
 
-    return *this;
+    return ( MeasurementType& )( *this );
 }
 
 template< typename MeasurementType >
