@@ -367,7 +367,7 @@ MeasurementType& Measurement< MeasurementType >::update_value( double t_value, c
 }
 
 template< typename MeasurementType >
-MeasurementType< MeasurementType >& Measurement< MeasurementType >::update_error( double t_error, const string& t_error_unit )
+MeasurementType& Measurement< MeasurementType >::update_error( double t_error, const string& t_error_unit )
 {
     if( m_error_unit_name == t_error_unit ) {
         m_error = t_error;
