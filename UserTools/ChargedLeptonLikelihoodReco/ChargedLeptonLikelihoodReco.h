@@ -149,14 +149,15 @@ private:
     /**/ Energy       m_hists_transmission_MRDsci_num              ;
     /**/
     /**///////////// Load Configuration Variables
-    /**/ inline bool get_config_path       ( const string& t_variable_name      , string      & t_variable );
-    /**/ inline bool get_config_verbosity  ( const string& t_variable_name      , unsigned int& t_variable );
-    /**/ inline bool get_config_histName   ( const string& t_variable_name      , string      & t_variable );
-    /**/ inline bool get_config_unsignedInt( const string& t_variable_name      , unsigned int& t_variable );
-    /**/ inline bool get_config_double     ( const string& t_variable_name      , double      & t_variable );
-    /**/ inline bool get_config_bool       ( const string& t_variable_name      , bool        & t_variable );
+    /**/ inline bool get_config_path       ( const string& t_variable_name      , string         & t_variable );
+    /**/ inline bool get_config_verbosity  ( const string& t_variable_name      , unsigned int   & t_variable );
+    /**/ inline bool get_config_histName   ( const string& t_variable_name      , string         & t_variable );
+    /**/ inline bool get_config_unsignedInt( const string& t_variable_name      , unsigned int   & t_variable );
+    /**/ inline bool get_config_double     ( const string& t_variable_name      , double         & t_variable );
+    /**/ inline bool get_config_bool       ( const string& t_variable_name      , bool           & t_variable );
+    /**/ template< typename MeasurementType >
     /**/ inline bool get_config_measurement( const string& t_variable_name_value, 
-    /**/                                     const string& t_variable_name_unit , Measurement & t_variable );
+    /**/                                     const string& t_variable_name_unit , MeasurementType& t_variable );
     /**/
     /**///////////////////////////////
 

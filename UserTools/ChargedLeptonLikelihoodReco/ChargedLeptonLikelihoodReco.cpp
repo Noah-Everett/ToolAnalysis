@@ -370,7 +370,8 @@ inline bool ChargedLeptonLikelihoodReco::get_config_bool( const string& t_variab
     return true;
 }
 
-inline bool ChargedLeptonLikelihoodReco::get_config_measurement( const string& t_variable_name_value, const string& t_variable_name_unit, Measurement& t_variable ) {
+template< typename MeasurementType >
+inline bool ChargedLeptonLikelihoodReco::get_config_measurement( const string& t_variable_name_value, const string& t_variable_name_unit, MeasurementType& t_variable ) {
     double value;
     string unit;
     if( !m_variables.Get( t_variable_name_value, value ) ) {
@@ -384,7 +385,7 @@ inline bool ChargedLeptonLikelihoodReco::get_config_measurement( const string& t
         return false;
     }
 
-    t_variable = Measurement( value, unit );
+    t_variable = MeasurementType( value, unit );
     LogD( "Loaded measurement `" + t_variable_name_value + "`: " + to_string( value ) + " " + unit + ".", m_verbosity_debug );
     return true;
 }
