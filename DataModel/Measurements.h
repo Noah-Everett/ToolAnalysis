@@ -115,8 +115,8 @@ public:
     
     static double get_unit_value( const string& t_unit      ) { return MeasurementType::get_unit_map().at( t_unit ); }
     static string get_unit_name (       double  t_unitValue ) { return get_unitValue_map().at( t_unitValue );        }
-    static map< string, double > get_unit_map     () { return m_unitMap; }
-    static map< double, string > get_unitValue_map();
+    static const map< string, double >& get_unit_map     () { return m_unitMap;                                                                                        }
+    static const map< double, string >& get_unitValue_map() { if( m_unitMap_value.empty() ) m_unitMap_value = make_unitMap_value( m_unitMap ); return m_unitMap_value; }
 
 protected:
     double m_value          { 0         };
@@ -128,6 +128,7 @@ protected:
 
     static const double pi;
     static const map< string, double > m_unitMap;
+    static       map< double, string > m_unitMap_value;
 
 private:
     double get_updated_value( double t_value, const string& t_unit_given, const string& t_unit_use ) const;
@@ -151,6 +152,8 @@ private:
 
     MeasurementType& update_value_smart( unsigned int t_nMaxDigitsIntegerPart=2 ) { return ( *this ).update_value( get_updated_value_smart( t_nMaxDigitsIntegerPart ) ); }
     MeasurementType& update_error_smart( unsigned int t_nMaxDigitsIntegerPart=2 ) { return ( *this ).update_error( get_updated_error_smart( t_nMaxDigitsIntegerPart ) ); }
+
+    map< double, string > make_unitMap_value( const map< string, double > t_unitMap );
 };
 
 class Energy : public Measurement< Energy >
@@ -308,10 +311,10 @@ bool Measurement< MeasurementType >::operator()( const MeasurementType& t_measur
 }
 
 template< typename MeasurementType >
-map< double, string > Measurement< MeasurementType >::get_unitValue_map()
+map< double, string > Measurement< MeasurementType >::make_unitMap_value( const map< string, double > t_unitMap )
 {
     map< double, string > unitValueMap;
-    for( const auto& unit : MeasurementType::get_unit_map() )
+    for( const auto& unit : t_unitMap )
         unitValueMap[ unit.second ] = unit.first;
 
     return unitValueMap;
