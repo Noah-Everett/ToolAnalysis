@@ -35,6 +35,7 @@ using std::pair;
 using std::map;
 using std::pow;
 using std::abs;
+using std::to_string;
 
 template< typename MeasurementType >
 class Measurement
@@ -108,7 +109,12 @@ public:
     
     bool operator()( const MeasurementType& t_measurement_0, const MeasurementType& t_measurement_1, double t_epsilon=1e-6 ) const; // For use in std::sort or std::map
 
-    operator double() const { return m_value; }
+    operaotr int   () const { return static_cast< int >( m_value );                                        }
+    operator float () const { return m_value;                                                              }
+    operator double() const { return m_value;                                                              }
+    operator string() const { return to_string( m_value ) + " " + m_value_unit_name;                       }
+    operator pair< double, string >() const { return pair< double, string >( m_value, m_value_unit_name ); }
+    operator pair< double, double >() const { return pair< double, double >( m_value, m_error           ); }
 
     friend ostream& operator<<( ostream& t_os, const MeasurementType& t_measurement ) { t_os << t_measurement.get_value(); return t_os; }
     ostream& print( ostream& t_os ) const { t_os << m_value << " " << m_value_unit_name << " +/- " << m_error << " " << m_error_unit_name; return t_os; }

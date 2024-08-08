@@ -207,12 +207,12 @@ bool DetectorResponsePredictor::make_averageTH1( shared_ptr< THistMap< Energy, t
     return true;
 }
 
-bool DetectorResponsePredictor::load_hists_transmission_tankWater( const vector< string >& t_hists_paths,
-                                                                   const vector< string >& t_hists_names,
-                                                                   const vector< Energy >& t_hists_IDs   ) {
+bool DetectorResponsePredictor::load_hists_transmission_tankWater( const vector< string >& t_hists_paths   ,
+                                                                   const vector< string >& t_hists_names   ,
+                                                                   const vector< Energy >& t_hists_energies ) {
     LogD( "Loading tank water transmission histograms.", m_verbosity_debug );
 
-    if( ! load_hists( m_hists_transmission_tankWater, t_hists_paths, t_hists_names, t_hists_IDs ) ) {
+    if( ! load_hists( m_hists_transmission_tankWater, t_hists_paths, t_hists_names, t_hists_energies ) ) {
         LogD( "Failed to load tank water transmission histograms.", m_verbosity_error );
         return false;
     }
@@ -220,12 +220,12 @@ bool DetectorResponsePredictor::load_hists_transmission_tankWater( const vector<
     return make_averageTH1( m_hists_transmission_tankWater, m_hist_transmission_tankWater );
 }
 
-bool DetectorResponsePredictor::load_hists_transmission_MRDsci( const vector< string >& t_hists_paths,
-                                                                const vector< string >& t_hists_names,
-                                                                const vector< Energy >& t_hists_IDs   ) {
+bool DetectorResponsePredictor::load_hists_transmission_MRDsci( const vector< string >& t_hists_paths   ,
+                                                                const vector< string >& t_hists_names   ,
+                                                                const vector< Energy >& t_hists_energies ) {
     LogD( "Loading MRD scintilator transmission histograms.", m_verbosity_debug );
 
-    if( ! load_hists( m_hists_transmission_MRDsci, t_hists_paths, t_hists_names, t_hists_IDs ) ) {
+    if( ! load_hists( m_hists_transmission_MRDsci, t_hists_paths, t_hists_names, t_hists_energies ) ) {
         LogD( "Failed to load MRD scintilator transmission histograms.", m_verbosity_error );
         return false;
     }
@@ -233,21 +233,22 @@ bool DetectorResponsePredictor::load_hists_transmission_MRDsci( const vector< st
     return make_averageTH1( m_hists_transmission_MRDsci, m_hist_transmission_MRDsci );
 }
 
-bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap< Energy, TH2D > >& t_hists_energies      ,
-                                                           shared_ptr< THistMap< Energy, TH2D > >& t_hists_counts        ,
-                                                     const vector    < string                   >& t_hists_energies_paths, 
-                                                     const vector    < string                   >& t_hists_counts_paths  , 
-                                                     const vector    < string                   >& t_hists_energies_names,
-                                                     const vector    < string                   >& t_hists_counts_names  ,
-                                                     const vector    < Energy                   >& t_hists_IDs           ,
-                                                           double                                & t_binWidth_s          ,
-                                                           double                                & t_binWidth_theta      ,
-                                                           double                                & t_binWidth_phi        ,
-                                                     const string                                & t_hists_tag            ) {
+bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap< Energy, TH2D > >& t_hists_energies       ,
+                                                           shared_ptr< THistMap< Energy, TH2D > >& t_hists_counts         ,
+                                                     const vector    < string                   >& t_hists_energies_paths , 
+                                                     const vector    < string                   >& t_hists_counts_paths   ,
+                                                     const vector    < string                   >& t_hists_energies_names ,
+                                                     const vector    < string                   >& t_hists_counts_names   ,
+                                                     const vector    < Energy                   >& t_hists_initialEnergies,
+                                                           double                                & t_binWidth_s           ,
+                                                           double                                & t_binWidth_theta       ,
+                                                           double                                & t_binWidth_phi         ,
+                                                     const string                                & t_hists_tag             ) {
     LogD( "Loading emission histograms.", m_verbosity_debug );
 
-    if( !m_hists_emission_initialEnergies.empty() && m_hists_emission_initialEnergies != t_hists_IDs ) {
-        LogD( "Argument `t_hists_IDs` for `load_hists_emission_tankWater()`" 
+    if( !m_hists_emission_initialEnergies.empty() && 
+    if( m_hists_emission_initialEnergies != t_hists_initialEnergies ) {
+        LogD( "Argument `t_hists_initialEnergies` for `load_hists_emission_tankWater()`" 
                    " and `load_hists_emission_MRDsci()` should match.", m_verbosity_error );
         return false;
     }
