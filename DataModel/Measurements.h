@@ -115,8 +115,8 @@ public:
     
     static double get_unit_value( const string& t_unit      ) { return MeasurementType::get_unit_map().at( t_unit ); }
     static string get_unit_name (       double  t_unitValue ) { return get_unitValue_map().at( t_unitValue );        }
-    static const map< string, double >& get_unit_map     () { return m_unitMap; }
-    static const map< double, string >& get_unitValue_map();
+    static map< string, double > get_unit_map     () { return m_unitMap; }
+    static map< double, string > get_unitValue_map();
 
 protected:
     double m_value          { 0         };
@@ -308,7 +308,7 @@ bool Measurement< MeasurementType >::operator()( const MeasurementType& t_measur
 }
 
 template< typename MeasurementType >
-const map< double, string >& Measurement< MeasurementType >::get_unitValue_map()
+map< double, string > Measurement< MeasurementType >::get_unitValue_map()
 {
     map< double, string > unitValueMap;
     for( const auto& unit : MeasurementType::get_unit_map() )
