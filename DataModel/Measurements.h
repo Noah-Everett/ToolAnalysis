@@ -125,7 +125,7 @@ protected:
     double m_error_unit     { 1         };
     string m_error_unit_name{ "DEFAULT" };
 
-    inline static const double pi = 3.14159265358979;
+    const double pi = 3.14159265358979;
 
 private:
     double get_updated_value( double t_value, const string& t_unit_given, const string& t_unit_use ) const;
@@ -164,7 +164,7 @@ public:
     static map< string, double > get_unit_map() { return m_unitMap; }
 
 protected:
-    inline static map< string, double > m_unitMap = {
+    const map< string, double > m_unitMap = {
         { "DEFAULT", 1e+0      },
 
         { "peV"    , 1e-12     },
@@ -195,7 +195,7 @@ public:
     static map< string, double > get_unit_map() { return m_unitMap; }
 
 protected:
-    inline static map< string, double > m_unitMap = {
+    const map< string, double > m_unitMap = {
         { "DEFAULT", 1e+0    },
 
         { "pm"     , 1e-12   },
@@ -231,7 +231,7 @@ public:
     static map< string, double > get_unit_map() { return m_unitMap; }
 
 protected:
-    inline static map< string, double > m_unitMap = {
+    const map< string, double > m_unitMap = {
         { "DEFAULT", 1e+0  },
 
         { "ps"     , 1e-12 },
@@ -260,7 +260,7 @@ public:
     static map< string, double > get_unit_map() { return m_unitMap; }
 
 protected:
-    inline static map< string, double > m_unitMap = {
+    const map< string, double > m_unitMap = {
         { "DEFAULT", 1e+0  },
 
         { "pg"     , 1e-12 },
@@ -295,7 +295,7 @@ public:
     static map< string, double > get_unit_map() { return m_unitMap; }
 
 protected:
-    inline static map< string, double > m_unitMap = {
+    const map< string, double > m_unitMap = {
         { "DEFAULT", 1e+0  },
 
         { "prad"   , 1e-12 },
