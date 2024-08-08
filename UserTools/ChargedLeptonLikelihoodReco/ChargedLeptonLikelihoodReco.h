@@ -63,9 +63,13 @@ private:
     /**/// Configuration Variables ///
     /**///////////////////////////////
     /**/
+    /**////////////// Verbosities
     /**/ unsigned int m_verbosity_ChargedLeptonLikelihoodReco      ;
     /**/ unsigned int m_verbosity_DetectorResponsePredictor        ;
     /**/ unsigned int m_verbosity_THistReader                      ;
+    /**/
+    /**////////////// Emission Histograms
+    /**/// Paths
     /**/ string       m_hists_emission_mu_tankWater_energies_path  ;
     /**/ string       m_hists_emission_e_tankWater_energies_path   ;
     /**/ string       m_hists_emission_mu_MRDsci_energies_path     ;
@@ -74,6 +78,8 @@ private:
     /**/ string       m_hists_emission_e_tankWater_counts_path     ;
     /**/ string       m_hists_emission_mu_MRDsci_counts_path       ;
     /**/ string       m_hists_emission_e_MRDsci_counts_path        ;
+    /**/
+    /**/// Names
     /**/ string       m_hists_emission_mu_tankWater_energies_name  ;
     /**/ string       m_hists_emission_e_tankWater_energies_name   ;
     /**/ string       m_hists_emission_mu_MRDsci_energies_name     ;
@@ -82,18 +88,27 @@ private:
     /**/ string       m_hists_emission_e_tankWater_counts_name     ;
     /**/ string       m_hists_emission_mu_MRDsci_counts_name       ;
     /**/ string       m_hists_emission_e_MRDsci_counts_name        ;
-    /**/ unsigned int m_hists_emission_mu_tankWater_energy_min     ;   
-    /**/ unsigned int m_hists_emission_e_tankWater_energy_min      ;   
-    /**/ unsigned int m_hists_emission_mu_MRDsci_energy_min        ;   
-    /**/ unsigned int m_hists_emission_e_MRDsci_energy_min         ;   
-    /**/ unsigned int m_hists_emission_mu_tankWater_energy_delta   ;
-    /**/ unsigned int m_hists_emission_e_tankWater_energy_delta    ;
-    /**/ unsigned int m_hists_emission_mu_MRDsci_energy_delta      ;
-    /**/ unsigned int m_hists_emission_e_MRDsci_energy_delta       ;
-    /**/ unsigned int m_hists_emission_mu_tankWater_num            ;
-    /**/ unsigned int m_hists_emission_e_tankWater_num             ;
-    /**/ unsigned int m_hists_emission_mu_MRDsci_num               ;
-    /**/ unsigned int m_hists_emission_e_MRDsci_num                ;
+    /**/
+    /**/// Starting Energies
+    /**/ Energy       m_hists_emission_mu_tankWater_energy_min     ;   
+    /**/ Energy       m_hists_emission_e_tankWater_energy_min      ;   
+    /**/ Energy       m_hists_emission_mu_MRDsci_energy_min        ;   
+    /**/ Energy       m_hists_emission_e_MRDsci_energy_min         ;   
+    /**/
+    /**/// Energy Deltas
+    /**/ Energy       m_hists_emission_mu_tankWater_energy_delta   ;
+    /**/ Energy       m_hists_emission_e_tankWater_energy_delta    ;
+    /**/ Energy       m_hists_emission_mu_MRDsci_energy_delta      ;
+    /**/ Energy       m_hists_emission_e_MRDsci_energy_delta       ;
+    /**/
+    /**/// Number of Energies
+    /**/ Energy       m_hists_emission_mu_tankWater_num            ;
+    /**/ Energy       m_hists_emission_e_tankWater_num             ;
+    /**/ Energy       m_hists_emission_mu_MRDsci_num               ;
+    /**/ Energy       m_hists_emission_e_MRDsci_num                ;
+    /**/
+    /**////////////// dEdX Histograms
+    /**/// Paths
     /**/ string       m_hists_dEdX_mu_tankWater_path               ;
     /**/ string       m_hists_dEdX_e_tankWater_path                ;
     /**/ string       m_hists_dEdX_mu_tankSteel_path               ;
@@ -102,6 +117,8 @@ private:
     /**/ string       m_hists_dEdX_e_MRDsci_path                   ;
     /**/ string       m_hists_dEdX_mu_MRDiron_path                 ;
     /**/ string       m_hists_dEdX_e_MRDiron_path                  ;
+    /**/
+    /**/// Names
     /**/ string       m_hists_dEdX_mu_tankWater_name               ;
     /**/ string       m_hists_dEdX_e_tankWater_name                ;
     /**/ string       m_hists_dEdX_mu_tankSteel_name               ;
@@ -110,30 +127,35 @@ private:
     /**/ string       m_hists_dEdX_e_MRDsci_name                   ;
     /**/ string       m_hists_dEdX_mu_MRDiron_name                 ;
     /**/ string       m_hists_dEdX_e_MRDiron_name                  ;
+    /**/
+    /**////////////// Transmission Histograms
+    /**/// Use Single Histogram
     /**/ bool         m_useSingleTH1forPhotonTransmission_tankWater;
     /**/ bool         m_useSingleTH1forPhotonTransmission_MRDsci   ;
+    /**/
+    /**/// Paths
     /**/ string       m_hists_transmission_tankWater_path          ;
     /**/ string       m_hists_transmission_MRDsci_path             ;
     /**/ string       m_hists_transmission_tankWater_name          ;
     /**/ string       m_hists_transmission_MRDsci_name             ;
-    /**/ unsigned int m_hists_transmission_tankWater_energy_min    ;
-    /**/ unsigned int m_hists_transmission_MRDsci_energy_min       ;
-    /**/ unsigned int m_hists_transmission_tankWater_energy_delta  ;
-    /**/ unsigned int m_hists_transmission_MRDsci_energy_delta     ;
-    /**/ unsigned int m_hists_transmission_tankWater_num           ;
-    /**/ unsigned int m_hists_transmission_MRDsci_num              ;
     /**/
-    /**/ inline bool get_config_path       ( const string& t_variable_name, string      & t_variable );
-    /**/ inline bool get_config_verbosity  ( const string& t_variable_name, unsigned int& t_variable );
-    /**/ inline bool get_config_histName   ( const string& t_variable_name, string      & t_variable );
-    /**/ inline bool get_config_unsignedInt( const string& t_variable_name, unsigned int& t_variable );
-    /**/ inline bool get_config_double     ( const string& t_variable_name, double      & t_variable );
-    /**/ inline bool get_config_bool       ( const string& t_variable_name, bool        & t_variable );
-    /**/ inline bool get_config_unit_energy( const string& t_variable_name, double      & t_variable );
-    /**/ inline bool get_config_unit_energy( const string& t_variable_name, const string& t_variable );
+    /**/// Starting Energies
+    /**/ Energy       m_hists_transmission_tankWater_energy_min    ;
+    /**/ Energy       m_hists_transmission_MRDsci_energy_min       ;
+    /**/ Energy       m_hists_transmission_tankWater_energy_delta  ;
+    /**/ Energy       m_hists_transmission_MRDsci_energy_delta     ;
+    /**/ Energy       m_hists_transmission_tankWater_num           ;
+    /**/ Energy       m_hists_transmission_MRDsci_num              ;
     /**/
-    /**/ inline int  applyUnit( double t_value,       double  t_unit );
-    /**/ inline int  applyUnit( double t_value, const string& t_unit );
+    /**///////////// Load Configuration Variables
+    /**/ inline bool get_config_path       ( const string& t_variable_name      , string      & t_variable );
+    /**/ inline bool get_config_verbosity  ( const string& t_variable_name      , unsigned int& t_variable );
+    /**/ inline bool get_config_histName   ( const string& t_variable_name      , string      & t_variable );
+    /**/ inline bool get_config_unsignedInt( const string& t_variable_name      , unsigned int& t_variable );
+    /**/ inline bool get_config_double     ( const string& t_variable_name      , double      & t_variable );
+    /**/ inline bool get_config_bool       ( const string& t_variable_name      , bool        & t_variable );
+    /**/ inline bool get_config_measurement( const string& t_variable_name_value, 
+    /**/                                     const string& t_variable_name_unit , Measurement & t_variable );
     /**/
     /**///////////////////////////////
 

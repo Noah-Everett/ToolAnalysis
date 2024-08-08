@@ -370,25 +370,21 @@ inline bool ChargedLeptonLikelihoodReco::get_config_bool( const string& t_variab
     return true;
 }
 
-inline bool get_config_unit_energy( const string& t_variable_name, const string& t_variable ) {
-    string temp;
-    if( !m_variables.Get( t_variable_name, temp ) ) {
-        string temp_string{ "Unable to load unit energy variable `" };
-        LogD( temp_string + t_variable_name + "`.", m_verbosity_error );
-        return false;
-    } else if( temp != "MeV" && temp != "GeV" ) {
-        string temp_string{ "Invalid unit energy for `" };
-        LogD( temp_string + t_variable_name + "`: \"" + temp + "\". Must be \"MeV\" or \"GeV\".", m_verbosity_error );
+inline bool ChargedLeptonLikelihoodReco::get_config_measurement( const string& t_variable_name_value, const string& t_variable_name_unit, Measurement& t_variable ) {
+    double value;
+    string unit;
+    if( !m_variables.Get( t_variable_name_value, value ) ) {
+        string temp_string{ "Unable to load measurement value `" };
+        LogD( temp_string + t_variable_name_value + "`.", m_verbosity_error );
         return false;
     }
+    if( !m_variables.Get( t_variable_name_unit, unit ) ) {
+        string temp_string{ "Unable to load measurement unit `" };
+        LogD( temp_string + t_variable_name_unit + "`.", m_verbosity_error );
+        return false;
+    }
+
+    t_variable = Measurement( value, unit );
+    LogD( "Loaded measurement `" + t_variable_name_value + "`: " + to_string( value ) + " " + unit + ".", m_verbosity_debug );
+    return true;
 }
-
-inline bool get_config_unit_energy( const string& t_variable_name, double& t_variable ) {
-}
-
-
-
-
-
-inline int  applyUnit( double t_value, double t_unit );
-inline int  applyUnit( double t_value, const string& t_unit );
