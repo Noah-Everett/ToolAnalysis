@@ -270,16 +270,6 @@ protected:
     /**/ map< int, double >* m_map_particleMasses{ new map< int, double >{ { 11, 0.5109989461 }, { -11, 0.5109989461 }, 
     /**/                                                                   { 13, 105.6583755  }, { -13, 105.6583755  } } };
     /**/ double              m_c{ 299792458 };
-    // /**/ map< string, double > m_map_units_energy{ { "meV", 1e+0  }, { "ceV", 1e+1  }, { "deV", 1e+2 }, 
-    // /**/                                           { "eV" , 1e+3  }, { "keV", 1e+6  }, { "MeV", 1e+9 }, 
-    // /**/                                           { "GeV", 1e+12 }, { "TeV", 1e+15 }                  };
-    /**/ map< string, double > m_map_units_energy  { { "meV", 1e-3 }, { "ceV", 1e-2  }, { "deV", 1e-1  },
-    /**/                                             { "eV" , 1e+0 }, { "keV", 1e+3  }, { "MeV", 1e+6  },
-    /**/                                             { "GeV", 1e+9 }, { "TeV", 1e+12 }  { "PeV", 1e+15 } };
-    /**/ map< string, double > m_map_units_distance{ { "nm" , 1e-9 }, { "um" , 1e-6  }, { "mm" , 1e-3  },
-    /**/                                             { "cm" , 1e-2 }, { "dm" , 1e-1  }, { "m"  , 1e+0  },
-    /**/                                             { "km" , 1e+3 }                                     };
-    /**/ map< string, double > m_map_units_angle   { { "urad", 1e-6 }, { "mrad", 1e-3 }, { "rad", 1e+0 }, { "deg", 1e-2 } };
     /**/
     /**////////////////////////////
 
