@@ -235,10 +235,10 @@ bool DetectorResponsePredictor::load_hists_transmission_MRDsci( const vector< st
 
 bool DetectorResponsePredictor::load_hists_emission(       shared_ptr< THistMap< Energy, TH2D > >& t_hists_energies       ,
                                                            shared_ptr< THistMap< Energy, TH2D > >& t_hists_counts         ,
-                                                     const vector    <           Energy         >& t_hists_energies_paths , 
-                                                     const vector    <           Energy         >& t_hists_counts_paths   ,
-                                                     const vector    <           Energy         >& t_hists_energies_names ,
-                                                     const vector    <           Energy         >& t_hists_counts_names   ,
+                                                     const vector    < string                   >& t_hists_energies_paths , 
+                                                     const vector    < string                   >& t_hists_counts_paths   ,
+                                                     const vector    < string                   >& t_hists_energies_names ,
+                                                     const vector    < string                   >& t_hists_counts_names   ,
                                                      const vector    <           Energy         >& t_hists_initialEnergies,
                                                            double                                & t_binWidth_s           ,
                                                            double                                & t_binWidth_theta       ,
@@ -348,15 +348,15 @@ bool DetectorResponsePredictor::load_hist_dEdX_MRDiron( const string& t_hist_pat
 }
 
 pair< int, int > DetectorResponsePredictor::get_closestEmissionHists( const shared_ptr< THistMap< Energy, TH2D > > t_hists_emission,
-                                                                      const double                                 t_initialEnergy  ) const {
+                                                                      const Energy                                 t_initialEnergy  ) const {
     // Bisect histogram energies to find the histograms 
     // which have energies just lower and just higher 
     // than t_initialEnergy.
     int index_lower{ 0 }, index_upper{ int(m_hists_emission_initialEnergies.size()) - 1 }; // typecast to int to avoid warning
     LogD( "Finding histograms with initial primary energies just below and above `t_initialEnergy` with bisection.", m_verbosity_debug );
     while( index_upper - index_lower != 1 ) {
-        LogD( "[|]-Lower: index="  + to_string( index_lower ) + " && initEnergy=" + to_string( m_hists_emission_initialEnergies[ index_lower ] ) + "\n"
-              " \\--Upper: index=" + to_string( index_upper ) + " && initEnergy=" + to_string( m_hists_emission_initialEnergies[ index_upper ] ), m_verbosity_debug );
+        LogD( "[|]-Lower: index="  + to_string( index_lower ) + " && initEnergy=" + m_hists_emission_initialEnergies[ index_lower ] + "\n"
+              " \\--Upper: index=" + to_string( index_upper ) + " && initEnergy=" + m_hists_emission_initialEnergies[ index_upper ], m_verbosity_debug );
         // LogD( m_temp_string + to_string( index_lower ) + " && initEnergy=", m_verbosity_debug );
         if( m_hists_emission_initialEnergies[ ( index_lower + index_upper ) / 2 ] < t_initialEnergy )
             index_lower = ( index_lower + index_upper ) / 2;
