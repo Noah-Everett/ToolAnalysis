@@ -418,7 +418,7 @@ template< typename MeasurementType >
 const map< double, string >& Measurement< MeasurementType >::get_unitValue_map()
 {
     map< double, string > unitValueMap;
-    for( const auto& unit : get_unit_map() )
+    for( const auto& unit : MeasurementType::get_unit_map() )
         unitValueMap[ unit.second ] = unit.first;
 
     return unitValueMap;
