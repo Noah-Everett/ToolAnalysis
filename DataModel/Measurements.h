@@ -33,8 +33,7 @@ using std::string;
 using std::ostream;
 using std::pair;
 using std::map;
-using std::pi;
-using std::exp10;
+using std::pow;
 using std::abs;
 
 template< typename MeasurementType >
@@ -119,6 +118,8 @@ protected:
     double m_error          { 0         };
     double m_error_unit     { 1         };
     string m_error_unit_name{ "DEFAULT" };
+
+    const double pi = 3.14159265358979;
 
 private:
     double get_updated_value( double t_value, const string& t_unit_given, const string& t_unit_use ) const;
@@ -341,7 +342,7 @@ pair< double, string >& Measurement::get_updated_value_smart( double t_value, co
     
     for( const auto& unit : unitMapSorted ) {
         double value = get_updated_value( t_value, t_unit_given, unit.second );
-        if( value > exp10( t_nMaxDigitsIntegerPart ) ) {
+        if( value > pow( 10, t_nMaxDigitsIntegerPart ) ) {
             return { value, unit.second };
         }
     }
