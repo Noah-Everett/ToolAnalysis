@@ -320,6 +320,7 @@ const map< double, string >& Measurement< MeasurementType >::get_unitValue_map()
 template< typename MeasurementType >
 const double Measurement< MeasurementType >::pi = 3.14159265358979;
 
+template<>
 const map< string, double > Measurement< Energy >::m_unitMap = {
     { "DEFAULT", 1e+0      },
 
@@ -337,6 +338,7 @@ const map< string, double > Measurement< Energy >::m_unitMap = {
     { "J"      , 6.242e+12 }
 };
 
+template<>
 const map< string, double > Measurement< Length >::m_unitMap = {
     { "DEFAULT", 1e+0    },
 
@@ -359,6 +361,7 @@ const map< string, double > Measurement< Length >::m_unitMap = {
     { "mi"     , 1609.34 }
 };
 
+template<>
 const map< string, double > Measurement< Time >::m_unitMap = {
     { "DEFAULT", 1e+0  },
 
@@ -374,6 +377,7 @@ const map< string, double > Measurement< Time >::m_unitMap = {
     { "Ps"     , 1e+15 }
 };
 
+template<>
 const map< string, double > Measurement< Mass >::m_unitMap = {
     { "DEFAULT", 1e+0  },
 
@@ -396,6 +400,7 @@ const map< string, double > Measurement< Mass >::m_unitMap = {
     { "ton"    , 907.185   }
 };
 
+template<>
 const map< string, double > Measurement< Angle >::m_unitMap = {
     { "DEFAULT", 1e+0  },
 
