@@ -311,7 +311,7 @@ bool Measurement< MeasurementType >::operator()( const MeasurementType& t_measur
 }
 
 template< typename MeasurementType >
-static map< double, string > Measurement< MeasurementType >::make_unitMap_value( const map< string, double > t_unitMap )
+map< double, string > Measurement< MeasurementType >::make_unitMap_value( const map< string, double > t_unitMap )
 {
     map< double, string > unitValueMap;
     for( const auto& unit : t_unitMap )
