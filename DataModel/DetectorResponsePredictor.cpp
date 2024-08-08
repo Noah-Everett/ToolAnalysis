@@ -373,8 +373,8 @@ double DetectorResponsePredictor::eval_hists_emission_values( const shared_ptr< 
 
     // Use linear inerpolation between upper and lower histograms
     // to find expected emission value.
-    int initialEnergy_lower{ m_hists_emission_initialEnergies[ closestHists.first ] };
-    int initialEnergy_upper{ m_hists_emission_initialEnergies[ closestHists.second ] };
+    Energy initialEnergy_lower{ m_hists_emission_initialEnergies[ closestHists.first ] };
+    Energy initialEnergy_upper{ m_hists_emission_initialEnergies[ closestHists.second ] };
     double emission_lower{ t_hists_emission->at( initialEnergy_lower )->Interpolate( t_trackLength, t_photonAngle ) };
     double emission_upper{ t_hists_emission->at( initialEnergy_upper )->Interpolate( t_trackLength, t_photonAngle ) };
     double slope{ ( emission_upper - emission_upper ) / ( initialEnergy_lower - initialEnergy_upper ) };
@@ -392,8 +392,8 @@ double DetectorResponsePredictor::eval_hists_emission_indicies( const shared_ptr
 
     // Use linear inerpolation between upper and lower histograms
     // to find expected emission value.
-    int initialEnergy_lower{ m_hists_emission_initialEnergies[ closestHists.first ] };
-    int initialEnergy_upper{ m_hists_emission_initialEnergies[ closestHists.second ] };
+    Energy initialEnergy_lower{ m_hists_emission_initialEnergies[ closestHists.first ] };
+    Energy initialEnergy_upper{ m_hists_emission_initialEnergies[ closestHists.second ] };
     double emission_lower{ t_hists_emission->at( initialEnergy_lower )->GetBinContent( t_trackLengthIndex, t_photonAngleIndex ) };
     double emission_upper{ t_hists_emission->at( initialEnergy_upper )->GetBinContent( t_trackLengthIndex, t_photonAngleIndex ) };
     double slope{ ( emission_upper - emission_upper ) / ( initialEnergy_lower - initialEnergy_upper ) };
