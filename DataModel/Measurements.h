@@ -335,7 +335,7 @@ double Measurement< MeasurementType >::get_updated_value( double t_value, const 
 template< typename MeasurementType >
 pair< double, string >& Measurement< MeasurementType >::get_updated_value_smart( double t_value, const string& t_unit_given, unsigned int t_nMaxDigitsIntegerPart ) const
 {
-    if( t_nMaxDigitsIntegerPart == 0 ) return { t_value, t_unit_given };
+    if( t_nMaxDigitsIntegerPart == 0 ) return pair< double, string >( { t_value, t_unit_given } );
 
     map< double, string > unitMapSorted;
     for( const auto& unit : MeasurementType::m_unitMap ) 
@@ -344,15 +344,15 @@ pair< double, string >& Measurement< MeasurementType >::get_updated_value_smart(
     for( const auto& unit : unitMapSorted ) {
         double value = get_updated_value( t_value, t_unit_given, unit.second );
         if( value > pow( 10, t_nMaxDigitsIntegerPart ) ) {
-            return { value, unit.second };
+            return pair< double, string >( { value, unit.second } );
         }
     }
 
-    return { t_value, t_unit_given };
+    return pair< double, string >( { t_value, t_unit_given } );
 }
 
 template< typename MeasurementType >
-Measurement& Measurement< MeasurementType >::update_value( double t_value, const string& t_value_unit )
+MeasurementType& Measurement< MeasurementType >::update_value( double t_value, const string& t_value_unit )
 {
     if( m_value_unit_name == t_value_unit ) {
         m_value = t_value;
@@ -367,7 +367,7 @@ Measurement& Measurement< MeasurementType >::update_value( double t_value, const
 }
 
 template< typename MeasurementType >
-Measurement< MeasurementType >& Measurement< MeasurementType >::update_error( double t_error, const string& t_error_unit )
+MeasurementType< MeasurementType >& Measurement< MeasurementType >::update_error( double t_error, const string& t_error_unit )
 {
     if( m_error_unit_name == t_error_unit ) {
         m_error = t_error;
@@ -382,7 +382,7 @@ Measurement< MeasurementType >& Measurement< MeasurementType >::update_error( do
 }
 
 template< typename MeasurementType >
-bool Measurement< MeasurementType >::operator()( const Measurement& t_measurement_0, const Measurement& t_measurement_1, double t_epsilon ) const
+bool Measurement< MeasurementType >::operator()( const MeasurementType& t_measurement_0, const MeasurementType& t_measurement_1, double t_epsilon ) const
 {
     return abs( t_measurement_0.get_value() - t_measurement_1.get_value() ) < t_epsilon ? t_measurement_0.get_value( "DEFAULT" )
 }
