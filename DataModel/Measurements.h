@@ -114,7 +114,7 @@ public:
     ostream& print( ostream& t_os ) const { t_os << m_value << " " << m_value_unit_name << " +/- " << m_error << " " << m_error_unit_name; return t_os; }
     
     static double get_unit_value( const string& t_unit      ) { return MeasurementType::get_unit_map().at( t_unit ); }
-    static double get_unit_name (       double  t_unitValue ) { return get_unitValue_map().at( t_unitValue );        }
+    static string get_unit_name (       double  t_unitValue ) { return get_unitValue_map().at( t_unitValue );        }
     static const map< double, string >& get_unitValue_map();
 
 protected:
