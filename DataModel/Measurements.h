@@ -161,10 +161,10 @@ public:
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Energy() {}
     
-    static map< string, double > get_unit_map() { return m_unitMap; }
+    static const map< string, double >& get_unit_map() const { return m_unitMap; }
 
 protected:
-    const map< string, double > m_unitMap = {
+    static const map< string, double > m_unitMap = {
         { "DEFAULT", 1e+0      },
 
         { "peV"    , 1e-12     },
@@ -192,10 +192,10 @@ public:
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Length() {}
 
-    static map< string, double > get_unit_map() { return m_unitMap; }
+    static const map< string, double >& get_unit_map() const { return m_unitMap; }
 
 protected:
-    const map< string, double > m_unitMap = {
+    static const map< string, double > m_unitMap =
         { "DEFAULT", 1e+0    },
 
         { "pm"     , 1e-12   },
@@ -228,7 +228,7 @@ public:
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Time() {}
 
-    static map< string, double > get_unit_map() { return m_unitMap; }
+    static const map< string, double >& get_unit_map() const { return m_unitMap; }
 
 protected:
     const map< string, double > m_unitMap = {
@@ -257,10 +257,10 @@ public:
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Mass() {}
 
-    static map< string, double > get_unit_map() { return m_unitMap; }
+    static const map< string, double >& get_unit_map() const { return m_unitMap; }
 
 protected:
-    const map< string, double > m_unitMap = {
+    static const map< string, double > m_unitMap =
         { "DEFAULT", 1e+0  },
 
         { "pg"     , 1e-12 },
@@ -292,10 +292,10 @@ public:
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Angle() {}
 
-    static map< string, double > get_unit_map() { return m_unitMap; }
+    static const map< string, double >& get_unit_map() const { return m_unitMap; }
 
 protected:
-    const map< string, double > m_unitMap = {
+    static const map< string, double > m_unitMap = {
         { "DEFAULT", 1e+0  },
 
         { "prad"   , 1e-12 },
