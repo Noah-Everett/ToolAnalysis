@@ -119,7 +119,7 @@ protected:
     double m_error_unit     { 1         };
     string m_error_unit_name{ "DEFAULT" };
 
-    const double pi = 3.14159265358979;
+    inline static const double pi = 3.14159265358979;
 
 private:
     double get_updated_value( double t_value, const string& t_unit_given, const string& t_unit_use ) const;
