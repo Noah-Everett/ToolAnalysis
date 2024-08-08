@@ -384,7 +384,7 @@ MeasurementType& Measurement< MeasurementType >::update_error( double t_error, c
 template< typename MeasurementType >
 bool Measurement< MeasurementType >::operator()( const MeasurementType& t_measurement_0, const MeasurementType& t_measurement_1, double t_epsilon ) const
 {
-    return abs( t_measurement_0.get_value() - t_measurement_1.get_value() ) < t_epsilon ? t_measurement_0 < t_measurement_1 : false;
+    return abs( t_measurement_0.get_value_smart() - t_measurement_1.get_value_smart() ) < t_epsilon ? t_measurement_0 < t_measurement_1 : false;
 }
 
 #endif // MEASUREMENTS_H

@@ -242,23 +242,23 @@ protected:
     /**////////////////////////////
     /**/
     /**/// Emission Histograms
-    /**/ vector    < int                   > m_hists_emission_initialEnergies;
-    /**/ shared_ptr< THistMap< int, TH2D > > m_hists_emission_tankWater_energies{ nullptr };
-    /**/ shared_ptr< THistMap< int, TH2D > > m_hists_emission_tankWater_counts  { nullptr };
-    /**/ shared_ptr< THistMap< int, TH2D > > m_hists_emission_MRDsci_energies   { nullptr };
-    /**/ shared_ptr< THistMap< int, TH2D > > m_hists_emission_MRDsci_counts     { nullptr };
-    /**/ double                              m_binWidth_s_tankWater;
-    /**/ double                              m_binWidth_s_MRDsci;
-    /**/ double                              m_binWidth_theta_tankWater;
-    /**/ double                              m_binWidth_theta_MRDsci;
-    /**/ double                              m_binWidth_phi_tankWater;
-    /**/ double                              m_binWidth_phi_MRDsci;
+    /**/ vector    < Energy                   > m_hists_emission_initialEnergies;
+    /**/ shared_ptr< THistMap< Energy, TH2D > > m_hists_emission_tankWater_energies{ nullptr };
+    /**/ shared_ptr< THistMap< Energy, TH2D > > m_hists_emission_tankWater_counts  { nullptr };
+    /**/ shared_ptr< THistMap< Energy, TH2D > > m_hists_emission_MRDsci_energies   { nullptr };
+    /**/ shared_ptr< THistMap< Energy, TH2D > > m_hists_emission_MRDsci_counts     { nullptr };
+    /**/ double                                 m_binWidth_s_tankWater;
+    /**/ double                                 m_binWidth_s_MRDsci;
+    /**/ double                                 m_binWidth_theta_tankWater;
+    /**/ double                                 m_binWidth_theta_MRDsci;
+    /**/ double                                 m_binWidth_phi_tankWater;
+    /**/ double                                 m_binWidth_phi_MRDsci;
     /**/
     /**/// Transmission Histograms
-    /**/ shared_ptr< THistMap< int, TH1D > > m_hists_transmission_tankWater{ nullptr };
-    /**/ shared_ptr< THistMap< int, TH1D > > m_hists_transmission_MRDsci   { nullptr };
-    /**/ shared_ptr< TH1D >                  m_hist_transmission_tankWater { nullptr };
-    /**/ shared_ptr< TH1D >                  m_hist_transmission_MRDsci    { nullptr };
+    /**/ shared_ptr< THistMap< Energy, TH1D > > m_hists_transmission_tankWater{ nullptr };
+    /**/ shared_ptr< THistMap< Energy, TH1D > > m_hists_transmission_MRDsci   { nullptr };
+    /**/ shared_ptr< TH1D >                     m_hist_transmission_tankWater { nullptr };
+    /**/ shared_ptr< TH1D >                     m_hist_transmission_MRDsci    { nullptr };
     /**/
     /**/// Stopping Power Histograms
     /**/ shared_ptr< TH1D > m_hist_dEdX_tankWater{ nullptr };
