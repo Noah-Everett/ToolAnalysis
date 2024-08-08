@@ -156,8 +156,9 @@ public:
    ~Energy() {}
 
 protected:
-    static map< string, double > m_unitMap = {
+    inline static map< string, double > m_unitMap = {
         { "DEFAULT", 1e+0      },
+
         { "peV"    , 1e-12     },
         { "meV"    , 1e-3      },
         { "ceV"    , 1e-2      },
@@ -184,7 +185,7 @@ public:
    ~Length() {}
 
 protected:
-    static map< string, double > m_unitMap = {
+    inline static map< string, double > m_unitMap = {
         { "DEFAULT", 1e+0    },
 
         { "pm"     , 1e-12   },
@@ -218,7 +219,7 @@ public:
    ~Time() {}
 
 protected:
-    static map< string, double > m_unitMap = {
+    inline static map< string, double > m_unitMap = {
         { "DEFAULT", 1e+0  },
 
         { "ps"     , 1e-12 },
@@ -245,7 +246,7 @@ public:
    ~Mass() {}
 
 protected:
-    static map< string, double > m_unitMap = {
+    inline static map< string, double > m_unitMap = {
         { "DEFAULT", 1e+0  },
 
         { "pg"     , 1e-12 },
@@ -278,7 +279,7 @@ public:
    ~Angle() {}
 
 protected:
-    static map< string, double > m_unitMap = {
+    inline static map< string, double > m_unitMap = {
         { "DEFAULT", 1e+0  },
 
         { "prad"   , 1e-12 },
