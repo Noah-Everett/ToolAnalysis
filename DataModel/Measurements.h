@@ -61,12 +61,14 @@ public:
 
     double get_value              ( const string& t_unit=""                ) const { return get_updated_value( t_unit.compare( "" ) ? t_unit : m_value_unit_name ); }
     string get_value_unit         (                                        ) const { return m_value_unit_name;                                                      }
-    double get_value_unit_relative( const string& t_unit="DEFAULT"         ) const { return m_value_unit / MeasurementType::m_unitMap.at( t_unit );                 }
-    double get_value_unit_smart   ( unsigned int t_nMaxDigitsIntegerPart=2 ) const { return get_updated_value_smart( t_nMaxDigitsIntegerPart );                     }
+    double get_value_smart        ( unsigned int t_nMaxDigitsIntegerPart=2 ) const { return get_updated_value_unit_smart( t_nMaxDigitsIntegerPart );                }
+    string get_value_unit_smart   ( unsigned int t_nMaxDigitsIntegerPart=2 ) const { return get_updated_value_smart( t_nMaxDigitsIntegerPart );                     }
+    double get_value_unit_relative( const string& t_unit="DEFAULT"         ) const { return m_value_unit / get_unit_value( t_unit );                                }
     double get_error              ( const string& t_unit=""                ) const { return get_updated_error( t_unit.compare( "" ) ? t_unit : m_error_unit_name ); }
     string get_error_unit         (                                        ) const { return m_error_unit_name;                                                      }
-    double get_error_unit_relative( const string& t_unit="DEFAULT"         ) const { return m_error_unit / MeasurementType::m_unitMap.at( t_unit );                 }
-    double get_error_unit_smart   ( unsigned int t_nMaxDigitsIntegerPart=2 ) const { return get_updated_error_smart( t_nMaxDigitsIntegerPart );                     }
+    string get_error_smart        ( unsigned int t_nMaxDigitsIntegerPart=2 ) const { return get_updated_error_smart( t_nMaxDigitsIntegerPart );                     }
+    double get_error_unit_smart   ( unsigned int t_nMaxDigitsIntegerPart=2 ) const { return get_updated_error_unit_smart( t_nMaxDigitsIntegerPart );                }
+    double get_error_unit_relative( const string& t_unit="DEFAULT"         ) const { return m_error_unit / get_unit_value( t_unit );                                }
 
     MeasurementType& operator+( const Measurement& t_measurement ) const { return Measurement( t_measurement ).set_value( m_value_unit ).set_value( m_value + t_measurement.get_value() ); }
     MeasurementType& operator-( const Measurement& t_measurement ) const { return Measurement( t_measurement ).set_value( m_value_unit ).set_value( m_value - t_measurement.get_value() ); }
@@ -110,6 +112,10 @@ public:
 
     friend ostream& operator<<( ostream& t_os, const MeasurementType& t_measurement ) { t_os << t_measurement.get_value(); return t_os; }
     ostream& print( ostream& t_os ) const { t_os << m_value << " " << m_value_unit_name << " +/- " << m_error << " " << m_error_unit_name; return t_os; }
+    
+    static double get_unit_value( const string& t_unit      ) { return MeasurementType::get_unit_map().at( t_unit ); }
+    static double get_unit_name (       double  t_unitValue ) { return get_unitValue_map().at( t_unitValue );        }
+    static const map< double, string >& get_unitValue_map();
 
 protected:
     double m_value          { 0         };
@@ -154,6 +160,8 @@ public:
             double t_error=0, const string& t_error_unit_given="DEFAULT", const string& t_error_unit_use="DEFAULT" ) :
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Energy() {}
+    
+    static map< string, double > get_unit_map() { return m_unitMap; }
 
 protected:
     inline static map< string, double > m_unitMap = {
@@ -183,6 +191,8 @@ public:
             double t_error=0, const string& t_error_unit_given="DEFAULT", const string& t_error_unit_use="DEFAULT" ) :
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Length() {}
+
+    static map< string, double > get_unit_map() { return m_unitMap; }
 
 protected:
     inline static map< string, double > m_unitMap = {
@@ -218,6 +228,8 @@ public:
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Time() {}
 
+    static map< string, double > get_unit_map() { return m_unitMap; }
+
 protected:
     inline static map< string, double > m_unitMap = {
         { "DEFAULT", 1e+0  },
@@ -244,6 +256,8 @@ public:
           double t_error=0, const string& t_error_unit_given="DEFAULT", const string& t_error_unit_use="DEFAULT" ) :
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Mass() {}
+
+    static map< string, double > get_unit_map() { return m_unitMap; }
 
 protected:
     inline static map< string, double > m_unitMap = {
@@ -277,6 +291,8 @@ public:
            double t_error=0, const string& t_error_unit_given="DEFAULT", const string& t_error_unit_use="DEFAULT" ) :
         Measurement( t_value, t_value_unit_given, t_value_unit_use, t_error, t_error_unit_given, t_error_unit_use ) {}
    ~Angle() {}
+
+    static map< string, double > get_unit_map() { return m_unitMap; }
 
 protected:
     inline static map< string, double > m_unitMap = {
@@ -317,8 +333,8 @@ Measurement< MeasurementType >::Measurement( double t_value, const string& t_val
     m_value_unit_name{ t_value_unit_given },
     m_error_unit_name{ t_error_unit_given }
 {
-    m_value_unit = MeasurementType::m_unitMap.at( t_value_unit_given );
-    m_error_unit = MeasurementType::m_unitMap.at( t_error_unit_given );
+    m_value_unit = get_unit_value( t_value_unit_given );
+    m_error_unit = get_unit_value( t_error_unit_given );
 
     update_value( t_value_unit_use );
     update_error( t_error_unit_use );
@@ -329,7 +345,7 @@ double Measurement< MeasurementType >::get_updated_value( double t_value, const 
 {
     if( t_unit_given == t_unit_use ) return t_value;
 
-    return t_value * MeasurementType::m_unitMap.at( t_unit_given ) / MeasurementType::m_unitMap.at( t_unit_use );
+    return t_value * get_unit_value( t_unit_given ) / get_unit_value( t_unit_use );
 }
 
 template< typename MeasurementType >
@@ -360,7 +376,7 @@ MeasurementType& Measurement< MeasurementType >::update_value( double t_value, c
     }
 
     m_value = get_updated_value( t_value, t_value_unit );
-    m_value_unit = MeasurementType::m_unitMap.at( t_value_unit );
+    m_value_unit = get_unit_value( t_value_unit );
     m_value_unit_name = t_value_unit;
 
     return *this;
@@ -375,7 +391,7 @@ MeasurementType& Measurement< MeasurementType >::update_error( double t_error, c
     }
 
     m_error = get_updated_error( t_error, t_error_unit );
-    m_error_unit = MeasurementType::m_unitMap.at( t_error_unit );
+    m_error_unit = get_unit_value( t_error_unit );
     m_error_unit_name = t_error_unit;
 
     return *this;
@@ -384,7 +400,28 @@ MeasurementType& Measurement< MeasurementType >::update_error( double t_error, c
 template< typename MeasurementType >
 bool Measurement< MeasurementType >::operator()( const MeasurementType& t_measurement_0, const MeasurementType& t_measurement_1, double t_epsilon ) const
 {
-    return abs( t_measurement_0.get_value_smart() - t_measurement_1.get_value_smart() ) < t_epsilon ? t_measurement_0 < t_measurement_1 : false;
+    string smartUnit_0 = t_measurement_0.get_value_unit_smart();
+    string smartUnit_1 = t_measurement_1.get_value_unit_smart();
+
+    double smartUnit_0_value = t_measurement_0.get_unitValueFromUnitName( smartUnit_0 );
+    double smartUnit_1_value = t_measurement_1.get_unitValueFromUnitName( smartUnit_1 );
+
+    double averageUnit = ( smartUnit_0_value + smartUnit_1_value ) / 2;
+
+    double value_0 = t_measurement_0.get_value( smartUnit_0 ) / averageUnit;
+    double value_1 = t_measurement_1.get_value( smartUnit_1 ) / averageUnit;
+
+    return abs( value_0 - value_1 ) < t_epsilon ? value_0 < value_1 : false;
+}
+
+template< typename MeasurementType >
+const map< double, string >& Measurement< MeasurementType >::get_unitValue_map()
+{
+    map< double, string > unitValueMap;
+    for( const auto& unit : get_unit_map() )
+        unitValueMap[ unit.second ] = unit.first;
+
+    return unitValueMap;
 }
 
 #endif // MEASUREMENTS_H
