@@ -44,20 +44,38 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
     if( !get_config_histName   ( "hists_emission_mu_MRDsci_counts_name"       , m_hists_emission_mu_MRDsci_counts_name        ) ) return false;
     if( !get_config_histName   ( "hists_emission_e_MRDsci_counts_name"        , m_hists_emission_e_MRDsci_counts_name         ) ) return false;
 
-    if( !get_config_unit_energy( "hists_emission_mu_tankWater_energy_unit"    , m_hists_emission_mu_tankWater_energy_unit     ) ) return false;
-    if( !get_config_unit_energy( "hists_emission_e_tankWater_energy_unit"     , m_hists_emission_e_tankWater_energy_unit      ) ) return false;
-    if( !get_config_unit_energy( "hists_emission_mu_MRDsci_energy_unit"       , m_hists_emission_mu_MRDsci_energy_unit        ) ) return false;
-    if( !get_config_unit_energy( "hists_emission_e_MRDsci_energy_unit"        , m_hists_emission_e_MRDsci_energy_unit         ) ) return false;
+    // if( !get_config_unit_energy( "hists_emission_mu_tankWater_energy_unit"    , m_hists_emission_mu_tankWater_energy_unit     ) ) return false;
+    // if( !get_config_unit_energy( "hists_emission_e_tankWater_energy_unit"     , m_hists_emission_e_tankWater_energy_unit      ) ) return false;
+    // if( !get_config_unit_energy( "hists_emission_mu_MRDsci_energy_unit"       , m_hists_emission_mu_MRDsci_energy_unit        ) ) return false;
+    // if( !get_config_unit_energy( "hists_emission_e_MRDsci_energy_unit"        , m_hists_emission_e_MRDsci_energy_unit         ) ) return false;
                                                                                                                                              
-    if( !get_config_unsignedInt( "hists_emission_mu_tankWater_energy_min"     , m_hists_emission_mu_tankWater_energy_min      ) ) return false; 
-    if( !get_config_unsignedInt( "hists_emission_e_tankWater_energy_min"      , m_hists_emission_e_tankWater_energy_min       ) ) return false; 
-    if( !get_config_unsignedInt( "hists_emission_mu_MRDsci_energy_min"        , m_hists_emission_mu_MRDsci_energy_min         ) ) return false; 
-    if( !get_config_unsignedInt( "hists_emission_e_MRDsci_energy_min"         , m_hists_emission_e_MRDsci_energy_min          ) ) return false; 
+    // if( !get_config_unsignedInt( "hists_emission_mu_tankWater_energy_min"     , m_hists_emission_mu_tankWater_energy_min      ) ) return false; 
+    // if( !get_config_unsignedInt( "hists_emission_e_tankWater_energy_min"      , m_hists_emission_e_tankWater_energy_min       ) ) return false; 
+    // if( !get_config_unsignedInt( "hists_emission_mu_MRDsci_energy_min"        , m_hists_emission_mu_MRDsci_energy_min         ) ) return false; 
+    // if( !get_config_unsignedInt( "hists_emission_e_MRDsci_energy_min"         , m_hists_emission_e_MRDsci_energy_min          ) ) return false; 
                                                                                                                                               
-    if( !get_config_unsignedInt( "hists_emission_mu_tankWater_energy_delta"   , m_hists_emission_mu_tankWater_energy_delta    ) ) return false; 
-    if( !get_config_unsignedInt( "hists_emission_e_tankWater_energy_delta"    , m_hists_emission_e_tankWater_energy_delta     ) ) return false; 
-    if( !get_config_unsignedInt( "hists_emission_mu_MRDsci_energy_delta"      , m_hists_emission_mu_MRDsci_energy_delta       ) ) return false; 
-    if( !get_config_unsignedInt( "hists_emission_e_MRDsci_energy_delta"       , m_hists_emission_e_MRDsci_energy_delta        ) ) return false; 
+    // if( !get_config_unsignedInt( "hists_emission_mu_tankWater_energy_delta"   , m_hists_emission_mu_tankWater_energy_delta    ) ) return false; 
+    // if( !get_config_unsignedInt( "hists_emission_e_tankWater_energy_delta"    , m_hists_emission_e_tankWater_energy_delta     ) ) return false; 
+    // if( !get_config_unsignedInt( "hists_emission_mu_MRDsci_energy_delta"      , m_hists_emission_mu_MRDsci_energy_delta       ) ) return false; 
+    // if( !get_config_unsignedInt( "hists_emission_e_MRDsci_energy_delta"       , m_hists_emission_e_MRDsci_energy_delta        ) ) return false; 
+
+    if( !get_config_measurement( "hists_emission_mu_tankWater_energy_min"        ,
+                                 "hists_emission_mu_tankWater_energy_min_unit"   , m_hists_emission_mu_tankWater_energy_min        ) ) return false;
+    if( !get_config_measurement( "hists_emission_e_tankWater_energy_min"         ,
+                                 "hists_emission_e_tankWater_energy_min_unit"    , m_hists_emission_e_tankWater_energy_min         ) ) return false;
+    if( !get_config_measurement( "hists_emission_mu_MRDsci_energy_min"           ,
+                                 "hists_emission_mu_MRDsci_energy_min_unit"      , m_hists_emission_mu_MRDsci_energy_min           ) ) return false;
+    if( !get_config_measurement( "hists_emission_e_MRDsci_energy_min"            ,
+                                 "hists_emission_e_MRDsci_energy_min_unit"       , m_hists_emission_e_MRDsci_energy_min            ) ) return false;
+
+    if( !get_config_measurement( "hists_emission_mu_tankWater_energy_delta"      ,
+                                 "hists_emission_mu_tankWater_energy_delta_unit" , m_hists_emission_mu_tankWater_energy_delta      ) ) return false;
+    if( !get_config_measurement( "hists_emission_e_tankWater_energy_delta"       ,
+                                 "hists_emission_e_tankWater_energy_delta_unit"  , m_hists_emission_e_tankWater_energy_delta       ) ) return false;
+    if( !get_config_measurement( "hists_emission_mu_MRDsci_energy_delta"         ,
+                                 "hists_emission_mu_MRDsci_energy_delta_unit"    , m_hists_emission_mu_MRDsci_energy_delta         ) ) return false;
+    if( !get_config_measurement( "hists_emission_e_MRDsci_energy_delta"          ,
+                                 "hists_emission_e_MRDsci_energy_delta_unit"     , m_hists_emission_e_MRDsci_energy_delta          ) ) return false;
                                                                                                                                               
     if( !get_config_unsignedInt( "hists_emission_mu_tankWater_num"            , m_hists_emission_mu_tankWater_num             ) ) return false; 
     if( !get_config_unsignedInt( "hists_emission_e_tankWater_num"             , m_hists_emission_e_tankWater_num              ) ) return false; 
@@ -91,14 +109,15 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
     if( !get_config_histName   ( "hists_transmission_tankWater_name"          , m_hists_transmission_tankWater_name           ) ) return false; 
     if( !get_config_histName   ( "hists_transmission_MRDsci_name"             , m_hists_transmission_MRDsci_name              ) ) return false; 
 
-    if( !get_config_unit_energy( "hists_transmission_tankWater_unit"          , m_hists_transmission_tankWater_unit           ) ) return false;
-    if( !get_config_unit_energy( "hists_transmission_MRDsci_unit"             , m_hists_transmission_MRDsci_unit              ) ) return false;
-                                                                                                                              
-    if( !get_config_unsignedInt( "hists_transmission_tankWater_energy_min"    , m_hists_transmission_tankWater_energy_min     ) ) return false;
-    if( !get_config_unsignedInt( "hists_transmission_MRDsci_energy_min"       , m_hists_transmission_MRDsci_energy_min        ) ) return false;
-                                                                                                                              
-    if( !get_config_unsignedInt( "hists_transmission_tankWater_energy_delta"  , m_hists_transmission_tankWater_energy_delta   ) ) return false;
-    if( !get_config_unsignedInt( "hists_transmission_MRDsci_energy_delta"     , m_hists_transmission_MRDsci_energy_delta      ) ) return false;
+    if( !get_config_measurement( "hists_transmission_tankWater_energy_min"        ,
+                                 "hists_transmission_tankWater_energy_min_unit"   , m_hists_transmission_tankWater_energy_min        ) ) return false;
+    if( !get_config_measurement( "hists_transmission_MRDsci_energy_min"           ,
+                                 "hists_transmission_MRDsci_energy_min_unit"      , m_hists_transmission_MRDsci_energy_min           ) ) return false;
+
+    if( !get_config_measurement( "hists_transmission_tankWater_energy_delta"      ,
+                                 "hists_transmission_tankWater_energy_delta_unit" , m_hists_transmission_tankWater_energy_delta      ) ) return false;
+    if( !get_config_measurement( "hists_transmission_MRDsci_energy_delta"         ,
+                                 "hists_transmission_MRDsci_energy_delta_unit"    , m_hists_transmission_MRDsci_energy_delta         ) ) return false;
                                                                                                                               
     if( !get_config_unsignedInt( "hists_transmission_tankWater_energy_num"    , m_hists_transmission_tankWater_num            ) ) return false;
     if( !get_config_unsignedInt( "hists_transmission_MRDsci_energy_num"       , m_hists_transmission_MRDsci_num               ) ) return false;

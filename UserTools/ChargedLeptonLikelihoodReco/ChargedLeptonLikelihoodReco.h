@@ -103,10 +103,10 @@ private:
     /**/ Energy       m_hists_emission_e_MRDsci_energy_delta       ;
     /**/
     /**/// Number of Energies
-    /**/ Energy       m_hists_emission_mu_tankWater_num            ;
-    /**/ Energy       m_hists_emission_e_tankWater_num             ;
-    /**/ Energy       m_hists_emission_mu_MRDsci_num               ;
-    /**/ Energy       m_hists_emission_e_MRDsci_num                ;
+    /**/ unsigned int m_hists_emission_mu_tankWater_num            ;
+    /**/ unsigned int m_hists_emission_e_tankWater_num             ;
+    /**/ unsigned int m_hists_emission_mu_MRDsci_num               ;
+    /**/ unsigned int m_hists_emission_e_MRDsci_num                ;
     /**/
     /**////////////// dEdX Histograms
     /**/// Paths
@@ -143,10 +143,14 @@ private:
     /**/// Starting Energies
     /**/ Energy       m_hists_transmission_tankWater_energy_min    ;
     /**/ Energy       m_hists_transmission_MRDsci_energy_min       ;
+    /**/
+    /**/// Energy Deltas
     /**/ Energy       m_hists_transmission_tankWater_energy_delta  ;
     /**/ Energy       m_hists_transmission_MRDsci_energy_delta     ;
-    /**/ Energy       m_hists_transmission_tankWater_num           ;
-    /**/ Energy       m_hists_transmission_MRDsci_num              ;
+    /**/
+    /**/// Number of Energies
+    /**/ unsigned int m_hists_transmission_tankWater_num           ;
+    /**/ unsigned int m_hists_transmission_MRDsci_num              ;
     /**/
     /**///////////// Load Configuration Variables
     /**/ inline bool get_config_path       ( const string& t_variable_name      , string         & t_variable );
