@@ -145,7 +145,7 @@ private:
     Measurement& update_error_smart( unsigned int t_nMaxDigitsIntegerPart=2 ) { return ( *this ).update_error( get_updated_error_smart( t_nMaxDigitsIntegerPart ) ); }
 };
 
-class Energy : public Measurement
+class Energy : public Measurement< Energy >
 {
 public:
     Energy() : Measurement() {}
@@ -173,7 +173,7 @@ protected:
     };
 };
 
-class Length : public Measurement
+class Length : public Measurement< Length >
 {
 public:
     Length() : Measurement() {}
@@ -207,7 +207,7 @@ protected:
     };
 };
 
-class Time : public Measurement
+class Time : public Measurement< Time >
 {
 public:
     Time() : Measurement() {}
@@ -234,7 +234,7 @@ protected:
     };
 };
 
-class Mass : public Measurement
+class Mass : public Measurement< Mass >
 {
 public:
     Mass() : Measurement() {}
@@ -267,7 +267,7 @@ protected:
     };
 };
 
-class Angle : public Measurement
+class Angle : public Measurement< Angle >
 {
 public:
     Angle() : Measurement() {}
