@@ -9,6 +9,7 @@
 
 #include "VertexGeometry.h"
 #include "DetectorResponsePredictor.h"
+#include "Measurements.h"
 
 using std::string;
 using std::vector;
