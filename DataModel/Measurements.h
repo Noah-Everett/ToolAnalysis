@@ -327,15 +327,15 @@ Measurement< MeasurementType >::Measurement( double t_value, const string& t_val
 template< typename MeasurementType >
 double Measurement< MeasurementType >::get_updated_value( double t_value, const string& t_unit_given, const string& t_unit_use ) const
 {
-    if( t_value_unit_given == t_value_unit_use ) return t_value;
+    if( t_unit_given == t_unit_use ) return t_value;
 
-    return t_value * MeasurementType::m_unitMap.at( t_value_unit_given ) / MeasurementType::m_unitMap.at( t_value_unit_use );
+    return t_value * MeasurementType::m_unitMap.at( t_unit_given ) / MeasurementType::m_unitMap.at( t_unit_use );
 }
 
 template< typename MeasurementType >
 pair< double, string >& Measurement< MeasurementType >::get_updated_value_smart( double t_value, const string& t_unit_given, unsigned int t_nMaxDigitsIntegerPart ) const
 {
-    if( ! t_doUpdate || t_nMaxDigitsIntegerPart == 0 ) return { t_value, t_unit_given };
+    if( t_nMaxDigitsIntegerPart == 0 ) return { t_value, t_unit_given };
 
     map< double, string > unitMapSorted;
     for( const auto& unit : MeasurementType::m_unitMap ) 
