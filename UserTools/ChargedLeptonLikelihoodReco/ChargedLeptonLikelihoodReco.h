@@ -129,6 +129,11 @@ private:
     /**/ inline bool get_config_unsignedInt( const string& t_variable_name, unsigned int& t_variable );
     /**/ inline bool get_config_double     ( const string& t_variable_name, double      & t_variable );
     /**/ inline bool get_config_bool       ( const string& t_variable_name, bool        & t_variable );
+    /**/ inline bool get_config_unit_energy( const string& t_variable_name, double      & t_variable );
+    /**/ inline bool get_config_unit_energy( const string& t_variable_name, const string& t_variable );
+    /**/
+    /**/ inline int  applyUnit( double t_value,       double  t_unit );
+    /**/ inline int  applyUnit( double t_value, const string& t_unit );
     /**/
     /**///////////////////////////////
 

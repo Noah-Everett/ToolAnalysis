@@ -43,6 +43,11 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
     if( !get_config_histName   ( "hists_emission_e_tankWater_counts_name"     , m_hists_emission_e_tankWater_counts_name      ) ) return false;
     if( !get_config_histName   ( "hists_emission_mu_MRDsci_counts_name"       , m_hists_emission_mu_MRDsci_counts_name        ) ) return false;
     if( !get_config_histName   ( "hists_emission_e_MRDsci_counts_name"        , m_hists_emission_e_MRDsci_counts_name         ) ) return false;
+
+    if( !get_config_unit_energy( "hists_emission_mu_tankWater_energy_unit"    , m_hists_emission_mu_tankWater_energy_unit     ) ) return false;
+    if( !get_config_unit_energy( "hists_emission_e_tankWater_energy_unit"     , m_hists_emission_e_tankWater_energy_unit      ) ) return false;
+    if( !get_config_unit_energy( "hists_emission_mu_MRDsci_energy_unit"       , m_hists_emission_mu_MRDsci_energy_unit        ) ) return false;
+    if( !get_config_unit_energy( "hists_emission_e_MRDsci_energy_unit"        , m_hists_emission_e_MRDsci_energy_unit         ) ) return false;
                                                                                                                                              
     if( !get_config_unsignedInt( "hists_emission_mu_tankWater_energy_min"     , m_hists_emission_mu_tankWater_energy_min      ) ) return false; 
     if( !get_config_unsignedInt( "hists_emission_e_tankWater_energy_min"      , m_hists_emission_e_tankWater_energy_min       ) ) return false; 
@@ -85,6 +90,9 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
                                                                                                                                                   
     if( !get_config_histName   ( "hists_transmission_tankWater_name"          , m_hists_transmission_tankWater_name           ) ) return false; 
     if( !get_config_histName   ( "hists_transmission_MRDsci_name"             , m_hists_transmission_MRDsci_name              ) ) return false; 
+
+    if( !get_config_unit_energy( "hists_transmission_tankWater_unit"          , m_hists_transmission_tankWater_unit           ) ) return false;
+    if( !get_config_unit_energy( "hists_transmission_MRDsci_unit"             , m_hists_transmission_MRDsci_unit              ) ) return false;
                                                                                                                               
     if( !get_config_unsignedInt( "hists_transmission_tankWater_energy_min"    , m_hists_transmission_tankWater_energy_min     ) ) return false;
     if( !get_config_unsignedInt( "hists_transmission_MRDsci_energy_min"       , m_hists_transmission_MRDsci_energy_min        ) ) return false;
@@ -203,7 +211,7 @@ bool ChargedLeptonLikelihoodReco::Initialise( string configfile, DataModel& data
             for( unsigned int nEnergy{ 0 }; nEnergy < hists_transmission_energy_nums[ nMaterial ]; nEnergy++ ) {
                 hists_transmission_paths_cur.push_back( hists_transmission_paths[ nMaterial ]                                );
                 hists_transmission_names_cur.push_back( hists_transmission_names[ nMaterial ] + ";" + to_string( nEnergy+1 ) );
-                hists_transmission_IDs_cur  .push_back( hists_transmission_energy_cur                                      );
+                hists_transmission_IDs_cur  .push_back( hists_transmission_energy_cur                                        );
                 hists_transmission_energy_cur += hists_transmission_energy_deltas[ nMaterial ];
             }
             LogD( "Loading transmission histograms (Material=" + materialNames[ nMaterial ] + ").", m_verbosity_debug );
@@ -361,3 +369,26 @@ inline bool ChargedLeptonLikelihoodReco::get_config_bool( const string& t_variab
     LogD( "Loaded bool `" + t_variable_name + "`: " + to_string( t_variable ) + ".", m_verbosity_debug );
     return true;
 }
+
+inline bool get_config_unit_energy( const string& t_variable_name, const string& t_variable ) {
+    string temp;
+    if( !m_variables.Get( t_variable_name, temp ) ) {
+        string temp_string{ "Unable to load unit energy variable `" };
+        LogD( temp_string + t_variable_name + "`.", m_verbosity_error );
+        return false;
+    } else if( temp != "MeV" && temp != "GeV" ) {
+        string temp_string{ "Invalid unit energy for `" };
+        LogD( temp_string + t_variable_name + "`: \"" + temp + "\". Must be \"MeV\" or \"GeV\".", m_verbosity_error );
+        return false;
+    }
+}
+
+inline bool get_config_unit_energy( const string& t_variable_name, double& t_variable ) {
+}
+
+
+
+
+
+inline int  applyUnit( double t_value, double t_unit );
+inline int  applyUnit( double t_value, const string& t_unit );

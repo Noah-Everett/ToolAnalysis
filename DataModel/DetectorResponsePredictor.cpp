@@ -218,7 +218,6 @@ bool DetectorResponsePredictor::load_hists_transmission_tankWater( const vector<
     }
 
     return make_averageTH1( m_hists_transmission_tankWater, m_hist_transmission_tankWater );
-
 }
 
 bool DetectorResponsePredictor::load_hists_transmission_MRDsci( const vector< string >& t_hists_paths,

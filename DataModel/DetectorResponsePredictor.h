@@ -52,6 +52,7 @@
 #include "THistReader.h"
 #include "Particle.h"
 #include "Detector.h"
+#include "Measurements.h"
 
 using std::vector;
 using std::string;
@@ -102,19 +103,19 @@ public:
     /**/                                         const vector< string >& t_hists_counts_paths  ,
     /**/                                         const vector< string >& t_hists_energies_names,
     /**/                                         const vector< string >& t_hists_counts_names  ,
-    /**/                                         const vector< int    >& t_hists_IDs            );
+    /**/                                         const vector< Energy >& t_hists_IDs            );
     /**/ bool load_hists_emission_MRDsci       ( const vector< string >& t_hists_energies_paths,
     /**/                                         const vector< string >& t_hists_counts_paths  ,
     /**/                                         const vector< string >& t_hists_energies_names,
     /**/                                         const vector< string >& t_hists_counts_names  ,
-    /**/                                         const vector< int    >& t_hists_IDs            );
+    /**/                                         const vector< Energy >& t_hists_IDs            );
     /**/ 
     /**/ bool load_hists_transmission_tankWater( const vector< string >& t_hist_paths,
     /**/                                         const vector< string >& t_hist_names,
-    /**/                                         const vector< int    >& t_hist_IDs   );
+    /**/                                         const vector< Energy >& t_hist_IDs   );
     /**/ bool load_hists_transmission_MRDsci   ( const vector< string >& t_hist_paths,
     /**/                                         const vector< string >& t_hist_names,
-    /**/                                         const vector< int    >& t_hist_IDs   );
+    /**/                                         const vector< Energy >& t_hist_IDs   );
     /**/
     /**/ bool load_hist_dEdX_tankWater         ( const string& t_hist_path,
     /**/                                         const string& t_hist_name );
@@ -126,15 +127,15 @@ public:
     /**/                                         const string& t_hist_name );
     /**/
     /**/// Get Histograms
-    /**/ shared_ptr< THistMap< int, TH2D > > get_hists_emission_tankWater_energies() const { return m_hists_emission_tankWater_energies; }
-    /**/ shared_ptr< THistMap< int, TH2D > > get_hists_emission_tankWater_counts  () const { return m_hists_emission_tankWater_counts;   }
-    /**/ shared_ptr< THistMap< int, TH2D > > get_hists_emission_MRDsci_energies   () const { return m_hists_emission_MRDsci_energies;    }
-    /**/ shared_ptr< THistMap< int, TH2D > > get_hists_emission_MRDsci_counts     () const { return m_hists_emission_MRDsci_counts;      }
+    /**/ shared_ptr< THistMap< Energy, TH2D > > get_hists_emission_tankWater_energies() const { return m_hists_emission_tankWater_energies; }
+    /**/ shared_ptr< THistMap< Energy, TH2D > > get_hists_emission_tankWater_counts  () const { return m_hists_emission_tankWater_counts;   }
+    /**/ shared_ptr< THistMap< Energy, TH2D > > get_hists_emission_MRDsci_energies   () const { return m_hists_emission_MRDsci_energies;    }
+    /**/ shared_ptr< THistMap< Energy, TH2D > > get_hists_emission_MRDsci_counts     () const { return m_hists_emission_MRDsci_counts;      }
     /**/
-    /**/ shared_ptr< THistMap< int, TH1D > > get_hists_transmission_tankWater() const { return m_hists_transmission_tankWater; }
-    /**/ shared_ptr< THistMap< int, TH1D > > get_hists_transmission_MRDsci   () const { return m_hists_transmission_MRDsci;    }
-    /**/ shared_ptr< TH1D >                  get_hist_transmission_tankWater () const { return m_hist_transmission_tankWater;  }
-    /**/ shared_ptr< TH1D >                  get_hist_transmission_MRDsci    () const { return m_hist_transmission_MRDsci;     }
+    /**/ shared_ptr< THistMap< Energy, TH1D > > get_hists_transmission_tankWater() const { return m_hists_transmission_tankWater; }
+    /**/ shared_ptr< THistMap< Energy, TH1D > > get_hists_transmission_MRDsci   () const { return m_hists_transmission_MRDsci;    }
+    /**/ shared_ptr< TH1D >                     get_hist_transmission_tankWater () const { return m_hist_transmission_tankWater;  }
+    /**/ shared_ptr< TH1D >                     get_hist_transmission_MRDsci    () const { return m_hist_transmission_MRDsci;     }
     /**/
     /**/ shared_ptr< TH1D > get_hist_dEdX_tankWater() const { return m_hist_dEdX_tankWater; }
     /**/ shared_ptr< TH1D > get_hist_dEdX_tankSteel() const { return m_hist_dEdX_tankSteel; }
@@ -142,15 +143,15 @@ public:
     /**/ shared_ptr< TH1D > get_hist_dEdX_MRDiron  () const { return m_hist_dEdX_MRDiron;   }
     /**/
     /**/// Set Histograms
-    /**/ void set_hists_emission_tankWater_energies( shared_ptr< THistMap< int, TH2D > > t_hists_emission_tankWater_energies ) { m_hists_emission_tankWater_energies = t_hists_emission_tankWater_energies; }
-    /**/ void set_hists_emission_tankWater_counts  ( shared_ptr< THistMap< int, TH2D > > t_hists_emission_tankWater_counts   ) { m_hists_emission_tankWater_counts   = t_hists_emission_tankWater_counts;   }
-    /**/ void set_hists_emission_MRDsci_energies   ( shared_ptr< THistMap< int, TH2D > > t_hists_emission_MRDsci_energies    ) { m_hists_emission_MRDsci_energies    = t_hists_emission_MRDsci_energies;    }
-    /**/ void set_hists_emission_MRDsci_counts     ( shared_ptr< THistMap< int, TH2D > > t_hists_emission_MRDsci_counts      ) { m_hists_emission_MRDsci_counts      = t_hists_emission_MRDsci_counts;      }
+    /**/ void set_hists_emission_tankWater_energies( shared_ptr< THistMap< Energy, TH2D > > t_hists_emission_tankWater_energies ) { m_hists_emission_tankWater_energies = t_hists_emission_tankWater_energies; }
+    /**/ void set_hists_emission_tankWater_counts  ( shared_ptr< THistMap< Energy, TH2D > > t_hists_emission_tankWater_counts   ) { m_hists_emission_tankWater_counts   = t_hists_emission_tankWater_counts;   }
+    /**/ void set_hists_emission_MRDsci_energies   ( shared_ptr< THistMap< Energy, TH2D > > t_hists_emission_MRDsci_energies    ) { m_hists_emission_MRDsci_energies    = t_hists_emission_MRDsci_energies;    }
+    /**/ void set_hists_emission_MRDsci_counts     ( shared_ptr< THistMap< Energy, TH2D > > t_hists_emission_MRDsci_counts      ) { m_hists_emission_MRDsci_counts      = t_hists_emission_MRDsci_counts;      }
     /**/
-    /**/ void set_hists_transmission_tankWater( shared_ptr< THistMap< int, TH1D > > t_hists_transmission_tankWater ) { m_hists_transmission_tankWater = t_hists_transmission_tankWater; }
-    /**/ void set_hists_transmission_MRDsci   ( shared_ptr< THistMap< int, TH1D > > t_hists_transmission_MRDsci    ) { m_hists_transmission_MRDsci    = t_hists_transmission_MRDsci;    }
-    /**/ void set_hist_transmission_tankWater ( shared_ptr          < TH1D        > t_hist_transmission_tankWater  ) { m_hist_transmission_tankWater = t_hist_transmission_tankWater;   }
-    /**/ void set_hist_transmission_MRDsci    ( shared_ptr          < TH1D        > t_hist_transmission_MRDsci     ) { m_hist_transmission_MRDsci    = t_hist_transmission_MRDsci;      }
+    /**/ void set_hists_transmission_tankWater( shared_ptr< THistMap< Energy, TH1D > > t_hists_transmission_tankWater ) { m_hists_transmission_tankWater = t_hists_transmission_tankWater; }
+    /**/ void set_hists_transmission_MRDsci   ( shared_ptr< THistMap< Energy, TH1D > > t_hists_transmission_MRDsci    ) { m_hists_transmission_MRDsci    = t_hists_transmission_MRDsci;    }
+    /**/ void set_hist_transmission_tankWater ( shared_ptr          <         TH1D   > t_hist_transmission_tankWater  ) { m_hist_transmission_tankWater = t_hist_transmission_tankWater;   }
+    /**/ void set_hist_transmission_MRDsci    ( shared_ptr          <         TH1D   > t_hist_transmission_MRDsci     ) { m_hist_transmission_MRDsci    = t_hist_transmission_MRDsci;      }
     /**/
     /**/ void set_hist_dEdX_tankWater( shared_ptr< TH1D > t_hist_dEdX_tankWater ) { m_hist_dEdX_tankWater = t_hist_dEdX_tankWater; }
     /**/ void set_hist_dEdX_tankSteel( shared_ptr< TH1D > t_hist_dEdX_tankSteel ) { m_hist_dEdX_tankSteel = t_hist_dEdX_tankSteel; }
@@ -267,8 +268,18 @@ protected:
     /**/
     /**/// Misc.
     /**/ map< int, double >* m_map_particleMasses{ new map< int, double >{ { 11, 0.5109989461 }, { -11, 0.5109989461 }, 
-    /**/                                           { 13, 105.6583755  }, { -13, 105.6583755  } } };
+    /**/                                                                   { 13, 105.6583755  }, { -13, 105.6583755  } } };
     /**/ double              m_c{ 299792458 };
+    // /**/ map< string, double > m_map_units_energy{ { "meV", 1e+0  }, { "ceV", 1e+1  }, { "deV", 1e+2 }, 
+    // /**/                                           { "eV" , 1e+3  }, { "keV", 1e+6  }, { "MeV", 1e+9 }, 
+    // /**/                                           { "GeV", 1e+12 }, { "TeV", 1e+15 }                  };
+    /**/ map< string, double > m_map_units_energy  { { "meV", 1e-3 }, { "ceV", 1e-2  }, { "deV", 1e-1  },
+    /**/                                             { "eV" , 1e+0 }, { "keV", 1e+3  }, { "MeV", 1e+6  },
+    /**/                                             { "GeV", 1e+9 }, { "TeV", 1e+12 }  { "PeV", 1e+15 } };
+    /**/ map< string, double > m_map_units_distance{ { "nm" , 1e-9 }, { "um" , 1e-6  }, { "mm" , 1e-3  },
+    /**/                                             { "cm" , 1e-2 }, { "dm" , 1e-1  }, { "m"  , 1e+0  },
+    /**/                                             { "km" , 1e+3 }                                     };
+    /**/ map< string, double > m_map_units_angle   { { "urad", 1e-6 }, { "mrad", 1e-3 }, { "rad", 1e+0 }, { "deg", 1e-2 } };
     /**/
     /**////////////////////////////
 

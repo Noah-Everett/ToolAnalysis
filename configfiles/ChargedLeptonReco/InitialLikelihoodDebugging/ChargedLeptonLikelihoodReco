@@ -1,78 +1,114 @@
 # VERBOSITY
-verbosity_ChargedLeptonLikelihoodReco       3 # 0=error, 1=warining, 2=message, and 3=debug
-verbosity_DetectorResponsePredictor         3 # 0=error, 1=warining, 2=message, and 3=debug
-verbosity_THistReader                       3 # 0=error, 1=warining, 2=message, and 3=debug
+verbosity_ChargedLeptonLikelihoodReco            3 # 0=error, 1=warining, 2=message, and 3=debug
+verbosity_DetectorResponsePredictor              3 # 0=error, 1=warining, 2=message, and 3=debug
+verbosity_THistReader                            3 # 0=error, 1=warining, 2=message, and 3=debug
 
 # PHOTON EMISSION DATA
-hists_emission_mu_tankWater_energies_path   /Data/water_doped-mu.root
-hists_emission_e_tankWater_energies_path    /Data/water_doped-e.root
-hists_emission_mu_MRDsci_energies_path      /Data/MRDScintilator-mu.root
-hists_emission_e_MRDsci_energies_path       /Data/MRDScintilator-e.root
+hists_emission_mu_tankWater_energies_path        /Data/water_doped-mu.root
+hists_emission_e_tankWater_energies_path         /Data/water_doped-e.root
+hists_emission_mu_MRDsci_energies_path           /Data/MRDScintilator-mu.root
+hists_emission_e_MRDsci_energies_path            /Data/MRDScintilator-e.root
 
-hists_emission_mu_tankWater_counts_path     /Data/water_doped-mu.root
-hists_emission_e_tankWater_counts_path      /Data/water_doped-e.root
-hists_emission_mu_MRDsci_counts_path        /Data/MRDScintilator-mu.root
-hists_emission_e_MRDsci_counts_path         /Data/MRDScintilator-e.root
+hists_emission_mu_tankWater_counts_path          /Data/water_doped-mu.root
+hists_emission_e_tankWater_counts_path           /Data/water_doped-e.root
+hists_emission_mu_MRDsci_counts_path             /Data/MRDScintilator-mu.root
+hists_emission_e_MRDsci_counts_path              /Data/MRDScintilator-e.root
 
-hists_emission_mu_tankWater_energies_name   hist_emission_energies
-hists_emission_e_tankWater_energies_name    hist_emission_energies
-hists_emission_mu_MRDsci_energies_name      hist_emission_energies
-hists_emission_e_MRDsci_energies_name       hist_emission_energies
+hists_emission_mu_tankWater_energies_name        hist_emission_energies
+hists_emission_e_tankWater_energies_name         hist_emission_energies
+hists_emission_mu_MRDsci_energies_name           hist_emission_energies
+hists_emission_e_MRDsci_energies_name            hist_emission_energies
 
-hists_emission_mu_tankWater_counts_name     hist_emission_counts
-hists_emission_e_tankWater_counts_name      hist_emission_counts
-hists_emission_mu_MRDsci_counts_name        hist_emission_counts
-hists_emission_e_MRDsci_counts_name         hist_emission_counts
+hists_emission_mu_tankWater_counts_name          hist_emission_counts
+hists_emission_e_tankWater_counts_name           hist_emission_counts
+hists_emission_mu_MRDsci_counts_name             hist_emission_counts
+hists_emission_e_MRDsci_counts_name              hist_emission_counts
 
-hists_emission_mu_tankWater_energy_min      0
-hists_emission_e_tankWater_energy_min       0
-hists_emission_mu_MRDsci_energy_min         0
-hists_emission_e_MRDsci_energy_min          0
+hists_emission_mu_tankWater_unit_energy_particle MeV # meV, ceV, deV, eV, keV, MeV, GeV, TeV, PeV
+hists_emission_e_tankWater_unit_energy_particle  MeV # meV, ceV, deV, eV, keV, MeV, GeV, TeV, PeV
+hists_emission_mu_MRDsci_unit_energy_particle    MeV # meV, ceV, deV, eV, keV, MeV, GeV, TeV, PeV
+hists_emission_e_MRDsci_unit_energy_particle     MeV # meV, ceV, deV, eV, keV, MeV, GeV, TeV, PeV
 
-hists_emission_mu_tankWater_energy_delta    10
-hists_emission_e_tankWater_energy_delta     10
-hists_emission_mu_MRDsci_energy_delta       10
-hists_emission_e_MRDsci_energy_delta        10
+hists_emission_mu_tankWater_unit_energy_photon   eV  # meV, ceV, deV, eV, keV, MeV, GeV, TeV, PeV
+hists_emission_e_tankWater_unit_energy_photon    eV  # meV, ceV, deV, eV, keV, MeV, GeV, TeV, PeV
+hists_emission_mu_MRDsci_unit_energy_photon      eV  # meV, ceV, deV, eV, keV, MeV, GeV, TeV, PeV
+hists_emission_e_MRDsci_unit_energy_photon       eV  # meV, ceV, deV, eV, keV, MeV, GeV, TeV, PeV
 
-hists_emission_mu_tankWater_num             121
-hists_emission_e_tankWater_num              121
-hists_emission_mu_MRDsci_num                121
-hists_emission_e_MRDsci_num                 121
+hists_emission_mu_tankWater_unit_distance        m # nm, um, mm, cm, m, km
+hists_emission_e_tankWater_unit_distance         m # nm, um, mm, cm, m, km
+hists_emission_mu_MRDsci_unit_distance           m # nm, um, mm, cm, m, km
+hists_emission_e_MRDsci_unit_distance            m # nm, um, mm, cm, m, km
+
+hists_emission_mu_tankWater_unit_angle           rad # urad, mrad, rad, deg
+hists_emission_e_tankWater_unit_angle            rad # urad, mrad, rad, deg
+hists_emission_mu_MRDsci_unit_angle              rad # urad, mrad, rad, deg
+hists_emission_e_MRDsci_unit_angle               rad # urad, mrad, rad, deg
+
+hists_emission_mu_tankWater_energy_min           0
+hists_emission_e_tankWater_energy_min            0
+hists_emission_mu_MRDsci_energy_min              0
+hists_emission_e_MRDsci_energy_min               0
+
+hists_emission_mu_tankWater_energy_delta         10
+hists_emission_e_tankWater_energy_delta          10
+hists_emission_mu_MRDsci_energy_delta            10
+hists_emission_e_MRDsci_energy_delta             10
+
+hists_emission_mu_tankWater_num                  121
+hists_emission_e_tankWater_num                   121
+hists_emission_mu_MRDsci_num                     121
+hists_emission_e_MRDsci_num                      121
 
 # STOPPING POWER DATA
-hists_dEdX_mu_tankWater_path                /Data/water_doped-mu.root
-hists_dEdX_e_tankWater_path                 /Data/water_doped-e.root
-hists_dEdX_mu_tankSteel_path                /Data/tankSteel-mu.root
-hists_dEdX_e_tankSteel_path                 /Data/tankSteel-e.root
-hists_dEdX_mu_MRDsci_path                   /Data/MRDScintilator-mu.root
-hists_dEdX_e_MRDsci_path                    /Data/MRDScintilator-e.root
-hists_dEdX_mu_MRDiron_path                  /Data/MRDIron-mu.root
-hists_dEdX_e_MRDiron_path                   /Data/MRDIron-e.root
+hists_dEdX_mu_tankWater_path                     /Data/water_doped-mu.root
+hists_dEdX_e_tankWater_path                      /Data/water_doped-e.root
+hists_dEdX_mu_tankSteel_path                     /Data/tankSteel-mu.root
+hists_dEdX_e_tankSteel_path                      /Data/tankSteel-e.root
+hists_dEdX_mu_MRDsci_path                        /Data/MRDScintilator-mu.root
+hists_dEdX_e_MRDsci_path                         /Data/MRDScintilator-e.root
+hists_dEdX_mu_MRDiron_path                       /Data/MRDIron-mu.root
+hists_dEdX_e_MRDiron_path                        /Data/MRDIron-e.root
 
-hists_dEdX_mu_tankWater_name                hist_dEdX_dEdX
-hists_dEdX_e_tankWater_name                 hist_dEdX_dEdX
-hists_dEdX_mu_tankSteel_name                hist_dEdX_dEdX
-hists_dEdX_e_tankSteel_name                 hist_dEdX_dEdX
-hists_dEdX_mu_MRDsci_name                   hist_dEdX_dEdX
-hists_dEdX_e_MRDsci_name                    hist_dEdX_dEdX
-hists_dEdX_mu_MRDiron_name                  hist_dEdX_dEdX
-hists_dEdX_e_MRDiron_name                   hist_dEdX_dEdX
+hists_dEdX_mu_tankWater_name                     hist_dEdX_dEdX
+hists_dEdX_e_tankWater_name                      hist_dEdX_dEdX
+hists_dEdX_mu_tankSteel_name                     hist_dEdX_dEdX
+hists_dEdX_e_tankSteel_name                      hist_dEdX_dEdX
+hists_dEdX_mu_MRDsci_name                        hist_dEdX_dEdX
+hists_dEdX_e_MRDsci_name                         hist_dEdX_dEdX
+hists_dEdX_mu_MRDiron_name                       hist_dEdX_dEdX
+hists_dEdX_e_MRDiron_name                        hist_dEdX_dEdX
+
+hists_dEdX_mu_tankWater_unit_energy_particle     MeV # meV, ceV, deV, eV, keV, MeV, GeV, TeV, PeV
+hists_dEdX_e_tankWater_unit_energy_particle      MeV # meV, ceV, deV, eV, keV, MeV, GeV, TeV, PeV
+hists_dEdX_mu_tankSteel_unit_energy_particle     MeV # meV, ceV, deV, eV, keV, MeV, GeV, TeV, PeV
+hists_dEdX_e_tankSteel_unit_energy_particle      MeV # meV, ceV, deV, eV, keV, MeV, GeV, TeV, PeV
+
+hists_dEdX_mu_tankWater_unit_distance            m # nm, um, mm, cm, m, km
+hists_dEdX_e_tankWater_unit_distance             m # nm, um, mm, cm, m, km
+hists_dEdX_mu_tankSteel_unit_distance            m # nm, um, mm, cm, m, km
+hists_dEdX_e_tankSteel_unit_distance             m # nm, um, mm, cm, m, km
 
 # PHOTON transmission DATA
-useSingleTH1forPhotonTransmission_tankWater false
-useSingleTH1forPhotonTransmission_MRDsci    false
+useSingleTH1forPhotonTransmission_tankWater      false
+useSingleTH1forPhotonTransmission_MRDsci         false
 
-hists_transmission_tankWater_path           /Data/water_doped-mu.root
-hists_transmission_MRDsci_path              /Data/MRDScintilator-mu.root
+hists_transmission_tankWater_path                /Data/water_doped-mu.root
+hists_transmission_MRDsci_path                   /Data/MRDScintilator-mu.root
                                             
-hists_transmission_tankWater_name           hist_transmission
-hists_transmission_MRDsci_name              hist_transmission
+hists_transmission_tankWater_name                hist_transmission
+hists_transmission_MRDsci_name                   hist_transmission
+
+hists_transmission_tankWater_unit_photon         eV # meV, ceV, deV, eV, keV, MeV, GeV, TeV, PeV
+hists_transmission_MRDsci_unit_photon            eV # meV, ceV, deV, eV, keV, MeV, GeV, TeV, PeV
+
+hists_transmission_tankWater_unit_distance       eV # meV, ceV, deV, eV, keV, MeV, GeV, TeV, PeV
+hists_transmission_MRDsci_unit_distance          eV # meV, ceV, deV, eV, keV, MeV, GeV, TeV, PeV
                                             
-hists_transmission_tankWater_energy_min     0
-hists_transmission_MRDsci_energy_min        0
+hists_transmission_tankWater_energy_min          0
+hists_transmission_MRDsci_energy_min             0
                                             
-hists_transmission_tankWater_energy_delta   0.5
-hists_transmission_MRDsci_energy_delta      0.5
+hists_transmission_tankWater_energy_delta        0.5
+hists_transmission_MRDsci_energy_delta           0.5
                                             
-hists_transmissiontankWater_energy_num      20
-hists_transmissionMRDsci_energy_num         20
+hists_transmission_tankWater_energy_num          20
+hists_transmission_MRDsci_energy_num             20
